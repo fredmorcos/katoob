@@ -1,0 +1,1674 @@
+# Katoob Multiligual Textprocessor
+# Copyright (C) 2004 
+# This file is distributed under the same license as the katoob package.
+# Jan Grmela <mail@grmela.com>, 2004.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-18 12:04+0200\n"
+"PO-Revision-Date: 2004-11-29 14:28+0100\n"
+"Last-Translator: Jan Grmela <mail@grmela.com>\n"
+"Language-Team: Jan Grmela <mail@grmela.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../katoob.desktop.in.h:1 ../src/aboutdialog.cc:66
+#, fuzzy
+msgid "Katoob"
+msgstr "katoob"
+
+#: ../katoob.desktop.in.h:2
+msgid "Multilingual Unicode Text Editor"
+msgstr "Vícejazykový textový editor"
+
+#: ../src/aboutdialog.cc:51
+msgid ""
+"Katoob is free software; you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation; either version 2 of the License, or (at your option) any later "
+"version."
+msgstr ""
+
+#: ../src/aboutdialog.cc:56
+msgid ""
+"Katoob is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+
+#: ../src/aboutdialog.cc:61
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"This program; if not, write to the Free Software Foundation, Inc., 59 Temple "
+"Place, Suite 330, Boston, MA  02111-1307  USA"
+msgstr ""
+
+#: ../src/aboutdialog.cc:71
+msgid "Copyright © 2006, 2007 Mohammed Sameer."
+msgstr ""
+
+#: ../src/aboutdialog.cc:73 ../src/aboutdialog.cc:76
+msgid "Mohammed Sameer"
+msgstr ""
+
+#: ../src/aboutdialog.cc:77
+msgid "Mostafa Hussein"
+msgstr ""
+
+#: ../src/aboutdialog.cc:80
+#, fuzzy
+msgid "A lightweight multilingual unicode and bidi aware text editor"
+msgstr "Vícejazykový textový editor"
+
+#: ../src/aboutdialog.cc:81
+msgid "translator-credits"
+msgstr ""
+
+#: ../src/applets.cc:55
+msgid "_Enable undo, redo\t"
+msgstr "_Povolit Zpět, Znovu\t"
+
+#: ../src/applets.cc:57
+msgid "Keep a history of recently closed documents"
+msgstr ""
+
+#: ../src/applets.cc:59
+msgid ""
+"Undo history size\n"
+"(0 for unlimited)"
+msgstr ""
+"Velikost historie Zpět\n"
+"(0 pro neomezenou)"
+
+#: ../src/applets.cc:60
+#, fuzzy
+msgid ""
+"Executed commands history size\n"
+"(0 for unlimited)"
+msgstr ""
+"Velikost historie Zpět\n"
+"(0 pro neomezenou)"
+
+#: ../src/applets.cc:61
+#, fuzzy
+msgid ""
+"Closed documents history size\n"
+"(0 for unlimited)"
+msgstr ""
+"Velikost historie Zpět\n"
+"(0 pro neomezenou)"
+
+#: ../src/applets.cc:122
+#, fuzzy
+msgid "Show the extra _buttons"
+msgstr "Zobrazit záložky"
+
+#: ../src/applets.cc:123
+msgid "Show the _Main Toolbar"
+msgstr "Zobrazit _hlavní panel nástrojů"
+
+#: ../src/applets.cc:124
+msgid "Show the _Extended Toolbar"
+msgstr "Zobrazit _rozšířený panel nástrojů"
+
+#: ../src/applets.cc:125
+msgid "Show the _Statusbar"
+msgstr "Zobrazit _stavový řádek"
+
+#: ../src/applets.cc:126
+msgid "Enable re_cent menu"
+msgstr "Povolit menu nedávných souborů"
+
+#: ../src/applets.cc:127
+msgid "Show the _close button on each tab label"
+msgstr "Zobrazit tlačítko _zavřít na každé popisce záložky"
+
+#: ../src/applets.cc:128
+msgid ""
+"No. of recent entries\n"
+"(0 for unlimited)"
+msgstr ""
+"Počet nedávných souborů\n"
+"(0 pro neomezeně)"
+
+#: ../src/applets.cc:129
+msgid "Show the toolbar as"
+msgstr "Zobrazit panel nástrojů jako"
+
+#: ../src/applets.cc:130 ../src/applets.cc:159 ../src/menubar.cc:318
+msgid "Text only"
+msgstr "Pouze text"
+
+#. TODO: Disable these when the main toolbar is not shown.
+#: ../src/applets.cc:131 ../src/applets.cc:162 ../src/menubar.cc:315
+msgid "Icons only"
+msgstr "Pouze ikony"
+
+#: ../src/applets.cc:132 ../src/applets.cc:168 ../src/applets.cc:350
+#: ../src/applets.cc:383 ../src/applets.cc:392 ../src/menubar.cc:321
+msgid "Both"
+msgstr "Text pod ikonami"
+
+#: ../src/applets.cc:133 ../src/applets.cc:165 ../src/menubar.cc:324
+msgid "Text beside icons"
+msgstr "Text vedle ikon"
+
+#: ../src/applets.cc:217
+msgid "_Show tabs"
+msgstr "Zobrazit zá_ložky"
+
+#: ../src/applets.cc:218
+msgid "_Enable tabs menu"
+msgstr "Po_volit menu záložek"
+
+#: ../src/applets.cc:219
+msgid "Scro_ll tabs"
+msgstr "<Scroll tabs>"
+
+#: ../src/applets.cc:220
+msgid "Show the tabs at the"
+msgstr "Zobrazit záložky"
+
+#: ../src/applets.cc:221 ../src/applets.cc:282 ../src/applets.cc:846
+msgid "Top"
+msgstr "Nahoře"
+
+#: ../src/applets.cc:222 ../src/applets.cc:273
+msgid "Bottom"
+msgstr "Dole"
+
+#: ../src/applets.cc:223 ../src/applets.cc:276 ../src/applets.cc:348
+#: ../src/applets.cc:389
+msgid "Right"
+msgstr "Vpravo"
+
+#: ../src/applets.cc:224 ../src/applets.cc:279 ../src/applets.cc:349
+#: ../src/applets.cc:386 ../src/applets.cc:845
+msgid "Left"
+msgstr "Vlevo"
+
+#: ../src/applets.cc:226
+msgid "Color for read only tabs"
+msgstr ""
+
+#: ../src/applets.cc:227
+msgid "Color for modified tabs"
+msgstr ""
+
+#: ../src/applets.cc:228
+msgid "Color for normal tabs"
+msgstr ""
+
+#: ../src/applets.cc:341
+msgid "Text _Wrapping is on by default"
+msgstr "_Zalamování textu je ve výchozím stavu zapnuto"
+
+#: ../src/applets.cc:342
+msgid "Show _Line numbers by default"
+msgstr "Zobrazovat čí_sla řádků ve výchozím stavu"
+
+#: ../src/applets.cc:343
+msgid "Use the default _font"
+msgstr "Použít výchozí _písmo"
+
+#: ../src/applets.cc:345
+#, fuzzy
+msgid "_Automatic syntax highlighting for known file types"
+msgstr "Z_výrazňovat známé typy souborů"
+
+#: ../src/applets.cc:347
+#, fuzzy
+msgid "Line numbers position"
+msgstr "Čí_sla řádků"
+
+#: ../src/applets.cc:351
+msgid "Font"
+msgstr "Písmo"
+
+#: ../src/applets.cc:353
+msgid "Tab width"
+msgstr ""
+
+#: ../src/applets.cc:450
+msgid "_Use the locale encoding"
+msgstr "Použít _kódování locale"
+
+#: ../src/applets.cc:451 ../src/applets.cc:452
+#, fuzzy
+msgid "Specify an encoding"
+msgstr "Výchozí kódování"
+
+#: ../src/applets.cc:456
+#, fuzzy
+msgid "File open encoding"
+msgstr "Vyberte kódování"
+
+#: ../src/applets.cc:457
+#, fuzzy
+msgid "File save encoding"
+msgstr "Vyberte kódování"
+
+#: ../src/applets.cc:502
+msgid "_Backup files before saving."
+msgstr "_Zálohovat soubory před ukládáním"
+
+#: ../src/applets.cc:503
+#, fuzzy
+msgid "Backup extension"
+msgstr "Zálohovat příponu."
+
+#: ../src/applets.cc:534 ../src/menubar.cc:362
+msgid "_Autocheck Spelling"
+msgstr "_Automatická kontrola pravopisu"
+
+#. misspelled_label.set_text(_("Misspelled words color"));
+#: ../src/applets.cc:536
+msgid "Choose the default dictionary"
+msgstr "Vybrat výchozí slovník"
+
+#: ../src/applets.cc:586
+#, fuzzy
+msgid "Printing font"
+msgstr "Vytisknout tento dokument"
+
+#: ../src/applets.cc:590
+msgid "_Enable advanced options"
+msgstr "_Povolit pokročilá nastavení"
+
+#: ../src/applets.cc:594
+msgid "X Dot Per Inch"
+msgstr ""
+
+#: ../src/applets.cc:595
+msgid "Y Dot Per Inch"
+msgstr ""
+
+#: ../src/applets.cc:652
+msgid "_Enable the dictionary."
+msgstr "Povolit _slovník"
+
+#: ../src/applets.cc:653
+#, fuzzy
+msgid "Host"
+msgstr "Hostitel:"
+
+#: ../src/applets.cc:654
+msgid "_List dictionaries"
+msgstr "_Seznam slovníků"
+
+#: ../src/applets.cc:656
+#, fuzzy
+msgid "Port"
+msgstr "Port:"
+
+#: ../src/applets.cc:667 ../src/applets.cc:675 ../src/preferencesdialog.cc:75
+msgid "Dictionary"
+msgstr "Slovník"
+
+#: ../src/applets.cc:676
+msgid "Description"
+msgstr "Popis"
+
+#: ../src/applets.cc:681
+msgid "Not Available."
+msgstr "Není dostupný"
+
+#: ../src/applets.cc:738 ../src/applets.cc:741
+msgid "Failed to get the available dictionaries."
+msgstr ""
+
+#: ../src/applets.cc:768
+msgid "Please provide a dict server"
+msgstr ""
+
+#: ../src/applets.cc:797
+msgid "_Milliseconds before multipress will accept the current value."
+msgstr ""
+
+#: ../src/applets.cc:827
+#, fuzzy
+msgid ""
+"Number of remote addresses to save\n"
+"(0 for unlimited)"
+msgstr ""
+"Počet nedávných souborů\n"
+"(0 pro neomezeně)"
+
+#: ../src/applets.cc:830
+msgid "_Insert into the active document enabled by default ?"
+msgstr ""
+
+#: ../src/applets.cc:847
+msgid "Width"
+msgstr "Šířka"
+
+#: ../src/applets.cc:848
+msgid "Height"
+msgstr "Výška"
+
+#: ../src/applets.cc:850
+msgid "Save all the program _settings on exit"
+msgstr "Uložit všechna _nastavení programu před ukončením"
+
+#: ../src/applets.cc:851
+msgid "Save the main window _attributes on exit"
+msgstr "Uložit atributy hlavního _okna před ukončením"
+
+#: ../src/applets.cc:856
+msgid "Window position"
+msgstr "Pozice okna"
+
+#: ../src/applets.cc:857
+msgid "Window size"
+msgstr "Velikost okna"
+
+#: ../src/applets.cc:925
+msgid "Network timeout (In seconds):"
+msgstr ""
+
+#: ../src/applets.cc:926
+msgid "Proxy host:"
+msgstr ""
+
+#: ../src/applets.cc:927
+msgid "Proxy port:"
+msgstr ""
+
+#: ../src/applets.cc:928
+msgid "Proxy type:"
+msgstr ""
+
+#: ../src/applets.cc:930 ../src/menubar.cc:798
+msgid "None"
+msgstr "Žádné"
+
+#: ../src/applets.cc:931
+msgid "Get from the environment"
+msgstr ""
+
+#: ../src/applets.cc:932
+msgid "HTTP"
+msgstr ""
+
+#: ../src/applets.cc:933
+msgid "SOCKS4"
+msgstr ""
+
+#: ../src/applets.cc:934
+msgid "SOCKS5"
+msgstr ""
+
+#: ../src/applets.cc:948
+msgid "Tunnel traffic through the proxy"
+msgstr ""
+
+#: ../src/applets.cc:950
+msgid "Use proxy authentication"
+msgstr ""
+
+#: ../src/applets.cc:951
+msgid "Proxy username:"
+msgstr ""
+
+#: ../src/applets.cc:952
+msgid "Proxy password:"
+msgstr ""
+
+#: ../src/dialogs.cc:70
+#, fuzzy
+msgid "Insert to document"
+msgstr "Vytisknout tento dokument"
+
+#: ../src/dialogs.cc:98 ../src/toolbar.cc:52
+msgid "Goto Line"
+msgstr "Jít na řádek"
+
+#: ../src/dialogs.cc:105
+msgid "Line:"
+msgstr "Řádek"
+
+#: ../src/dialogs.cc:139
+msgid "Please wait..."
+msgstr ""
+
+#: ../src/dict.cc:60
+msgid "Invalid daatabase. Please reconfigure the dictionary in use."
+msgstr ""
+
+#: ../src/dict.cc:64
+#, fuzzy
+msgid "No matches were found"
+msgstr "Žádná shoda !"
+
+#: ../src/dict.cc:122 ../src/dict.cc:139
+#, fuzzy
+msgid "No databases were found."
+msgstr "Žádná shoda !"
+
+#: ../src/document.cc:109
+#, fuzzy
+msgid " Is a directory."
+msgstr "Toto je adresář."
+
+#: ../src/document.cc:133 ../src/mdi.cc:295 ../src/mdi.cc:1107
+#, fuzzy, c-format
+msgid "Couldn't detect the encoding of %s"
+msgstr "Nemohu spustit gs pro vygenerování PDF"
+
+#: ../src/document.cc:193
+#, fuzzy
+msgid "Couldn't detect the encoding of the text."
+msgstr "Nemohu určit kódování textu."
+
+#: ../src/document.cc:285
+#, c-format
+msgid "Failed to create the autorecovery file %s"
+msgstr ""
+
+#: ../src/document.cc:1240
+msgid "Define "
+msgstr ""
+
+#: ../src/document.cc:1255
+msgid "Spelling Suggestions"
+msgstr "Návrhy automatických oprav"
+
+#: ../src/document.cc:1263
+#, fuzzy, c-format
+msgid "Add \"%s\" to dictionary"
+msgstr "Přidat \"%s\" do slovníku"
+
+#. TODO: Use italics markup.
+#: ../src/document.cc:1272
+msgid "no suggestions"
+msgstr "žádné návrhy"
+
+#: ../src/document.cc:1283
+msgid "More..."
+msgstr "Více..."
+
+#: ../src/encodings.cc:347 ../src/encodings.cc:367
+#, fuzzy
+msgid "I wasn't able to convert the encoding."
+msgstr "Nemohu určit kódování textu."
+
+#: ../src/execdialog.cc:40
+msgid "Command to execute"
+msgstr ""
+
+#: ../src/execdialog.cc:41
+#, c-format
+msgid ""
+"'%s' will be substituted with a temporary filename\n"
+"containing the text from the document."
+msgstr ""
+
+#: ../src/execdialog.cc:47
+#, fuzzy
+msgid "_Show the results in a new tab"
+msgstr "Zobrazit záložky"
+
+#: ../src/export.cc:48
+msgid "_Text file with no unicode control characters..."
+msgstr ""
+
+#: ../src/export.cc:55 ../src/import.cc:52
+msgid "Text file compressed with _gzip"
+msgstr ""
+
+#: ../src/export.cc:62 ../src/import.cc:58
+msgid "Text file compressed with _bzip2"
+msgstr ""
+
+#: ../src/export.cc:69 ../src/import.cc:64
+msgid "Text with _shaping and bidi applied"
+msgstr ""
+
+#: ../src/export.cc:107
+#, fuzzy
+msgid "Can't open temporary file."
+msgstr "Nemohu otevřít dočasný soubor"
+
+#: ../src/export.cc:113
+#, fuzzy
+msgid "Error writing to temporary file."
+msgstr "Nemohu vytvořit dočasný soubor"
+
+#: ../src/export.cc:130
+msgid "Couldn't allocate memory for compression."
+msgstr ""
+
+#: ../src/export.cc:136
+#, fuzzy
+msgid "Couldn't compress the text."
+msgstr "Nemohu vytisknout soubor"
+
+#. _ch is allocated via g_new();
+#: ../src/export.cc:185 ../src/import.cc:239
+#, fuzzy
+msgid "Couldn't apply the bidi algorithm."
+msgstr "Nemohu vytisknout soubor"
+
+#: ../src/filedialog.cc:38 ../src/filedialog.cc:52
+#: ../src/openlocationdialog.cc:38
+msgid "Encoding"
+msgstr "Kódování"
+
+#: ../src/filedialog.cc:144
+msgid "This is a directory."
+msgstr "Toto je adresář."
+
+#: ../src/import.cc:47
+msgid "_HTML Character Reference..."
+msgstr ""
+
+#: ../src/import.cc:114 ../src/import.cc:120 ../src/import.cc:141
+#: ../src/import.cc:172
+#, fuzzy
+msgid "Can't open file."
+msgstr "Nemohu otevřít dočasný soubor"
+
+#. Error.
+#: ../src/import.cc:135 ../src/import.cc:157 ../src/import.cc:188
+msgid "Error reading file."
+msgstr ""
+
+#: ../src/inputwindow.cc:33
+msgid "Input Window"
+msgstr ""
+
+#: ../src/isocodes.cc:117
+#, c-format
+msgid "%s (%s)"
+msgstr ""
+
+#: ../src/label.cc:60
+#, c-format
+msgid "Untitled New %d"
+msgstr ""
+
+#: ../src/mdi.cc:83
+#, c-format
+msgid "Failed to scan for any autorecovery files: %s"
+msgstr ""
+
+#: ../src/mdi.cc:88
+msgid "Some unrecovered files were found. Try to recover them ?"
+msgstr ""
+
+#: ../src/mdi.cc:203
+msgid "Please select a file for editing."
+msgstr "Prosím, vyberte soubor pro úpravy."
+
+#: ../src/mdi.cc:281
+#, fuzzy
+msgid "This is a read only document."
+msgstr "Toto je adresář."
+
+#: ../src/mdi.cc:285
+#, fuzzy
+msgid "Please select a file."
+msgstr "Prosím, vyberte soubor pro úpravy."
+
+#: ../src/mdi.cc:324
+msgid "This document can not be saved. It's a read only file."
+msgstr ""
+
+#: ../src/mdi.cc:354
+#, fuzzy
+msgid "Please select a file for saving."
+msgstr "Prosím, vyberte soubor pro úpravy."
+
+#: ../src/mdi.cc:361 ../src/mdi.cc:1124 ../src/printdialog.cc:254
+#, c-format
+msgid "Are you sure you want to overwrite the file %s ?"
+msgstr "Jste si jisti, že chcete přepsat soubor %s ?"
+
+#: ../src/mdi.cc:452
+#, fuzzy, c-format
+msgid "The file %s is not saved, Save first ?"
+msgstr "Soubor %s nebyl uložen, chcete jej uložit ?"
+
+#: ../src/mdi.cc:455
+#, c-format
+msgid "\"%s\" is not saved, Save first?"
+msgstr "\"%s\" nebyl uložen, chcete jej uložit ?"
+
+#: ../src/mdi.cc:509
+#, fuzzy, c-format
+msgid "The file \"%s\" doesn't exist."
+msgstr "Soubor neexistuje."
+
+#: ../src/mdi.cc:573
+#, fuzzy, c-format
+msgid ""
+"This will close the current file \"%s\". Discard any changes done and reload "
+"the saved copy of the file. Are you sure you want to continue ?"
+msgstr ""
+"Tento příkaz zavře aktuální soubor \"%s\", zahodí všechny změny aktivního "
+"bufferu a znovu načte uloženou kopii souboru. Opravdu chcete pokračovat ?"
+
+#: ../src/mdi.cc:673
+msgid "You must inter a word to search for."
+msgstr ""
+
+#: ../src/mdi.cc:685 ../src/mdi.cc:701 ../src/mdi.cc:748
+#, fuzzy
+msgid "No search results found."
+msgstr "Žádná shoda !"
+
+#: ../src/mdi.cc:781
+#, fuzzy, c-format
+msgid "Replaced %d occurence."
+msgid_plural "Replaced %d occurences."
+msgstr[0] "Nahrazeno %d výskytů"
+msgstr[1] "Nahrazeno %d výskytů"
+
+#: ../src/mdi.cc:806
+#, c-format
+msgid "You can use only one '%s'"
+msgstr ""
+
+#: ../src/mdi.cc:959 ../src/mdi.cc:962
+msgid "Failed to get any definitions."
+msgstr ""
+
+#: ../src/menubar.cc:142
+msgid "_File"
+msgstr "_Soubor"
+
+#: ../src/menubar.cc:150
+#, fuzzy
+msgid "Open _Location..."
+msgstr "_Umístění"
+
+#. Recent
+#: ../src/menubar.cc:154
+msgid "Recent"
+msgstr "Otevřít nedávný"
+
+#: ../src/menubar.cc:164
+msgid "Sa_ve Copy..."
+msgstr "Uložit _kopii"
+
+#: ../src/menubar.cc:171
+msgid "_Import"
+msgstr "_Importovat"
+
+#: ../src/menubar.cc:179
+msgid "_Export"
+msgstr "E_xportovat"
+
+#: ../src/menubar.cc:188
+msgid "Page Set_up..."
+msgstr ""
+
+#: ../src/menubar.cc:191
+#, fuzzy
+msgid "Print Previe_w"
+msgstr "Náhled"
+
+#: ../src/menubar.cc:240
+msgid "_Edit"
+msgstr "Ú_pravy"
+
+#: ../src/menubar.cc:261
+msgid "_Select All"
+msgstr "Vy_brat vše"
+
+#: ../src/menubar.cc:265
+msgid "_Insert File"
+msgstr ""
+
+#: ../src/menubar.cc:274
+msgid "_Search"
+msgstr "_Hledání"
+
+#: ../src/menubar.cc:279
+msgid "Find Ne_xt"
+msgstr "Najít _další"
+
+#: ../src/menubar.cc:292
+msgid "_View"
+msgstr "_Zobrazení"
+
+#: ../src/menubar.cc:294
+msgid "_Statusbar"
+msgstr "_Stavový řádek"
+
+#: ../src/menubar.cc:297
+msgid "_Line Numbers"
+msgstr "Čí_sla řádků"
+
+#: ../src/menubar.cc:300
+msgid "_Wrap Text"
+msgstr "_Zalamovat text"
+
+#: ../src/menubar.cc:305
+msgid "Toolbars"
+msgstr "_Panely nástrojů"
+
+#: ../src/menubar.cc:307
+msgid "_Main Toolbar"
+msgstr "_Hlavní panel nástrojů"
+
+#: ../src/menubar.cc:310
+msgid "_Extended Toolbar"
+msgstr "_Rozšířený panel nástrojů"
+
+#: ../src/menubar.cc:327
+msgid "_Encoding"
+msgstr "_Kódování"
+
+#: ../src/menubar.cc:352
+msgid "_Tools"
+msgstr "_Nástroje"
+
+#: ../src/menubar.cc:353
+msgid "_Execute Command On Buffer..."
+msgstr "_Vykonat příkazy v bufferu..."
+
+#: ../src/menubar.cc:368 ../src/statusbar.cc:56
+msgid "Input"
+msgstr ""
+
+#: ../src/menubar.cc:369
+msgid "Default"
+msgstr ""
+
+#: ../src/menubar.cc:374
+#, fuzzy
+msgid "Keyboard emulator"
+msgstr "Emulátor klávesnice"
+
+#: ../src/menubar.cc:378 ../src/preferencesdialog.cc:77
+msgid "Multipress"
+msgstr ""
+
+#: ../src/menubar.cc:393
+msgid "_Documents"
+msgstr "_Dokumenty"
+
+#: ../src/menubar.cc:394
+msgid "Save _All"
+msgstr "Uložit _vše"
+
+#: ../src/menubar.cc:397
+msgid "Clos_e All"
+msgstr "Zavřít vš_e"
+
+#: ../src/menubar.cc:402
+#, fuzzy
+msgid "_Opened Documents"
+msgstr "_Dokumenty"
+
+#: ../src/menubar.cc:403
+#, fuzzy
+msgid "_Closed Documents"
+msgstr "_Dokumenty"
+
+#: ../src/menubar.cc:408
+msgid "_Help"
+msgstr "Ná_pověda"
+
+#: ../src/menubar.cc:796
+msgid "_Highlight"
+msgstr "_Zvýrazňování"
+
+#: ../src/network.cc:89
+msgid "Failed to initialize the networking backend."
+msgstr ""
+
+#: ../src/network.cc:95
+#, fuzzy
+msgid "Couldn't initialize network handler."
+msgstr "Nemohu vytisknout soubor"
+
+#: ../src/network.cc:145
+msgid "Please set the proxy authentication username."
+msgstr ""
+
+#: ../src/network.cc:150
+msgid "Please set the proxy authentication password."
+msgstr ""
+
+#: ../src/network.cc:157
+#, fuzzy
+msgid "Please set a proxy host."
+msgstr "Prosím vyberte soubor, do něhož chcete tisknout."
+
+#: ../src/openlocationdialog.cc:37
+#, fuzzy
+msgid "Location"
+msgstr "_Umístění"
+
+#: ../src/openlocationdialog.cc:54
+#, fuzzy
+msgid "_Insert into the active document."
+msgstr "Vytisknout tento dokument"
+
+#: ../src/openlocationdialog.cc:92
+msgid "You must enter a location to open."
+msgstr ""
+
+#: ../src/pipe.cc:53
+#, c-format
+msgid "I can't execute %s. I can't find it in your path"
+msgstr ""
+
+#. TODO: Possible some commands might not return 0
+#: ../src/pipe.cc:99
+#, fuzzy
+msgid "Couldn't get the required content."
+msgstr "Nemohu najít hodnotu emulátoru pro vybranou položku"
+
+#: ../src/preferencesdialog.cc:41
+msgid "Preferences"
+msgstr "Nastavení"
+
+#: ../src/preferencesdialog.cc:55
+msgid "Options for"
+msgstr ""
+
+#: ../src/preferencesdialog.cc:63
+msgid "General"
+msgstr "Hlavní"
+
+#: ../src/preferencesdialog.cc:64
+msgid "Interface"
+msgstr "Rozhraní"
+
+#: ../src/preferencesdialog.cc:65
+msgid "Tabs"
+msgstr "Záložky"
+
+#: ../src/preferencesdialog.cc:66
+msgid "Editor"
+msgstr "Editor"
+
+#: ../src/preferencesdialog.cc:67
+msgid "Encodings"
+msgstr "Kódování"
+
+#: ../src/preferencesdialog.cc:68
+msgid "File Save"
+msgstr "Ukládání souborů"
+
+#: ../src/preferencesdialog.cc:70
+msgid "Spell Checker"
+msgstr "Kontrola pravopisu"
+
+#: ../src/preferencesdialog.cc:73 ../src/printdialog.cc:97
+msgid "Print"
+msgstr "Tisk"
+
+#: ../src/preferencesdialog.cc:79
+#, fuzzy
+msgid "Remote Documents"
+msgstr "_Dokumenty"
+
+#: ../src/preferencesdialog.cc:80
+msgid "Advanced"
+msgstr "Pokročilé"
+
+#: ../src/preferencesdialog.cc:81
+msgid "Network"
+msgstr ""
+
+#: ../src/previewdialog.cc:48
+#, fuzzy
+msgid "Print preview"
+msgstr "Náhled"
+
+#: ../src/previewdialog.cc:56 ../src/previewdialog.cc:176
+#, c-format
+msgid "of %i"
+msgstr ""
+
+#: ../src/print.cc:207
+msgid "Other"
+msgstr ""
+
+#: ../src/printdialog.cc:77
+#, fuzzy
+msgid "Print to file."
+msgstr "Nemohu vytisknout soubor"
+
+#: ../src/printdialog.cc:78
+msgid "_All"
+msgstr "_Vše"
+
+#: ../src/printdialog.cc:79
+msgid "_Selection"
+msgstr "Vý_běr"
+
+#: ../src/printdialog.cc:80
+#, fuzzy
+msgid "_Lines"
+msgstr "Řádek"
+
+#: ../src/printdialog.cc:81
+msgid "Printer:"
+msgstr "Tiskárna:"
+
+#: ../src/printdialog.cc:89
+#, fuzzy
+msgid "Location:"
+msgstr "_Umístění"
+
+#: ../src/printdialog.cc:90
+#, fuzzy
+msgid "Number of copies"
+msgstr "P_očet kopií"
+
+#: ../src/printdialog.cc:91
+msgid "Print range"
+msgstr "Rozsah tisku"
+
+#: ../src/printdialog.cc:92
+msgid "From:"
+msgstr ""
+
+#: ../src/printdialog.cc:93
+#, fuzzy
+msgid "To:"
+msgstr "Nahoře"
+
+#: ../src/printdialog.cc:94
+#, fuzzy
+msgid "Paper size:"
+msgstr "Velikost _papíru:"
+
+#: ../src/printdialog.cc:95
+#, fuzzy
+msgid "Page orientation:"
+msgstr "_Orientace stránky"
+
+#: ../src/printdialog.cc:113
+#, fuzzy
+msgid "Printer name"
+msgstr "Tiskárna"
+
+#: ../src/printdialog.cc:114
+#, fuzzy
+msgid "Status"
+msgstr "_Stavový řádek"
+
+#: ../src/printdialog.cc:132 ../src/printdialog.cc:190
+msgid "Custom"
+msgstr "Vlastní"
+
+#: ../src/printdialog.cc:136
+msgid "Create a PDF document"
+msgstr "Vytvořit PDF dokument"
+
+#: ../src/printdialog.cc:137
+#, fuzzy
+msgid "Create a Postscript document"
+msgstr "Vytvořit PDF dokument"
+
+#: ../src/printdialog.cc:183
+msgid "Portrait"
+msgstr "Na výšku"
+
+#: ../src/printdialog.cc:184
+msgid "Landscape"
+msgstr "Na šířku"
+
+#: ../src/printdialog.cc:196
+#, fuzzy
+msgid "Width:"
+msgstr "Šíř_ka"
+
+#: ../src/printdialog.cc:196
+#, fuzzy
+msgid "Height:"
+msgstr "_Výška"
+
+#: ../src/printdialog.cc:246
+#, fuzzy
+msgid "Please choose a file to print to."
+msgstr "Prosím vyberte soubor, do kterého chcete exportovat"
+
+#: ../src/printdialog.cc:250
+#, fuzzy
+msgid "Please choose a file not a directory."
+msgstr "Prosím vyberte soubor pro importování"
+
+#: ../src/printdialog.cc:341
+msgid "Please select a file to print to."
+msgstr "Prosím vyberte soubor, do něhož chcete tisknout."
+
+#: ../src/printdialog.cc:421
+#, fuzzy
+msgid "I couldn't get the selected printer."
+msgstr "Nemohu najít hodnotu emulátoru pro vybranou položku"
+
+#: ../src/replacedialog.cc:32 ../src/searchdialog.cc:32
+msgid "Find"
+msgstr "Najít"
+
+#: ../src/replacedialog.cc:33 ../src/searchdialog.cc:33
+#, fuzzy
+msgid "Search for:"
+msgstr "Hledat"
+
+#: ../src/replacedialog.cc:34
+msgid "Replace with:"
+msgstr "Nahradit čím:"
+
+#: ../src/replacedialog.cc:35 ../src/searchdialog.cc:34
+msgid "Match entire word only"
+msgstr ""
+
+#: ../src/replacedialog.cc:36 ../src/searchdialog.cc:35
+#, fuzzy
+msgid "Match case"
+msgstr "Respektovat _malá a velká písmena"
+
+#. regex(_("Regular expression")),
+#: ../src/replacedialog.cc:37 ../src/searchdialog.cc:37
+msgid "Wrap search"
+msgstr ""
+
+#: ../src/replacedialog.cc:38 ../src/searchdialog.cc:38
+#, fuzzy
+msgid "Search from the cursor position"
+msgstr "Hledat od pozice _kurzoru"
+
+#: ../src/replacedialog.cc:39 ../src/searchdialog.cc:39
+msgid "Search backwards"
+msgstr ""
+
+#: ../src/replacedialog.cc:40 ../src/searchdialog.cc:40
+#, fuzzy
+msgid "Search from the beginnig of the document"
+msgstr "Hledat od _začátku dokumentu"
+
+#: ../src/replacedialog.cc:42
+msgid "_Replace"
+msgstr "_Nahradit"
+
+#. find_replace(Gtk::Stock::FIND_AND_REPLACE),
+#: ../src/replacedialog.cc:44
+#, fuzzy
+msgid "Replace _All"
+msgstr "Nahradit _vše"
+
+#: ../src/spell.cc:53
+#, fuzzy
+msgid "Failed to initialize the spell checker"
+msgstr "Povolit kontrolu pravopisu"
+
+#: ../src/spell.cc:66
+#, fuzzy
+msgid "Failed to set the requested dictionary."
+msgstr "Vybrat výchozí slovník"
+
+#: ../src/spelldialog.cc:37
+msgid "_Ignore"
+msgstr "_Ignorovat"
+
+#: ../src/spelldialog.cc:38
+#, fuzzy
+msgid "Ignore _All"
+msgstr "_Ignorovat"
+
+#: ../src/spelldialog.cc:39
+msgid "C_hange"
+msgstr "Z_měnit"
+
+#: ../src/spelldialog.cc:42
+msgid "_Add to user dictionary"
+msgstr "_Přidat do uživatelského slovníku"
+
+#: ../src/spelldialog.cc:43
+#, fuzzy
+msgid "Misspelled:"
+msgstr "Chybných:"
+
+#: ../src/spelldialog.cc:44
+msgid "Change to:"
+msgstr "Zaměnit za:"
+
+#: ../src/spelldialog.cc:48
+msgid "Check Spelling"
+msgstr "Zkontrolovat pravopis"
+
+#: ../src/spelldialog.cc:92
+msgid "Suggestions"
+msgstr "Návrhy"
+
+#: ../src/spelldialog.cc:128
+msgid "No misspelled words."
+msgstr "Žádná chybně napsaná slova."
+
+#: ../src/statusbar.cc:69
+#, fuzzy
+msgid "OVR"
+msgstr " OVR "
+
+#: ../src/statusbar.cc:69
+#, fuzzy
+msgid "INS"
+msgstr " INS "
+
+#: ../src/statusbar.cc:74
+#, fuzzy, c-format
+msgid " L: %d, C: %d"
+msgstr " Ř: %d, S: %d"
+
+#: ../src/toolbar.cc:53
+msgid "Search"
+msgstr "Hledat"
+
+#: ../src/toolbar.cc:56
+msgid "Spelling Dictionary"
+msgstr "Slovník pro kontrolu pravopisu"
+
+#: ../src/toolbar.cc:102
+msgid "Create a new file"
+msgstr "Vytvořit nový soubor"
+
+#: ../src/toolbar.cc:103
+msgid "Open a file for editing"
+msgstr "Otevřít soubor pro úpravy"
+
+#: ../src/toolbar.cc:104
+msgid "Save the existing file"
+msgstr "Uložit existující soubor"
+
+#: ../src/toolbar.cc:106
+msgid "Print this document"
+msgstr "Vytisknout tento dokument"
+
+#: ../src/toolbar.cc:108
+msgid "Close the active file"
+msgstr "Uložit aktivní soubor"
+
+#: ../src/toolbar.cc:109
+msgid "Undo"
+msgstr "Zpět"
+
+#: ../src/toolbar.cc:110
+msgid "Redo"
+msgstr "Znovu"
+
+#: ../src/toolbar.cc:111
+msgid "Cut"
+msgstr "Vyjmout"
+
+#: ../src/toolbar.cc:112
+msgid "Copy"
+msgstr "Kopírovat"
+
+#: ../src/toolbar.cc:113
+msgid "Paste"
+msgstr "Vložit"
+
+#: ../src/toolbar.cc:114
+msgid "Delete current selection"
+msgstr "Odstranit momentální výběr"
+
+#: ../src/toolbar.cc:116
+msgid "Toggle full screen mode"
+msgstr ""
+
+#: ../src/utils.cc:189
+msgid "I can't backup the old file.\n"
+msgstr ""
+
+#: ../src/utils.cc:247
+#, fuzzy, c-format
+msgid "%s is a directory."
+msgstr "Toto je adresář."
+
+#: ../src/window.cc:141
+msgid " The keyboard emulator will not work."
+msgstr ""
+
+#: ../src/window.cc:147
+msgid " Multipress will not work."
+msgstr ""
+
+#: ../src/window.cc:153
+msgid ""
+"A lot of the configuration options have been changed in this version.\n"
+"Please adjust the configuration first."
+msgstr ""
+
+#~ msgid "Unknown"
+#~ msgstr "Neznámý"
+
+#, fuzzy
+#~ msgid "Ready"
+#~ msgstr "Znovu"
+
+#, fuzzy
+#~ msgid "Printing"
+#~ msgstr "Tisk"
+
+#, fuzzy
+#~ msgid "Couldn't get the definition from the server."
+#~ msgstr "Nemohu určit kódování textu."
+
+#, fuzzy
+#~ msgid "Timeout"
+#~ msgstr "Časový limit:"
+
+#, fuzzy
+#~ msgid "Command"
+#~ msgstr "_Vykonat příkazy v bufferu..."
+
+#~ msgid "katoob"
+#~ msgstr "katoob"
+
+#, fuzzy
+#~ msgid "Remote"
+#~ msgstr "Znovu"
+
+#, fuzzy
+#~ msgid "Are you sure you want to overwrite the file "
+#~ msgstr "Jste si jisti, že chcete přepsat soubor %s ?"
+
+#, fuzzy
+#~ msgid "_PDF file..."
+#~ msgstr "_Najít"
+
+#~ msgid ""
+#~ "You have modified the current text, Katoob'll convert the current text to "
+#~ "your default encoding and then convert it back to your choosen encoding. "
+#~ "Continue ?"
+#~ msgstr ""
+#~ "Změnili jste text, katoob převede text do Vašeho výchozího kódování a "
+#~ "potom zpět do vybraného. Pokračovat ?"
+
+#~ msgid ""
+#~ "You are changing the encoding of a modified file, This'll also clear the "
+#~ "undo & redo history, Should katoob reopen the file?"
+#~ msgstr ""
+#~ "Měníte kódování změněného souboru, toho zároveň smaže historii Zpět a "
+#~ "Znovu, má katoob znovu otevřít souboru ?"
+
+#~ msgid ""
+#~ "Katoob couldn't convert the text to unicode to be able to edit it, "
+#~ "Katoob'll try to recover what it can, The error was:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Katoob nemohl převést text do unicode aby jej mohl upravit, nyní se "
+#~ "katoob pokusí obnovit, co dokáže. Chyba je:\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "Katoob couldn't recover unicode valid text, The error was:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Katoob nemohl obnovit platný unicode text, chyba je:\n"
+#~ "%s"
+
+#~ msgid "The file %s doesn't exist, Create it?"
+#~ msgstr "Soubor %s neextistuje, chcete jej vytvořit ?"
+
+#~ msgid "Couldn't create file %s, %s"
+#~ msgstr "Nemohu vytvořit soubor %s, %s"
+
+#~ msgid "Couldn't open file %s, %s"
+#~ msgstr "Nemohu otevřít soubor %s, %s"
+
+#~ msgid ""
+#~ "An error has occured while reading file %s\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Chyba při čtení souboru %s\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "An error has occured while writing to file %s\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Chyba při pokusu o zápis do souboru %\n"
+#~ "%s"
+
+#~ msgid "Empty file."
+#~ msgstr "Prázdný soubor."
+
+#~ msgid "The requested file couldn't be opened for saving"
+#~ msgstr "Do požadovaného souboru nelze ukládat"
+
+#~ msgid "An error has occured while writing to file %s"
+#~ msgstr "Chyba při zápisu do souboru %s"
+
+#~ msgid "That's not a valid UTF-8 file"
+#~ msgstr "Toto není platný UTF-8 soubor"
+
+#~ msgid "ERROR"
+#~ msgstr "CHYBA"
+
+#~ msgid "Katoob debugging output."
+#~ msgstr "Výstup katoobu pro ladění."
+
+#~ msgid ""
+#~ "Katoob has crashed, Please email the following debugging output to "
+#~ "developer@arabeyes.org and tell them exactly what you were doing."
+#~ msgstr ""
+#~ "Katoob spadnul, prosím zašlete e-mail s následujícími ladícími "
+#~ "informacemi na developer@arabeyes.org a sdělte, co přesně jste udělali."
+
+#~ msgid "Save"
+#~ msgstr "Uložit"
+
+#~ msgid "Text direction"
+#~ msgstr "Směr textu"
+
+#~ msgid "_Left to right"
+#~ msgstr "_Zleva doprava"
+
+#~ msgid "_Right to left"
+#~ msgstr "_Zprava doleva"
+
+#~ msgid "_Automatic"
+#~ msgstr "_Automaticky"
+
+#~ msgid "Can't determine the encoding for that file, Please choose one."
+#~ msgstr "Nemohu určit kódování souboru, prosím vyberte jej."
+
+#~ msgid "_New"
+#~ msgstr "_Nový"
+
+#~ msgid "_Open..."
+#~ msgstr "_Otevřít"
+
+#~ msgid "_Save"
+#~ msgstr "_Uložit"
+
+#~ msgid "Save _As..."
+#~ msgstr "Uložit _jako..."
+
+#~ msgid "_Revert"
+#~ msgstr "Zn_ovu načíst"
+
+#~ msgid "_Iran System..."
+#~ msgstr "Í_ránský systém"
+
+#~ msgid "_Print..."
+#~ msgstr "_Tisk"
+
+#~ msgid "_Close"
+#~ msgstr "_Zavřít"
+
+#~ msgid "_Quit"
+#~ msgstr "_Ukončit"
+
+#~ msgid "_Undo"
+#~ msgstr "_Zpět"
+
+#~ msgid "_Redo"
+#~ msgstr "Z_novu"
+
+#~ msgid "Cu_t"
+#~ msgstr "_Vyjmout"
+
+#~ msgid "_Copy"
+#~ msgstr "_Kopírovat"
+
+#~ msgid "_Paste"
+#~ msgstr "_Vložit"
+
+#~ msgid "_Delete"
+#~ msgstr "_Odstranit"
+
+#~ msgid "Pr_eferences..."
+#~ msgstr "_Nastavení"
+
+#~ msgid "_Replace..."
+#~ msgstr "Na_hradit"
+
+#~ msgid "Goto _Line..."
+#~ msgstr "Jí_t na řádek"
+
+#~ msgid "Ada"
+#~ msgstr "Ada"
+
+#~ msgid "C"
+#~ msgstr "C"
+
+#~ msgid "C++"
+#~ msgstr "C++"
+
+#~ msgid ".desktop"
+#~ msgstr ".desktop"
+
+#~ msgid "Diff"
+#~ msgstr "Diff"
+
+#~ msgid "HTML"
+#~ msgstr "HTML"
+
+#~ msgid "IDL"
+#~ msgstr "IDL"
+
+#~ msgid "Java"
+#~ msgstr "Java"
+
+#~ msgid "Latex"
+#~ msgstr "Latex"
+
+#~ msgid "Perl"
+#~ msgstr "Perl"
+
+#~ msgid "gettext translation"
+#~ msgstr "gettext translation"
+
+#~ msgid "Python"
+#~ msgstr "Python"
+
+#~ msgid "XML"
+#~ msgstr "XML"
+
+#~ msgid "_Spell Check..."
+#~ msgstr "_Kontrola pravopisu"
+
+#~ msgid "Abou_t"
+#~ msgstr "O pro_gramu"
+
+#~ msgid "About Katoob"
+#~ msgstr "O katoobu"
+
+#~ msgid "Main"
+#~ msgstr "Hlavní"
+
+#~ msgid "Developers"
+#~ msgstr "Vývojáři"
+
+#~ msgid "Credits"
+#~ msgstr "Autoři"
+
+#~ msgid "License"
+#~ msgstr "Licence"
+
+#~ msgid "Information"
+#~ msgstr "Informace"
+
+#~ msgid "Error initializing Arabic keyboard"
+#~ msgstr "Chyba při inicializaci Arabské klávesnice"
+
+#~ msgid ""
+#~ "An error has occured while trying to initialize your Arabic keyboard, "
+#~ "Katoob'll try to use the built in Arabic keyboard emulator."
+#~ msgstr ""
+#~ "Chyba při pokusu o inicializaci Vaší Arabské klávesnice, katoob se pokusí "
+#~ "použít zabudovaný emulátor Arabské klávesnice."
+
+#~ msgid "_Show this warning every time this problem occures"
+#~ msgstr "_Zobrazit toto varování vždy, když se objeví problém"
+
+#~ msgid "_Goto"
+#~ msgstr "_Jít na"
+
+#~ msgid ""
+#~ "There is no spellchecking dictionary available, Please make sure that you "
+#~ "have installed at least one."
+#~ msgstr ""
+#~ "Není dostupná žádná kontrola pravopisu, prosím ujistěte se, že máte "
+#~ "alespoň jednu nainstalovanou."
+
+#~ msgid "Confirm Revert"
+#~ msgstr "Potvrdit znovunačtení"
+
+#~ msgid "Mispelled words color"
+#~ msgstr "Barva chybně napsaných slov"
+
+#~ msgid "Please select the backup directory"
+#~ msgstr "Prosím vyberte záložní adresář"
+
+#~ msgid "Please select the dictionaries directory"
+#~ msgstr "Prosím vyberte adresář slovníků"
+
+#~ msgid "This is not a directory."
+#~ msgstr "Toto není adresář."
+
+#~ msgid "Executed commands history size:"
+#~ msgstr "Velikost historie vykonaných příkazů:"
+
+#~ msgid "Default text direction:"
+#~ msgstr "Výchozí směr textu:"
+
+#~ msgid "_Manually choose the encoding"
+#~ msgstr "Vybrat kódování _ručně"
+
+#~ msgid "Create backup in the original file directory."
+#~ msgstr "_Vytvářet zálohy v původním adresáři souboru"
+
+#~ msgid "Backup directory."
+#~ msgstr "Adresář záloh."
+
+#~ msgid "_Browse"
+#~ msgstr "_Procházet"
+
+#~ msgid "Dictionaries directory"
+#~ msgstr "Adresář slovníků"
+
+#~ msgid "Not enabled at compile time!"
+#~ msgstr "Při překladu nebyla k dispozici !"
+
+#~ msgid "Dictionary:"
+#~ msgstr "Slovník:"
+
+#~ msgid "_Disable Antialiasing"
+#~ msgstr "Zakázat _vyhlazování"
+
+#~ msgid "Select Font"
+#~ msgstr "Vybrat písmo"
+
+#~ msgid "You choosed a directory."
+#~ msgstr "Vybrali jste adresář"
+
+#~ msgid "Can't get selection"
+#~ msgstr "Nemohu získat výběr"
+
+#~ msgid "Couldn't execute gs to generate PDF."
+#~ msgstr "Nemohu spustit gs pro vygenerování PDF"
+
+#~ msgid "Couldn't open the requested file for writing."
+#~ msgstr "Nemohu zapisovat do požadovaného souboru"
+
+#~ msgid "Can't create temp file"
+#~ msgstr "Nemohu vytvořit dočasný soubor"
+
+#~ msgid "Error executing custom command."
+#~ msgstr "Chyba při vykonávání vlastního příkazu"
+
+#~ msgid "Choose Font"
+#~ msgstr "Vyberte písmo"
+
+#~ msgid "Family"
+#~ msgstr "Druh"
+
+#~ msgid "Style"
+#~ msgstr "Styl"
+
+#~ msgid "Size"
+#~ msgstr "Velikost"
+
+#~ msgid "Copies"
+#~ msgstr "Kopie"
+
+#~ msgid "Job"
+#~ msgstr "Tisková úloha"
+
+#~ msgid "Pr_inter:"
+#~ msgstr "_Tiskárna"
+
+#~ msgid "Generic Postscript"
+#~ msgstr "Standardní Postscript"
+
+#~ msgid "File"
+#~ msgstr "Soubor"
+
+#~ msgid "lpr"
+#~ msgstr "lpr"
+
+#~ msgid "Inches"
+#~ msgstr "Palců"
+
+#~ msgid "Points"
+#~ msgstr "Bodů"
+
+#~ msgid "Cus_tom size"
+#~ msgstr "Vlastní _rozměry"
+
+#~ msgid "Paper and layout"
+#~ msgstr "Papír a vzhled"
+
+#~ msgid "Margins (inch)"
+#~ msgstr "Okraje (palce)"
+
+#~ msgid "Paper"
+#~ msgstr "Papír"
+
+#~ msgid "Please select an application."
+#~ msgstr "Prosím vyberte program."
+
+#~ msgid "Can't open the recent documents file"
+#~ msgstr "Nemohu otevřít seznam nedávných dokumentů"
+
+#~ msgid "Save As..."
+#~ msgstr "Uložit jako..."
+
+#~ msgid "Save A Copy..."
+#~ msgstr "Uložit kopii..."
+
+#~ msgid " Couldn 't create a backup, Continue ?"
+#~ msgstr "Nemohu vytvořit zálohu. Chcete pokračovat ?"
+
+#~ msgid "The requested file couldn' t be opened for saving "
+#~ msgstr "Do požadovaného souboru nelze zapisovat "
+
+#~ msgid "Replace"
+#~ msgstr "Nahradit"
+
+#~ msgid "Find what:"
+#~ msgstr "Najít co:"
+
+#~ msgid "An error has occured"
+#~ msgstr "Chyba"
+
+#~ msgid "The document is empty."
+#~ msgstr "Dokument je prázdný."
+
+#~ msgid "Check _Spelling"
+#~ msgstr "Zkontrolovat _pravopis"
+
+#~ msgid "No more mispelled word."
+#~ msgstr "Žádná další chybně napsaná slova."
+
+#~ msgid "Emulator"
+#~ msgstr "Emulátor"
+
+#~ msgid "Change the typing language"
+#~ msgstr "Změnit jazyk psaní"

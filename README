@@ -1,0 +1,84 @@
+Katoob README
+~~~~~~~~~~~~~
+ Katoob Copyright (c) 2002-2006 Mohammed Sameer.
+ Katoob Copyright (c) 2008-     Fred Morcos.
+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ See the file COPYING for details.
+
+
+What is it?
+~~~~~~~~~~~
+ Katoob is a light weight multilingual BiDi aware text editor
+ It support opening and saving files in multiple encodings.
+ The main support is some for Arabic language specific features.
+
+ It should run on most BSD and POSIX compliant operating systems.
+
+
+Requirements:
+~~~~~~~~~~~~~
+ * See the "INSTALL" file.
+
+ Katoob is being developed on Debian GNU/Linux but it should work on any
+ GNU/Linux distro.
+
+
+Download:
+~~~~~~~~~
+ * Building from source:
+   You can always download the latest version from ftp://foolab.org/pub/software/katoob
+ * Debian: apt-get install katoob
+ * Mandriva: Add the contrib repository then urpmi katoob
+
+
+SVN:
+~~~~
+ For the latest bleeding edge version:
+ svn co http://home.foolab.org/svn/projects/katoob/trunk katoob
+ cd katoob && ./autogen.sh
+
+ You'll need:
+  * autoconf
+  * automake
+  * intltool
+
+
+Installation:
+~~~~~~~~~~~~~
+ See the file INSTALL for details.
+
+
+Features:
+~~~~~~~~~
+* Multiple codepage support "not just UTF-8"
+* The ability to Open/Save files in multiple encodings
+* Search/Replace/Replace all
+* Configurable Undo/Redo
+* Read from stdin via pipe "cat file | katoob -"
+* Open multiple files from the command line
+* An MDI Interface
+* Line wrapping
+* The ability to select the toolbar style
+* Recent files Menu
+* An encodings menu to change the encoding on the fly
+* The statusbar has an indicator weather the file is modified or NOT
+* Read only files Can't be modified
+* Display the used encoding in the statusbar
+* GNOME human interface guidlines compliant interface
+* GNOME menu entry.
+* Syntax highlighting.
+* Spell checking on the fly or when required.
+* Per document settings on the fly.
+* An extended toolbar offering some common functions.
+
+EOF

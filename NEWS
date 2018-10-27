@@ -1,0 +1,193 @@
+2008-01-11 Mohammed Sameer <msameer@foolab.org>
+ * Release 0.5.9
+   This version includes a lot of fixes and changes. Enchant is used as the spelling backend.
+   iso-codes is used to provide "pretty names" for the spell checker dictionaries. Enhancements
+   to the recent menu and to the extended toolbar. Gtk is now used to print. Gtksourceview2 is
+   used for the syntax highlighting. Autosave and crash recovery have been implemented. More GNOME
+   HIG compliance. libcurl is used for all of the network-related operations. Maemo support. A few
+   bug fixes and better Arabic translation.
+
+2007-04-28 Mohammed Sameer <msameer@foolab.org>
+ * Release 0.5.8
+   Implemented a multipress input method. Reorganized the input menu. A couple of bug fixes. Added
+   a window to show the multipress and emulator mappings.
+
+2007-03-31 Mohammed Sameer <msameer@foolab.org>
+ * Release 0.5.7
+   This is mainly a bug fix release. Fixed a bug that can crash the application when OK or Apply
+   is clicked in the preferences dialog under utf8 locales.
+   A lot of small features and enhancements as well as some code cleanups.
+   We also now use gtksourceview not gtksourceviewmm
+
+2006-11-05 Mohammed Sameer <msameer@foolab.org>
+ * Release 0.5.6
+   Shouldn't fail when utf8 is selected from the encodings menu. Reset the GUI when we
+   close a document from the document label close button.
+
+2006-11-02 Mohammed Sameer <msameer@foolab.org>
+ * Release 0.5.5
+   Opening large files shouldn't be slow anymore. Dropped the "find and replace" button
+   from the replace dialog.
+   Syntax highlighting support using libgtksourceviewmm.
+
+2006-10-23 Mohammed Sameer <msameer@foolab.org>
+ * Release 0.5.4
+   Importing or exporting text with bidi and shaping applied won't reverse it.
+   Updated Japanese translation. The preferences dialog sections are now translated.
+
+2006-10-11 Mohammed Sameer <msameer@foolab.org>
+ * Release 0.5.3
+   Can now import and export text that has bidi and shaping applied to.
+   The plain text exporting now depends on fribidi.
+
+2006-09-20 Mohammed Sameer <msameer@foolab.org>
+ * Release 0.5.2
+   Can now open remote files using an external command. Added an option to insert files.
+   Some small code improvements and cleanups.
+
+2006-9-5 Mohammed Sameer <msameer@foolab.org>
+ * Release 0.5.1
+   Fix compilation error when dbus is disabled.
+
+2006-9-4 Mohammed Sameer <msameer@foolab.org>
+ * Release 0.5.0
+   Rewritten in C++ and gtkmm
+
+2006-5-15 Mohammed Sameer <msameer@foolab.org>
+ * Release 0.3.9
+   New French and Czech translations.
+   A correction to the German translation, A german manpage was added.
+   Updated Hebrew translation.
+   A French to Arabic transliteration.
+   A few bugs have been fixed as well as some features enhancements.
+
+2004-8-30 Mohammed Sameer <msameer@foolab.org>
+ * Released 0.3.8
+   Long time no releases, But I kept my word, The release happened this month ;-)
+   What to expect ? A long list of bug fixes and improvements,
+   The last release was really buggy as hell. I hope this one'll be fine.
+   - Hey, We have a new icon now!
+   - A crash ? Should be able to debug itself, And you won't loose your files.
+   - Hebrew and Japanese translations.
+   - Small UI tweaks here and there.
+   - + A lot more.
+
+2003-8-26 Mohammed Sameer <msameer@foolab.org>
+ * Released 0.3.5
+   What can I say ? A long time since the latest stable release.
+   Changes since the last development release:
+   - DnD Support
+   - More UI enhancements.
+   - Backup before saving.
+   - Rewritten BiDi line direction detection algorithm.
+   - Native printing support, No more txtbdf2ps stuff ;-)
+   - IDL files are detected and highlighted.
+   - Numerous code cleanups, bug and mem leaks fixes, potential segfaults were 
+     fixed and stability increased.
+  Changes since the last stable release:
+   + All of the above plus:
+   - Rewrote many parts of the code.
+   - A new emulator infrastructure.
+   - BiDi support.
+   - All ISO and Windows encodings are supported now.
+   - Many UI enhancements.
+   - Spell checking is Ok now.
+   - Source highlighting.
+   - More and more than I can remember.
+
+2003-6-25 Mohammed Sameer <msameer@foolab.org>
+ * Released 0.3.4.91
+   This version should fix all the problems related to detecting aspell/pspell 
+   via the configure script, Added java, TeX, Ada to the automatically 
+   highlighted languages.
+
+2003-6-24 Mohammed Sameer <msameer@foolab.org>
+ * Released 0.3.4.90
+   This is a 0.3.5 prerelease, Offering many features and enhancements, It's 
+   mainly a rewrite, Spell checker support, Syntax highlighting, Many 
+   encodings are now supported, And More!
+
+2003-1-19 Mohammed Sameer <msameer@foolab.org>
+ * Released 20030119
+   Full BiDi support is now implemented.
+   The configure script problems is now fixed, Fixed "fribidi.h" not found 
+   compilation problem, 
+   Update gtkspell to 2.0.4 "can now make use of either aspell or pspell", 
+   And some optimization for the spell checker.
+   The configure script links against libstdc++ which pspell or aspell is 
+   linked against.
+   The spell checker is disabled by default, The bidi support is enabled by 
+   default.
+
+2003-1-18 Mohammed Sameer <msameer@foolab.org>
+ * Released 0.3.1
+   This is mainly a bugfix release.
+   Fixed a bug that caused the mainwindow to be destroyed without katoob
+   quitting, A bug that fixes the compilation problems against glibc 2.3.1, A
+   bug that caused the about box to be opened more than once!
+   Added an Arabic translation for the GPL, And a Swedish translation
+   A man page is now included.
+
+2003-01-02 Mohammed Sameer <msameer@foolab.org>
+ * Released 20030102
+   This is a development release.
+   All compile time problems should be fixed in this version but maybe some 
+   pspell related problems are still around ;)
+   Fixed gcc 2.9.5 compilation failure, RedHat problems with the autogen.sh 
+   script.
+   Properly using intltool to translate GNOME desktop entry!
+   + Fixed a segfault when auto selecting an encoding in the save
+   dialog "The displayed name is different than the actual encoding name!"
+
+2002-12-08 Mohammed Sameer <msameer@foolab.org>
+ * Released 20021208
+   This is a development release.
+   This version fixes the broken encodings menu, the encoding display in the 
+   statusbar & fixes several memory leaks. Fribidi is now used to handle the 
+   BIDI algorithm.
+   Please have a look at the TODO files for the current limitations.
+
+2002-11-02 Mohammed Sameer <msameer@foolab.org>
+ * Released 01112002
+   This is a development release.
+  * Limitations:
+   * The encoding display in the statusbar doesn't work correctly
+   * The encoding menu is broken
+   * The BIDI support is incomplete
+   * The RTL/LTR doesn't work when switching pages
+   * The HTML reference doesn't cover all characters
+   * No way to choose the default encoding
+   * Several memory leaks
+   * Remove or keep the xkb switcher ??
+   * Recent menu doesn't save in the correct order
+   * FIX REAL_OPEN
+
+2002-9-12 Mohammed Sameer <msameer@foolab.org>
+ * Released 0.3.0
+   This version comes after a very long time and big efforts spent in the 
+   development. This version offers the new MDI interface, Follows the GNOME 
+   human interface guidelines, Fixes many bugs and segfaults "Most of them 
+   happens when the user does an unexpected behaviour as opening binary files 
+   as HTML style". A new preferences dialog. More options are now customizable, 
+   Saving in plain UTF-8, ISO-8859-6 & cp1256 works well. The ability to import 
+   and export HTML numerical characters references. The new Arabic emulator.
+   You really got to try this version. ;)
+
+2002-8-14 Mohammed Sameer <msameer@foolab.org>
+ * Released 0.2.1
+   This version is mainly a bug fix, fixed many crashes, The most important 
+   is crashing when saving a buffer in the ISO encoding whice contains non ISO 
+   valid characters. And more error checking to prevent possible ones. The 
+   interface changes are kept to the minimum in this version. And fixed a bug 
+   that caused a file opened via command line to be aded more than once to the 
+   recent menu.
+
+2002-8-10 Mohammed Sameer <msameer@foolab.org>
+ * Released 0.2
+   This version is A major interface improvement. With the recent menu, 
+   prefrences dialog, Toolbar & statusbar customization options. With some more 
+   features discover it yourself ;)
+
+2002-7-27 Mohammed Sameer <msameer@foolab.org>
+ * First piblic release 0.1
+   The first piblic release, After monthes of work. What to say more ;)

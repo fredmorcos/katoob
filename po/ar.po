@@ -1,0 +1,1197 @@
+# translation of ar.po to Arabic
+# Arabic translation for Katoob
+# Copyright (C) 2002, 2007 Free Software Foundation, Inc.
+#
+# Mohammed Sameer <msameer@foolab.org>, 2002.
+# Khaled Hosny <khaledhosny@eglug.org>, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: ar\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-18 12:04+0200\n"
+"PO-Revision-Date: 2007-12-18 12:09+0200\n"
+"Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
+"Language-Team: Arabic <doc@arabeyes.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n>=3 && n<=10 ? 3 : n>=11 && n<=99 ? 4 : 5;\n"
+
+#: ../katoob.desktop.in.h:1 ../src/aboutdialog.cc:66
+msgid "Katoob"
+msgstr "كتوب"
+
+#: ../katoob.desktop.in.h:2
+msgid "Multilingual Unicode Text Editor"
+msgstr "محرر نصوص متعدد اللغات"
+
+#: ../src/aboutdialog.cc:51
+msgid ""
+"Katoob is free software; you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation; either version 2 of the License, or (at your option) any later "
+"version."
+msgstr ""
+"كتوب برنامج حر، يمكنك توزيعه و/أو تعديله حسب بنود رخصة جنو العمومية كما "
+"نشرتها مؤسسة البرامج الحرة، الإصدار الثاني أو أي إصدار أحدث (حسب رغبتك)."
+
+#: ../src/aboutdialog.cc:56
+msgid ""
+"Katoob is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+"كتوب يوزع على أمل أن يكون مفيدًا، ولكن دون أية ضمانات، بما في ذلك ضمانات "
+"قابلية البرنامج للتسويق أو الملاءمة لغرض معين. انظر نص رخصة جنو العمومية "
+"لمزيد من التفاصيل."
+
+#: ../src/aboutdialog.cc:61
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"This program; if not, write to the Free Software Foundation, Inc., 59 Temple "
+"Place, Suite 330, Boston, MA  02111-1307  USA"
+msgstr ""
+"من المفترض أنك تلقيت نسخة من رخصة جنو العمومية مع هذا البرنامج؛ إذا لم يحدث "
+"هذا فاكتب إلى:\n"
+"Free Software Fondation Inc., 59 Temple Place - Suite 330, Boston, MA 02111 "
+"- 1307, USA"
+
+#: ../src/aboutdialog.cc:71
+msgid "Copyright © 2006, 2007 Mohammed Sameer."
+msgstr "حقوق النسخ © 2006، 2007 محمد سمير."
+
+#: ../src/aboutdialog.cc:73 ../src/aboutdialog.cc:76
+msgid "Mohammed Sameer"
+msgstr "محمد سمير"
+
+#: ../src/aboutdialog.cc:77
+msgid "Mostafa Hussein"
+msgstr "مصطفى حسين"
+
+#: ../src/aboutdialog.cc:80
+msgid "A lightweight multilingual unicode and bidi aware text editor"
+msgstr "محرر نصوص متعدد اللغات يراعي يونيكود وثنائية الاتجاه"
+
+#: ../src/aboutdialog.cc:81
+msgid "translator-credits"
+msgstr ""
+"محمد سمير\n"
+"خالد حسني"
+
+#: ../src/applets.cc:55
+msgid "_Enable undo, redo\t"
+msgstr "اع_رض قائمة التراجع\t"
+
+#: ../src/applets.cc:57
+msgid "Keep a history of recently closed documents"
+msgstr "احفظ سجل بالمستندات المغلقة حديثا"
+
+#: ../src/applets.cc:59
+msgid ""
+"Undo history size\n"
+"(0 for unlimited)"
+msgstr ""
+"عدد المرات للتراجع\n"
+"(اختر 0 لعدد غير محدود)"
+
+#: ../src/applets.cc:60
+msgid ""
+"Executed commands history size\n"
+"(0 for unlimited)"
+msgstr ""
+"حجم سجل الأوامر المنفذة\n"
+"(اختر 0 لعدد غير محدود)"
+
+#: ../src/applets.cc:61
+msgid ""
+"Closed documents history size\n"
+"(0 for unlimited)"
+msgstr ""
+"حجم سجل المستندات المغلقة\n"
+"(اختر 0 لعدد غير محدود)"
+
+#: ../src/applets.cc:122
+msgid "Show the extra _buttons"
+msgstr "اعرض الأزرار الإ_ضافية"
+
+#: ../src/applets.cc:123
+msgid "Show the _Main Toolbar"
+msgstr "اعرض شريط الأدوات ال_رئيسي"
+
+#: ../src/applets.cc:124
+msgid "Show the _Extended Toolbar"
+msgstr "اعرض شريط الأدوات الإ_ضافي"
+
+#: ../src/applets.cc:125
+msgid "Show the _Statusbar"
+msgstr "اعرض شريط ال_حاله"
+
+#: ../src/applets.cc:126
+msgid "Enable re_cent menu"
+msgstr "اعرض قائمة الملفات الح_ديثة"
+
+#: ../src/applets.cc:127
+msgid "Show the _close button on each tab label"
+msgstr "اعرض زر الإ_غلاق لكل ملف مفتوح"
+
+#: ../src/applets.cc:128
+msgid ""
+"No. of recent entries\n"
+"(0 for unlimited)"
+msgstr ""
+"عدد الملفات الحديثة\n"
+"(اختر 0 لعدد غير محدود)"
+
+#: ../src/applets.cc:129
+msgid "Show the toolbar as"
+msgstr "اعرض شريط الأدوات"
+
+#: ../src/applets.cc:130 ../src/applets.cc:159 ../src/menubar.cc:318
+msgid "Text only"
+msgstr "نص فقط"
+
+#. TODO: Disable these when the main toolbar is not shown.
+#: ../src/applets.cc:131 ../src/applets.cc:162 ../src/menubar.cc:315
+msgid "Icons only"
+msgstr "أيقونات فقط"
+
+#: ../src/applets.cc:132 ../src/applets.cc:168 ../src/applets.cc:350
+#: ../src/applets.cc:383 ../src/applets.cc:392 ../src/menubar.cc:321
+msgid "Both"
+msgstr "كلاهما"
+
+#: ../src/applets.cc:133 ../src/applets.cc:165 ../src/menubar.cc:324
+msgid "Text beside icons"
+msgstr "نص بجانب الأيقونات"
+
+#: ../src/applets.cc:217
+msgid "_Show tabs"
+msgstr "ا_عرض الألسنة"
+
+#: ../src/applets.cc:218
+msgid "_Enable tabs menu"
+msgstr "اعر_ض قائمة الألسنة"
+
+#: ../src/applets.cc:219
+msgid "Scro_ll tabs"
+msgstr "_قائمة تمرير الألسنة"
+
+#: ../src/applets.cc:220
+msgid "Show the tabs at the"
+msgstr "مكان الألسنة"
+
+#: ../src/applets.cc:221 ../src/applets.cc:282 ../src/applets.cc:846
+msgid "Top"
+msgstr "أعلى"
+
+#: ../src/applets.cc:222 ../src/applets.cc:273
+msgid "Bottom"
+msgstr "أسفل"
+
+#: ../src/applets.cc:223 ../src/applets.cc:276 ../src/applets.cc:348
+#: ../src/applets.cc:389
+msgid "Right"
+msgstr "يمين"
+
+#: ../src/applets.cc:224 ../src/applets.cc:279 ../src/applets.cc:349
+#: ../src/applets.cc:386 ../src/applets.cc:845
+msgid "Left"
+msgstr "يسار"
+
+#: ../src/applets.cc:226
+msgid "Color for read only tabs"
+msgstr "لون ألسنة القراءة فقط"
+
+#: ../src/applets.cc:227
+msgid "Color for modified tabs"
+msgstr "لون الألسنة ذات التعديلات"
+
+#: ../src/applets.cc:228
+msgid "Color for normal tabs"
+msgstr "اللون التلقائي للألسنة"
+
+#: ../src/applets.cc:341
+msgid "Text _Wrapping is on by default"
+msgstr "_طي النص هو الوضع الافتراضي"
+
+#: ../src/applets.cc:342
+msgid "Show _Line numbers by default"
+msgstr "اعرض أرقام الأ_سطر"
+
+#: ../src/applets.cc:343
+msgid "Use the default _font"
+msgstr "استخدم ال_خط الافتراضي"
+
+#: ../src/applets.cc:345
+msgid "_Automatic syntax highlighting for known file types"
+msgstr "توضيح التركيب للملفات المعروفة آل_يا"
+
+#: ../src/applets.cc:347
+msgid "Line numbers position"
+msgstr "مكان أرقام الأسطر"
+
+#: ../src/applets.cc:351
+msgid "Font"
+msgstr "الخط"
+
+#: ../src/applets.cc:353
+msgid "Tab width"
+msgstr "عرض اللسان"
+
+#: ../src/applets.cc:450
+msgid "_Use the locale encoding"
+msgstr "ا_ستخدم الترميز المحلّي"
+
+#: ../src/applets.cc:451 ../src/applets.cc:452
+msgid "Specify an encoding"
+msgstr "حدد ترميزا"
+
+#: ../src/applets.cc:456
+msgid "File open encoding"
+msgstr "ترميز الفتح"
+
+#: ../src/applets.cc:457
+msgid "File save encoding"
+msgstr "ترميز الحفظ"
+
+#: ../src/applets.cc:502
+msgid "_Backup files before saving."
+msgstr "_نسخة احتياطية للملفات قبل الحفظ"
+
+#: ../src/applets.cc:503
+msgid "Backup extension"
+msgstr "امتداد النسخ الاحتياطية"
+
+#: ../src/applets.cc:534 ../src/menubar.cc:362
+msgid "_Autocheck Spelling"
+msgstr "تدقيق إملائي آ_لي"
+
+#. misspelled_label.set_text(_("Misspelled words color"));
+#: ../src/applets.cc:536
+msgid "Choose the default dictionary"
+msgstr "اختر القاموس الافتراضي"
+
+#: ../src/applets.cc:586
+msgid "Printing font"
+msgstr "خط الطباعة"
+
+#: ../src/applets.cc:590
+msgid "_Enable advanced options"
+msgstr "_فعِّل الخيارات المتقدمة"
+
+#: ../src/applets.cc:594
+msgid "X Dot Per Inch"
+msgstr "س نقطة في البوصة"
+
+#: ../src/applets.cc:595
+msgid "Y Dot Per Inch"
+msgstr "ص نقطة في البوصة"
+
+#: ../src/applets.cc:652
+msgid "_Enable the dictionary."
+msgstr "_فعِّل القاموس."
+
+#: ../src/applets.cc:653
+msgid "Host"
+msgstr "المستضيف"
+
+#: ../src/applets.cc:654
+msgid "_List dictionaries"
+msgstr "ا_سرد القواميس"
+
+#: ../src/applets.cc:656
+msgid "Port"
+msgstr "المنفذ"
+
+#: ../src/applets.cc:667 ../src/applets.cc:675 ../src/preferencesdialog.cc:75
+msgid "Dictionary"
+msgstr "القاموس"
+
+#: ../src/applets.cc:676
+msgid "Description"
+msgstr "الوصف"
+
+#: ../src/applets.cc:681
+msgid "Not Available."
+msgstr "الخدمة غير متوفرة."
+
+#: ../src/applets.cc:738 ../src/applets.cc:741
+msgid "Failed to get the available dictionaries."
+msgstr "تعذّر الحصول على القواميس المتاحة."
+
+#: ../src/applets.cc:768
+msgid "Please provide a dict server"
+msgstr "فضلًا حدد خادم dict"
+
+#: ../src/applets.cc:797
+msgid "_Milliseconds before multipress will accept the current value."
+msgstr "الزمن بالمللي ثانيه قبل أن تُقبل القيمة الحالية."
+
+#: ../src/applets.cc:827
+msgid ""
+"Number of remote addresses to save\n"
+"(0 for unlimited)"
+msgstr ""
+"عدد المواقع المحفوظة\n"
+"(اختر 0 لعدد غير محدود)"
+
+#: ../src/applets.cc:830
+msgid "_Insert into the active document enabled by default ?"
+msgstr "الإ_دراج في الملف المفتوح ممكن في الوضع الافتراضي ؟"
+
+#: ../src/applets.cc:847
+msgid "Width"
+msgstr "العرض"
+
+#: ../src/applets.cc:848
+msgid "Height"
+msgstr "الارتفاع"
+
+#: ../src/applets.cc:850
+msgid "Save all the program _settings on exit"
+msgstr "احفظ الإ_عدادات عند الخروج"
+
+#: ../src/applets.cc:851
+msgid "Save the main window _attributes on exit"
+msgstr "احفظ إعدا_دات النافذة الرئيسية عند الخروج"
+
+#: ../src/applets.cc:856
+msgid "Window position"
+msgstr "مكان النافذة الرئيسية"
+
+#: ../src/applets.cc:857
+msgid "Window size"
+msgstr "مقاس النافذة الرئيسية"
+
+#: ../src/applets.cc:925
+msgid "Network timeout (In seconds):"
+msgstr "مهلة الشبكة (بالثواني):"
+
+#: ../src/applets.cc:926
+msgid "Proxy host:"
+msgstr "مستضيف الوكيل:"
+
+#: ../src/applets.cc:927
+msgid "Proxy port:"
+msgstr "منفذ الوكيل:"
+
+#: ../src/applets.cc:928
+msgid "Proxy type:"
+msgstr "نوع الوكيل:"
+
+#: ../src/applets.cc:930 ../src/menubar.cc:798
+msgid "None"
+msgstr "بدون"
+
+#: ../src/applets.cc:931
+msgid "Get from the environment"
+msgstr "احصل عليه من البيئة"
+
+#: ../src/applets.cc:932
+msgid "HTTP"
+msgstr "HTTP"
+
+#: ../src/applets.cc:933
+msgid "SOCKS4"
+msgstr "SOCKS4"
+
+#: ../src/applets.cc:934
+msgid "SOCKS5"
+msgstr "SOCKS5"
+
+#: ../src/applets.cc:948
+msgid "Tunnel traffic through the proxy"
+msgstr "مرور النفق عبر الوكيل"
+
+#: ../src/applets.cc:950
+msgid "Use proxy authentication"
+msgstr "استخدم استيثاق الوكيل"
+
+#: ../src/applets.cc:951
+msgid "Proxy username:"
+msgstr "اسم مستخدم الوكيل:"
+
+#: ../src/applets.cc:952
+msgid "Proxy password:"
+msgstr "كلمة سر الوكيل:"
+
+#: ../src/dialogs.cc:70
+msgid "Insert to document"
+msgstr "أدرِج في الملف"
+
+#: ../src/dialogs.cc:98 ../src/toolbar.cc:52
+msgid "Goto Line"
+msgstr "اذهب إلى سطر"
+
+#: ../src/dialogs.cc:105
+msgid "Line:"
+msgstr "سطر:"
+
+#: ../src/dialogs.cc:139
+msgid "Please wait..."
+msgstr "فضلًا انتظر..."
+
+#: ../src/dict.cc:60
+msgid "Invalid daatabase. Please reconfigure the dictionary in use."
+msgstr "قاعدة بيانات غير صحيحة. فضلًا أعد إعداد القاموس المستخدم."
+
+#: ../src/dict.cc:64
+msgid "No matches were found"
+msgstr "لم يُعثر على نتائج"
+
+#: ../src/dict.cc:122 ../src/dict.cc:139
+msgid "No databases were found."
+msgstr "لم يُعثر على قاعدة البيانات."
+
+#: ../src/document.cc:109
+msgid " Is a directory."
+msgstr " دليل"
+
+#: ../src/document.cc:133 ../src/mdi.cc:295 ../src/mdi.cc:1107
+#, c-format
+msgid "Couldn't detect the encoding of %s"
+msgstr "لا يمكن تحديد ترميز الملف %s"
+
+#: ../src/document.cc:193
+msgid "Couldn't detect the encoding of the text."
+msgstr "لا يمكن تحديد ترميز النص"
+
+#: ../src/document.cc:285
+#, c-format
+msgid "Failed to create the autorecovery file %s"
+msgstr "فشل إنشاء ملف الاستعادة التلقائية %s"
+
+#: ../src/document.cc:1240
+msgid "Define "
+msgstr "عرِّف "
+
+#: ../src/document.cc:1255
+msgid "Spelling Suggestions"
+msgstr "اقتراحات المدقق الإملائي"
+
+#: ../src/document.cc:1263
+#, c-format
+msgid "Add \"%s\" to dictionary"
+msgstr "أضف \"%s\" للقاموس"
+
+#. TODO: Use italics markup.
+#: ../src/document.cc:1272
+msgid "no suggestions"
+msgstr "لا توجد اقتراحات"
+
+#: ../src/document.cc:1283
+msgid "More..."
+msgstr "المزيد..."
+
+#: ../src/encodings.cc:347 ../src/encodings.cc:367
+msgid "I wasn't able to convert the encoding."
+msgstr "لم أتمكن من تحويل ترميز النص"
+
+#: ../src/execdialog.cc:40
+msgid "Command to execute"
+msgstr "الأمر"
+
+#: ../src/execdialog.cc:41
+#, c-format
+msgid ""
+"'%s' will be substituted with a temporary filename\n"
+"containing the text from the document."
+msgstr ""
+"سيُستبدل '%s'  باسم ملف مؤقت\n"
+"يحتوي علي النص."
+
+#: ../src/execdialog.cc:47
+msgid "_Show the results in a new tab"
+msgstr "ا_عرض النتائج في لسان جديد"
+
+#: ../src/export.cc:48
+msgid "_Text file with no unicode control characters..."
+msgstr "ملف _نصي بدون رموز تحكم يونيكود"
+
+#: ../src/export.cc:55 ../src/import.cc:52
+msgid "Text file compressed with _gzip"
+msgstr "ملف نصي مضغوط ب‍ _gzip"
+
+#: ../src/export.cc:62 ../src/import.cc:58
+msgid "Text file compressed with _bzip2"
+msgstr "ملف نصي مضغوط ب‍ _bzip2"
+
+#: ../src/export.cc:69 ../src/import.cc:64
+msgid "Text with _shaping and bidi applied"
+msgstr "نص _متصل الحروف مع ثنائية الاتجاه"
+
+#: ../src/export.cc:107
+msgid "Can't open temporary file."
+msgstr "لا يمكن إنشاء ملف مؤقت"
+
+#: ../src/export.cc:113
+msgid "Error writing to temporary file."
+msgstr "خطأ أثناء الكتابة في الملف المؤقت."
+
+#: ../src/export.cc:130
+msgid "Couldn't allocate memory for compression."
+msgstr "لا يمكن تخصيص مساحة كافية من الذاكرة للضغط."
+
+#: ../src/export.cc:136
+msgid "Couldn't compress the text."
+msgstr "لم أتمكن من ضغط الملف."
+
+#. _ch is allocated via g_new();
+#: ../src/export.cc:185 ../src/import.cc:239
+msgid "Couldn't apply the bidi algorithm."
+msgstr "لا يمكن تطبيق خوارزمية ثنائية الاتجاه."
+
+#: ../src/filedialog.cc:38 ../src/filedialog.cc:52
+#: ../src/openlocationdialog.cc:38
+msgid "Encoding"
+msgstr "الترميز"
+
+#: ../src/filedialog.cc:144
+msgid "This is a directory."
+msgstr "هذا دليل."
+
+#: ../src/import.cc:47
+msgid "_HTML Character Reference..."
+msgstr "بطريقة _HTML..."
+
+#: ../src/import.cc:114 ../src/import.cc:120 ../src/import.cc:141
+#: ../src/import.cc:172
+msgid "Can't open file."
+msgstr "لا يمكن فتح الملف."
+
+#. Error.
+#: ../src/import.cc:135 ../src/import.cc:157 ../src/import.cc:188
+msgid "Error reading file."
+msgstr "خطأ في قراءة الملف."
+
+#: ../src/inputwindow.cc:33
+msgid "Input Window"
+msgstr "نافذة الإدخال"
+
+#: ../src/isocodes.cc:117
+#, c-format
+msgid "%s (%s)"
+msgstr "%s (%s)"
+
+#: ../src/label.cc:60
+#, c-format
+msgid "Untitled New %d"
+msgstr "جديد بدون عنوان %Id"
+
+#: ../src/mdi.cc:83
+#, c-format
+msgid "Failed to scan for any autorecovery files: %s"
+msgstr "فشل البحث عن ملفات الاستعادة التلقائية: %s"
+
+#: ../src/mdi.cc:88
+msgid "Some unrecovered files were found. Try to recover them ?"
+msgstr "وُجِدت بعض الملفات غير المستعادة. أأحاول استعادتهم ؟"
+
+#: ../src/mdi.cc:203
+msgid "Please select a file for editing."
+msgstr "انتقِ ملفا لتحريره."
+
+#: ../src/mdi.cc:281
+msgid "This is a read only document."
+msgstr "هذا المستند للقراءة فقط."
+
+#: ../src/mdi.cc:285
+msgid "Please select a file."
+msgstr "فضلا اختر ملفا."
+
+#: ../src/mdi.cc:324
+msgid "This document can not be saved. It's a read only file."
+msgstr "لا يمكنك حفظ هذا المستند لأنه للقراءة فقط."
+
+#: ../src/mdi.cc:354
+msgid "Please select a file for saving."
+msgstr "اختر ملفًا للحفظ."
+
+#: ../src/mdi.cc:361 ../src/mdi.cc:1124 ../src/printdialog.cc:254
+#, c-format
+msgid "Are you sure you want to overwrite the file %s ?"
+msgstr "أمتأكد أنك تريد إعادة الكتابة على الملف %s ؟"
+
+#: ../src/mdi.cc:452
+#, c-format
+msgid "The file %s is not saved, Save first ?"
+msgstr "لم يُحفظ الملف %s. أتريد الحفظ أولا؟"
+
+# src/main.c:466 src/mdi.c:230 src/mdi.c:564 src/mdi.c:
+#: ../src/mdi.cc:455
+#, c-format
+msgid "\"%s\" is not saved, Save first?"
+msgstr "لم يُحفظ الملف %s. أتريد الحفظ أولا؟"
+
+#: ../src/mdi.cc:509
+#, c-format
+msgid "The file \"%s\" doesn't exist."
+msgstr "الملف \"%s\" غير موجود."
+
+#: ../src/mdi.cc:573
+#, c-format
+msgid ""
+"This will close the current file \"%s\". Discard any changes done and reload "
+"the saved copy of the file. Are you sure you want to continue ?"
+msgstr ""
+"هذا سيُغلق الملف \"%s\" و يعيد فتحه أي تغييرات غير محفوظه ستُفقد. أمتأكد أنك "
+"تريد الاستمرار ؟"
+
+#: ../src/mdi.cc:673
+msgid "You must inter a word to search for."
+msgstr "يجب إدخال كلمة للبحث عنها."
+
+#: ../src/mdi.cc:685 ../src/mdi.cc:701 ../src/mdi.cc:748
+msgid "No search results found."
+msgstr "لم يُعثر على أي نتائج."
+
+#: ../src/mdi.cc:781
+#, c-format
+msgid "Replaced %d occurence."
+msgid_plural "Replaced %d occurences."
+msgstr[0] "لم تُستبدل أية تواجدات"
+msgstr[1] "استُبدِل تواجد واحد"
+msgstr[2] "استُبدِل تواجدين"
+msgstr[3] "استُبدِل %Id تواجدات"
+msgstr[4] "استُبدِل %Id تواجدًا"
+msgstr[5] "استُبدِل %Id تواجد"
+
+#: ../src/mdi.cc:806
+#, c-format
+msgid "You can use only one '%s'"
+msgstr "يمكن استخدام '%s' مرة واحدة فقط"
+
+#: ../src/mdi.cc:959 ../src/mdi.cc:962
+msgid "Failed to get any definitions."
+msgstr "فشل الحصول على أي تعريفات."
+
+#: ../src/menubar.cc:142
+msgid "_File"
+msgstr "_ملف"
+
+#: ../src/menubar.cc:150
+msgid "Open _Location..."
+msgstr "ا_فتح موقع..."
+
+#. Recent
+#: ../src/menubar.cc:154
+msgid "Recent"
+msgstr "الملفات الحديثة"
+
+#: ../src/menubar.cc:164
+msgid "Sa_ve Copy..."
+msgstr "ا_حفظ نسخه..."
+
+#: ../src/menubar.cc:171
+msgid "_Import"
+msgstr "ا_ستورد"
+
+#: ../src/menubar.cc:179
+msgid "_Export"
+msgstr "_صدِّر"
+
+#: ../src/menubar.cc:188
+msgid "Page Set_up..."
+msgstr "إ_عداد الصفحة..."
+
+#: ../src/menubar.cc:191
+msgid "Print Previe_w"
+msgstr "_معاينة الطباعة"
+
+#: ../src/menubar.cc:240
+msgid "_Edit"
+msgstr "_حرِّر"
+
+#: ../src/menubar.cc:261
+msgid "_Select All"
+msgstr "انتقِ ال_كل"
+
+#: ../src/menubar.cc:265
+msgid "_Insert File"
+msgstr "أدرِج _ملف"
+
+#: ../src/menubar.cc:274
+msgid "_Search"
+msgstr "ا_بحث"
+
+#: ../src/menubar.cc:279
+msgid "Find Ne_xt"
+msgstr "اعثر على ال_تالي"
+
+#: ../src/menubar.cc:292
+msgid "_View"
+msgstr "_عرض"
+
+#: ../src/menubar.cc:294
+msgid "_Statusbar"
+msgstr "_شريط الحالة"
+
+#: ../src/menubar.cc:297
+msgid "_Line Numbers"
+msgstr "أ_رقام الأسطر"
+
+#: ../src/menubar.cc:300
+msgid "_Wrap Text"
+msgstr "_طي النص"
+
+#: ../src/menubar.cc:305
+msgid "Toolbars"
+msgstr "أشرطة الأدوات"
+
+#: ../src/menubar.cc:307
+msgid "_Main Toolbar"
+msgstr "شريط الأدوات ال_رئيسي"
+
+#: ../src/menubar.cc:310
+msgid "_Extended Toolbar"
+msgstr "شريط الأدوات الإ_ضافي"
+
+#: ../src/menubar.cc:327
+msgid "_Encoding"
+msgstr "ال_ترميز"
+
+#: ../src/menubar.cc:352
+msgid "_Tools"
+msgstr "أ_دوات"
+
+#: ../src/menubar.cc:353
+msgid "_Execute Command On Buffer..."
+msgstr "_نفِّذ أمر على النص..."
+
+#: ../src/menubar.cc:368 ../src/statusbar.cc:56
+msgid "Input"
+msgstr "الإدخال"
+
+#: ../src/menubar.cc:369
+msgid "Default"
+msgstr "الافتراضي"
+
+#: ../src/menubar.cc:374
+msgid "Keyboard emulator"
+msgstr "محاكي لوحة المفاتيح"
+
+#: ../src/menubar.cc:378 ../src/preferencesdialog.cc:77
+msgid "Multipress"
+msgstr "متعدد الضغطات"
+
+#: ../src/menubar.cc:393
+msgid "_Documents"
+msgstr "ال_مستندات"
+
+#: ../src/menubar.cc:394
+msgid "Save _All"
+msgstr "احفظ ال_كل"
+
+#: ../src/menubar.cc:397
+msgid "Clos_e All"
+msgstr "أغل_ق الكل"
+
+#: ../src/menubar.cc:402
+msgid "_Opened Documents"
+msgstr "المستندات ال_مفتوحة"
+
+#: ../src/menubar.cc:403
+msgid "_Closed Documents"
+msgstr "المستندات الم_غلقة"
+
+#: ../src/menubar.cc:408
+msgid "_Help"
+msgstr "_مساعده"
+
+#: ../src/menubar.cc:796
+msgid "_Highlight"
+msgstr "_توضيح التركيب"
+
+#: ../src/network.cc:89
+msgid "Failed to initialize the networking backend."
+msgstr "فشل بدأ خلفية الشبكة."
+
+#: ../src/network.cc:95
+msgid "Couldn't initialize network handler."
+msgstr "تعذّر بدأ معالج الشبكة."
+
+#: ../src/network.cc:145
+msgid "Please set the proxy authentication username."
+msgstr "فضلًا ضع اسم مستخدم استيثاق الوكيل."
+
+#: ../src/network.cc:150
+msgid "Please set the proxy authentication password."
+msgstr "فضلًا ضع كلمة سر استيثاق الوكيل."
+
+#: ../src/network.cc:157
+msgid "Please set a proxy host."
+msgstr "فضلًا حدد مستضيف وكيل."
+
+#: ../src/openlocationdialog.cc:37
+msgid "Location"
+msgstr "الموقع"
+
+#: ../src/openlocationdialog.cc:54
+msgid "_Insert into the active document."
+msgstr "أ_درِج في الملف المفتوح."
+
+#: ../src/openlocationdialog.cc:92
+msgid "You must enter a location to open."
+msgstr "يجب إدخال موقع لفتحه."
+
+#: ../src/pipe.cc:53
+#, c-format
+msgid "I can't execute %s. I can't find it in your path"
+msgstr "لا يمكن تنفيذ %s. لا يمكن العثور عليه"
+
+#. TODO: Possible some commands might not return 0
+#: ../src/pipe.cc:99
+msgid "Couldn't get the required content."
+msgstr "لم أتمكن من الحصول على المحتوى المطلوب."
+
+#: ../src/preferencesdialog.cc:41
+msgid "Preferences"
+msgstr "الإعدادات"
+
+#: ../src/preferencesdialog.cc:55
+msgid "Options for"
+msgstr "خيارات"
+
+#: ../src/preferencesdialog.cc:63
+msgid "General"
+msgstr "عام"
+
+#: ../src/preferencesdialog.cc:64
+msgid "Interface"
+msgstr "الواجهة"
+
+#: ../src/preferencesdialog.cc:65
+msgid "Tabs"
+msgstr "الألسنة"
+
+#: ../src/preferencesdialog.cc:66
+msgid "Editor"
+msgstr "المحرر"
+
+#: ../src/preferencesdialog.cc:67
+msgid "Encodings"
+msgstr "الترميزات"
+
+#: ../src/preferencesdialog.cc:68
+msgid "File Save"
+msgstr "حفظ الملفات"
+
+#: ../src/preferencesdialog.cc:70
+msgid "Spell Checker"
+msgstr "تدقيق إملائي"
+
+#: ../src/preferencesdialog.cc:73 ../src/printdialog.cc:97
+msgid "Print"
+msgstr "الطباعة"
+
+#: ../src/preferencesdialog.cc:79
+msgid "Remote Documents"
+msgstr "المستندات الخارجية"
+
+#: ../src/preferencesdialog.cc:80
+msgid "Advanced"
+msgstr "متقدم"
+
+#: ../src/preferencesdialog.cc:81
+msgid "Network"
+msgstr "الشبكة"
+
+#: ../src/previewdialog.cc:48
+msgid "Print preview"
+msgstr "معاينة الطباعة"
+
+#: ../src/previewdialog.cc:56 ../src/previewdialog.cc:176
+#, c-format
+msgid "of %i"
+msgstr "من %Ii"
+
+#: ../src/print.cc:207
+msgid "Other"
+msgstr "أخرى"
+
+#: ../src/printdialog.cc:77
+msgid "Print to file."
+msgstr "اطبع إلي ملف."
+
+#: ../src/printdialog.cc:78
+msgid "_All"
+msgstr "ال_كل"
+
+#: ../src/printdialog.cc:79
+msgid "_Selection"
+msgstr "ال_تحديد"
+
+#: ../src/printdialog.cc:80
+msgid "_Lines"
+msgstr "_سطور"
+
+#: ../src/printdialog.cc:81
+msgid "Printer:"
+msgstr "الطابعة:"
+
+#: ../src/printdialog.cc:89
+msgid "Location:"
+msgstr "المكان:"
+
+#: ../src/printdialog.cc:90
+msgid "Number of copies"
+msgstr "عدد النسخ"
+
+#: ../src/printdialog.cc:91
+msgid "Print range"
+msgstr "مدى الطباعة"
+
+#: ../src/printdialog.cc:92
+msgid "From:"
+msgstr "من:"
+
+#: ../src/printdialog.cc:93
+msgid "To:"
+msgstr "إلي:"
+
+#: ../src/printdialog.cc:94
+msgid "Paper size:"
+msgstr "حجم الورق:"
+
+#: ../src/printdialog.cc:95
+msgid "Page orientation:"
+msgstr "اتجاه الصفحة:"
+
+#: ../src/printdialog.cc:113
+msgid "Printer name"
+msgstr "اسم الطابعة"
+
+#: ../src/printdialog.cc:114
+msgid "Status"
+msgstr "الحالة"
+
+#: ../src/printdialog.cc:132 ../src/printdialog.cc:190
+msgid "Custom"
+msgstr "مخصص"
+
+#: ../src/printdialog.cc:136
+msgid "Create a PDF document"
+msgstr "أنشئ ملف PDF"
+
+#: ../src/printdialog.cc:137
+msgid "Create a Postscript document"
+msgstr "أنشئ ملف Postscript"
+
+#: ../src/printdialog.cc:183
+msgid "Portrait"
+msgstr "طولي"
+
+#: ../src/printdialog.cc:184
+msgid "Landscape"
+msgstr "عرضي"
+
+#: ../src/printdialog.cc:196
+msgid "Width:"
+msgstr "العرض:"
+
+#: ../src/printdialog.cc:196
+msgid "Height:"
+msgstr "الارتفاع:"
+
+#: ../src/printdialog.cc:246
+msgid "Please choose a file to print to."
+msgstr "فضلا اختر ملفا للطباعة."
+
+#: ../src/printdialog.cc:250
+msgid "Please choose a file not a directory."
+msgstr "فضلا اختر ملفا وليس دليلا."
+
+#: ../src/printdialog.cc:341
+msgid "Please select a file to print to."
+msgstr "فضلا اختر مكان ملف للطباعة."
+
+#: ../src/printdialog.cc:421
+msgid "I couldn't get the selected printer."
+msgstr "لم أتمكن من تحديد الطابعة المختارة."
+
+#: ../src/replacedialog.cc:32 ../src/searchdialog.cc:32
+msgid "Find"
+msgstr "ابحث"
+
+#: ../src/replacedialog.cc:33 ../src/searchdialog.cc:33
+msgid "Search for:"
+msgstr "ابحث عن:"
+
+#: ../src/replacedialog.cc:34
+msgid "Replace with:"
+msgstr "استبدل بـ:"
+
+#: ../src/replacedialog.cc:35 ../src/searchdialog.cc:34
+msgid "Match entire word only"
+msgstr "طابِق كامل الكلمة فقط"
+
+#: ../src/replacedialog.cc:36 ../src/searchdialog.cc:35
+msgid "Match case"
+msgstr "طابِق حالة الأحرف"
+
+#. regex(_("Regular expression")),
+#: ../src/replacedialog.cc:37 ../src/searchdialog.cc:37
+msgid "Wrap search"
+msgstr "لف حول"
+
+#: ../src/replacedialog.cc:38 ../src/searchdialog.cc:38
+msgid "Search from the cursor position"
+msgstr "ابحث من مكان المؤشر"
+
+#: ../src/replacedialog.cc:39 ../src/searchdialog.cc:39
+msgid "Search backwards"
+msgstr "ابحث إلى الخلف"
+
+#: ../src/replacedialog.cc:40 ../src/searchdialog.cc:40
+msgid "Search from the beginnig of the document"
+msgstr "ابحث من بداية المستند"
+
+#: ../src/replacedialog.cc:42
+msgid "_Replace"
+msgstr "استب_دل"
+
+#. find_replace(Gtk::Stock::FIND_AND_REPLACE),
+#: ../src/replacedialog.cc:44
+msgid "Replace _All"
+msgstr "استبدل ال_كل"
+
+#: ../src/spell.cc:53
+msgid "Failed to initialize the spell checker"
+msgstr "فشل بدأ المدقق الإملائي"
+
+#: ../src/spell.cc:66
+msgid "Failed to set the requested dictionary."
+msgstr "تعذّر ضبط القاموس المطلوب."
+
+#: ../src/spelldialog.cc:37
+msgid "_Ignore"
+msgstr "_تجاهل"
+
+#: ../src/spelldialog.cc:38
+msgid "Ignore _All"
+msgstr "تجاهل ال_كل"
+
+#: ../src/spelldialog.cc:39
+msgid "C_hange"
+msgstr "_بدِّل"
+
+#: ../src/spelldialog.cc:42
+msgid "_Add to user dictionary"
+msgstr "أ_ضف إلى القاموس"
+
+#: ../src/spelldialog.cc:43
+msgid "Misspelled:"
+msgstr "الكلمة الخاطئة:"
+
+#: ../src/spelldialog.cc:44
+msgid "Change to:"
+msgstr "بدِّل إلى:"
+
+#: ../src/spelldialog.cc:48
+msgid "Check Spelling"
+msgstr "تدقيق إملائي"
+
+#: ../src/spelldialog.cc:92
+msgid "Suggestions"
+msgstr "الاقتراحات"
+
+#: ../src/spelldialog.cc:128
+msgid "No misspelled words."
+msgstr "لا توجد كلمات أخرى غير صحيحة."
+
+#: ../src/statusbar.cc:69
+msgid "OVR"
+msgstr "استبدال"
+
+#: ../src/statusbar.cc:69
+msgid "INS"
+msgstr "إدراج"
+
+#: ../src/statusbar.cc:74
+#, c-format
+msgid " L: %d, C: %d"
+msgstr " س: %Id، ع: %Id   "
+
+#: ../src/toolbar.cc:53
+msgid "Search"
+msgstr "ابحث"
+
+#: ../src/toolbar.cc:56
+msgid "Spelling Dictionary"
+msgstr "قاموس الإملاء"
+
+#: ../src/toolbar.cc:102
+msgid "Create a new file"
+msgstr "أنشئ ملف جديد"
+
+#: ../src/toolbar.cc:103
+msgid "Open a file for editing"
+msgstr "افتح ملف للتحرير"
+
+#: ../src/toolbar.cc:104
+msgid "Save the existing file"
+msgstr "احفظ الملف الحالي"
+
+#: ../src/toolbar.cc:106
+msgid "Print this document"
+msgstr "اطبع هذا المستند"
+
+#: ../src/toolbar.cc:108
+msgid "Close the active file"
+msgstr "اغلق الملف الحالي"
+
+#: ../src/toolbar.cc:109
+msgid "Undo"
+msgstr "تراجع"
+
+#: ../src/toolbar.cc:110
+msgid "Redo"
+msgstr "أعِد"
+
+#: ../src/toolbar.cc:111
+msgid "Cut"
+msgstr "قص"
+
+#: ../src/toolbar.cc:112
+msgid "Copy"
+msgstr "انسخ"
+
+#: ../src/toolbar.cc:113
+msgid "Paste"
+msgstr "الصق"
+
+#: ../src/toolbar.cc:114
+msgid "Delete current selection"
+msgstr "احذف الجزء المحدد"
+
+#: ../src/toolbar.cc:116
+msgid "Toggle full screen mode"
+msgstr "بدِّل وضع ملء الشاشة"
+
+#: ../src/utils.cc:189
+msgid "I can't backup the old file.\n"
+msgstr "لم أتمكن من عمل نسخة احتياطية.\n"
+
+#: ../src/utils.cc:247
+#, c-format
+msgid "%s is a directory."
+msgstr "%s دليل."
+
+#: ../src/window.cc:141
+msgid " The keyboard emulator will not work."
+msgstr "محاكي لوحة المفاتيح لن يعمل."
+
+#: ../src/window.cc:147
+msgid " Multipress will not work."
+msgstr " متعدد الضغطات لن يعمل."
+
+#: ../src/window.cc:153
+msgid ""
+"A lot of the configuration options have been changed in this version.\n"
+"Please adjust the configuration first."
+msgstr ""
+"تغيرت العديد من خيارات الضبط في هذا الإصدار.\n"
+"يرجى ضبط الإعدادات أولا."
+

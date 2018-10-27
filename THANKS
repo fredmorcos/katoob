@@ -1,0 +1,118 @@
+* Khaled Hosny <KhaledHosny at eglug.org>
+ - Reviewing and correcting the Arabic translation for 0.5.9
+ - various small i18n and l10n tips.
+
+* Igor Bogomazov
+ - He reported and helped debugging the crash under the utf8 locale.
+
+* Jens Seidel <jensseidel at users dot sf dot net>
+ - German PO file corrections (Debian bug #314022)
+
+* Islam Motab Amer know as phaeron <greatrambo at yahoo dot com>
+ - Helped me debugging the lam-alef handling code
+ - Helped me discovering the multiple lines paste bug.
+ - Helped me discovering the replace all endless loop bug.
+
+* Mostafa Hussein <mostafa at linux dash egypt dot org>
+  - New Icons for katoob :-)
+  - Switching of the line numbers to the right side into the RTL mode idea.
+
+* Thanks Leonardo Boshell <leonardop at gentoo dot org>
+  - Pathches to fix compilation errors when disabling the spell checker and 
+    when freetype andfreetype2 are present.
+
+* Pav Lucistnik <pav at oook dot cz> & Samy Al Bahra <samy at kerneled dot com>
+  - Fixes segmentation fault on start-up with several systems.
+
+* Samy Al Bahra <samy at kerneled dot com>
+  - Several Code cleanups and optimisations, Fix many potential buffer 
+    overflows. Probably he deserves more than a thanks ;-)
+
+* Mohammed Elzubeir < elzubeir at arabeyes dot org>
+  - Hosting, Supporting the project
+
+* Hicham AMAOUI <amaoui at altern dot org>
+  - Redhat 9.0 segfault patch.
+
+* Youcef Rabah Rahal <yrrahal42 at hotmail dot com>
+* Isam Bayazidi <bayazidi at arabeyes dot org>
+  - Helping me with the Arabic translation.
+
+* Munzir Taha Obeid <munzirtaha at myrealbox dot com>
+  - Helped me crushing bugs, iproving the UI, Fixing many issues. By his many 
+    suggestions and bug reports. 
+    He deserve more than a THANK YOU, But this is what i can offer :-(
+
+* Alaa Abd-El Fatah <alaa at annosoor dot org>
+  - Help in debugging katoob 0.2
+  - Multiple encodings support idea
+  - Helping in fixing the segmentation fault while saving files with non valid 
+    ISO characters "Actually he was the one who discovered it ;)"
+  - The complete Arabic emulator file
+  - The idea of HTML numerical reference saving
+  - His numerous ideas for improving the code, and efficiency.
+  - Modifying the emulator code to get rid of the switch statement.
+ 
+* Arabeyes Developer mailing list <developer at arabeyes dot org>
+  - Our main development mailing list, ideas and support
+
+* Anatoly Asviyan <arsen at alice dot nc dot huji dot ac dot il> <aanatoly at linuxmail dot org>
+  - For writing "gkrellxkb", I borrowed the main idea and some code from it ;)
+
+* Jens Askengren <jensus at linux dot nu>
+ - GNOME human interface idea.
+ - a patch that changes the text direction buttons to use radio buttons.
+
+* Krzysztof Krzyzaniak <eloy at transilvania dot eu dot org>
+ - The Polish translation for version 0.3.0
+
+* Mohammed Yousif <mhdyousif at gmx dot net>
+ - Slack package for 0.3 "slack 8.1"
+
+* Roozbeh Pournader <roozbeh at sharif dot edu>
+ - Providing the IRAN SYSTEM table
+
+* Arash Zeini <a.zeini at farsikde dot org>
+ - Pointing me to "Shabredo" where i borrowed some code ;)
+
+* Han Boetes <han at linux-mandrake dot com>
+ - Helping me with the Mandrake spec file, And maintaining Mandrake package.
+
+* UTUMI Hirosi <utuhiro78 at yahoo dot co dot jp>
+ - Japanese translation and japanese encodings code, And a screenshot :-)
+
+* Diego Iastrubni <elcuco at kdemail dot net>
+ - Several patches that fixed some segfaults.
+ - The hebrew emulator file.
+ - Hebrew to Logical Hebrew patch.
+
+*  Michelle Konzack <linux4michelle at freenet dot de>
+ - The 2nd bug hunting feast, Many thanks. ;)
+ - German manpage.
+
+* fribidi Authors
+
+* gtkspell Author
+
+TRANSLATIONS
+============
+Arabic:		Mohammed Sameer <msameer at foolab dot org>
+		* All versions up to 0.5.8
+                Khaled Hosny <KhaledHosny at eglug.org>
+                * 0.5.8+
+
+Polish:		Krzysztof Krzyzaniak <eloy at transilvania dot eu dot org>
+		0.2.1
+
+Swedish:	Jens Askengren <jensus at linux dot nu>
+		0.3.1
+
+Hebrew:		GNU/Linux Kinneret project (http://www.linux-kinneret.org/).
+
+Japanese:	UTUMI Hirosi <utuhiro78 at yahoo dot co dot jp>
+
+German:		Michelle Konzack <linux4michelle at freenet dot de>
+
+French:		Emmanuel Beffara <manu at beffara dot org>
+		0.3.8
+Czech:		Jan Grmela <mail at grmela dot com>

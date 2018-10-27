@@ -1,0 +1,247 @@
+AC_PREREQ(2.52)
+
+AC_INIT(src/main.cc)
+AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE(katoob, 0.6)
+AC_PROG_INTLTOOL(0.18, "no-xml")
+
+AC_PROG_CXX
+
+ALL_LINGUAS="ar cz de fr he ja pl sv"
+GETTEXT_PACKAGE=katoob
+
+AM_GLIB_GNU_GETTEXT
+
+AC_ARG_ENABLE(profile,
+AC_HELP_STRING([--enable-profile], [Include profiling information. (default: no)]),
+        profile=$enableval, profile=no)
+
+AC_ARG_ENABLE(maemo,
+AC_HELP_STRING([--enable-maemo], [Enable maemo support. (default: no)]),
+        maemo=$enableval, maemo=no)
+
+AC_ARG_ENABLE(bzip2,
+AC_HELP_STRING([--enable-bzip2], [Enable bzip2 support. (default: yes)]),
+        bzip2=$enableval, bzip2=yes)
+
+AC_ARG_ENABLE(gzip,
+AC_HELP_STRING([--enable-gzip], [Enable gzip support. (default: yes)]),
+        gzip=$enableval, gzip=yes)
+
+AC_ARG_ENABLE(highlight,
+AC_HELP_STRING([--enable-highlight], [Enable source code highlighting. (default: no)]),
+        highlight=$enableval,  highlight=no)
+
+AC_ARG_ENABLE(release,
+AC_HELP_STRING([--enable-release], [Don't include debugging symbols. (default: yes)]),
+        release=$enableval, release=yes)
+
+AC_ARG_ENABLE(spell,
+AC_HELP_STRING([--enable-spell], [Enable the spell checker (default: no)]),
+        spell=$enableval, spell=no)
+
+AC_ARG_ENABLE(isocodes,
+AC_HELP_STRING([--enable-isocodes], [Enable isocodes  (default: no)]),
+        isocodes=$enableval, isocodes=no)
+
+AC_ARG_ENABLE(print,
+AC_HELP_STRING([--enable-print], [Enable printing support. (default: yes)]),
+         print=$enableval, print=yes)
+
+AC_ARG_ENABLE(dbus,
+AC_HELP_STRING([--enable-dbus], [Enable D-BUS support. (default: no)]),
+        dbus=$enableval, dbus=no)
+
+AC_ARG_ENABLE(fribidi,
+AC_HELP_STRING([--enable-fribidi], [Use fribidi. (default: no)]),
+        fribidi=$enableval, fribidi=no)
+
+AC_ARG_ENABLE(dict,
+AC_HELP_STRING([--enable-dict], [Enable dict protocol support. (default: yes)]),
+        dict=$enableval, dict=yes)
+
+LIBCURL_CHECK_CONFIG([yes], , curl=yes, AC_MSG_ERROR(libcurl not found.))
+
+if test "$CXX" = "g++" ; then
+        CXXFLAGS="$CXXFLAGS -pipe -Wall"
+fi
+if test "$CCC" = "gcc" ; then
+        CFLAGS="$CFLAGS -pipe -Wall"
+fi
+dnl Do we really need -fprofile-arcs ??
+if test "$profile" = yes ; then
+        CFLAGS="$CFLAGS -pg -fprofile-arcs"
+fi
+
+if test "x$dict" = "xyes"; then
+if test "$libcurl_protocol_DICT" != "yes"; then
+AC_MSG_ERROR(libcurl doesn't support DICT.)
+else
+AC_DEFINE(ENABLE_DICT,,[Enable dict..])
+fi
+fi
+
+AM_CONDITIONAL(DICT, test "x$dict" = "xyes")
+
+dnl Set PREFIX in config.h.
+if test "x${prefix}" = "xNONE"; then
+  AC_DEFINE_UNQUOTED(PREFIX, "${ac_default_prefix}",[PREFIX])
+else
+  AC_DEFINE_UNQUOTED(PREFIX, "${prefix}",[PREFIX])
+fi
+
+dnl Set PACKAGE_LOCALE_DIR in config.h.
+if test "x${prefix}" = "xNONE"; then
+  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${ac_default_prefix}/${DATADIRNAME}/locale",[PACKAGE_LOCALE_DIR])
+else
+  AC_DEFINE_UNQUOTED(PACKAGE_LOCALE_DIR, "${prefix}/${DATADIRNAME}/locale",[PACKAGE_LOCALE_DIR])
+fi
+
+dnl Set PACKAGE_DATA_DIR in config.h.
+if test "x${datadir}" = 'x${prefix}/share'; then
+  if test "x${prefix}" = "xNONE"; then
+    AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR, "${ac_default_prefix}/share/${PACKAGE}",[PACKAGE_DATA_DIR])
+  else
+    AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR, "${prefix}/share/${PACKAGE}",[PACKAGE_DATA_DIR])
+  fi
+else
+  AC_DEFINE_UNQUOTED(PACKAGE_DATA_DIR, "${datadir}/${PACKAGE}",[PACKAGE_DATA_DIR])
+fi
+
+dnl Checking for Gtkmm
+PKG_CHECK_MODULES(KATOOB, gtkmm-2.4 >= 2.10.0)
+
+dnl iso-codes
+if test "$isocodes" = yes; then
+if test "$spell" = no; then
+  AC_MSG_ERROR(You can't enable isocodes and disable spell.)
+else
+ PKG_CHECK_MODULES(ISOCODES, iso-codes)
+ AC_DEFINE_UNQUOTED([ISOCODES_PREFIX],["`$PKG_CONFIG --variable=prefix iso-codes`"],[ISO codes prefix])
+AC_DEFINE(ENABLE_ISOCODES,,[Enable isocodes.])
+fi
+fi
+AM_CONDITIONAL(ISOCODES, test "x$isocodes" = "xyes")
+
+dnl The spell checker
+if test "$spell" = yes; then
+PKG_CHECK_MODULES(SPELL, enchant >= 1.3.0)
+AC_DEFINE(ENABLE_SPELL,,[Enable spell checking.])
+fi
+AM_CONDITIONAL(SPELL, test "x$spell" = "xyes")
+
+if test "$release" = no ; then
+        CFLAGS="$CFLAGS -ggdb"
+else
+        CFLAGS="$CFLAGS -DNDEBUG"
+fi
+
+if test "$fribidi" = yes; then
+ AC_PATH_PROG(FRIBIDI_CONFIG, fribidi-config)
+ if test "x$FRIBIDI_CONFIG" = x; then
+  AC_MSG_ERROR(fribidi-config not found.)
+ else
+  FRIBIDI_CFLAGS=$($FRIBIDI_CONFIG --cflags)
+  FRIBIDI_LIBS=$($FRIBIDI_CONFIG --libs)
+  AC_DEFINE(HAVE_FRIBIDI,,[Enable fribidi support.])
+ fi
+fi
+AM_CONDITIONAL(FRIBIDI, test "x$fribidi" = "xyes")
+
+if test "$print" = yes; then
+PKG_CHECK_MODULES(PRINT, gtk+-unix-print-2.0 >= 2.10.0)
+AC_DEFINE(ENABLE_PRINT,,[Enable printing.])
+fi
+AM_CONDITIONAL(PRINT, test "x$print" = "xyes")
+
+dnl bz2
+if test "$bzip2" = yes; then
+AC_CHECK_LIB(bz2, BZ2_bzopen, bzip_l=yes, bzip_l=no)
+AC_CHECK_HEADER(bzlib.h, bzip_h=yes, bzip_h=no)
+if test "$bzip_l" = yes && test "$bzip_h" = yes; then
+AC_MSG_NOTICE([bzip2 support is enabled.])
+AC_DEFINE(HAVE_BZIP2,,[Enable bzip2 support])
+BZ2_LIBS="-lbz2"
+else
+AC_MSG_NOTICE([bzip2 support is disabled.])
+fi
+fi
+
+dnl gz
+if test "$gzip" = yes; then
+AC_CHECK_LIB(z, gzopen, gzip_l=yes, gzip_l=no)
+AC_CHECK_HEADER(zlib.h, gzip_h=yes, gzip_h=no)
+if test "$gzip_l" = yes && test "$gzip_h" = yes; then
+AC_MSG_NOTICE([gzip support is enabled.])
+AC_DEFINE(HAVE_GZIP,,[Enable gzip support])
+GZ_LIBS="-lz"
+else
+AC_MSG_NOTICE([gzip support is disabled.])
+fi
+fi
+
+
+if test "$dbus" = yes; then
+PKG_CHECK_MODULES(DBUS, dbus-glib-1)
+AC_DEFINE(ENABLE_DBUS,,[Enable dbus.])
+fi
+AM_CONDITIONAL(DBUS, test "x$dbus" = "xyes")
+
+if test "$maemo" = yes; then
+PKG_CHECK_MODULES(MAEMO, libosso hildonmm hildon-fmmm gconfmm-2.6)
+AC_DEFINE(ENABLE_MAEMO,,[Enable maemo.])
+
+KATOOB_ICON=katoob-icon
+X_OSSO_SERVICE=X-Osso-Service=org.foolab.katoob
+AC_SUBST(X_OSSO_SERVICE)
+else
+KATOOB_ICON=katoob-icon.pmg
+fi
+AC_SUBST(KATOOB_ICON)
+
+AM_CONDITIONAL(MAEMO, test "x$maemo" = "xyes")
+
+if test "$highlight" = yes; then
+PKG_CHECK_MODULES(GTKSOURCEVIEW, gtksourceview-2.0 >= 2.0)
+AC_DEFINE(ENABLE_HIGHLIGHT,,[Enable syntax highlighting])
+fi
+AM_CONDITIONAL(HIGHLIGHT, test "x$highlight" = "xyes")
+
+dnl win32
+gcc_ver=$(gcc --version)
+
+case $gcc_ver in
+*mingw*)
+KATOOB_CFLAGS="-mms-bitfields -mwindows $KATOOB_CFLAGS"
+KATOOB_LIBS="$KATOOB_LIBS -lwsock32"
+AM_CONDITIONAL(WIN32, test 1 = 1)
+;;
+ *)
+AM_CONDITIONAL(WIN32, test 1 = 0)
+;;
+esac
+
+if test "x$maemo" = "xyes" && test "x$dbus" != "xyes"; then
+AC_MSG_ERROR(maemo support needss dbus.)
+fi
+
+AC_SUBST(GETTEXT_PACKAGE)
+AC_SUBST(FRIBIDI_CFLAGS)
+AC_SUBST(FRIBIDI_LIBS)
+AC_SUBST(BZ2_LIBS)
+
+AC_OUTPUT([
+katoob.desktop.in
+Makefile
+src/Makefile
+src/pixmaps/Makefile
+src/xdgmime/Makefile
+po/Makefile.in
+data/Makefile
+data/ui/Makefile
+m4/Makefile
+maemo/Makefile
+maemo/katoob.service
+INSTALL
+Doxyfile
+])

@@ -1,0 +1,1678 @@
+# Katoob Multiligual Textprocessor
+# Copyright (C) 2004 
+# This file is distributed under the same license as the katoob package.
+# Emmanuel Beffara <manu@beffara.org>, 2004.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-12-18 12:03+0200\n"
+"PO-Revision-Date: 2004-10-09 18:47+0200\n"
+"Last-Translator: Emmanuel Beffara <manu@beffara.org>\n"
+"Language-Team: French <fr@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../katoob.desktop.in.h:1 ../src/aboutdialog.cc:66
+#, fuzzy
+msgid "Katoob"
+msgstr "katoob"
+
+#: ../katoob.desktop.in.h:2
+msgid "Multilingual Unicode Text Editor"
+msgstr "Éditeur de texte multilingue Unicode"
+
+#: ../src/aboutdialog.cc:51
+msgid ""
+"Katoob is free software; you can redistribute it and/or modify it under the "
+"terms of the GNU General Public License as published by the Free Software "
+"Foundation; either version 2 of the License, or (at your option) any later "
+"version."
+msgstr ""
+
+#: ../src/aboutdialog.cc:56
+msgid ""
+"Katoob is distributed in the hope that it will be useful, but WITHOUT ANY "
+"WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details."
+msgstr ""
+
+#: ../src/aboutdialog.cc:61
+msgid ""
+"You should have received a copy of the GNU General Public License along with "
+"This program; if not, write to the Free Software Foundation, Inc., 59 Temple "
+"Place, Suite 330, Boston, MA  02111-1307  USA"
+msgstr ""
+
+#: ../src/aboutdialog.cc:71
+msgid "Copyright © 2006, 2007 Mohammed Sameer."
+msgstr ""
+
+#: ../src/aboutdialog.cc:73 ../src/aboutdialog.cc:76
+msgid "Mohammed Sameer"
+msgstr ""
+
+#: ../src/aboutdialog.cc:77
+msgid "Mostafa Hussein"
+msgstr ""
+
+#: ../src/aboutdialog.cc:80
+#, fuzzy
+msgid "A lightweight multilingual unicode and bidi aware text editor"
+msgstr "Éditeur de texte multilingue Unicode"
+
+#: ../src/aboutdialog.cc:81
+msgid "translator-credits"
+msgstr ""
+
+#: ../src/applets.cc:55
+msgid "_Enable undo, redo\t"
+msgstr "_Activer l'annulation/récupération\t"
+
+#: ../src/applets.cc:57
+msgid "Keep a history of recently closed documents"
+msgstr ""
+
+#: ../src/applets.cc:59
+msgid ""
+"Undo history size\n"
+"(0 for unlimited)"
+msgstr ""
+"Taille de l'historique d'annulation\n"
+"(0 pour le rendre illimité)"
+
+#: ../src/applets.cc:60
+#, fuzzy
+msgid ""
+"Executed commands history size\n"
+"(0 for unlimited)"
+msgstr ""
+"Taille de l'historique d'annulation\n"
+"(0 pour le rendre illimité)"
+
+#: ../src/applets.cc:61
+#, fuzzy
+msgid ""
+"Closed documents history size\n"
+"(0 for unlimited)"
+msgstr ""
+"Taille de l'historique d'annulation\n"
+"(0 pour le rendre illimité)"
+
+#: ../src/applets.cc:122
+#, fuzzy
+msgid "Show the extra _buttons"
+msgstr "Afficher les onglets"
+
+#: ../src/applets.cc:123
+msgid "Show the _Main Toolbar"
+msgstr "Afficher la barre d'outils _principale"
+
+#: ../src/applets.cc:124
+msgid "Show the _Extended Toolbar"
+msgstr "Afficher la barre d'outils _étendue"
+
+#: ../src/applets.cc:125
+msgid "Show the _Statusbar"
+msgstr "Afficher la _barre d'état"
+
+#: ../src/applets.cc:126
+msgid "Enable re_cent menu"
+msgstr "Activer le menu des documents _récents"
+
+#: ../src/applets.cc:127
+msgid "Show the _close button on each tab label"
+msgstr "Afficher le bouton _Fermer sur chaque onglet"
+
+#: ../src/applets.cc:128
+msgid ""
+"No. of recent entries\n"
+"(0 for unlimited)"
+msgstr ""
+"Nombre de d'entrées du menu\n"
+"(0 pour le rendre illimité)"
+
+#: ../src/applets.cc:129
+msgid "Show the toolbar as"
+msgstr "Affichage de la barres d'outils:"
+
+#: ../src/applets.cc:130 ../src/applets.cc:159 ../src/menubar.cc:318
+msgid "Text only"
+msgstr "Texte seul"
+
+#. TODO: Disable these when the main toolbar is not shown.
+#: ../src/applets.cc:131 ../src/applets.cc:162 ../src/menubar.cc:315
+msgid "Icons only"
+msgstr "Icônes seules"
+
+#: ../src/applets.cc:132 ../src/applets.cc:168 ../src/applets.cc:350
+#: ../src/applets.cc:383 ../src/applets.cc:392 ../src/menubar.cc:321
+msgid "Both"
+msgstr "Texte sous les icônes"
+
+#: ../src/applets.cc:133 ../src/applets.cc:165 ../src/menubar.cc:324
+msgid "Text beside icons"
+msgstr "Texte à côté des icônes"
+
+#: ../src/applets.cc:217
+msgid "_Show tabs"
+msgstr "_Afficher les onglets"
+
+#: ../src/applets.cc:218
+msgid "_Enable tabs menu"
+msgstr "Activer le _menu des onglets"
+
+#: ../src/applets.cc:219
+msgid "Scro_ll tabs"
+msgstr "_Défilement des onglets"
+
+#: ../src/applets.cc:220
+msgid "Show the tabs at the"
+msgstr "Afficher les onglets"
+
+#: ../src/applets.cc:221 ../src/applets.cc:282 ../src/applets.cc:846
+msgid "Top"
+msgstr "en haut"
+
+#: ../src/applets.cc:222 ../src/applets.cc:273
+msgid "Bottom"
+msgstr "en bas"
+
+#: ../src/applets.cc:223 ../src/applets.cc:276 ../src/applets.cc:348
+#: ../src/applets.cc:389
+msgid "Right"
+msgstr "à droite"
+
+#: ../src/applets.cc:224 ../src/applets.cc:279 ../src/applets.cc:349
+#: ../src/applets.cc:386 ../src/applets.cc:845
+msgid "Left"
+msgstr "à gauche"
+
+#: ../src/applets.cc:226
+msgid "Color for read only tabs"
+msgstr ""
+
+#: ../src/applets.cc:227
+msgid "Color for modified tabs"
+msgstr ""
+
+#: ../src/applets.cc:228
+msgid "Color for normal tabs"
+msgstr ""
+
+#: ../src/applets.cc:341
+msgid "Text _Wrapping is on by default"
+msgstr "_Coupure des lignes activée par défaut"
+
+#: ../src/applets.cc:342
+msgid "Show _Line numbers by default"
+msgstr "Afficher les numéros de _ligne par défaut"
+
+#: ../src/applets.cc:343
+msgid "Use the default _font"
+msgstr "Utiliser la fonte _standard"
+
+#: ../src/applets.cc:345
+#, fuzzy
+msgid "_Automatic syntax highlighting for known file types"
+msgstr "_Coloriser les fichiers de type connu"
+
+#: ../src/applets.cc:347
+#, fuzzy
+msgid "Line numbers position"
+msgstr "Numéros de _lignes"
+
+#: ../src/applets.cc:351
+msgid "Font"
+msgstr "Fonte"
+
+#: ../src/applets.cc:353
+msgid "Tab width"
+msgstr ""
+
+#: ../src/applets.cc:450
+msgid "_Use the locale encoding"
+msgstr "_Utiliser l'encodage local"
+
+#: ../src/applets.cc:451 ../src/applets.cc:452
+#, fuzzy
+msgid "Specify an encoding"
+msgstr "Encodage par défaut"
+
+#: ../src/applets.cc:456
+#, fuzzy
+msgid "File open encoding"
+msgstr "Choisissez l'encodage."
+
+#: ../src/applets.cc:457
+#, fuzzy
+msgid "File save encoding"
+msgstr "Choisissez l'encodage."
+
+#: ../src/applets.cc:502
+msgid "_Backup files before saving."
+msgstr "Faire des _copies de sauvegarde"
+
+#: ../src/applets.cc:503
+#, fuzzy
+msgid "Backup extension"
+msgstr "Suffixe des sauvegardes:"
+
+#: ../src/applets.cc:534 ../src/menubar.cc:362
+msgid "_Autocheck Spelling"
+msgstr "Vérification _automatique"
+
+#. misspelled_label.set_text(_("Misspelled words color"));
+#: ../src/applets.cc:536
+msgid "Choose the default dictionary"
+msgstr "Dictionnaire par défaut:"
+
+#: ../src/applets.cc:586
+#, fuzzy
+msgid "Printing font"
+msgstr "Imprimer ce document"
+
+#: ../src/applets.cc:590
+msgid "_Enable advanced options"
+msgstr "Activer les options _avancées"
+
+#: ../src/applets.cc:594
+msgid "X Dot Per Inch"
+msgstr ""
+
+#: ../src/applets.cc:595
+msgid "Y Dot Per Inch"
+msgstr ""
+
+#: ../src/applets.cc:652
+msgid "_Enable the dictionary."
+msgstr "Activer le _dictionnaire"
+
+#: ../src/applets.cc:653
+#, fuzzy
+msgid "Host"
+msgstr "Hôte:"
+
+#: ../src/applets.cc:654
+msgid "_List dictionaries"
+msgstr "_Liste des dictionnaires"
+
+#: ../src/applets.cc:656
+#, fuzzy
+msgid "Port"
+msgstr "Port:"
+
+#: ../src/applets.cc:667 ../src/applets.cc:675 ../src/preferencesdialog.cc:75
+msgid "Dictionary"
+msgstr "Dictionnaire"
+
+#: ../src/applets.cc:676
+msgid "Description"
+msgstr "Description"
+
+#: ../src/applets.cc:681
+msgid "Not Available."
+msgstr "Non disponible."
+
+#: ../src/applets.cc:738 ../src/applets.cc:741
+msgid "Failed to get the available dictionaries."
+msgstr ""
+
+#: ../src/applets.cc:768
+msgid "Please provide a dict server"
+msgstr ""
+
+#: ../src/applets.cc:797
+msgid "_Milliseconds before multipress will accept the current value."
+msgstr ""
+
+#: ../src/applets.cc:827
+#, fuzzy
+msgid ""
+"Number of remote addresses to save\n"
+"(0 for unlimited)"
+msgstr ""
+"Nombre de d'entrées du menu\n"
+"(0 pour le rendre illimité)"
+
+#: ../src/applets.cc:830
+msgid "_Insert into the active document enabled by default ?"
+msgstr ""
+
+#: ../src/applets.cc:847
+msgid "Width"
+msgstr "Largeur"
+
+#: ../src/applets.cc:848
+msgid "Height"
+msgstr "Hauteur"
+
+#: ../src/applets.cc:850
+msgid "Save all the program _settings on exit"
+msgstr "Enregistrer les _réglages du programme en quittant"
+
+#: ../src/applets.cc:851
+msgid "Save the main window _attributes on exit"
+msgstr "Enregistrer les _attributs de la fenêtre en quittant"
+
+#: ../src/applets.cc:856
+msgid "Window position"
+msgstr "Position de la fenêtre"
+
+#: ../src/applets.cc:857
+msgid "Window size"
+msgstr "Taille de la fenêtre"
+
+#: ../src/applets.cc:925
+msgid "Network timeout (In seconds):"
+msgstr ""
+
+#: ../src/applets.cc:926
+msgid "Proxy host:"
+msgstr ""
+
+#: ../src/applets.cc:927
+msgid "Proxy port:"
+msgstr ""
+
+#: ../src/applets.cc:928
+msgid "Proxy type:"
+msgstr ""
+
+#: ../src/applets.cc:930 ../src/menubar.cc:798
+msgid "None"
+msgstr "aucune"
+
+#: ../src/applets.cc:931
+msgid "Get from the environment"
+msgstr ""
+
+#: ../src/applets.cc:932
+msgid "HTTP"
+msgstr ""
+
+#: ../src/applets.cc:933
+msgid "SOCKS4"
+msgstr ""
+
+#: ../src/applets.cc:934
+msgid "SOCKS5"
+msgstr ""
+
+#: ../src/applets.cc:948
+msgid "Tunnel traffic through the proxy"
+msgstr ""
+
+#: ../src/applets.cc:950
+msgid "Use proxy authentication"
+msgstr ""
+
+#: ../src/applets.cc:951
+msgid "Proxy username:"
+msgstr ""
+
+#: ../src/applets.cc:952
+msgid "Proxy password:"
+msgstr ""
+
+#: ../src/dialogs.cc:70
+#, fuzzy
+msgid "Insert to document"
+msgstr "Imprimer ce document"
+
+#: ../src/dialogs.cc:98 ../src/toolbar.cc:52
+msgid "Goto Line"
+msgstr "Aller à la ligne"
+
+#: ../src/dialogs.cc:105
+msgid "Line:"
+msgstr "Ligne:"
+
+#: ../src/dialogs.cc:139
+msgid "Please wait..."
+msgstr ""
+
+#: ../src/dict.cc:60
+msgid "Invalid daatabase. Please reconfigure the dictionary in use."
+msgstr ""
+
+#: ../src/dict.cc:64
+#, fuzzy
+msgid "No matches were found"
+msgstr "Aucune occurence trouvée."
+
+#: ../src/dict.cc:122 ../src/dict.cc:139
+#, fuzzy
+msgid "No databases were found."
+msgstr "Aucune occurence trouvée."
+
+#: ../src/document.cc:109
+#, fuzzy
+msgid " Is a directory."
+msgstr "Ceci est un répertoire."
+
+#: ../src/document.cc:133 ../src/mdi.cc:295 ../src/mdi.cc:1107
+#, fuzzy, c-format
+msgid "Couldn't detect the encoding of %s"
+msgstr "Impossible de lancer gs pour produire un PDF."
+
+#: ../src/document.cc:193
+#, fuzzy
+msgid "Couldn't detect the encoding of the text."
+msgstr "Impossible de déterminer l'encodage du texte."
+
+#: ../src/document.cc:285
+#, c-format
+msgid "Failed to create the autorecovery file %s"
+msgstr ""
+
+#: ../src/document.cc:1240
+msgid "Define "
+msgstr ""
+
+#: ../src/document.cc:1255
+msgid "Spelling Suggestions"
+msgstr "Suggestions d'ortographe"
+
+#: ../src/document.cc:1263
+#, fuzzy, c-format
+msgid "Add \"%s\" to dictionary"
+msgstr "Ajouter \"%s\" au dictionnaire"
+
+#. TODO: Use italics markup.
+#: ../src/document.cc:1272
+msgid "no suggestions"
+msgstr "pas de suggestion"
+
+#: ../src/document.cc:1283
+msgid "More..."
+msgstr "Plus..."
+
+#: ../src/encodings.cc:347 ../src/encodings.cc:367
+#, fuzzy
+msgid "I wasn't able to convert the encoding."
+msgstr "Impossible de déterminer l'encodage du texte."
+
+#: ../src/execdialog.cc:40
+msgid "Command to execute"
+msgstr ""
+
+#: ../src/execdialog.cc:41
+#, c-format
+msgid ""
+"'%s' will be substituted with a temporary filename\n"
+"containing the text from the document."
+msgstr ""
+
+#: ../src/execdialog.cc:47
+#, fuzzy
+msgid "_Show the results in a new tab"
+msgstr "Afficher les onglets"
+
+#: ../src/export.cc:48
+msgid "_Text file with no unicode control characters..."
+msgstr ""
+
+#: ../src/export.cc:55 ../src/import.cc:52
+msgid "Text file compressed with _gzip"
+msgstr ""
+
+#: ../src/export.cc:62 ../src/import.cc:58
+msgid "Text file compressed with _bzip2"
+msgstr ""
+
+#: ../src/export.cc:69 ../src/import.cc:64
+msgid "Text with _shaping and bidi applied"
+msgstr ""
+
+#: ../src/export.cc:107
+#, fuzzy
+msgid "Can't open temporary file."
+msgstr "Impossible d'ouvrir le fichier temporaire"
+
+#: ../src/export.cc:113
+#, fuzzy
+msgid "Error writing to temporary file."
+msgstr "Impossible de créer un fichier temporaire."
+
+#: ../src/export.cc:130
+msgid "Couldn't allocate memory for compression."
+msgstr ""
+
+#: ../src/export.cc:136
+#, fuzzy
+msgid "Couldn't compress the text."
+msgstr "Ipossible d'imprimer le fichier."
+
+#. _ch is allocated via g_new();
+#: ../src/export.cc:185 ../src/import.cc:239
+#, fuzzy
+msgid "Couldn't apply the bidi algorithm."
+msgstr "Ipossible d'imprimer le fichier."
+
+#: ../src/filedialog.cc:38 ../src/filedialog.cc:52
+#: ../src/openlocationdialog.cc:38
+msgid "Encoding"
+msgstr "Encodage"
+
+#: ../src/filedialog.cc:144
+msgid "This is a directory."
+msgstr "Ceci est un répertoire."
+
+#: ../src/import.cc:47
+msgid "_HTML Character Reference..."
+msgstr "Référence de caractères _HTML..."
+
+#: ../src/import.cc:114 ../src/import.cc:120 ../src/import.cc:141
+#: ../src/import.cc:172
+#, fuzzy
+msgid "Can't open file."
+msgstr "Impossible d'ouvrir le fichier temporaire"
+
+#. Error.
+#: ../src/import.cc:135 ../src/import.cc:157 ../src/import.cc:188
+msgid "Error reading file."
+msgstr ""
+
+#: ../src/inputwindow.cc:33
+msgid "Input Window"
+msgstr ""
+
+#: ../src/isocodes.cc:117
+#, c-format
+msgid "%s (%s)"
+msgstr ""
+
+#: ../src/label.cc:60
+#, c-format
+msgid "Untitled New %d"
+msgstr ""
+
+#: ../src/mdi.cc:83
+#, c-format
+msgid "Failed to scan for any autorecovery files: %s"
+msgstr ""
+
+#: ../src/mdi.cc:88
+msgid "Some unrecovered files were found. Try to recover them ?"
+msgstr ""
+
+#: ../src/mdi.cc:203
+msgid "Please select a file for editing."
+msgstr "Sélection d'un fichier à éditer"
+
+#: ../src/mdi.cc:281
+#, fuzzy
+msgid "This is a read only document."
+msgstr "Ceci est un répertoire."
+
+#: ../src/mdi.cc:285
+#, fuzzy
+msgid "Please select a file."
+msgstr "Sélection d'un fichier à éditer"
+
+#: ../src/mdi.cc:324
+msgid "This document can not be saved. It's a read only file."
+msgstr ""
+
+#: ../src/mdi.cc:354
+#, fuzzy
+msgid "Please select a file for saving."
+msgstr "Sélection d'un fichier à éditer"
+
+#: ../src/mdi.cc:361 ../src/mdi.cc:1124 ../src/printdialog.cc:254
+#, c-format
+msgid "Are you sure you want to overwrite the file %s ?"
+msgstr "Êtes vous sûr de vouloir remplacer le fichier %s ?"
+
+#: ../src/mdi.cc:452
+#, fuzzy, c-format
+msgid "The file %s is not saved, Save first ?"
+msgstr "Le fichier %s n'est pas enregistré. Enregistrer ?"
+
+#: ../src/mdi.cc:455
+#, c-format
+msgid "\"%s\" is not saved, Save first?"
+msgstr "\"%s\" n'est pas enregistré. Enregistrer ?"
+
+#: ../src/mdi.cc:509
+#, fuzzy, c-format
+msgid "The file \"%s\" doesn't exist."
+msgstr "Ce fichier n'existe pas."
+
+#: ../src/mdi.cc:573
+#, fuzzy, c-format
+msgid ""
+"This will close the current file \"%s\". Discard any changes done and reload "
+"the saved copy of the file. Are you sure you want to continue ?"
+msgstr ""
+"Ceci va fermer le fichier en cours \"%s\", annuler toutes les modifications "
+"apportées au texte, et recharger la version enregistrée du fichier. Êtes-"
+"vous sûr de vouloir continuer ?"
+
+#: ../src/mdi.cc:673
+msgid "You must inter a word to search for."
+msgstr ""
+
+#: ../src/mdi.cc:685 ../src/mdi.cc:701 ../src/mdi.cc:748
+#, fuzzy
+msgid "No search results found."
+msgstr "Aucune occurence trouvée"
+
+#: ../src/mdi.cc:781
+#, fuzzy, c-format
+msgid "Replaced %d occurence."
+msgid_plural "Replaced %d occurences."
+msgstr[0] "%d occurences remplacées"
+msgstr[1] "%d occurences remplacées"
+
+#: ../src/mdi.cc:806
+#, c-format
+msgid "You can use only one '%s'"
+msgstr ""
+
+#: ../src/mdi.cc:959 ../src/mdi.cc:962
+msgid "Failed to get any definitions."
+msgstr ""
+
+#: ../src/menubar.cc:142
+msgid "_File"
+msgstr "_Fichier"
+
+#: ../src/menubar.cc:150
+#, fuzzy
+msgid "Open _Location..."
+msgstr "_Destination:"
+
+#. Recent
+#: ../src/menubar.cc:154
+msgid "Recent"
+msgstr "Documents récents"
+
+#: ../src/menubar.cc:164
+msgid "Sa_ve Copy..."
+msgstr "Enregistrer une _copie..."
+
+#: ../src/menubar.cc:171
+msgid "_Import"
+msgstr "_Importer"
+
+#: ../src/menubar.cc:179
+msgid "_Export"
+msgstr "E_xporter"
+
+#: ../src/menubar.cc:188
+msgid "Page Set_up..."
+msgstr ""
+
+#: ../src/menubar.cc:191
+#, fuzzy
+msgid "Print Previe_w"
+msgstr "Apperçu"
+
+#: ../src/menubar.cc:240
+msgid "_Edit"
+msgstr "_Édition"
+
+#: ../src/menubar.cc:261
+msgid "_Select All"
+msgstr "_Tout sélectionner"
+
+#: ../src/menubar.cc:265
+msgid "_Insert File"
+msgstr ""
+
+#: ../src/menubar.cc:274
+msgid "_Search"
+msgstr "_Recherche"
+
+#: ../src/menubar.cc:279
+msgid "Find Ne_xt"
+msgstr "Occurence _suivante"
+
+#: ../src/menubar.cc:292
+msgid "_View"
+msgstr "_Affichage"
+
+#: ../src/menubar.cc:294
+msgid "_Statusbar"
+msgstr "_Barre d'état"
+
+#: ../src/menubar.cc:297
+msgid "_Line Numbers"
+msgstr "Numéros de _lignes"
+
+#: ../src/menubar.cc:300
+msgid "_Wrap Text"
+msgstr "_Couper les lignes"
+
+#: ../src/menubar.cc:305
+msgid "Toolbars"
+msgstr "Barres d'outils"
+
+#: ../src/menubar.cc:307
+msgid "_Main Toolbar"
+msgstr "Barre d'outils _principale"
+
+#: ../src/menubar.cc:310
+msgid "_Extended Toolbar"
+msgstr "Barre d'outils _étendue"
+
+#: ../src/menubar.cc:327
+msgid "_Encoding"
+msgstr "_Encodage"
+
+#: ../src/menubar.cc:352
+msgid "_Tools"
+msgstr "Ou_tils"
+
+#: ../src/menubar.cc:353
+msgid "_Execute Command On Buffer..."
+msgstr "_Exécuter une commande sur le texte..."
+
+#: ../src/menubar.cc:368 ../src/statusbar.cc:56
+msgid "Input"
+msgstr ""
+
+#: ../src/menubar.cc:369
+msgid "Default"
+msgstr ""
+
+#: ../src/menubar.cc:374
+#, fuzzy
+msgid "Keyboard emulator"
+msgstr "Émulateur de clavier"
+
+#: ../src/menubar.cc:378 ../src/preferencesdialog.cc:77
+msgid "Multipress"
+msgstr ""
+
+#: ../src/menubar.cc:393
+msgid "_Documents"
+msgstr "_Documents"
+
+#: ../src/menubar.cc:394
+msgid "Save _All"
+msgstr "Tout _enregistrer"
+
+#: ../src/menubar.cc:397
+msgid "Clos_e All"
+msgstr "Tout _fermer"
+
+#: ../src/menubar.cc:402
+#, fuzzy
+msgid "_Opened Documents"
+msgstr "_Documents"
+
+#: ../src/menubar.cc:403
+#, fuzzy
+msgid "_Closed Documents"
+msgstr "_Documents"
+
+#: ../src/menubar.cc:408
+msgid "_Help"
+msgstr "_Aide"
+
+#: ../src/menubar.cc:796
+msgid "_Highlight"
+msgstr "_Coloration"
+
+#: ../src/network.cc:89
+msgid "Failed to initialize the networking backend."
+msgstr ""
+
+#: ../src/network.cc:95
+#, fuzzy
+msgid "Couldn't initialize network handler."
+msgstr "Ipossible d'imprimer le fichier."
+
+#: ../src/network.cc:145
+msgid "Please set the proxy authentication username."
+msgstr ""
+
+#: ../src/network.cc:150
+msgid "Please set the proxy authentication password."
+msgstr ""
+
+#: ../src/network.cc:157
+#, fuzzy
+msgid "Please set a proxy host."
+msgstr "Choisissez un fichier où imprimer."
+
+#: ../src/openlocationdialog.cc:37
+#, fuzzy
+msgid "Location"
+msgstr "_Destination:"
+
+#: ../src/openlocationdialog.cc:54
+#, fuzzy
+msgid "_Insert into the active document."
+msgstr "Imprimer ce document"
+
+#: ../src/openlocationdialog.cc:92
+msgid "You must enter a location to open."
+msgstr ""
+
+#: ../src/pipe.cc:53
+#, c-format
+msgid "I can't execute %s. I can't find it in your path"
+msgstr ""
+
+#. TODO: Possible some commands might not return 0
+#: ../src/pipe.cc:99
+#, fuzzy
+msgid "Couldn't get the required content."
+msgstr "Impossible de trouver un émulateur pour l'entrée sélectionnée"
+
+#: ../src/preferencesdialog.cc:41
+msgid "Preferences"
+msgstr "Préférences"
+
+#: ../src/preferencesdialog.cc:55
+msgid "Options for"
+msgstr ""
+
+#: ../src/preferencesdialog.cc:63
+msgid "General"
+msgstr "Généralités"
+
+#: ../src/preferencesdialog.cc:64
+msgid "Interface"
+msgstr "Interface"
+
+#: ../src/preferencesdialog.cc:65
+msgid "Tabs"
+msgstr "Onglets"
+
+#: ../src/preferencesdialog.cc:66
+msgid "Editor"
+msgstr "Éditeur"
+
+#: ../src/preferencesdialog.cc:67
+msgid "Encodings"
+msgstr "Encodages"
+
+#: ../src/preferencesdialog.cc:68
+msgid "File Save"
+msgstr "Enregistrement"
+
+#: ../src/preferencesdialog.cc:70
+msgid "Spell Checker"
+msgstr "Ortographe"
+
+#: ../src/preferencesdialog.cc:73 ../src/printdialog.cc:97
+msgid "Print"
+msgstr "Impression"
+
+#: ../src/preferencesdialog.cc:79
+#, fuzzy
+msgid "Remote Documents"
+msgstr "_Documents"
+
+#: ../src/preferencesdialog.cc:80
+msgid "Advanced"
+msgstr "Avancé"
+
+#: ../src/preferencesdialog.cc:81
+msgid "Network"
+msgstr ""
+
+#: ../src/previewdialog.cc:48
+#, fuzzy
+msgid "Print preview"
+msgstr "Apperçu"
+
+#: ../src/previewdialog.cc:56 ../src/previewdialog.cc:176
+#, c-format
+msgid "of %i"
+msgstr ""
+
+#: ../src/print.cc:207
+msgid "Other"
+msgstr ""
+
+#: ../src/printdialog.cc:77
+#, fuzzy
+msgid "Print to file."
+msgstr "Ipossible d'imprimer le fichier."
+
+#: ../src/printdialog.cc:78
+msgid "_All"
+msgstr "_Tout"
+
+#: ../src/printdialog.cc:79
+msgid "_Selection"
+msgstr "_Sélection"
+
+#: ../src/printdialog.cc:80
+#, fuzzy
+msgid "_Lines"
+msgstr "Ligne:"
+
+#: ../src/printdialog.cc:81
+msgid "Printer:"
+msgstr "Imprimante:"
+
+#: ../src/printdialog.cc:89
+#, fuzzy
+msgid "Location:"
+msgstr "_Destination:"
+
+#: ../src/printdialog.cc:90
+#, fuzzy
+msgid "Number of copies"
+msgstr "Nombre de _copies"
+
+#: ../src/printdialog.cc:91
+msgid "Print range"
+msgstr "Partie à imprimer"
+
+#: ../src/printdialog.cc:92
+msgid "From:"
+msgstr ""
+
+#: ../src/printdialog.cc:93
+#, fuzzy
+msgid "To:"
+msgstr "en haut"
+
+#: ../src/printdialog.cc:94
+#, fuzzy
+msgid "Paper size:"
+msgstr "_Format:"
+
+#: ../src/printdialog.cc:95
+#, fuzzy
+msgid "Page orientation:"
+msgstr "_Orientation:"
+
+#: ../src/printdialog.cc:113
+#, fuzzy
+msgid "Printer name"
+msgstr "Imprimante"
+
+#: ../src/printdialog.cc:114
+#, fuzzy
+msgid "Status"
+msgstr "_Barre d'état"
+
+#: ../src/printdialog.cc:132 ../src/printdialog.cc:190
+msgid "Custom"
+msgstr "Autre"
+
+#: ../src/printdialog.cc:136
+msgid "Create a PDF document"
+msgstr "Créer un document PDF"
+
+#: ../src/printdialog.cc:137
+#, fuzzy
+msgid "Create a Postscript document"
+msgstr "Créer un document PDF"
+
+#: ../src/printdialog.cc:183
+msgid "Portrait"
+msgstr "Portrait"
+
+#: ../src/printdialog.cc:184
+msgid "Landscape"
+msgstr "Paysage"
+
+#: ../src/printdialog.cc:196
+#, fuzzy
+msgid "Width:"
+msgstr "_Largeur:"
+
+#: ../src/printdialog.cc:196
+#, fuzzy
+msgid "Height:"
+msgstr "_Hauteur:"
+
+#: ../src/printdialog.cc:246
+#, fuzzy
+msgid "Please choose a file to print to."
+msgstr "Choix d'un fichier vers lequel exporter"
+
+#: ../src/printdialog.cc:250
+#, fuzzy
+msgid "Please choose a file not a directory."
+msgstr "Choix d'un fichier à importer"
+
+#: ../src/printdialog.cc:341
+msgid "Please select a file to print to."
+msgstr "Choisissez un fichier où imprimer."
+
+#: ../src/printdialog.cc:421
+#, fuzzy
+msgid "I couldn't get the selected printer."
+msgstr "Impossible de trouver un émulateur pour l'entrée sélectionnée"
+
+#: ../src/replacedialog.cc:32 ../src/searchdialog.cc:32
+msgid "Find"
+msgstr "Recherche"
+
+#: ../src/replacedialog.cc:33 ../src/searchdialog.cc:33
+#, fuzzy
+msgid "Search for:"
+msgstr "Rechercher"
+
+#: ../src/replacedialog.cc:34
+msgid "Replace with:"
+msgstr "Remplacer par:"
+
+#: ../src/replacedialog.cc:35 ../src/searchdialog.cc:34
+msgid "Match entire word only"
+msgstr ""
+
+#: ../src/replacedialog.cc:36 ../src/searchdialog.cc:35
+#, fuzzy
+msgid "Match case"
+msgstr "Respecter la _casse"
+
+#. regex(_("Regular expression")),
+#: ../src/replacedialog.cc:37 ../src/searchdialog.cc:37
+msgid "Wrap search"
+msgstr ""
+
+#: ../src/replacedialog.cc:38 ../src/searchdialog.cc:38
+#, fuzzy
+msgid "Search from the cursor position"
+msgstr "Rechercher à partir du _curseur"
+
+#: ../src/replacedialog.cc:39 ../src/searchdialog.cc:39
+msgid "Search backwards"
+msgstr ""
+
+#: ../src/replacedialog.cc:40 ../src/searchdialog.cc:40
+#, fuzzy
+msgid "Search from the beginnig of the document"
+msgstr "Rechercher depuis le _début du document"
+
+#: ../src/replacedialog.cc:42
+msgid "_Replace"
+msgstr "Re_mplacer"
+
+#. find_replace(Gtk::Stock::FIND_AND_REPLACE),
+#: ../src/replacedialog.cc:44
+#, fuzzy
+msgid "Replace _All"
+msgstr "_Tout remplacer"
+
+#: ../src/spell.cc:53
+#, fuzzy
+msgid "Failed to initialize the spell checker"
+msgstr "Activer la vérification _orthographique"
+
+#: ../src/spell.cc:66
+#, fuzzy
+msgid "Failed to set the requested dictionary."
+msgstr "Dictionnaire par défaut:"
+
+#: ../src/spelldialog.cc:37
+msgid "_Ignore"
+msgstr "_Ignorer"
+
+#: ../src/spelldialog.cc:38
+#, fuzzy
+msgid "Ignore _All"
+msgstr "_Ignorer"
+
+#: ../src/spelldialog.cc:39
+msgid "C_hange"
+msgstr "_Remplacer"
+
+#: ../src/spelldialog.cc:42
+msgid "_Add to user dictionary"
+msgstr "_Ajouter au dictionnaire"
+
+#: ../src/spelldialog.cc:43
+#, fuzzy
+msgid "Misspelled:"
+msgstr "Mal orthographié:"
+
+#: ../src/spelldialog.cc:44
+msgid "Change to:"
+msgstr "Remplacer par:"
+
+#: ../src/spelldialog.cc:48
+msgid "Check Spelling"
+msgstr "Vérifier l'orthographe"
+
+#: ../src/spelldialog.cc:92
+msgid "Suggestions"
+msgstr "Suggestions"
+
+#: ../src/spelldialog.cc:128
+msgid "No misspelled words."
+msgstr "Pas de mot mal orthographié."
+
+#: ../src/statusbar.cc:69
+#, fuzzy
+msgid "OVR"
+msgstr " REMP "
+
+#: ../src/statusbar.cc:69
+#, fuzzy
+msgid "INS"
+msgstr " INS "
+
+#: ../src/statusbar.cc:74
+#, fuzzy, c-format
+msgid " L: %d, C: %d"
+msgstr "  L: %d, C: %d"
+
+#: ../src/toolbar.cc:53
+msgid "Search"
+msgstr "Rechercher"
+
+#: ../src/toolbar.cc:56
+msgid "Spelling Dictionary"
+msgstr "Dictionnaire"
+
+#: ../src/toolbar.cc:102
+msgid "Create a new file"
+msgstr "Créer un nouveau fichier"
+
+#: ../src/toolbar.cc:103
+msgid "Open a file for editing"
+msgstr "Ouvrir et éditer un fichier"
+
+#: ../src/toolbar.cc:104
+msgid "Save the existing file"
+msgstr "Enregistrer le fichier en cours"
+
+#: ../src/toolbar.cc:106
+msgid "Print this document"
+msgstr "Imprimer ce document"
+
+#: ../src/toolbar.cc:108
+msgid "Close the active file"
+msgstr "Fermer le fichier en cours"
+
+#: ../src/toolbar.cc:109
+msgid "Undo"
+msgstr "Annuler la dernière opération"
+
+#: ../src/toolbar.cc:110
+msgid "Redo"
+msgstr "Refaire la dernière opération annulée"
+
+#: ../src/toolbar.cc:111
+msgid "Cut"
+msgstr "Couper"
+
+#: ../src/toolbar.cc:112
+msgid "Copy"
+msgstr "Copier"
+
+#: ../src/toolbar.cc:113
+msgid "Paste"
+msgstr "Coller"
+
+#: ../src/toolbar.cc:114
+msgid "Delete current selection"
+msgstr "Effacer la partie sélectionnée"
+
+#: ../src/toolbar.cc:116
+msgid "Toggle full screen mode"
+msgstr ""
+
+#: ../src/utils.cc:189
+msgid "I can't backup the old file.\n"
+msgstr ""
+
+#: ../src/utils.cc:247
+#, fuzzy, c-format
+msgid "%s is a directory."
+msgstr "Ceci est un répertoire."
+
+#: ../src/window.cc:141
+msgid " The keyboard emulator will not work."
+msgstr ""
+
+#: ../src/window.cc:147
+msgid " Multipress will not work."
+msgstr ""
+
+#: ../src/window.cc:153
+msgid ""
+"A lot of the configuration options have been changed in this version.\n"
+"Please adjust the configuration first."
+msgstr ""
+
+#~ msgid "Unknown"
+#~ msgstr "Inconnu"
+
+#, fuzzy
+#~ msgid "Ready"
+#~ msgstr "Refaire la dernière opération annulée"
+
+#, fuzzy
+#~ msgid "Printing"
+#~ msgstr "Impression"
+
+#, fuzzy
+#~ msgid "Couldn't get the definition from the server."
+#~ msgstr "Impossible de déterminer l'encodage du texte."
+
+#, fuzzy
+#~ msgid "Timeout"
+#~ msgstr "Délai:"
+
+#, fuzzy
+#~ msgid "Command"
+#~ msgstr "_Exécuter une commande sur le texte..."
+
+#~ msgid "katoob"
+#~ msgstr "katoob"
+
+#, fuzzy
+#~ msgid "Remote"
+#~ msgstr "Refaire la dernière opération annulée"
+
+#, fuzzy
+#~ msgid "Are you sure you want to overwrite the file "
+#~ msgstr "Êtes vous sûr de vouloir remplacer le fichier %s ?"
+
+#, fuzzy
+#~ msgid "_PDF file..."
+#~ msgstr "_Chercher..."
+
+#~ msgid ""
+#~ "You have modified the current text, Katoob'll convert the current text to "
+#~ "your default encoding and then convert it back to your choosen encoding. "
+#~ "Continue ?"
+#~ msgstr ""
+#~ "Vous avez modifié le texte en cours, Katoob va convertir le texte en "
+#~ "cours vers votre encodage par défaut puis le convertir à nouveau vers "
+#~ "l'encodage choisi. Continuer ?"
+
+#~ msgid ""
+#~ "You are changing the encoding of a modified file, This'll also clear the "
+#~ "undo & redo history, Should katoob reopen the file?"
+#~ msgstr ""
+#~ "Vous êtes en train de changer l'encodage d'un fichier modifié. Ceci va "
+#~ "aussi effacer l'historique des modifications. Faut-il réouvrir le "
+#~ "fichier ?"
+
+#~ msgid ""
+#~ "Katoob couldn't convert the text to unicode to be able to edit it, "
+#~ "Katoob'll try to recover what it can, The error was:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Katoob n'a pas pu convertir le texte vers Unicode afin de pouvoir "
+#~ "l'éditer. Katoob va tenter de récupérer ce qu'il peut. L'erreur était:\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "Katoob couldn't recover unicode valid text, The error was:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Katoob n'a pas pu obtenir de texte Unicode valide. L'erreur était:\n"
+#~ "%s"
+
+#~ msgid "The file %s doesn't exist, Create it?"
+#~ msgstr "Le fichier %s n'existe pas. Faut-il le créer ?"
+
+#~ msgid "Couldn't create file %s, %s"
+#~ msgstr "Impossible de créer le fichier %s. %s"
+
+#~ msgid "Couldn't open file %s, %s"
+#~ msgstr "Impossible d'ouvrir le fichier %s. %s."
+
+#~ msgid ""
+#~ "An error has occured while reading file %s\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Une erreur s'est produite à la lecture du fichier %s.\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "An error has occured while writing to file %s\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Une erreur s'est produite à l'écriture du fichier %s.\n"
+#~ "%s"
+
+#~ msgid "Empty file."
+#~ msgstr "Fichier vide."
+
+#~ msgid "The requested file couldn't be opened for saving"
+#~ msgstr "Le fichier demandé n'a pas pu être ouvert pour enregistrer."
+
+#~ msgid "An error has occured while writing to file %s"
+#~ msgstr "Une erreur s'est produite à l'écriture du fichier %s."
+
+#~ msgid "That's not a valid UTF-8 file"
+#~ msgstr "Ce n'est pas un fichier UTF-8 valide."
+
+#~ msgid "ERROR"
+#~ msgstr "ERREUR"
+
+#~ msgid "Katoob debugging output."
+#~ msgstr "Sortie de débogage de Katoob."
+
+#~ msgid ""
+#~ "Katoob has crashed, Please email the following debugging output to "
+#~ "developer@arabeyes.org and tell them exactly what you were doing."
+#~ msgstr ""
+#~ "Katoob a planté. Veuillez envoyer par mail la sortie de débogage suivante "
+#~ "à l'adresse developer@arabeyes.org en indiquant précisément ce que vous "
+#~ "étiez en train de faire."
+
+#~ msgid "Save"
+#~ msgstr "Enregistrer"
+
+#~ msgid "Text direction"
+#~ msgstr "Sens d'écriture"
+
+#~ msgid "_Left to right"
+#~ msgstr "De _gauche à droite"
+
+#~ msgid "_Right to left"
+#~ msgstr "De _droite à gauche"
+
+#~ msgid "_Automatic"
+#~ msgstr "_Automatique"
+
+#~ msgid "Can't determine the encoding for that file, Please choose one."
+#~ msgstr ""
+#~ "Impossible de déterminer l'encodage de ce fichier. Veuillez choisir."
+
+#~ msgid "_New"
+#~ msgstr "_Nouveau"
+
+#~ msgid "_Open..."
+#~ msgstr "_Ouvrir..."
+
+#~ msgid "_Save"
+#~ msgstr "_Enregistrer"
+
+#~ msgid "Save _As..."
+#~ msgstr "Enregistrer _sous..."
+
+#~ msgid "_Revert"
+#~ msgstr "_Récupérer"
+
+#~ msgid "_Iran System..."
+#~ msgstr "Système _Iran..."
+
+#~ msgid "_Print..."
+#~ msgstr "_Imprimer..."
+
+#~ msgid "_Close"
+#~ msgstr "_Fermer"
+
+#~ msgid "_Quit"
+#~ msgstr "_Quitter"
+
+#~ msgid "_Undo"
+#~ msgstr "_Annuler"
+
+#~ msgid "_Redo"
+#~ msgstr "_Refaire"
+
+#~ msgid "Cu_t"
+#~ msgstr "_Couper"
+
+#~ msgid "_Copy"
+#~ msgstr "Co_pier"
+
+#~ msgid "_Paste"
+#~ msgstr "C_oller"
+
+#~ msgid "_Delete"
+#~ msgstr "_Supprimer"
+
+#~ msgid "Pr_eferences..."
+#~ msgstr "_Préférences..."
+
+#~ msgid "_Replace..."
+#~ msgstr "_Remplacer..."
+
+#~ msgid "Goto _Line..."
+#~ msgstr "Aller à la _ligne..."
+
+#~ msgid "Ada"
+#~ msgstr "Ada"
+
+#~ msgid "C"
+#~ msgstr "C"
+
+#~ msgid "C++"
+#~ msgstr "C++"
+
+#~ msgid ".desktop"
+#~ msgstr ".desktop"
+
+#~ msgid "Diff"
+#~ msgstr "Diff"
+
+#~ msgid "HTML"
+#~ msgstr "HTML"
+
+#~ msgid "IDL"
+#~ msgstr "IDL"
+
+#~ msgid "Java"
+#~ msgstr "Java"
+
+#~ msgid "Latex"
+#~ msgstr "LaTeX"
+
+#~ msgid "Perl"
+#~ msgstr "Perl"
+
+#~ msgid "gettext translation"
+#~ msgstr "traductions gettext"
+
+#~ msgid "Python"
+#~ msgstr "Python"
+
+#~ msgid "XML"
+#~ msgstr "XML"
+
+#~ msgid "_Spell Check..."
+#~ msgstr "_Ortographe..."
+
+#~ msgid "Abou_t"
+#~ msgstr "À _propos"
+
+#~ msgid "About Katoob"
+#~ msgstr "À propos de Katoob"
+
+#~ msgid "Main"
+#~ msgstr "Généralités"
+
+#~ msgid "Developers"
+#~ msgstr "Développeurs"
+
+#~ msgid "Credits"
+#~ msgstr "Remerciements"
+
+#~ msgid "License"
+#~ msgstr "Licence"
+
+#~ msgid "Information"
+#~ msgstr "Information"
+
+#~ msgid "Error initializing Arabic keyboard"
+#~ msgstr "Erreur à l'initialisation du clavier arabe"
+
+#~ msgid ""
+#~ "An error has occured while trying to initialize your Arabic keyboard, "
+#~ "Katoob'll try to use the built in Arabic keyboard emulator."
+#~ msgstr ""
+#~ "Une erreur s'est produite en tenant d'initialiser votre clavier arabe."
+#~ "Katoob va tenter d'utiliser son émulateur de clavier intégré."
+
+#~ msgid "_Show this warning every time this problem occures"
+#~ msgstr "_Afficher cet avertissement chaque fois que le problème survient."
+
+#~ msgid "_Goto"
+#~ msgstr "_Aller à"
+
+#~ msgid ""
+#~ "There is no spellchecking dictionary available, Please make sure that you "
+#~ "have installed at least one."
+#~ msgstr ""
+#~ "Il n'y a pas de vérificateur d'orthographe installé. Veuiller en "
+#~ "installer au moins un."
+
+#~ msgid "Confirm Revert"
+#~ msgstr "Confirmez la récupération"
+
+#~ msgid "Mispelled words color"
+#~ msgstr "Couleur des mots mal orthographiés"
+
+#~ msgid "Please select the backup directory"
+#~ msgstr "Choisissez le répertoire de sauvegarde."
+
+#~ msgid "Please select the dictionaries directory"
+#~ msgstr "Choisissez le répertoire des dictionnaires."
+
+#~ msgid "This is not a directory."
+#~ msgstr "Ceci n'est pas un répertoire."
+
+#~ msgid "Executed commands history size:"
+#~ msgstr "Taille de l'historique des commandes exécutées:"
+
+#~ msgid "Default text direction:"
+#~ msgstr "Sens d'écriture par défaut:"
+
+#~ msgid "_Manually choose the encoding"
+#~ msgstr "_Choisir explicitement l'encodage"
+
+#~ msgid "Create backup in the original file directory."
+#~ msgstr "Faire ces copies dans le même répertoire que les fichiers."
+
+#~ msgid "Backup directory."
+#~ msgstr "Répertoire des sauvegardes:"
+
+#~ msgid "_Browse"
+#~ msgstr "_Parcourir"
+
+#~ msgid "Dictionaries directory"
+#~ msgstr "Répertoire des dictionnaires"
+
+#~ msgid "Not enabled at compile time!"
+#~ msgstr "Cette fonction n'a pas été activée à la compilation !"
+
+#~ msgid "Dictionary:"
+#~ msgstr "Dictionnaire:"
+
+#~ msgid "_Disable Antialiasing"
+#~ msgstr "_Désactiver le lissage"
+
+#~ msgid "Select Font"
+#~ msgstr "Choisissez une fonte"
+
+#~ msgid "You choosed a directory."
+#~ msgstr "Vous avez choisi un répertoire."
+
+#~ msgid "Can't get selection"
+#~ msgstr "Impossible de prendre la sélection"
+
+#~ msgid "Couldn't execute gs to generate PDF."
+#~ msgstr "Impossible de lancer gs pour produire un PDF."
+
+#~ msgid "Couldn't open the requested file for writing."
+#~ msgstr "Impossible d'ouvrir le fichier voulu en écriture."
+
+#~ msgid "Can't create temp file"
+#~ msgstr "Impossible de créer un fichier temporaire"
+
+#~ msgid "Error executing custom command."
+#~ msgstr "Erreur à l'exécution d'une commande utilisateur."
+
+#~ msgid "Choose Font"
+#~ msgstr "Choisissez un fonte"
+
+#~ msgid "Family"
+#~ msgstr "Famille"
+
+#~ msgid "Style"
+#~ msgstr "Style"
+
+#~ msgid "Size"
+#~ msgstr "Taille"
+
+#~ msgid "Copies"
+#~ msgstr "Copies"
+
+#~ msgid "Job"
+#~ msgstr "Impression"
+
+#~ msgid "Pr_inter:"
+#~ msgstr "_Imprimante:"
+
+#~ msgid "Generic Postscript"
+#~ msgstr "Postscript générique"
+
+#~ msgid "File"
+#~ msgstr "Fichier"
+
+#~ msgid "lpr"
+#~ msgstr "lpr"
+
+#~ msgid "Inches"
+#~ msgstr "pouces"
+
+#~ msgid "Points"
+#~ msgstr "points"
+
+#~ msgid "Cus_tom size"
+#~ msgstr "Format _personnalisé"
+
+#~ msgid "Paper and layout"
+#~ msgstr "Papier et disposition"
+
+#~ msgid "Margins (inch)"
+#~ msgstr "Marges (pouces)"
+
+#~ msgid "Paper"
+#~ msgstr "Papier"
+
+#~ msgid "Please select an application."
+#~ msgstr "Choisissez un programme."
+
+#~ msgid "Can't open the recent documents file"
+#~ msgstr "Impossible d'ouvrir le fichier des documents récents."
+
+#~ msgid "Save As..."
+#~ msgstr "Enregistrer sous..."
+
+#~ msgid "Save A Copy..."
+#~ msgstr "Enregistrer une copie..."
+
+#~ msgid " Couldn 't create a backup, Continue ?"
+#~ msgstr "Impossible de faire une copie de sauvegarde. Continuer ?"
+
+#~ msgid "The requested file couldn' t be opened for saving "
+#~ msgstr "Le fichier n'a pas pu être ouvert pour l'enregistrement."
+
+#~ msgid "Replace"
+#~ msgstr "Remplacer"
+
+#~ msgid "Find what:"
+#~ msgstr "Rechercher:"
+
+#~ msgid "An error has occured"
+#~ msgstr "Une erreur s'est produite"
+
+#~ msgid "The document is empty."
+#~ msgstr "Le document est vide."
+
+#~ msgid "Check _Spelling"
+#~ msgstr "Vérifier l'_orthographe"
+
+#~ msgid "No more mispelled word."
+#~ msgstr "Pas d'autre mot mal orthographié."
+
+#~ msgid "Emulator"
+#~ msgstr "Émulateur"
+
+#~ msgid "Change the typing language"
+#~ msgstr "Changer de langue d'édition"
