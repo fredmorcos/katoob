@@ -28,7 +28,10 @@
 #include "macros.h"
 #include "document.hh"
 
-Print::Print(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Glib::RefPtr<PrintSettings>& settings) :
+Print::Print(Conf& conf,
+             Document *doc,
+             Glib::RefPtr<PageSetup>& page_setup,
+             Glib::RefPtr<PrintSettings>& settings):
   _conf(conf),
   _doc(doc),
 #ifdef ENABLE_PRINT
@@ -49,7 +52,11 @@ Print::Print(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Gli
   signal_begin_print().connect(sigc::mem_fun(this, &Print::on_begin_print));
   signal_draw_page().connect(sigc::mem_fun(this, &Print::on_draw_page));
   signal_preview().connect(sigc::mem_fun(this, &Print::on_preview), false);
+
+#ifdef ENABLE_PRINT
   signal_create_custom_widget().connect(sigc::mem_fun(this, &Print::on_create_custom_widget));
+#endif
+
   signal_custom_widget_apply().connect(sigc::mem_fun(this, &Print::on_custom_widget_apply));
   signal_done().connect(sigc::mem_fun(this, &Print::on_done));
 #endif
@@ -58,7 +65,11 @@ Print::Print(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Gli
 Print::~Print() {
 }
 
-Glib::RefPtr<Print> Print::create(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Glib::RefPtr<PrintSettings>& settings) {
+Glib::RefPtr<Print> Print::create(Conf& conf,
+                                  Document *doc,
+                                  Glib::RefPtr<PageSetup>& page_setup,
+                                  Glib::RefPtr<PrintSettings>& settings)
+{
   return Glib::RefPtr<Print>(new Print(conf, doc, page_setup, settings));
 }
 
@@ -72,7 +83,6 @@ bool Print::run(std::string& error, Gtk::PrintOperationAction print_action) {
     error = err.what();
     return false;
   }
-
 #else
   std::auto_ptr<Glib::Error> e;
   res = Gtk::PrintOperation::run(print_action, e);
@@ -104,7 +114,8 @@ void Print::on_begin_print(const Glib::RefPtr<Gtk::PrintContext>& context) {
   // printing output into pages.
 
   layout = context->create_pango_layout();
-  Pango::FontDescription font = Pango::FontDescription(_conf.print_get("print_font", "Sans Regular 12"));
+  Pango::FontDescription font =
+    Pango::FontDescription(_conf.print_get("print_font", "Sans Regular 12"));
   layout->set_font_description(font);
 
   const double width = context->get_width();

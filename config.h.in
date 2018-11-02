@@ -1,0 +1,11 @@
+#pragma once
+
+#define PACKAGE "@package@"
+#define VERSION "@version@"
+
+#define URL "https://github.com/fredmorcos/katoob"
+#define URL_LABEL "Katoob on Github"
+#define URL_ISSUES "https://github.com/fredmorcos/katoob/issues"
+
+#define PREFIX "@prefix@"
+#define ISOCODES_PREFIX "@isocodes_prefix@"

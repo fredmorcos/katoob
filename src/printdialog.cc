@@ -69,11 +69,14 @@ Paper Papers[] = {
   {"B8"    , 181 , 258 },
   {"B9"    , 127 , 181 },
   {"B10"   , 91  , 127 },
-  {NULL    , 0x0 , 0x0 }
+  {""      , 0x0 , 0x0 }
 };
 /* *INDENT-ON* */
 
-PrintDialog::PrintDialog(Conf& conf) :
+PrintDialog::PrintDialog(Conf& conf,
+                         Document *doc,
+                         Glib::RefPtr<PageSetup>& page_setup,
+                         Glib::RefPtr<PrintSettings>& settings):
   _conf(conf),
   to_file(_("Print to file.")),
   all_radio(range_group, _("_All"), true),
@@ -94,7 +97,8 @@ PrintDialog::PrintDialog(Conf& conf) :
   to_label(_("To:")),
   paper_size_label(_("Paper size:")),
   orientation_label(_("Page orientation:")),
-  backend(conf) {
+  backend(Print::create(conf, doc, page_setup, settings))
+{
   dialog.set_title (_("Print"));
   dialog.set_position (Gtk::WIN_POS_CENTER);
   dialog.set_modal (true);
@@ -121,13 +125,15 @@ PrintDialog::PrintDialog(Conf& conf) :
   printer_frame.add(window);
   box->pack_start(printer_frame);
 
-  std::vector<std::string> all_printers = backend.get_all();
-  for (unsigned i = 0; i < all_printers.size(); i++) {
-    Gtk::TreeModel::Row row = *(store->append ());
-    row[id] = i;
-    row[name] = all_printers[i];
-    row[status] = backend.get_status(i);
-  }
+  // std::vector<std::string> all_printers = backend->get_all();
+
+  // for (unsigned i = 0; i < all_printers.size(); i++) {
+  //   Gtk::TreeModel::Row row = *(store->append ());
+  //   row[id] = i;
+  //   row[name] = all_printers[i];
+  //   row[status] = backend->get_status(i);
+  // }
+
   Gtk::TreeModel::Row row = *(store->append ());
   row[id] = -1;
   row[name] = _("Custom");
@@ -214,10 +220,10 @@ PrintDialog::PrintDialog(Conf& conf) :
   t_selection->signal_changed().connect(sigc::mem_fun(*this, &PrintDialog::selection_signal_changed_cb));
 
   // TODO: Better way.
-  std::string t = Utils::prepend_home_dir("katoob.ps");
-  _ps = _conf.print_get("file_entry", t);
-  t = Utils::prepend_home_dir("katoob.pdf");
-  _pdf = _conf.print_get("pdf_entry", t);
+  // std::string t = Utils::prepend_home_dir("katoob.ps");
+  // _ps = _conf.print_get("file_entry", t);
+  // t = Utils::prepend_home_dir("katoob.pdf");
+  // _pdf = _conf.print_get("pdf_entry", t);
 
   to_file_toggled_cb();
 
@@ -291,18 +297,18 @@ void PrintDialog::reset_paper_size(int x) {
   paper_size.clear();
   if (x == -1) {
     Paper *_Papers = Papers;
-    while (_Papers->name) {
+    while (!_Papers->name.empty()) {
       paper_size.append_text(_Papers->name);
       _Papers++;
     }
     paper_size.set_active(_conf.print_get("paper_size", 6)); //NOTE: A4 = 6, We need a better way to get the default.
   }
   else {
-    std::vector<std::string> s = backend.sizes(x);
-    for (unsigned i = 0; i < s.size(); i++) {
-      paper_size.append_text(s[i]);
-    }
-    paper_size.set_active_text(backend.get_default(x));
+    // std::vector<std::string> s = backend->sizes(x);
+    // for (unsigned i = 0; i < s.size(); i++) {
+    //   paper_size.append_text(s[i]);
+    // }
+    // paper_size.set_active_text(backend->get_default(x));
   }
 }
 
@@ -387,35 +393,35 @@ bool PrintDialog::init_backend() {
 
     int w, h;
 
-    if (n == -1) {
-      backend.set_margins(36, 36, 36, 36);
-      Paper _p = Papers[a];
-      w = _p.width;
-      h = _p.height;
-    }
-    else {
-      backend.set_printer(n);
-      w = backend.get_width(n, a);
-      h = backend.get_height(n, a);
-      backend.set_margins(backend.get_top(n, a),
-			  backend.get_left(n, a),
-			  backend.get_bottom(n, a),
-			  backend.get_right(n, a));
-    }
-    backend.set_dimensions(w, h);
+    // if (n == -1) {
+    //   backend->set_margins(36, 36, 36, 36);
+    //   Paper _p = Papers[a];
+    //   w = _p.width;
+    //   h = _p.height;
+    // }
+    // else {
+    //   backend->set_printer(n);
+    //   w = backend->get_width(n, a);
+    //   h = backend->get_height(n, a);
+    //   backend->set_margins(backend->get_top(n, a),
+    //                        backend->get_left(n, a),
+    //                        backend->get_bottom(n, a),
+    //                        backend->get_right(n, a));
+    // }
+    // backend->set_dimensions(w, h);
 
-    backend.set_orientation(p);
-    if (to_file.get_active()) {
-      backend.set_type(-1);
-      std::string f = entry.get_text();
-      backend.set_file(f);
-    }
-    else {
-      backend.set_type(print_menu.get_active_row_number());
-    }
-    int cp = copies_button.get_value_as_int();
-    assert (cp > 0);
-    backend.set_copies(cp);
+    // backend->set_orientation(p);
+    // if (to_file.get_active()) {
+    //   backend->set_type(-1);
+    //   std::string f = entry.get_text();
+    //   backend->set_file(f);
+    // }
+    // else {
+    //   backend->set_type(print_menu.get_active_row_number());
+    // }
+    // int cp = copies_button.get_value_as_int();
+    // assert (cp > 0);
+    // backend->set_copies(cp);
     return true;
   }
   else {
@@ -433,13 +439,13 @@ bool PrintDialog::range(int& x, int& y) {
 void PrintDialog::manipulate() {
   dialog.hide();
   if (is_preview()) {
-    PreviewDialog preview(backend);
-    if (!preview.ok()) {
-      return;
-    }
-    if (preview.run()) {
-      process();
-    }
+    // PreviewDialog preview(backend);
+    // if (!preview.ok()) {
+    //   return;
+    // }
+    // if (preview.run()) {
+    //   process();
+    // }
   }
   else {
     process();
@@ -453,46 +459,46 @@ void PrintDialog::process() {
   assert (x < 2);
   std::string str = entry.get_text();
   assert(str.size() > 0);
-  std::string file;
-  if (x == 1) { // PostScript.
-    file = backend.PS::get_name();
-  }
-  else { // PDF
-    file = backend.PDF::get_name();
-  }
-  if (to_file.get_active()) {
-    // We already have a PDF and a PS. We will just copy it.
-    if (rename(file.c_str(), str.c_str())) {
-      katoob_error(strerror(errno));
-      return;
-    }
-  }
-  else {
-    std::string err;
-    // TODO: Custom.
-    // TODO: width, height, portrait || landscape, margins, options, ....
-    if (!backend.print(file, err)) {
-      katoob_error(err);
-      return;
-    }
-  }
+  // std::string file;
+  // if (x == 1) { // PostScript.
+  //   file = backend->PS::get_name();
+  // }
+  // else { // PDF
+  //   file = backend->PDF::get_name();
+  // }
+  // if (to_file.get_active()) {
+  //   // We already have a PDF and a PS. We will just copy it.
+  //   if (rename(file.c_str(), str.c_str())) {
+  //     katoob_error(strerror(errno));
+  //     return;
+  //   }
+  // }
+  // else {
+  //   std::string err;
+  //   // TODO: Custom.
+  //   // TODO: width, height, portrait || landscape, margins, options, ....
+  //   if (!backend->print(file, err)) {
+  //     katoob_error(err);
+  //     return;
+  //   }
+  // }
   // TODO: Save settings.
 }
 
 bool PrintDialog::ok(std::string& er) {
-  return backend.ok(er);
+  // return backend->ok(er);
 }
 
 void PrintDialog::start_process() {
-  backend.start_process();
+  // backend->start_process();
 }
 
 bool PrintDialog::end_process(std::string& er) {
-  return backend.end_process(er);
+  // return backend->end_process(er);
 }
 
 void PrintDialog::add_line(std::string& l) {
-  backend.add_line(l);
+  // backend->add_line(l);
 }
 
 bool PrintDialog::all() {

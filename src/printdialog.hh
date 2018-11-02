@@ -36,7 +36,11 @@
 
 class PrintDialog {
 public:
-  PrintDialog(Conf&);
+  PrintDialog(Conf&,
+              Document*,
+              Glib::RefPtr<PageSetup>&,
+              Glib::RefPtr<PrintSettings>&);
+
   ~PrintDialog();
   bool ok(std::string&);
   bool run();
@@ -105,7 +109,7 @@ private:
   Gtk::Label paper_size_label, orientation_label;
   Gtk::ComboBoxText orientation;
 
-  Print backend;
+  Glib::RefPtr<Print> backend;
   bool _has_selection;
   std::string _pdf, _ps;
   int res;

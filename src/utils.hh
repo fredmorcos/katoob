@@ -42,7 +42,7 @@ namespace Utils {
   std::string get_dir_separator();
   std::string get_data_path(const char *);
   std::string get_data_path(const char *, const char *);
-  std::string prepend_home_dir(char *);
+  std::string prepend_home_dir(const char *);
   bool inline is_lam_alef(Glib::ustring&, gunichar);
   bool is_lam_alef(const Glib::ustring&, Glib::ustring&);
   bool katoob_file_is_writable(const std::string&);
@@ -79,17 +79,23 @@ namespace Utils {
 
   // TODO: Move to their own header.
   template <typename A, typename B> void block(sigc::signal<A, B>& signal) {
-    sigc::slot_list<sigc::slot<A, B> > slots = signal.slots();
-    sigc::slot_iterator<sigc::slot<A, B> > iter;
-    for (iter = slots.begin(); iter != slots.end(); iter++) {
+    // sigc::slot_list<sigc::slot<A, B> > slots = signal.slots();
+    // sigc::slot_iterator<sigc::slot<A, B> > iter;
+
+    auto slots = signal.slots();
+
+    for (auto iter = slots.begin(); iter != slots.end(); iter++) {
       iter->block();
     }
   }
 
   template <typename A, typename B> void unblock(sigc::signal<A, B>& signal) {
-    sigc::slot_list<sigc::slot<A, B> > slots = signal.slots();
-    sigc::slot_iterator<sigc::slot<A, B> > iter;
-    for (iter = slots.begin(); iter != slots.end(); iter++) {
+    // sigc::slot_list<sigc::slot<A, B> > slots = signal.slots();
+    // sigc::slot_iterator<sigc::slot<A, B> > iter;
+
+    auto slots = signal.slots();
+
+    for (auto iter = slots.begin(); iter != slots.end(); iter++) {
       iter->unblock();
     }
   }

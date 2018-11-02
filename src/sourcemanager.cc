@@ -74,15 +74,16 @@ std::string SourceManager::get_language_for_file(const std::string& file) {
 
   for (SourceCategoryIter iter = cats.begin(); iter != cats.end(); iter++) {
     for (unsigned x = 0; x < iter->second.size(); x++) {
-      GtkSourceLanguage *lang = gtk_source_language_manager_get_language(manager, iter->second[x].c_str());
+      GtkSourceLanguage *lang =
+        gtk_source_language_manager_get_language(manager, iter->second[x].c_str());
       gchar **mimes =  gtk_source_language_get_mime_types(lang);
       gchar **m = mimes;
       while (*m) {
-	if (!strcmp(*m, _mime)) {
-	  g_strfreev(mimes);
-	  return iter->second[x];
-	}
-	++m;
+        if (!strcmp(*m, _mime)) {
+          g_strfreev(mimes);
+          return iter->second[x];
+        }
+        ++m;
       }
       g_strfreev(mimes);
     }

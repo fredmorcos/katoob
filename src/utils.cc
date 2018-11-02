@@ -20,9 +20,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
+// #ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
+// #endif /* HAVE_CONFIG_H */
 
 #include <glibmm.h>
 #include "utils.hh"
@@ -44,7 +44,9 @@
 
 std::string Utils::get_data_dir() {
 #ifndef _WIN32
-  return std::string(PREFIX + Utils::get_dir_separator() + "share" + Utils::get_dir_separator() + PACKAGE + Utils::get_dir_separator());
+  return std::string(PREFIX + Utils::get_dir_separator() +
+                     "share" + Utils::get_dir_separator() +
+                     PACKAGE + Utils::get_dir_separator());
 #else
   // FIXME:
   return "./";
@@ -65,7 +67,7 @@ std::string Utils::get_dir_separator() {
   return G_DIR_SEPARATOR_S;
 }
 
-std::string Utils::prepend_home_dir(char *str) {
+std::string Utils::prepend_home_dir(const char *str) {
   return Glib::build_filename(Glib::get_home_dir(), str);
 }
 

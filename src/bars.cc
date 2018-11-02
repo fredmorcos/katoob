@@ -312,11 +312,11 @@ void Bars::add_actions() {
       Gtk::Tooltips *tips = toolbar->get_tooltips_object();
 
       for (unsigned x = 0; x < ch.size(); x++) {
-	tb_item = dynamic_cast<Gtk::ToolButton *>(ch[x]);
-	if (tb_item) {
-	  tb_item->set_is_important();
-	  tb_item->set_tooltip(*tips, tips_map[tb_item->get_stock_id()]);
-	}
+        tb_item = dynamic_cast<Gtk::ToolButton *>(ch[x]);
+        if (tb_item) {
+          tb_item->set_is_important();
+          // tb_item->set_tooltip(*tips, tips_map[tb_item->get_stock_id()]);
+        }
       }
     }
   }
@@ -479,7 +479,7 @@ void Bars::build_extra_buttons(Gtk::Toolbar *toolbar) {
   extra_buttons = Gtk::manage(new Gtk::Toolbar);
   toolbar->add(*extra_buttons);
 
-  std::string path = Utils::get_data_path("toolbar");
+  std::string path = Utils::get_data_path("ui", "toolbar");
   std::ifstream ifs;
   ifs.open(path.c_str());
   if (ifs.is_open()) {

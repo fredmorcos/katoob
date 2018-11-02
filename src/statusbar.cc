@@ -32,8 +32,8 @@
 
 Statusbar::Statusbar(Conf& conf) :
   _conf(conf),
-  red(Utils::get_data_path("red.png")),
-  green(Utils::get_data_path("green.png")) {
+  red(Utils::get_data_path("pixmaps", "red.png")),
+  green(Utils::get_data_path("pixmaps", "green.png")) {
   pack_start(red, false, false);
   pack_start(green, false, false);
 

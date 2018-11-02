@@ -2,7 +2,11 @@
 .\" First parameter, NAME, should be all caps
 .\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
 .\" other parameters are allowed: see man(7), man(1)
-.TH KATOOB 1 "June 22, 2003"
+
+.\" .TH KATOOB 1 "June 22, 2003"
+
+.TH KATOOB 1 "November 2, 2018"
+
 .\" Please adjust this date whenever revising the manpage.
 .\"
 .\" Some roff macros, for reference:
@@ -18,8 +22,8 @@
 .SH NAME
 katoob \- A Gtk2 light weight multilingual BiDi aware text editor.
 .sp
-katoob is a text editor for X, You can use it to create and edit text files. 
-Katoob support reading and saving text files in many encodings. As well as 
+katoob is a text editor for X, You can use it to create and edit text files.
+Katoob support reading and saving text files in many encodings. As well as
 importing / exporting to HTML character reference.
 .SH SYNOPSIS
 .B katoob
@@ -31,9 +35,9 @@ This manual page documents briefly the
 commands.
 .PP
 .\" TeX users may be more comfortable with the \fB<whatever>\fP and
-.\" \fI<whatever>\fP escape sequences to invode bold face and italics, 
+.\" \fI<whatever>\fP escape sequences to invode bold face and italics,
 .\" respectively.
-\fBkatoob\fP is a light weight, multi lingual, BiDi aware text editor. It 
+\fBkatoob\fP is a light weight, multi lingual, BiDi aware text editor. It
 supports
 opening and saving files in multiple encodings. The main support was for
 Arabic language but more languages are currently supported.
@@ -56,7 +60,7 @@ Display brief usage message.
 Read input from the standard input.
 .TP
 .B files...
-Specifies the files to be opened. Multiple files are supported but they should 
+Specifies the files to be opened. Multiple files are supported but they should
 be separated by spaces, Reading from pipes is also supported by using a dash "-".
 If no files specified, Katoob'll start with an empty document.
 .SH "FILES"
@@ -92,12 +96,15 @@ To close the standard input you should press CTRL-D
 For each dash passed, Katoob'll reopen the standard input and read from it.
 .SH BUGS
 Something like
-.B cat foo | katoob - - 
-"should read cat output and then wait for the user 
+.B cat foo | katoob - -
+"should read cat output and then wait for the user
 input and open each one in a separate document" is not supported.
 .SH AUTHOR
 .B katoob
-was written by Mohammed Sameer.
+was written by Mohammed Sameer (2002-2007)
+.B katoob
+is maintained by Frederic-Gerald Morcos (2008-2018).
 .SH BUGS
-Bugs should be reported at http://bugzilla.arabeyes.org/ or the Arabeyes.org 
-developer mailing list developer@arabeyes.org.
+.\" Bugs should be reported at http://bugzilla.arabeyes.org/ or the Arabeyes.org
+.\" developer mailing list developer@arabeyes.org.
+Bugs should be reported at https://github.com/fredmorcos/katoob/issues

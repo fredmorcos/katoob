@@ -3,7 +3,8 @@
  * This file is part of katoob
  *
  * Copyright (C) 2006, 2007 Mohammed Sameer
- * 		 2008 Frederic-Gerald Morcos
+ * Copyright (C) 2008 Frederic-Gerald Morcos
+ * Copyright (C) 2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,14 +22,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include <glibmm/thread.h>
 #include "katoob.hh"
 #include "macros.h"
-//#include <csignal>
 
 /**
  * \brief Our entry point.
@@ -44,26 +41,11 @@ int main(int argc, char *argv[]) {
   textdomain (PACKAGE);
 #endif
 
-  Katoob *katoob = NULL;
-
-#ifdef ENABLE_MAEMO
  try {
-#endif
-   katoob = new Katoob(argc, argv);
-#ifdef ENABLE_MAEMO
+   Katoob app = Katoob(argc, argv);
+   app.run();
+   return 0;
+ } catch (Glib::Error& err) {
+   return err.code();
  }
- catch (Glib::Error& er) {
-   if (katoob) {
-     delete katoob;
-   }
-   return er.code();
- }
-#endif
-
- katoob->run();
-
- delete katoob;
-
- return 0;
 }
-

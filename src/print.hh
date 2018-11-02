@@ -35,7 +35,9 @@ class Document;
 
 class Print : public Gtk::PrintOperation {
 public:
-  static Glib::RefPtr<Print> create(Conf&, Document *, Glib::RefPtr<PageSetup>&, Glib::RefPtr<PrintSettings>&);
+  static Glib::RefPtr<Print> create(Conf&, Document *,
+                                    Glib::RefPtr<PageSetup>&,
+                                    Glib::RefPtr<PrintSettings>&);
   virtual ~Print();
   bool run(std::string&, Gtk::PrintOperationAction);
 
@@ -47,11 +49,15 @@ protected:
   void on_draw_page(const Glib::RefPtr<Gtk::PrintContext>&, int);
 
   // Custom widget.
+#ifdef ENABLE_PRINT
   Gtk::Widget* on_create_custom_widget();
+#endif
+
   void on_custom_widget_apply(Gtk::Widget *);
 
   // Preview part.
-  bool on_preview(const Glib::RefPtr<Gtk::PrintOperationPreview>&, const Glib::RefPtr<Gtk::PrintContext>&, Gtk::Window*);
+  bool on_preview(const Glib::RefPtr<Gtk::PrintOperationPreview>&,
+                  const Glib::RefPtr<Gtk::PrintContext>&, Gtk::Window*);
   void on_preview_window_hide();
 
   void on_done(Gtk::PrintOperationResult);

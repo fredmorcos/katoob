@@ -24,10 +24,13 @@
 #define __DBUS_HH__
 
 #include <vector>
+#include <string>
 #include <sigc++/signal.h>
+
 #ifndef DBUS_API_SUBJECT_TO_CHANGE
 #define DBUS_API_SUBJECT_TO_CHANGE 1
 #endif
+
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib-lowlevel.h>
 

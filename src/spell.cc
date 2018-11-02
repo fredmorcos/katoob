@@ -59,13 +59,14 @@ bool Spell::set_lang(std::string& lang, std::string& error) {
   EnchantDict *_dict = enchant_broker_request_dict(broker, lang.c_str());
 
   if (!_dict) {
-    char *err = enchant_broker_get_error(broker);
+    const char *err = enchant_broker_get_error(broker);
+
     if (err) {
       error = err;
-    }
-    else {
+    } else {
       error = _("Failed to set the requested dictionary.");
     }
+
     return false;
   }
 
@@ -113,7 +114,7 @@ void Spell::to_session(std::string& a) {
 void Spell::to_personal(std::string& s) {
   assert(dict != NULL);
 
-  enchant_dict_add_to_personal(dict, s.c_str(), s.size());
+  enchant_dict_add(dict, s.c_str(), s.size());
 }
 
 void _dict_describe_cb(const char * const lang_tag,

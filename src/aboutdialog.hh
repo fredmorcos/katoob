@@ -20,20 +20,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __ABOUTDIALOG_HH__
-#define __ABOUTDIALOG_HH__
+#pragma once
 
 #include <gtkmm/aboutdialog.h>
 
-/**
- * \brief our about dialog class.
- */
-class AboutDialog : private Gtk::AboutDialog {
+class AboutDialog: private Gtk::AboutDialog {
 private:
   AboutDialog();
   ~AboutDialog();
 public:
   static void run();
 };
-
-#endif /* __ABOUTDIALOG_HH__ */

@@ -23,7 +23,7 @@
 #ifndef __SPELL_HH__
 #define __SPELL_HH__
 
-#include <enchant/enchant.h>
+#include <enchant-2/enchant.h>
 #include <string>
 #include <vector>
 

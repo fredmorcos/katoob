@@ -20,9 +20,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
+// #ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
+// #endif /* HAVE_CONFIG_H */
 
 #include <cassert>
 #include <iostream>
@@ -143,7 +143,7 @@ Window::Window(Conf& conf, Encodings& encodings, std::vector<std::string>& files
   move(conf.get("x", 50), conf.get("y", 50));
   resize (conf.get("w", 500), conf.get("h", 400));
 
-  set_icon_from_file(Utils::get_data_path("katoob-small.png"));
+  set_icon_from_file(Utils::get_data_path("pixmaps", "katoob-small.png"));
 
   // We don't call this because we are sure we have a Document so we have a title set.
   //  set_title();
@@ -500,4 +500,3 @@ void Window::set_icon_from_file(const std::string& file) {
   }
 #endif
 }
-
