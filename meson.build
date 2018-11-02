@@ -63,8 +63,8 @@ install_data('pixmaps/katoob-large.png', install_dir: pixmaps_dir)
 install_data('pixmaps/katoob.svg',       install_dir: pixmaps_dir)
 
 docs_dir = join_paths(get_option('datadir'), 'katoob', 'docs')
-install_data('LICENSE', install_dir: docs_dir)
-install_data('README',  install_dir: docs_dir)
+install_data('LICENSE',   install_dir: docs_dir)
+install_data('README.md', install_dir: docs_dir)
 
 executable(
     'katoob',
