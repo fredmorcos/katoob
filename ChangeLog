@@ -1,7 +1,5 @@
-* We now use GtkUIManager for the UI.
-* Use GKeyFile for storage.
-* Fixed a crash with enchant.
-* Documents are now managed by DocFactory, not be MDI anymore.
+Version 0.5.9.1
+* Fixed a problem that caused katoob to ignore keypresses
 
 Version 0.5.9
 * Enchant is now used for spell checking instead of aspell

@@ -2,7 +2,7 @@
  * dbus.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,9 +25,7 @@
 
 #include <vector>
 #include <sigc++/signal.h>
-#ifndef DBUS_API_SUBJECT_TO_CHANGE
 #define DBUS_API_SUBJECT_TO_CHANGE 1
-#endif
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib-lowlevel.h>
 

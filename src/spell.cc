@@ -57,7 +57,6 @@ bool Spell::ok(std::string& error) {
 
 bool Spell::set_lang(std::string& lang, std::string& error) {
   EnchantDict *_dict = enchant_broker_request_dict(broker, lang.c_str());
-
   if (!_dict) {
     char *err = enchant_broker_get_error(broker);
     if (err) {
@@ -68,14 +67,9 @@ bool Spell::set_lang(std::string& lang, std::string& error) {
     }
     return false;
   }
-
-  // NOTE:
-  // If we are requesting a dictionary for the same language, we will get a pointer
-  // to the same dictionary we have. If we free it, we will get a crash.
-  if ((dict) && (dict != _dict)) {
+  if (dict) {
     enchant_broker_free_dict(broker, dict);
   }
-
   dict = _dict;
   return true;
 }

@@ -1,0 +1,61 @@
+This package was debianized by Mohammed Sameer <debian@foolab.org> on
+Sun, 12 Jan 2003 05:59:48 +0200.
+
+It was downloaded from ftp://foolab.org/pub/software/katoob/
+
+Upstream Author: Mohammed Sameer <msameer@foolab.org>
+
+This software is copyright (c) 2006-2008 by Mohammed Sameer.
+
+ This package is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; either version 2 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+On Debian systems, the complete text of the GNU General Public
+License can be found in /usr/share/common-licenses/GPL-2 file.
+
+
+for src/xdgmime:
+ It's dual-licensed under the terms of the GNU Lesser General Public
+ License, and the Academic Free License, version 2.0.
+
+ test-mime.c, xdgmime.c:
+  Copyright (C) 2003,2004  Red Hat, Inc.
+  Copyright (C) 2003,2004  Jonathan Blandford <jrb@alum.mit.edu>
+
+ xdgmimealias.c, xdgmimealias.h, xdgmimeparent.c, xdgmimeparent.h:
+  Copyright (C) 2004  Red Hat, Inc.
+  Copyright (C) 2004  Matthias Clasen <mclasen@redhat.com>
+
+ xdgmimecache.c, xdgmimecache.h:
+  Copyright (C) 2005  Matthias Clasen <mclasen@redhat.com>
+
+ xdgmimeglob.c, xdgmimeglob.h, xdgmime.h, xdgmimeint.c, xdgmimeint.h, xdgmimemagic.c,
+ xdgmimemagic.h:
+  Copyright (C) 2003  Red Hat, Inc.
+  Copyright (C) 2003  Jonathan Blandford <jrb@alum.mit.edu>
+
+ This program is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Library General Public License
+ as published by the Free Software Foundation; either version 2
+ of the License, or (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <http://www.gnu.org/licenses/>.
+
+On Debian systems, the complete text of the GNU Lesser General Public
+License can be found in /usr/share/common-licenses/LGPL-2 file.

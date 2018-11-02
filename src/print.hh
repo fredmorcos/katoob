@@ -2,7 +2,7 @@
  * print.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,10 +28,8 @@
 #include "previewdialog.hh"
 #include "printsettings.hh"
 #include "pagesetup.hh"
+#include "document.hh"
 #include "applets.hh"
-
-// forward declaration
-class Document;
 
 class Print : public Gtk::PrintOperation {
 public:
@@ -64,9 +62,7 @@ private:
   Glib::RefPtr<Pango::Layout> layout;
   Document *_doc;
 
-#ifdef ENABLE_PRINT
   PrintApplet applet;
-#endif
 
   PreviewDialog *_preview;
   Glib::RefPtr<PageSetup>& _page_setup;

@@ -2,7 +2,7 @@
  * utils.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,6 @@
 #include <unistd.h>
 #include <cerrno>
 #include <fcntl.h>
-#include <cstring>
 #include <gtkmm/textview.h>
 #include "macros.h"
 
@@ -53,11 +52,6 @@ std::string Utils::get_data_dir() {
 
 std::string Utils::get_data_path(const char *str) {
   std::string s(get_data_dir() + get_dir_separator() + str);
-  return s;
-}
-
-std::string Utils::get_data_path(const char *str1, const char *str2) {
-  std::string s(get_data_dir() + get_dir_separator() + str1 + get_dir_separator() + str2);
   return s;
 }
 
@@ -113,7 +107,7 @@ bool inline Utils::is_lam_alef(Glib::ustring& src, gunichar ch) {
   return ret;
 }
 
-bool Utils::katoob_file_is_writable(const std::string& file) {
+bool Utils::katoob_file_is_writable(std::string& file) {
   if (Glib::file_test(file, Glib::FILE_TEST_EXISTS)) {
     return (access(file.c_str(), W_OK) == 0 ? true : false);
   }
@@ -146,14 +140,10 @@ void Utils::katoob_set_color(Conf& conf, Gtk::Label& label, KatoobColor c) {
     break;
   }
 
-  Gdk::Color color;
-
-  color.set_red(r);
-  color.set_green(g);
-  color.set_blue(b);
-
-  label.modify_fg(Gtk::STATE_NORMAL, color);
-  label.modify_fg(Gtk::STATE_ACTIVE, color);
+  Pango::AttrColor color(Pango::Attribute::create_attr_foreground(r, g, b));
+  Pango::AttrList attrs;
+  attrs.insert(color);
+  label.set_attributes(attrs);
 }
 
 void Utils::katoob_set_color(Conf& cf, Gtk::Label *l, KatoobColor c) {
@@ -515,63 +505,3 @@ bool Utils::get_recovery_files(std::map<std::string, std::string>& files, std::s
     return false;
   }
 }
-
-std::string Utils::filename_display_basename(const std::string& file) {
-  std::string base;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try {
-    base = Glib::filename_to_utf8(Glib::path_get_basename(file));
-  }
-  catch (...) {
-    base = Glib::filename_display_basename(file);
-  }
-#else
-  std::auto_ptr<Glib::Error> error;
-  base = Glib::filename_to_utf8(Glib::path_get_basename(file), error);
-  if (error.get()) {
-    base = Glib::filename_display_basename(file);
-  }
-#endif
-  return base;
-}
-
-void Utils::read_stdin(std::string& str) {
-  char buff[1024];
-  while (!std::cin.eof()) {
-    memset(buff, 0x0, 1024);
-    std::cin.read(buff, 1024);
-    str += buff;
-  }
-}
-
-bool Utils::filename_from_uri(const std::string& uri, std::string& res) {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try {
-    res = Glib::filename_from_uri(uri);
-    return true;
-  }
-  catch(Glib::ConvertError& e) {
-    res = e.what();
-    return false;
-  }
-#else
-  std::auto_ptr<Glib::Error> error;
-  res = Glib::filename_from_uri(uri, error);
-  if (error.get()) {
-    res = error->what();
-    return false;
-  }
-  else {
-    return true;
-  }
-#endif
-}
-
-// Signal utilities.
-//template <typename A, typename B> void Utils::block(sigc::signal<A, B>& signal) {
-
-//}
-
-//template <typename A, typename B> void Utils::unblock(sigc::signal<A, B>& signal) {
-
-//}

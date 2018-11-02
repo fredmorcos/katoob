@@ -1,8 +1,8 @@
 /*
- * recent.hh
+ * emulator.hh
  * This file is part of katoob
  *
- * Copyright (C) 2007 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,38 +20,32 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __RECENT_HH__
-#define __RECENT_HH__
+#ifndef __EMULATOR_HH__
+#define __EMULATOR_HH__
 
-#include <sigc++/signal.h>
-#include <vector>
 #include <string>
+#include <map>
+#include <vector>
 
-// Forward declarations
-class Conf;
-
-class Recent : sigc::trackable {
+class Emulator {
 public:
-  static Recent *get();
-  static void init(Conf *);
+  Emulator();
+  ~Emulator();
+  static bool ok(std::string&);
+  static std::vector<std::string>& list_layouts();
+  static bool get(const std::string&, std::string&);
+  static bool parse_file(std::string&, std::map<std::string, std::string>&);
+  static void activate(int);
+  static bool get_active();
 
-  void destroy();
-  unsigned size();
+  static std::map<std::string, std::string>& get_layout();
 
-  std::string& operator[](unsigned);
-
-  void add_item(const std::string&);
-
-  std::string get_item();
-
-  sigc::signal<void> signal_changed;
 private:
-  Recent(Conf *);
-  ~Recent();
-
-  static Recent *_recent;
-  Conf *_conf;
-  std::vector<std::string> _items;
+  static std::vector<std::string> names;
+  static std::vector<std::map<std::string, std::string> > layouts;
+  static bool _ok;
+  static std::string _err;
+  static int layout;
 };
 
-#endif /* __RECENT_HH__ */
+#endif /* __EMULATOR_HH__ */

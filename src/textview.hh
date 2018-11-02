@@ -26,6 +26,8 @@
 #include <gtkmm/textview.h>
 #include <gtk/gtktextview.h>
 
+
+
 class TextView : public Gtk::TextView {
 public:
   TextView();

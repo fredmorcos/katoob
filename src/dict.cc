@@ -41,7 +41,7 @@ std::string Dict::construct_lsdb_uri(Conf& conf, const std::string& host, int po
 }
 
 bool Dict::parse_defs(const std::string& str, std::vector<std::string>& res) {
-  unsigned num = 0;
+  int num = 0;
 
   if (str.size() == 0) {
     return false;

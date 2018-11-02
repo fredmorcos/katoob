@@ -2,7 +2,7 @@
  * mdi.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,18 +26,14 @@
 #include <vector>
 #include <gtkmm/notebook.h>
 #include "replacedialog.hh"
+#include "document.hh"
 #include "encodings.hh"
 #include "import.hh"
 #include "export.hh"
-#include "conf.hh"
-
 #ifdef ENABLE_PRINT
 #include "pagesetup.hh"
 #include "printsettings.hh"
 #endif
-
-// forward declaration
-class Document;
 
 class MDI : public Gtk::Notebook {
 public:
@@ -45,9 +41,9 @@ public:
   ~MDI();
 
   // Our methods.
-  bool create_document(std::string&, int = -1);
-  bool create_document();
-
+  Document *create_document(std::string&, int = -1);
+  Document *create_document();
+  Document *get_active();
   bool close_all();
   bool close(int n=-1);
 
@@ -66,7 +62,7 @@ public:
 #endif
   void close_cb();
 
-  void recent_cb(std::string);
+  void recent_cb(std::string&);
 
   void undo_cb();
   void redo_cb();
@@ -104,23 +100,41 @@ public:
 
   void activate(int);
 
-  void import_cb(Import *im);
-  void export_cb(Export *ex);
+  void import_cb(Import im);
+  void export_cb(Export ex);
 
   /* Our signals. */
-  sigc::signal<void, bool> signal_reset_gui;
+  sigc::signal<void> signal_recent_regenerate;
+  sigc::signal<void, int> signal_reset_gui;
 
   // Signals we get from the Document class.
-  sigc::signal<void, int, bool, bool> signal_document_rom;
+  sigc::signal<void, int, bool> signal_document_modified;
+  sigc::signal<void, bool> signal_document_can_undo;
+  sigc::signal<void, bool> signal_document_can_redo;
+  sigc::signal<void, int, bool> signal_document_readonly;
   sigc::signal<void, std::string&> signal_document_file_changed;
+  sigc::signal<void, int, int> signal_document_cursor_moved;
   sigc::signal<void, int> signal_document_encoding_changed;
+  sigc::signal<void, bool> signal_document_overwrite_toggled;
   sigc::signal<void, std::string, int> signal_document_title_changed;
+  sigc::signal<void, bool> signal_document_wrap_text;
+  sigc::signal<void, bool> signal_document_line_numbers;
+#ifdef ENABLE_SPELL
+  sigc::signal<void, std::string> signal_document_dictionary_changed;
+#endif
+#ifdef ENABLE_HIGHLIGHT
+  sigc::signal<void, std::string> signal_document_highlight;
+#endif
   sigc::signal<void, int> signal_doc_activated;
+  sigc::signal<void, bool, bool, std::string> signal_document_added;
+  sigc::signal<void, int> signal_document_removed;
 
 #ifdef ENABLE_SPELL
   sigc::signal<void, bool> signal_document_spell_enabled;
 #endif
 
+  sigc::signal<void> signal_closed_document_erased;
+  sigc::signal<void, std::string>signal_closed_document_added;
   void closed_document_activated_cb(int);
 
   void reset_gui();
@@ -131,29 +145,37 @@ public:
   void set_highlight(std::string);
 #endif
   void scan_temp();
-
-  Document *get_active();
+  bool autosave();
 
 private:
-  void signal_created_cb(Document *);
-  void signal_destroyed_cb(int);
-
+  void connect_signals(Document *);
   bool replace_dialog_signal_find_cb(ReplaceDialog *);
   void replace_dialog_signal_replace_cb(ReplaceDialog *);
   void replace_dialog_signal_replace_all_cb(ReplaceDialog *);
 
   // Signal handlers.
-  void signal_document_rom_cb(bool, bool);
+  void signal_document_modified_cb(bool);
+  void signal_document_can_undo_cb(bool b) { signal_document_can_undo.emit(b); }
+  void signal_document_can_redo_cb(bool b) { signal_document_can_redo.emit(b); }
+  void signal_document_readonly_cb(bool);
   void signal_document_file_changed_cb(std::string s) { signal_document_file_changed.emit(s); }
+  void signal_document_cursor_moved_cb(int c, int l) { signal_document_cursor_moved.emit(c, l); }
   void signal_document_encoding_changed_cb(int e) { signal_document_encoding_changed.emit(e); }
+  void signal_document_overwrite_toggled_cb(bool b) { signal_document_overwrite_toggled.emit(b); }
   void signal_document_title_changed_cb(std::string);
 
   void signal_transfer_complete_cb(bool, const std::string&, const std::string, int, bool);
   void signal_dict_transfer_complete_cb(bool, const std::string&, std::string);
 
+#ifdef ENABLE_HIGHLIGHT
+  void signal_document_highlight_cb(std::string x) { signal_document_highlight.emit(x); }
+#endif
 #ifdef ENABLE_SPELL
   void signal_document_spell_enabled_cb(bool s) { signal_document_spell_enabled.emit(s); }
+  void signal_dictionary_changed_cb(std::string d) { signal_document_dictionary_changed.emit(d); }
 #endif
+  void signal_document_wrap_text_cb(bool w) { signal_document_wrap_text.emit(w); }
+  void signal_document_line_numbers_cb(bool ln) { signal_document_line_numbers.emit(ln); }
 
   void signal_document_label_close_clicked_cb(Document *);
 
@@ -161,17 +183,13 @@ private:
 
   void signal_text_view_request_file_open_cb(std::string);
 
-  /**
-   * \brief add a document to our notebook
-   * \param doc a pointer to a Document object.
-   */
-  void add_document(Document *doc);
+  void add_document(Document *, bool signals = true);
   bool save();
   bool save(bool);
   bool save(Document *);
 
-  //  std::vector<Document *> children;
-  //  std::vector<Document *> closed_children;
+  std::vector<Document *> children;
+  std::vector<Document *> closed_children;
 
   Conf& _conf;
   Encodings& _encodings;

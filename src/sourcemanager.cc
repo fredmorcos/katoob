@@ -27,7 +27,6 @@
 #include "xdgmime/xdgmime.h"
 #include "sourcemanager.hh"
 #include <iostream>
-#include <cstring>
 
 void SourceManager::init() {
   manager = gtk_source_language_manager_get_default();

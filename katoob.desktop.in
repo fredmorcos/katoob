@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+_Name=Katoob
+_Comment=Multilingual Unicode Text Editor
+TryExec=/usr/local/katoob
+Exec=/usr/local/bin/katoob %F
+Icon=katoob-icon.pmg
+Encoding=UTF-8
+Terminal=false
+Categories=Utility;TextEditor
+MimeType=text/plain;
+

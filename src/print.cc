@@ -2,7 +2,7 @@
  * print.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,14 +26,11 @@
 
 #include "print.hh"
 #include "macros.h"
-#include "document.hh"
 
 Print::Print(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Glib::RefPtr<PrintSettings>& settings) :
   _conf(conf),
   _doc(doc),
-#ifdef ENABLE_PRINT
   applet(conf),
-#endif
   _page_setup(page_setup),
   _settings(settings) {
 
@@ -206,20 +203,16 @@ void Print::on_preview_window_hide() {
   }
 }
 
-#ifdef ENABLE_PRINT
 Gtk::Widget* Print::on_create_custom_widget() {
   set_custom_tab_label(_("Other"));
   applet.get_box().show_all();
   return &applet.get_box();
 }
-#endif
 
 void Print::on_custom_widget_apply(Gtk::Widget *) {
   // Note: the returned widget is the VBox we created in on_create_custom_widget().
   // We don't need to use it, because we can access the applet directly.
-#ifdef ENABLE_PRINT
   applet.apply();
-#endif
   _settings->reset();
 }
 

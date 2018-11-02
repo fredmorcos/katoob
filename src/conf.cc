@@ -2,7 +2,7 @@
  * conf.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,22 +26,21 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
+#include <glibmm/miscutils.h>
+#include <glibmm/fileutils.h>
 #include <glib/gstdio.h>
-#include <map>
-#include <cstring>
 #include "conf.hh"
 #include "utils.hh"
-#include "encodings.hh"
 
-Conf::Conf(Encodings * _encodings) :
+Conf::Conf(Encodings& _encodings) :
   _ok(false) {
   if (!prepare_dir()) {
     return;
   }
 
   load_conf();
-  migrate_conf();
-
+  load_list();
   defaults(_encodings);
 }
 
@@ -50,8 +49,11 @@ Conf::~Conf() {
     return;
   }
 
+  adjust_lists();
+  save_list();
+
   std::string ver = get_version();
-  if ((ver.size() == 0) || (strcmp(ver.c_str(), VERSION))) {
+  if (ver.size() == 0) {
     // We will save regardless of the user options.
     // We have new configuration options.
     if (!prepare_dir()) {
@@ -80,12 +82,44 @@ Conf::~Conf() {
 }
 
 void Conf::save_conf() {
-  // TODO: Error checking ?
-  Glib::ustring str = to_data();
-  std::ofstream ostr((conf_dir + "katoob.conf").c_str());
-  if (ostr.is_open()) {
-    ostr << str;
-    ostr.close();
+  save_conf("config", config);
+  save_conf("print", print);
+}
+
+void Conf::save_list() {
+  save_list("recent", recent);
+  save_list("exec-cmd", exec_cmd);
+  save_list("locations", locations);
+}
+
+void Conf::save_conf(const char *_file, std::map<std::string, std::string>& mp) {
+  if (conf_dir.length()) {
+    std::string file = conf_dir;
+    file += _file;
+    std::ofstream ofs;
+    ofs.open(file.c_str());
+    if (ofs.is_open()) {
+      std::map<std::string, std::string>::iterator iter;
+      for (iter = mp.begin(); iter != mp.end(); iter++) {
+	ofs << iter->first << " = " << iter->second << std::endl;
+      }
+      ofs.close();
+    }
+  }
+}
+
+void Conf::save_list(const char * _file, std::vector<std::string>& mp) {
+  if (conf_dir.length()) {
+    std::string file = conf_dir;
+    file += _file;
+    std::ofstream ofs;
+    ofs.open(file.c_str());
+    if (ofs.is_open()) {
+      for (unsigned x = 0; x < mp.size(); x++) {
+	ofs << mp[x] << std::endl;
+      }
+      ofs.close();
+    }
   }
 }
 
@@ -97,7 +131,7 @@ bool Conf::prepare_dir() {
     // It might be a file, Katoob 0.1 used ~/.katoob as a configuration file.
     if (Glib::file_test (conf_dir, Glib::FILE_TEST_IS_REGULAR))	{
       // Sadly erase it.
-      if (g_unlink(conf_dir.c_str())) {
+      if (remove (conf_dir.c_str())) {
 	conf_dir.clear();
 	g_warning ("Can't remove old configuration file");
 	return false;
@@ -122,61 +156,9 @@ bool Conf::prepare_dir() {
 }
 
 void Conf::load_conf() {
-  try {
-    _ok = load_from_file(conf_dir + "katoob.conf", (Glib::KeyFileFlags)(Glib::KEY_FILE_KEEP_COMMENTS | Glib::KEY_FILE_KEEP_TRANSLATIONS));
-  }
-  catch (Glib::KeyFileError& er) {
-    if (er.code() == Glib::KeyFileError::NOT_FOUND) {
-      _ok = true;
-    }
-  }
-  catch (...) {
-  }
-}
-
-void Conf::migrate_conf() {
-  std::map<std::string, std::string> mp;
-  std::map<std::string, std::string>::iterator iter;
-  std::string file;
-  std::vector<std::string> list;
-  std::vector<std::string>::iterator viter;
-
-  std::map<std::string, std::string> confs;
-  confs["config"] = "katoob";
-  confs["print"] = "print";
-  std::map<std::string, std::string>::iterator c_iter;
-
-  for (c_iter = confs.begin(); c_iter != confs.end(); c_iter++) {
-    if (load_conf(c_iter->first.c_str(), mp)) {
-      file = conf_dir + c_iter->first;
-      for (iter = mp.begin(); iter != mp.end(); iter++) {
-	set_value(c_iter->second, iter->first, iter->second);
-      }
-      g_unlink(file.c_str());
-    }
-    mp.clear();
-  }
-
-  std::map<std::string, int> lists;
-  std::map<std::string, int>::iterator l_iter;
-  lists["recent"] = get("recentno", 10);
-  lists["exec-cmd"] = get("exec_cmd_size", 10);
-  lists["locations"] = get("locations_size", 10);
-
-  for (l_iter = lists.begin(); l_iter != lists.end(); l_iter++) {
-    if (load_list(l_iter->first.c_str(), list)) {
-      file = conf_dir + l_iter->first;
-      viter = list.begin();
-      int x = l_iter->second;
-      if (x < list.size()) {
-	viter += x;
-	list.erase(++viter, ++list.end());
-      }
-      set_string_list("lists", l_iter->first, list);
-      g_unlink(file.c_str());
-    }
-    list.clear();
-  }
+  _ok = load_conf("config", config);
+  load_conf("print", print);
+  adjust_lists();
 }
 
 bool Conf::load_conf(const char *_file, std::map<std::string, std::string>& mp) {
@@ -206,7 +188,13 @@ bool Conf::load_conf(const char *_file, std::map<std::string, std::string>& mp) 
   return false;
 }
 
-bool Conf::load_list(const char *_file, std::vector<std::string>& mp) {
+void Conf::load_list() {
+  load_list("recent", recent);
+  load_list("exec-cmd", exec_cmd);
+  load_list("locations", locations);
+}
+
+void Conf::load_list(const gchar *_file, std::vector<std::string>& mp) {
   if (conf_dir.length()) {
     std::string file = conf_dir;
     file += _file;
@@ -218,13 +206,109 @@ bool Conf::load_list(const char *_file, std::vector<std::string>& mp) {
 	mp.push_back(buff);
       }
       ifs.close();
-      return true;
     }
   }
-  return false;
 }
 
-void Conf::defaults(Encodings * enc) {
+double Conf::_get(std::map<std::string, std::string>& m, const char *key, double val) {
+  std::map<std::string, std::string>::iterator iter;
+  iter = m.find(key);
+  if (iter == m.end()) {
+    // We'll set it.
+    std::stringstream str;
+    str << val;
+    m[key] = str.str();
+#ifndef NDEBUG
+    std::cerr << __PRETTY_FUNCTION__ << " Shouldn't be here, Got key " << key << std::endl;
+#endif
+    return val;
+  }
+  return atof(iter->second.c_str());
+}
+
+int Conf::_get(std::map<std::string, std::string>& m, const char *key, int val) {
+  std::map<std::string, std::string>::iterator iter;
+  iter = m.find(key);
+  if (iter == m.end()) {
+    // We'll set it.
+    std::stringstream str;
+    str << val;
+    m[key] = str.str();
+#ifndef NDEBUG
+    std::cerr << __PRETTY_FUNCTION__ << " Shouldn't be here, Got key " << key << std::endl;
+#endif
+    return val;
+  }
+  return atoi(iter->second.c_str());
+}
+
+bool Conf::_get(std::map<std::string, std::string>& m, const char *key, bool val) {
+  std::map<std::string, std::string>::iterator iter;
+  iter = m.find(key);
+  if (iter == m.end()) {
+    // We'll set it.
+    std::stringstream str;
+    str << (val ? 1 : 0);
+    m[key] = str.str();
+#ifndef NDEBUG
+    std::cerr << __PRETTY_FUNCTION__ << " Shouldn't be here, Got key " << key << std::endl;
+#endif
+    return val;
+  }
+  return atoi(iter->second.c_str()) == 0 ? false : true;
+}
+
+std::string Conf::_get(std::map<std::string, std::string>& m, const char *key, std::string& val) {
+  std::map<std::string, std::string>::iterator iter;
+  iter = m.find(key);
+  if (iter == m.end()) {
+    // We'll set it.
+    m[key] = val;
+#ifndef NDEBUG
+    std::cerr << __PRETTY_FUNCTION__ << " Shouldn't be here, Got key " << key << std::endl;
+#endif
+    return val;
+  }
+  return iter->second;
+}
+
+void Conf::_set(std::map<std::string, std::string>&m, const char *key, double val) {
+  std::stringstream str;
+  str << val;
+  m[key] = str.str();
+}
+
+void Conf::_set(std::map<std::string, std::string>& m, const char *key, int val) {
+  std::stringstream str;
+  str << val;
+  m[key] = str.str();
+}
+
+void Conf::list_prepend(std::vector<std::string>& list, const std::string& file, unsigned size) {
+  // Let's insert it.
+  list.insert(list.begin(), file);
+
+  // let's remove it if it's in the vector.
+  // We are starting from 1 not 0 to avoid deleting what we have just inserted.
+  for (unsigned x = 1; x < list.size(); x++) {
+    if (list[x] == file) {
+      std::vector<std::string>::iterator iter = list.begin();
+      iter += x;
+      list.erase(iter);
+      break;
+    }
+  }
+
+  // Now let's truncate it if needed.
+  if (list.size() > size) {
+    size++;
+    std::vector<std::string>::iterator iter = list.begin();
+    iter += size;
+    list.erase(iter, list.end());
+  }
+}
+
+void Conf::defaults(Encodings& enc) {
   std::string def_open = "WINDOWS-1256";
   std::string def_save = "UTF-8";
   int _default_open = -1;
@@ -233,23 +317,23 @@ void Conf::defaults(Encodings * enc) {
   Glib::get_charset(cset);
 
   if (get("locale_enc", false)) {
-    _default_open = enc->get(cset);
+    _default_open = enc.get(cset);
   }
   else if (get("special_enc", true)) {
     std::string def = get("saved_enc", def_open);
-    _default_open = enc->get(def);
+    _default_open = enc.get(def);
   }
   if (_default_open != -1) {
-    enc->default_open(_default_open);
+    enc.default_open(_default_open);
   }
   // if it's utf8 or -1, we will default to cp1256
-  if ((_default_open == -1) || _default_open == enc->utf8()) {
-      enc->default_open(enc->get_by_charset(def_open));
+  if ((_default_open == -1) || _default_open == enc.utf8()) {
+      enc.default_open(enc.get_by_charset(def_open));
   }
 
   /* Now for the saving. */
   std::string def = get("save_enc", def_save);
-  enc->default_save(enc->get(def));
+  enc.default_save(enc.get(def));
 }
 
 const std::string& Conf::open_dir() {
@@ -286,187 +370,41 @@ void Conf::save_dir(const std::string& path) {
   }
 }
 
-std::string Conf::get_version() {
-  std::string ver;
-  try {
-    return get_string("katoob", "version");
+void Conf::adjust_lists() {
+  // recent
+  unsigned x = get("recentno", 10);
+  std::vector<std::string>::iterator start;
+  std::vector<std::string>::iterator end;
+
+  if (x < recent.size()) {
+    start = recent.begin();
+    end = recent.end();
+    end++;
+    start += x;
+    start++;
+    recent.erase(start, end);
   }
-  catch (...) {
+
+  // exec-cmd
+  x = get("exec_cmd_size", 10);
+  if (x < exec_cmd.size()) {
+    start = exec_cmd.begin();
+    end = exec_cmd.end();
+    end++;
+    start += x;
+    start++;
+    exec_cmd.erase(start, end);
+  }
+}
+
+std::string Conf::get_version() {
+  std::map<std::string, std::string>::iterator iter;
+  std::string ver;
+  iter = config.find("version");
+  if (iter == config.end()) {
     return ver;
   }
-}
-
-void Conf::set(const std::string& key, int val) {
-  set_integer("katoob", key, val);
-}
-
-void Conf::set(const std::string& key, const char *val) {
-  set_string("katoob", key, val);
-}
-
-void Conf::print_set(const std::string& key, const std::string& val) {
-  set_string("print", key, val);
-}
-
-void Conf::print_set(const std::string& key, int val) {
-  set_integer("print", key, val);
-}
-
-void Conf::print_set(const std::string& key, double val) {
-  set_double("print", key, val);
-}
-
-int Conf::get(const std::string& key, int val) {
-  try {
-    return get_integer("katoob", key);
-  }
-  catch (Glib::KeyFileError& er) {
-    std::cerr << "Can't get the value of " << key << " : " << er.what() << std::endl;
-    set(key, val);
-    return val;
-  }
-}
-
-bool Conf::get(const std::string& key, bool val) {
-  try {
-    return get_boolean("katoob", key);
-  }
-  catch (Glib::KeyFileError& er) {
-    std::cerr << "Can't get the value of " << key << " : " << er.what() << std::endl;
-    set(key, val);
-    return val;
-  }
-}
-
-std::string Conf::get(const std::string& key, const std::string& val) {
-  try {
-    return get_string("katoob", key);
-  }
-  catch (Glib::KeyFileError& er) {
-    std::cerr << "Can't get the value of " << key << " : " << er.what() << std::endl;
-    set(key, val.c_str());
-    return val;
-  }
-}
-
-std::string Conf::get(const std::string& key, const char *val) {
-  try {
-    return get_string("katoob", key);
-  }
-  catch (Glib::KeyFileError& er) {
-    std::cerr << "Can't get the value of " << key << " : " << er.what() << std::endl;
-    set(key, val);
-    return val;
-  }
-}
-
-int Conf::print_get(const std::string& key, int val) {
-  try {
-    return get_integer("print", key);
-  }
-  catch (Glib::KeyFileError& er) {
-    std::cerr << "Can't get the value of " << key << " : " << er.what() << std::endl;
-    print_set(key, val);
-    return val;
-  }
-}
-
-double Conf::print_get(const std::string& key, double val) {
-  try {
-    return get_double("print", key);
-  }
-  catch (Glib::KeyFileError& er) {
-    std::cerr << "Can't get the value of " << key << " : " << er.what() << std::endl;
-    print_set(key, val);
-    return val;
-  }
-}
-
-bool Conf::print_get(const std::string& key, bool val) {
-  try {
-    return get_boolean("print", key);
-  }
-  catch (Glib::KeyFileError& er) {
-    std::cerr << "Can't get the value of " << key << " : " << er.what() << std::endl;
-    print_set(key, val);
-    return val;
-  }
-}
-
-std::string Conf::print_get(const std::string& key, const char *val) {
-  try {
-    return get_string("print", key);
-  }
-  catch (Glib::KeyFileError& er) {
-    std::cerr << "Can't get the value of " << key << " : " << er.what() << std::endl;
-    print_set(key, val);
-    return val;
-  }
-}
-
-std::vector<std::string> Conf::get_list(const std::string& key) {
-  try {
-    return get_string_list("lists", key);
-  }
-  catch (Glib::KeyFileError& er) {
-    std::cerr << "Can't get the value of " << key << " : " << er.what() << std::endl;
-    std::vector<std::string> val;
-    return val;
-  }
-}
-
-void Conf::adjust_lists() {
-  adjust_list("recent", get("recentno", 10));
-  adjust_list("exec-cmd", get("exec_cmd_size", 10));
-  adjust_list("locations", get("locations_size", 10));
-}
-
-void Conf::adjust_list(const std::string& list, int size) {
-  std::vector<std::string> lst;
-  try {
-    lst = get_string_list("lists", list);
-  }
-  catch(...) {
-
-  }
-
-  adjust_list(lst, size);
-  set_string_list("lists", list, lst);
-}
-
-void Conf::list_prepend(const std::string& list, const std::string& item, int size) {
-  std::vector<std::string> lst;
-  try {
-    lst = get_string_list("lists", list);
-  }
-  catch(...) {
-
-  }
-
-  // Let's insert it.
-  lst.insert(lst.begin(), item);
-
-  // let's remove it if it's in the vector.
-  // We are starting from 1 not 0 to avoid deleting what we have just inserted.
-  for (unsigned x = 1; x < lst.size(); x++) {
-    if (lst[x] == item) {
-      std::vector<std::string>::iterator iter = lst.begin();
-      iter += x;
-      lst.erase(iter);
-      break;
-    }
-  }
-
-  adjust_list(lst, size);
-  set_string_list("lists", list, lst);
-}
-
-void Conf::adjust_list(std::vector<std::string>& list, int size) {
-  // Now let's truncate it if needed.
-  if (list.size() > size) {
-    size++;
-    std::vector<std::string>::iterator iter = list.begin();
-    iter += size;
-    list.erase(iter, list.end());
+  else {
+    return iter->second;
   }
 }

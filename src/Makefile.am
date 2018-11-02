@@ -8,13 +8,23 @@ AM_CFLAGS=$(AM_CXXFLAGS)
 
 katoob_LDADD = $(KATOOB_LIBS) $(HIGHLIGHT_LIBS) $(BZ2_LIBS) $(GZ_LIBS) $(GTKSOURCEVIEW_LIBS) $(MAEMO_LIBS) $(LIBCURL) $(PRINT_LIBS)
 
-katoob_SOURCES = katoob.cc main.cc window.cc document.cc conf.cc statusbar.cc bars.cc dialogs.cc encodings.cc mdi.cc utils.cc textbuffer.cc filedialog.cc aboutdialog.cc pipe.cc tempfile.cc searchdialog.cc replacedialog.cc label.cc undoredo.cc dict.cc import.cc export.cc preferencesdialog.cc execdialog.cc openlocationdialog.cc textview.cc applets.cc network.cc recent.cc docfactory.cc
+katoob_SOURCES = katoob.cc main.cc window.cc document.cc conf.cc statusbar.cc menubar.cc toolbar.cc dialogs.cc encodings.cc mdi.cc utils.cc textbuffer.cc filedialog.cc aboutdialog.cc pipe.cc tempfile.cc searchdialog.cc replacedialog.cc label.cc undoredo.cc dict.cc import.cc export.cc preferencesdialog.cc execdialog.cc openlocationdialog.cc textview.cc applets.cc network.cc
 
-noinst_HEADERS = katoob.hh window.hh document.hh conf.hh statusbar.hh bars.hh dialogs.hh encodings.hh mdi.hh utils.hh textbuffer.hh filedialog.hh aboutdialog.hh pipe.hh tempfile.hh searchdialog.hh replacedialog.hh label.hh undoredo.hh dict.hh import.hh export.hh preferencesdialog.hh execdialog.hh spell.hh spelldialog.hh macros.h openlocationdialog.hh textview.hh dbus.hh isocodes.hh spellmenu.hh applets.hh network.hh recent.hh docfactory.hh
+noinst_HEADERS = katoob.hh window.hh document.hh conf.hh statusbar.hh menubar.hh toolbar.hh dialogs.hh encodings.hh mdi.hh utils.hh textbuffer.hh filedialog.hh aboutdialog.hh pipe.hh tempfile.hh searchdialog.hh replacedialog.hh label.hh undoredo.hh dict.hh import.hh export.hh preferencesdialog.hh execdialog.hh spell.hh spelldialog.hh macros.h openlocationdialog.hh textview.hh dbus.hh isocodes.hh spellmenu.hh applets.hh network.hh
 
 if PRINT
 katoob_SOURCES += print.cc pagesetup.cc printsettings.cc previewdialog.cc
 noinst_HEADERS += print.hh previewdialog.hh printsettings.hh pagesetup.hh
+endif
+
+if EMULATOR
+katoob_SOURCES += emulator.cc emulator.hh
+input_window = inputwindow.hh inputwindow.cc
+endif
+
+if MULTIPRESS
+katoob_SOURCES += multipresswindow.cc multipress.cc multipress.hh multipresswindow.hh
+input_window = inputwindow.hh inputwindow.cc
 endif
 
 katoob_SOURCES += $(input_window)

@@ -1,3 +1,3 @@
-EXTRA_DIST = katoob.png green.png red.png katoob-small.png \
+EXTRA_DIST = katoob.png green.png red.png close.png katoob-small.png \
 		katoob.ico katoob.svg
-pkgdata_DATA = katoob.png green.png red.png katoob-small.png
+pkgdata_DATA = katoob.png green.png red.png close.png katoob-small.png

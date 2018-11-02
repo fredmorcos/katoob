@@ -2,7 +2,7 @@
  * spelldialog.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,9 +34,7 @@
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/image.h>
-
-// forward declaration:
-class Document;
+#include "document.hh"
 
 class SpellDialog : public Gtk::Window {
 public:

@@ -24,12 +24,10 @@
 #define __TEXTBUFFER_HH__
 
 #include <gtkmm/textbuffer.h>
-
 #ifdef ENABLE_HIGHLIGHT
 #include <gtksourceview/gtksourcebuffer.h>
 #include "sourcemanager.hh"
 #endif
-
 #include "conf.hh"
 
 class TextBuffer : public Gtk::TextBuffer {

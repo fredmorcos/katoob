@@ -1,0 +1,54 @@
+--- a/configure.in
++++ b/configure.in
+@@ -12,6 +12,8 @@
+ 
+ AM_GLIB_GNU_GETTEXT
+ 
++AM_WITH_EXPAT
++
+ AC_ARG_ENABLE(profile,
+ AC_HELP_STRING([--enable-profile], [Include profiling information. (default: no)]),
+         profile=$enableval, profile=no)
+@@ -169,18 +171,15 @@
+ fi
+ fi
+ 
+-dnl gz
++dnl check for zlib is enabled always because it's needed by binutils gold.
++PKG_CHECK_MODULES(GZ, zlib)
++
+ if test "$gzip" = yes; then
+-AC_CHECK_LIB(z, gzopen, gzip_l=yes, gzip_l=no)
+-AC_CHECK_HEADER(zlib.h, gzip_h=yes, gzip_h=no)
+-if test "$gzip_l" = yes && test "$gzip_h" = yes; then
+ AC_MSG_NOTICE([gzip support is enabled.])
+ AC_DEFINE(HAVE_GZIP,,[Enable gzip support])
+-GZ_LIBS="-lz"
+ else
+ AC_MSG_NOTICE([gzip support is disabled.])
+ fi
+-fi
+ 
+ 
+ if test "$dbus" = yes; then
+@@ -241,7 +240,9 @@
+ AC_SUBST(GETTEXT_PACKAGE)
+ AC_SUBST(FRIBIDI_CFLAGS)
+ AC_SUBST(FRIBIDI_LIBS)
++AC_SUBST(GZ_LIBS)
+ AC_SUBST(BZ2_LIBS)
++AC_SUBST(EXPAT_LIBS)
+ 
+ AC_OUTPUT([
+ katoob.desktop.in
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -6,7 +6,7 @@
+ AM_CXXFLAGS = $(CFLAGS) $(KATOOB_CFLAGS) $(HIGHLIGHT_CFLAGS) $(GTKSOURCEVIEW_CFLAGS) $(MAEMO_CFLAGS) $(PRINT_CFLAGS)
+ AM_CFLAGS=$(AM_CXXFLAGS)
+ 
+-katoob_LDADD = $(KATOOB_LIBS) $(HIGHLIGHT_LIBS) $(BZ2_LIBS) $(GZ_LIBS) $(GTKSOURCEVIEW_LIBS) $(MAEMO_LIBS) $(LIBCURL) $(PRINT_LIBS)
++katoob_LDADD = $(KATOOB_LIBS) $(HIGHLIGHT_LIBS) $(BZ2_LIBS) $(GZ_LIBS) $(GTKSOURCEVIEW_LIBS) $(MAEMO_LIBS) $(LIBCURL) $(PRINT_LIBS) $(EXPAT_LIBS)
+ 
+ katoob_SOURCES = katoob.cc main.cc window.cc document.cc conf.cc statusbar.cc menubar.cc toolbar.cc dialogs.cc encodings.cc mdi.cc utils.cc textbuffer.cc filedialog.cc aboutdialog.cc pipe.cc tempfile.cc searchdialog.cc replacedialog.cc label.cc undoredo.cc dict.cc import.cc export.cc preferencesdialog.cc execdialog.cc openlocationdialog.cc textview.cc applets.cc network.cc
+ 

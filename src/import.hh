@@ -2,7 +2,7 @@
  * import.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2008 Mohammed Sameer
+ * Copyright (C) 2006 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,13 +29,11 @@
 
 class Import {
 public:
-  Import(const std::string& _name, bool(*_func)(std::string&, std::string&))
-    : name(_name), func(_func) {}
   std::string name;
   bool(*func)(std::string&, std::string&);
 };
 
-void import_init(std::vector<Import *>&);
+void import_init(std::vector<Import>&);
 bool katoob_import_html(std::string&, std::string&);
 #ifdef HAVE_GZIP
 bool katoob_import_gz(std::string&, std::string&);

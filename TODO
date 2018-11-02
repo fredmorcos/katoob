@@ -1,13 +1,6 @@
 	Here is my todo list in no specific order
 	email me with any new suggestions
 
-1. port the entire source code to cmake
-2. enhance the search and spell checking dialog
-3. port to gtk printing
-4. fix compilation warnings
-5. fix runtime warnings
-6. rewrite preferences dialog
-
 * THANKS FILE. Reorganise.
 * PrintDialog, Load and save settings.
 

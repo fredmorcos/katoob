@@ -25,7 +25,6 @@
 
 #include <expat.h>
 #include <map>
-#include <string>
 
 class IsoCodes {
 public:

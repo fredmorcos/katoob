@@ -3,7 +3,6 @@
  * This file is part of katoob
  *
  * Copyright (C) 2006, 2007 Mohammed Sameer
- * 		 2008 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,21 +65,19 @@ AboutDialog::AboutDialog() {
 
   set_name(_("Katoob"));
   set_version(VERSION);
-  set_website("http://fredmorcos.googlecode.com/svn/projects/katoob");
+  set_website("http://www.foolab.org/projects/katoob");
   set_license(license.str());
   set_wrap_license(true);
-  set_copyright(_("Copyright \xc2\xa9 2006, 2007 Mohammed Sameer.\nCopyright \xc2\xa9 2008 Fred Morcos."));
+  set_copyright(_("Copyright \xc2\xa9 2006, 2007 Mohammed Sameer."));
 
   authors.push_back(_("Mohammed Sameer"));
-  authors.push_back(_("Fred Morcos"));
   set_authors(authors);
 
   artists.push_back(_("Mohammed Sameer"));
   artists.push_back(_("Mostafa Hussein"));
-  artists.push_back(_("Fred Morcos"));
   set_artists(artists);
 
-  set_comments(_("A multilingual unicode and bidirection aware text editor"));
+  set_comments(_("A lightweight multilingual unicode and bidi aware text editor"));
   set_translator_credits(_("translator-credits"));
   set_position(Gtk::WIN_POS_CENTER);
 }
@@ -89,6 +86,7 @@ AboutDialog::AboutDialog() {
  * \brief destructor.
  */
 AboutDialog::~AboutDialog() {
+
 }
 
 /**

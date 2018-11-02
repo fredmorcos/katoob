@@ -1,0 +1,32 @@
+Source: katoob
+Section: text
+Priority: optional
+Maintainer: Mohammed Sameer <msameer@debian.org>
+Build-Depends: autoconf,
+               automake1.11,
+               autotools-dev,
+               debhelper (>= 7.1),
+               iso-codes,
+               libbz2-dev,
+               libcurl4-gnutls-dev,
+               libdbus-glib-1-dev,
+               libenchant-dev,
+               libexpat1-dev,
+               libfribidi-dev,
+               libgtkmm-2.4-dev,
+               pkg-config,
+               quilt (>= 0.46-7~),
+               zlib1g-dev
+Build-Conflicts: autoconf2.13, automake1.4
+Standards-Version: 3.9.1
+Homepage: http://foolab.org/projects/katoob
+
+Package: katoob
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Recommends: iso-codes
+Description: A Gtk2 light weight multilingual BiDi aware text editor
+ katoob is a light weight, multi lingual, BIDI-aware text editor.
+ It support opening and saving files in multiple encodings.
+ The main support is for Arabic language, But language specific features
+ can be added.

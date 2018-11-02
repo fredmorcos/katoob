@@ -1,0 +1,23 @@
+#!/usr/bin/make -f
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+export AUTOMAKE = automake-1.11
+
+%:
+	dh $@ --with quilt,autotools_dev
+
+override_dh_auto_configure:
+	autoreconf -i
+	dh_auto_configure -- --enable-spell --enable-bzip2 --enable-dbus --enable-gzip --enable-print --enable-release --enable-fribidi --enable-isocodes --with-expat=yes
+
+override_dh_auto_clean:
+	dh_auto_clean
+
+override_dh_install:
+	dh_install
+	# hack
+	mv $(CURDIR)/debian/katoob/usr/share/locale/cz $(CURDIR)/debian/katoob/usr/share/locale/cs
+
+override_dh_auto_test:

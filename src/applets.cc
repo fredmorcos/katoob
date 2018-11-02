@@ -2,7 +2,7 @@
  * applets.cc
  * This file is part of katoob
  *
- * Copyright (C) 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@
 #include "dict.hh"
 #include "macros.h"
 #include "network.hh"
-#include "encodings.hh"
 
 Applet::Applet(Conf& conf) : _conf(conf) {
   box.set_spacing(5);
@@ -490,7 +489,7 @@ void EncodingsApplet::apply() {
   _conf.set("save_enc", _enc.get_charset(save_enc.get_active_row_number()).c_str());
   _conf.set("saved_enc", _enc.get_charset(saved_enc.get_active_row_number()).c_str());
   _conf.set("locale_enc", locale_enc.get_active());
-  _conf.defaults(&_enc);
+  _conf.defaults(_enc);
 }
 
 void EncodingsApplet::locale_enc_toggled_cb() {
@@ -787,6 +786,28 @@ void DictionaryApplet::list_dicts_clicked_cb() {
 
   return;
 }
+
+#ifdef ENABLE_MULTIPRESS
+/* MultipressApplet */
+MultipressApplet::MultipressApplet(Conf& _conf) :
+  Applet::Applet(_conf),
+  multipress_timeout_adj(0,0,0) {
+
+  multipress_timeout_l.set_use_underline();
+  multipress_timeout_l.set_label(_("_Milliseconds before multipress will accept the current value."));
+  multipress_timeout.set_adjustment(multipress_timeout_adj);
+  multipress_timeout_adj.set_upper(2000);
+  multipress_timeout_adj.set_lower(200);
+  multipress_timeout_adj.set_value(_conf.get("multipress_timeout", 1000));
+  m_box1.pack_start(multipress_timeout_l);
+  m_box1.pack_start(multipress_timeout);
+  box.pack_start(m_box1, false, false);
+}
+
+void MultipressApplet::apply() {
+  _conf.set("multipress_timeout", multipress_timeout.get_value_as_int());
+}
+#endif
 
 /* RemoteDocumentsApplet */
 RemoteDocumentsApplet::RemoteDocumentsApplet(Conf& _conf) :

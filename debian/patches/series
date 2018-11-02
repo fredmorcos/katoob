@@ -1,0 +1,9 @@
+replace_fribidi-config_pkg-config.patch
+gcc45_ftbfs_fixes.patch
+Gtk-ButtonBox.patch
+correct_open_call.patch
+fix_tooltip_crash.patch
+desktop_file_fixes.patch
+link_fix.patch
+dict_test_fix.patch
+fix_save_perms.patch

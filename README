@@ -1,7 +1,6 @@
 Katoob README
 ~~~~~~~~~~~~~
  Katoob Copyright (c) 2002-2006 Mohammed Sameer.
- Katoob Copyright (c) 2008-     Fred Morcos.
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -41,11 +40,13 @@ Download:
  * Mandriva: Add the contrib repository then urpmi katoob
 
 
-SVN:
+CVS:
 ~~~~
  For the latest bleeding edge version:
- svn co http://home.foolab.org/svn/projects/katoob/trunk katoob
- cd katoob && ./autogen.sh
+ cvs -d:pserver:anonymous@home.foolab.org:/var/lib/cvs login
+  (Press enter when prompted for the password)
+ cvs -d:pserver:anonymous@home.foolab.org:/var/lib/cvs co projects/katoob
+ cd projects/katoob && ./autogen.sh
 
  You'll need:
   * autoconf
@@ -76,6 +77,10 @@ Features:
 * Display the used encoding in the statusbar
 * GNOME human interface guidlines compliant interface
 * GNOME menu entry.
+* An infrastructure to allow easy addition of emulator files.
+* All the configured keyboard layouts are available from the layout switcher.
+* An emulator to be able to write in your language even if you don't configure 
+  a keyboard layout.
 * Syntax highlighting.
 * Spell checking on the fly or when required.
 * Per document settings on the fly.

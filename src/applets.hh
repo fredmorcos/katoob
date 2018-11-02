@@ -42,7 +42,7 @@
 #ifdef ENABLE_SPELL
 #include "spellmenu.hh"
 #endif
-#include "dialogs.hh"
+#include <dialogs.hh>
 
 class Applet {
 public:
@@ -226,6 +226,20 @@ private:
   Glib::RefPtr<Gtk::ListStore> dict_store;
   Gtk::ScrolledWindow dict_sw;
 };
+
+#ifdef ENABLE_MULTIPRESS
+class MultipressApplet : public Applet {
+public:
+  MultipressApplet(Conf&);
+  virtual void apply();
+
+private:
+  Gtk::Adjustment multipress_timeout_adj;
+  Gtk::SpinButton multipress_timeout;
+  Gtk::HBox m_box1;
+  Gtk::Label multipress_timeout_l;
+};
+#endif
 
 class RemoteDocumentsApplet : public Applet {
 public:

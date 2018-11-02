@@ -3,7 +3,6 @@
  * This file is part of katoob
  *
  * Copyright (C) 2006, 2007 Mohammed Sameer
- * 		 2008 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,26 +43,18 @@ int main(int argc, char *argv[]) {
   textdomain (PACKAGE);
 #endif
 
-  Katoob *katoob = NULL;
+  //  signal(SIGPIPE, SIG_IGN);
 
+  Katoob katoob(argc, argv);
 #ifdef ENABLE_MAEMO
- try {
+  if (katoob.ok()) {
 #endif
-   katoob = new Katoob(argc, argv);
+    katoob.window();
+    return katoob.run();
 #ifdef ENABLE_MAEMO
- }
- catch (Glib::Error& er) {
-   if (katoob) {
-     delete katoob;
-   }
-   return er.code();
- }
+  }
+  else {
+    return katoob.get_error();
+  }
 #endif
-
- katoob->run();
-
- delete katoob;
-
- return 0;
 }
-

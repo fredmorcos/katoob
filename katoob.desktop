@@ -1,0 +1,20 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Katoob
+Name[ar]=كتوب
+Name[ja]=Katoob
+Comment=Multilingual Unicode Text Editor
+Comment[ar]=محرر نصوص متعدد اللغات
+Comment[cz]=Vícejazykový textový editor
+Comment[fr]=Éditeur de texte multilingue Unicode
+Comment[he]=עורך טקסט יוניקוד רב-לשוני
+Comment[ja]=多国語対応Unicodeテキストエディタ
+TryExec=/usr/local/katoob
+Exec=/usr/local/bin/katoob %F
+Icon=katoob-icon.pmg
+Encoding=UTF-8
+Terminal=false
+Categories=Utility;TextEditor
+MimeType=text/plain;
+

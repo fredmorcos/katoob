@@ -1,0 +1,11 @@
+--- a/src/utils.cc
++++ b/src/utils.cc
+@@ -222,7 +222,7 @@
+ // don't have write access to that directory although we have write access
+ // to the target file.
+ bool Utils::katoob_write(const char *file, const char *text, unsigned len, std::string& error) {
+-  int fd = open(file, O_CREAT|O_TRUNC|O_WRONLY, S_IRWXU);
++  int fd = open(file, O_CREAT|O_TRUNC|O_WRONLY, 0644);
+   if (fd == -1) {
+     error = Utils::substitute("I can't create the file %s\n", file) + std::strerror(errno);
+     return false;

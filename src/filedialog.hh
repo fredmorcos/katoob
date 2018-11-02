@@ -27,7 +27,6 @@
 #include <gtkmm/comboboxtext.h>
 #include "encodings.hh"
 #include "conf.hh"
-
 #ifdef ENABLE_MAEMO
 #include <hildon-fmmm/file-chooser-dialog.h>
 #include <hildonmm/caption.h>

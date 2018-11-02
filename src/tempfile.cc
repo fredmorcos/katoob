@@ -26,7 +26,6 @@
 
 #include <glibmm.h>
 #include <cerrno>
-#include <cstring>
 #include "tempfile.hh"
 #include "utils.hh"
 #ifdef _WIN32

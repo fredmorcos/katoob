@@ -1,0 +1,50 @@
+--- a/src/document.cc
++++ b/src/document.cc
+@@ -33,6 +33,7 @@
+ #include <iostream>
+ #include <sstream>
+ #include <cassert>
++#include <cstring>
+ #include <gtkmm/enums.h>
+ #include <gtkmm/image.h>
+ #include <gtkmm/stock.h>
+--- a/src/isocodes.hh
++++ b/src/isocodes.hh
+@@ -25,6 +25,7 @@
+ 
+ #include <expat.h>
+ #include <map>
++#include <string>
+ 
+ class IsoCodes {
+ public:
+--- a/src/mdi.cc
++++ b/src/mdi.cc
+@@ -26,6 +26,7 @@
+ 
+ #include <cerrno>
+ #include <iostream>
++#include <cstring>
+ #include "mdi.hh"
+ #include "dialogs.hh"
+ #include "filedialog.hh"
+--- a/src/multipress.cc
++++ b/src/multipress.cc
+@@ -26,6 +26,7 @@
+ 
+ #include <cassert>
+ #include <fstream>
++#include <memory>
+ #include "multipress.hh"
+ #include "utils.hh"
+ 
+--- a/src/utils.cc
++++ b/src/utils.cc
+@@ -29,6 +29,7 @@
+ #include <iostream>
+ #include <unistd.h>
+ #include <cerrno>
++#include <cstring>
+ #include <fcntl.h>
+ #include <gtkmm/textview.h>
+ #include "macros.h"

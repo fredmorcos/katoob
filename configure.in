@@ -2,7 +2,7 @@ AC_PREREQ(2.52)
 
 AC_INIT(src/main.cc)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(katoob, 0.6)
+AM_INIT_AUTOMAKE(katoob, 0.5.9.1)
 AC_PROG_INTLTOOL(0.18, "no-xml")
 
 AC_PROG_CXX
@@ -27,6 +27,14 @@ AC_HELP_STRING([--enable-bzip2], [Enable bzip2 support. (default: yes)]),
 AC_ARG_ENABLE(gzip,
 AC_HELP_STRING([--enable-gzip], [Enable gzip support. (default: yes)]),
         gzip=$enableval, gzip=yes)
+
+AC_ARG_ENABLE(multipress,
+AC_HELP_STRING([--enable-multipress], [Enable multipress. (default: yes)]),
+        multipress=$enableval, multipress=yes)
+
+AC_ARG_ENABLE(emulator,
+AC_HELP_STRING([--enable-emulator], [Enable emulator. (default: yes)]),
+        emulator=$enableval, emulator=yes)
 
 AC_ARG_ENABLE(highlight,
 AC_HELP_STRING([--enable-highlight], [Enable source code highlighting. (default: no)]),
@@ -81,7 +89,7 @@ AC_DEFINE(ENABLE_DICT,,[Enable dict..])
 fi
 fi
 
-AM_CONDITIONAL(DICT, test "x$dict" = "xyes")
+AM_CONDITIONAL(DICT, text "x$dict" = "xyes")
 
 dnl Set PREFIX in config.h.
 if test "x${prefix}" = "xNONE"; then
@@ -187,6 +195,17 @@ AC_DEFINE(ENABLE_DBUS,,[Enable dbus.])
 fi
 AM_CONDITIONAL(DBUS, test "x$dbus" = "xyes")
 
+
+if test "$emulator" = yes; then
+AC_DEFINE(ENABLE_EMULATOR,,[Enable emulator.])
+fi
+AM_CONDITIONAL(EMULATOR, test "x$emulator" = "xyes")
+
+if test "$multipress" = yes; then
+AC_DEFINE(ENABLE_MULTIPRESS,,[Enable multipress.])
+fi
+AM_CONDITIONAL(MULTIPRESS, test "x$multipress" = "xyes")
+
 if test "$maemo" = yes; then
 PKG_CHECK_MODULES(MAEMO, libosso hildonmm hildon-fmmm gconfmm-2.6)
 AC_DEFINE(ENABLE_MAEMO,,[Enable maemo.])
@@ -238,7 +257,8 @@ src/pixmaps/Makefile
 src/xdgmime/Makefile
 po/Makefile.in
 data/Makefile
-data/ui/Makefile
+data/emulator/Makefile
+data/multipress/Makefile
 m4/Makefile
 maemo/Makefile
 maemo/katoob.service

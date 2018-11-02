@@ -2,7 +2,7 @@
  * network.cc
  * This file is part of katoob
  *
- * Copyright (C) 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,12 +27,9 @@
 #include <glibmm/main.h>
 #include "network.hh"
 #include "macros.h"
-
 #ifdef ENABLE_MAEMO
 #include "maemo-wrapper.hh"
 #endif
-
-#include "conf.hh"
 
 class URL {
 public:
@@ -262,8 +259,8 @@ bool Network::add_transfer(const std::string& uri, std::string& error, sigc::slo
   return true;
 }
 
-Network::Network(Conf *_conf) {
-  conf = _conf;
+Network::Network(Conf& _conf) {
+  conf = &_conf;
 };
 
 Network::~Network() {

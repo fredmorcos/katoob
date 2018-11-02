@@ -1,0 +1,18 @@
+# Descriptions: 
+#  fix hba declaration to match get_action_area return type Gtk::Dialog 2.18 now 
+#  defines this as a generic ButtonBox, same as Bug-Debian: 577371
+# Bug    : 
+# Author : Hideki Yamane (Debian-JP) <henrich@debian.or.jp>
+Index: katoob-0.5.9.1/src/preferencesdialog.cc
+===================================================================
+--- katoob-0.5.9.1.orig/src/preferencesdialog.cc	2010-04-26 14:36:30.419428845 +0900
++++ katoob-0.5.9.1/src/preferencesdialog.cc	2010-04-26 14:36:52.231426688 +0900
+@@ -85,7 +85,7 @@
+ 
+ 
+   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+-  Gtk::HButtonBox* box = dialog.get_action_area();
++  Gtk::ButtonBox* box = dialog.get_action_area();
+   box->pack_start(apply);
+   //  dialog.add_button(Gtk::Stock::APPLY, Gtk::RESPONSE_APPLY);
+   dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);

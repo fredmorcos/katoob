@@ -2,7 +2,7 @@
  * export.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2008 Mohammed Sameer
+ * Copyright (C) 2006 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,14 +31,12 @@
 
 class Export {
 public:
-  Export(const std::string& _name, bool(*_func)(Glib::ustring&, std::string&, std::string&), bool _lines)
-    : name(_name), func(_func), lines(_lines) {}
   std::string name;
   bool(*func)(Glib::ustring&, std::string&, std::string&);
   bool lines;
 };
 
-void export_init(std::vector<Export *>&);
+void export_init(std::vector<Export>&);
 #ifdef HAVE_FRIBIDI
 bool katoob_export_plain(Glib::ustring&, std::string&, std::string&);
 #endif
