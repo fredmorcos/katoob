@@ -38,6 +38,15 @@ support is some for Arabic language specific features.
 
 It should run on most BSD and POSIX compliant operating systems.
 
+## News
+
+* 2018-11-02 Frederic-Gerald Morcos <fred.morcos@gmail.com>
+  - Version 0.6.0-alpha
+  - Move from enchant-1 to enchant-2
+  - Move from autotools to meson
+  - Remove native Windows support (WSL can be used instead)
+  - Remove Maemo support
+
 ## Requirements
 
 Katoob was originally developed on Debian GNU/Linux but it should work
@@ -278,12 +287,7 @@ ninja install
 * Perhaps CVS support
 * Line ends: UNIX/Windows/Mac
 
-## Changelog and News
-
-* 2018-11-02 Frederic-Gerald Morcos <fred.morcos@gmail.com>
-  - Version 0.6.0-alpha
-  - Move from enchant-1 to enchant-2
-  - Move from autotools to meson
+## Old Changelog and News
 
 * XXXX-XX-XX Mohammed Sameer <msameer@foolab.org>
   - Version 0.6.0-alpha
