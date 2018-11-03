@@ -2,7 +2,7 @@
  * export.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2008 Mohammed Sameer
+ * Copyright (C) 2006 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,21 +41,35 @@
 
 // TODO: Export HTML character references.
 
-void export_init(std::vector<Export *>& exprt) {
+void export_init(std::vector<Export>& exprt) {
+  Export exp;
+
 #ifdef HAVE_FRIBIDI
-  exprt.push_back(new Export(_("_Text file with no unicode control characters..."), katoob_export_plain, false));
+  exp.name = _("_Text file with no unicode control characters...");
+  exp.func = katoob_export_plain;
+  exp.lines = false;
+  exprt.push_back(exp);
 #endif
 
 #ifdef HAVE_GZIP
-  exprt.push_back(new Export(_("Text file compressed with _gzip..."), katoob_export_gz, false));
+  exp.name = _("Text file compressed with _gzip");
+  exp.func = katoob_export_gz;
+  exp.lines = false;
+  exprt.push_back(exp);
 #endif
 
 #ifdef HAVE_BZIP2
-  exprt.push_back(new Export(_("Text file compressed with _bzip2..."), katoob_export_bz2, false));
+  exp.name = _("Text file compressed with _bzip2");
+  exp.func = katoob_export_bz2;
+  exp.lines = false;
+  exprt.push_back(exp);
 #endif
 
 #ifdef HAVE_FRIBIDI
-  exprt.push_back(new Export(_("Text with _shaping and bidi applied..."), katoob_export_bidi_shape, true));
+  exp.name = _("Text with _shaping and bidi applied");
+  exp.func = katoob_export_bidi_shape;
+  exp.lines = true;
+  exprt.push_back(exp);
 #endif
 }
 

@@ -26,7 +26,6 @@
 
 #include "spellmenu.hh"
 #include "spell.hh"
-
 #ifdef ENABLE_ISOCODES
 #include <cassert>
 #endif
@@ -45,9 +44,7 @@ SpellMenu::SpellMenu() {
 const Glib::ustring SpellMenu::get_active_text() {
 #ifdef ENABLE_ISOCODES
   int x = get_active_row_number();
-  if (x == -1) {
-    return "";
-  }
+  assert(x != -1);
   return dicts[x];
 #else
   return Gtk::ComboBoxText::get_active_text();

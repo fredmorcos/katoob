@@ -1,8 +1,8 @@
 /*
- * export.hh
+ * emulator.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,34 +20,32 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __EXPORT_HH__
-#define __EXPORT_HH__
+#ifndef __EMULATOR_HH__
+#define __EMULATOR_HH__
 
-#include <vector>
 #include <string>
-#include <glibmm/ustring.h>
+#include <map>
+#include <vector>
 
-// TODO: Asynchronous.
-
-class Export {
+class Emulator {
 public:
-  std::string name;
-  bool(*func)(Glib::ustring&, std::string&, std::string&);
-  bool lines;
+  Emulator();
+  ~Emulator();
+  static bool ok(std::string&);
+  static std::vector<std::string>& list_layouts();
+  static bool get(const std::string&, std::string&);
+  static bool parse_file(std::string&, std::map<std::string, std::string>&);
+  static void activate(int);
+  static bool get_active();
+
+  static std::map<std::string, std::string>& get_layout();
+
+private:
+  static std::vector<std::string> names;
+  static std::vector<std::map<std::string, std::string> > layouts;
+  static bool _ok;
+  static std::string _err;
+  static int layout;
 };
 
-void export_init(std::vector<Export>&);
-#ifdef HAVE_FRIBIDI
-bool katoob_export_plain(Glib::ustring&, std::string&, std::string&);
-#endif
-#ifdef HAVE_GZIP
-bool katoob_export_gz(Glib::ustring&, std::string&, std::string&);
-#endif
-#ifdef HAVE_BZIP2
-bool katoob_export_bz2(Glib::ustring&, std::string&, std::string&);
-#endif
-#ifdef HAVE_FRIBIDI
-bool katoob_export_bidi_shape(Glib::ustring&, std::string&, std::string&);
-#endif
-
-#endif /* __EXPORT_HH__ */
+#endif /* __EMULATOR_HH__ */

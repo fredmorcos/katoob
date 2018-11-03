@@ -2,7 +2,7 @@
  * network.hh
  * This file is part of katoob
  *
- * Copyright (C) 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,13 +28,11 @@
 #include <curl/curl.h>
 #include <sigc++/slot.h>
 #include <sigc++/connection.h>
-
-// forward declaration
-class Conf;
+#include "conf.hh"
 
 class Network {
 public:
-  Network(Conf *);
+  Network(Conf&);
   ~Network();
   static bool add_transfer(const std::string&, std::string&, sigc::slot<void, bool, const std::string&>, void *get_handle = NULL);
   static bool network_perform();

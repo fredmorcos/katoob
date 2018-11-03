@@ -26,7 +26,6 @@
 
 #include <unistd.h>
 #include <cerrno>
-#include <cstring>
 #include "pipe.hh"
 #include <sys/types.h>
 #include <sys/wait.h>

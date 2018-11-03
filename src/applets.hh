@@ -227,6 +227,20 @@ private:
   Gtk::ScrolledWindow dict_sw;
 };
 
+#ifdef ENABLE_MULTIPRESS
+class MultipressApplet : public Applet {
+public:
+  MultipressApplet(Conf&);
+  virtual void apply();
+
+private:
+  Gtk::Adjustment multipress_timeout_adj;
+  Gtk::SpinButton multipress_timeout;
+  Gtk::HBox m_box1;
+  Gtk::Label multipress_timeout_l;
+};
+#endif
+
 class RemoteDocumentsApplet : public Applet {
 public:
   RemoteDocumentsApplet(Conf&);

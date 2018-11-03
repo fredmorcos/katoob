@@ -2,7 +2,7 @@
  * document.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,13 +41,12 @@
 #endif
 
 class Document : public Gtk::ScrolledWindow {
-  friend class DocFactory;
 #ifdef ENABLE_MAEMO
   friend void __tap_and_hold(GtkWidget *, gpointer);
 #endif
 public:
   Document(Conf&, Encodings&, int);
-  Document(Conf&, Encodings&, int, const std::string&);
+  Document(Conf&, Encodings&, int, std::string&);
   Document(Conf&, Encodings&, int, int);
   ~Document();
 
@@ -98,19 +97,16 @@ public:
 
   void insert(const std::string&);
 
+  void grab_focus();
   bool has_focus();
 
   bool revert(std::string&);
 
-private:
-  // Not implemented:
-  Document(const Document&);
-  Document& operator=(const Document&);
-
   /* Our signal */
-  sigc::signal<void, bool, bool> signal_rom_set;
+  sigc::signal<void, bool> signal_modified_set;
   sigc::signal<void, bool> signal_can_undo;
   sigc::signal<void, bool> signal_can_redo;
+  sigc::signal<void, bool> signal_readonly_set;
   sigc::signal<void, std::string> signal_file_changed;
   sigc::signal<void, int, int> signal_cursor_moved;
   sigc::signal<void, int> signal_encoding_changed;
@@ -128,7 +124,6 @@ private:
   sigc::signal<void, std::string> signal_dictionary_changed;
 #endif
 
-public:
   void undo();
   void redo();
 
@@ -174,12 +169,10 @@ public:
   void reset_gui();
 
   std::string get_text() { return _text_view.get_buffer()->get_text(); }
-  void set_text(const std::string&);
+  void set_text(std::string&);
 
 private:
   Label _label;
-
-  void emit_rom(bool, bool, bool = false);
 
   friend void _on_move_cursor (GtkTextView *, GtkMovementStep, gint, gboolean, gpointer);
   friend void _on_toggle_overwrite(GtkTextView *, gpointer user_data);
@@ -198,8 +191,8 @@ private:
 
   void get_lines(Gtk::TextIter&, Gtk::TextIter&, std::vector<std::string>&);
   void get_lines(Gtk::TextIter&, Gtk::TextIter&, std::vector<Glib::ustring>&);
-  void set_readonly(bool, bool = true);
-  void set_modified(bool, bool = true);
+  void set_readonly(bool);
+  void set_modified(bool);
   void create_ui();
   bool create(const std::string& = "");
   void set_file(std::string&);
@@ -300,7 +293,6 @@ private:
   void on_move_cursor();
   void on_toggle_overwrite();
   void on_mark_set_cb(const Gtk::TextBuffer::iterator&, const Glib::RefPtr<Gtk::TextBuffer::Mark>&);
-  void on_grab_focus();
 
 #ifdef ENABLE_HIGHLIGHT
   std::string _highlight;

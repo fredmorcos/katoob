@@ -25,7 +25,7 @@
 
 #include <string>
 #include <vector>
-#include <sigc++/signal.h>
+#include <sigc++/sigc++.h>
 
 // forward declaration:
 class Conf;
@@ -56,7 +56,7 @@ public:
    * \param str the text to use.
    * \return a pointer to Document if the Document has been created otherwise NULL
    */
-  Document *create(const std::string& str);
+  Document *create(std::string& str);
 
   /**
    * \brief Create a document by reading a non utf8 file or from stdin.
@@ -65,7 +65,7 @@ public:
    * \param is_stdin whether to read the contents from the standard input or not.
    * \return a pointer to Document if the Document has been created otherwise NULL
    */
-  Document *create(const std::string& file, int encoding, bool is_stdin);
+  Document *create(std::string& file, int encoding, bool is_stdin);
 
   /**
    * \brief destroy the DocFactory and all the Documents. It can no longer be used.

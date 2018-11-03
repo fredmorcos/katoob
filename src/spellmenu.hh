@@ -24,7 +24,6 @@
 #define __SPELLMENU_HH__
 
 #include <gtkmm/comboboxtext.h>
-
 #ifdef ENABLE_ISOCODES
 #include "isocodes.hh"
 #endif

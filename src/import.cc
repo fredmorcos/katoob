@@ -2,7 +2,7 @@
  * import.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2008 Mohammed Sameer
+ * Copyright (C) 2006 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,16 +41,29 @@
 #include "shape_arabic.h"
 #endif
 
-void import_init(std::vector<Import *>& import) {
-  import.push_back(new Import(_("_HTML Character Reference..."), katoob_import_html));
+void import_init(std::vector<Import>& import) {
+  Import imp;
+
+  imp.name = _("_HTML Character Reference...");
+  imp.func = katoob_import_html;
+  import.push_back(imp);
+
 #ifdef HAVE_GZIP
-  import.push_back(new Import(_("Text file compressed with _gzip..."), katoob_import_gz));
+  imp.name = _("Text file compressed with _gzip");
+  imp.func = katoob_import_gz;
+  import.push_back(imp);
 #endif
+
 #ifdef HAVE_BZIP2
-  import.push_back(new Import(_("Text file compressed with _bzip2..."), katoob_import_bz2));
+  imp.name = _("Text file compressed with _bzip2");
+  imp.func = katoob_import_bz2;
+  import.push_back(imp);
 #endif
+
 #ifdef HAVE_FRIBIDI
-  import.push_back(new Import(_("Text with _shaping and bidi applied..."), katoob_import_bidi_shape));
+  imp.name = _("Text with _shaping and bidi applied");
+  imp.func = katoob_import_bidi_shape;
+  import.push_back(imp);
 #endif
 }
 

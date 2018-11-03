@@ -2,7 +2,7 @@
  * execdialog.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ ExecDialog::ExecDialog(Conf& conf) {
   add_button(Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE);
   add_button(Gtk::Stock::OK, Gtk::RESPONSE_ACCEPT);
 
-  std::vector<std::string> cmds = conf.get_list("exec-cmd");
+  std::vector<std::string> cmds(conf.get_exec_cmd());
   for (unsigned x = 0; x < cmds.size(); x++) {
     command.append_text(cmds[x]);
   }

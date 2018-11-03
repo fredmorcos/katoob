@@ -29,7 +29,7 @@
 #include "conf.hh"
 
 Recent::Recent(Conf *conf) : _conf(conf) {
-  _items = _conf->get_list("recent");
+  _items = _conf->get_recent();
 }
 
 Recent::~Recent() {}
@@ -57,8 +57,8 @@ unsigned Recent::size() {
 }
 
 void Recent::add_item(const std::string& item) {
-  _conf->list_prepend("recent", item, _conf->get("recentno", 10));
-  _items = _conf->get_list("recent");
+  _conf->recent_prepend(item);
+  _items = _conf->get_recent();
   signal_changed.emit();
 }
 

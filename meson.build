@@ -1,17 +1,17 @@
 project('katoob', ['cpp', 'c'])
 
 extra_args = ['-Wextra', '-Wpedantic']
+extra_args_clang = ['-ferror-limit=0', '-Db_lundef=false']
+
 add_global_arguments(extra_args, language: 'cpp')
 add_global_arguments(extra_args, language: 'c')
 
-extra_clang_args = ['-ferror-limit=0', '-Db_lundef=false']
-
 if meson.get_compiler('cpp').get_id() == 'clang'
-    add_global_arguments(extra_clang_args, language: 'cpp')
+    add_global_arguments(extra_args_clang, language: 'cpp')
 endif
 
 if meson.get_compiler('c').get_id() == 'clang'
-    add_global_arguments(extra_clang_args, language: 'c')
+    add_global_arguments(extra_args_clang, language: 'c')
 endif
 
 isocodes = dependency('iso-codes')
@@ -22,17 +22,27 @@ deps = [dependency('gtkmm-2.4'),
         dependency('gconfmm-2.6'),
         dependency('gtksourceview-2.0'),
         dependency('enchant-2'),
+        dependency('fribidi'),
         dependency('dbus-1'),
         dependency('dbus-glib-1'),
         dependency('expat'),
         dependency('libcurl'),
         isocodes]
 
+prefix = get_option('prefix')
+datadir = get_option('datadir')
+datadir_full = join_paths(prefix, datadir, 'katoob')
+mandir = get_option('mandir')
+mandir_de = join_paths(mandir, 'de', 'man1')
+appsdir = join_paths(datadir, 'applications')
+docdir = join_paths(datadir, 'doc', 'katoob')
+
 conf = configuration_data()
 conf.set('package', 'katoob')
 conf.set('version', '0.6.0-alpha')
-conf.set('prefix', get_option('prefix'))
-conf.set('datadir', get_option('datadir'))
+conf.set('prefix', prefix)
+conf.set('datadir', datadir)
+conf.set('datadir_full', datadir_full)
 conf.set('isocodes_prefix', isocodes_prefix)
 
 configure_file(input: 'config.h.in',
@@ -42,36 +52,29 @@ configure_file(input: 'config.h.in',
 configure_file(input: 'katoob.desktop.in',
                output: 'katoob.desktop',
                configuration: conf,
-               install_dir: join_paths(get_option('datadir'), 'applications'))
+               install_dir: appsdir)
 
 conf_inc = include_directories('.')
 
 install_man('man/katoob.1')
-install_man('man/katoob.de.1',
-            install_dir: join_paths(get_option('mandir'), 'de', 'man1'))
+install_man('man/katoob.de.1', install_dir: mandir_de)
 
-ui_dir = join_paths(get_option('datadir'), 'katoob', 'ui')
-install_data('ui/bars.xml', install_dir: ui_dir)
-install_data('ui/toolbar',  install_dir: ui_dir)
+install_data('data/toolbar', install_dir: datadir_full)
 
-pixmaps_dir = join_paths(get_option('datadir'), 'katoob', 'pixmaps')
-install_data('pixmaps/close.png',        install_dir: pixmaps_dir)
-install_data('pixmaps/green.png',        install_dir: pixmaps_dir)
-install_data('pixmaps/red.png',          install_dir: pixmaps_dir)
-install_data('pixmaps/katoob.png',       install_dir: pixmaps_dir)
-install_data('pixmaps/katoob-small.png', install_dir: pixmaps_dir)
-install_data('pixmaps/katoob-large.png', install_dir: pixmaps_dir)
-install_data('pixmaps/katoob.svg',       install_dir: pixmaps_dir)
+install_data('data/green.png',        install_dir: datadir_full)
+install_data('data/red.png',          install_dir: datadir_full)
+install_data('data/katoob.png',       install_dir: datadir_full)
+install_data('data/katoob-small.png', install_dir: datadir_full)
+install_data('data/katoob-large.png', install_dir: datadir_full)
+install_data('data/katoob.svg',       install_dir: datadir_full)
 
-docs_dir = join_paths(get_option('datadir'), 'doc', 'katoob')
-install_data('LICENSE',   install_dir: docs_dir)
-install_data('README.md', install_dir: docs_dir)
+install_data('LICENSE',   install_dir: docdir)
+install_data('README.md', install_dir: docdir)
 
 executable(
     'katoob',
     ['src/aboutdialog.cc',
      'src/applets.cc',
-     'src/bars.cc',
      'src/conf.cc',
      'src/dbus.cc',
      'src/dialogs.cc',
@@ -86,7 +89,6 @@ executable(
      'src/isocodes.cc',
      'src/katoob.cc',
      'src/label.cc',
-     # 'src/maemo-wrapper.cc',
      'src/main.cc',
      'src/mdi.cc',
      'src/network.cc',
@@ -113,6 +115,12 @@ executable(
      'src/undoredo.cc',
      'src/utils.cc',
      'src/window.cc',
+     'src/emulator.cc',
+     'src/inputwindow.cc',
+     'src/menubar.cc',
+     'src/multipress.cc',
+     'src/multipresswindow.cc',
+     'src/toolbar.cc',
      'src/xdgmime/xdgmimealias.c',
      'src/xdgmime/xdgmimealias.h',
      'src/xdgmime/xdgmime.c',

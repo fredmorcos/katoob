@@ -35,6 +35,8 @@ void _drag_data_received_cb(GtkWidget *self, GdkDragContext *context, gint x, gi
 SourceView::SourceView() :
 #ifdef ENABLE_HIGHLIGHT
   TextView(GTK_TEXT_VIEW(gtk_source_view_new())),
+#else
+  TextView(),
 #endif
   __drag_data_received(0) {
   __drag_data_received = g_signal_connect(G_OBJECT(gobj()), "drag_data_received", G_CALLBACK(_drag_data_received_cb), this);

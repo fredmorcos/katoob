@@ -34,7 +34,7 @@ int get_unused_number() {
   return foo;
 }
 
-Document *DocFactory::create(const std::string& str) {
+Document *DocFactory::create(std::string& str) {
   Document *doc = process(new Document(*_conf, *_enc, get_unused_number()));
   if (doc) {
     doc->set_text(str);
@@ -43,7 +43,7 @@ Document *DocFactory::create(const std::string& str) {
   return doc;
 }
 
-Document *DocFactory::create(const std::string& file, int encoding, bool is_stdin) {
+Document *DocFactory::create(std::string& file, int encoding, bool is_stdin) {
   if (is_stdin) {
     return process(new Document(*_conf, *_enc, get_unused_number(), encoding == -1 ? _enc->default_open() : encoding));
   }
@@ -66,27 +66,45 @@ Document *DocFactory::process(Document *doc) {
   children.push_back(doc);
   signal_created.emit(doc);
 
-  doc->signal_can_undo.connect(sigc::mem_fun(signal_can_undo, &sigc::signal<void, bool>::emit));
-  doc->signal_can_redo.connect(sigc::mem_fun(signal_can_redo, &sigc::signal<void, bool>::emit));
-  doc->signal_rom_set.connect(sigc::mem_fun(signal_rom_set, &sigc::signal<void, bool, bool>::emit));
-  doc->signal_file_changed.connect(sigc::mem_fun(signal_file_changed, &sigc::signal<void, std::string>::emit));
-  doc->signal_cursor_moved.connect(sigc::mem_fun(signal_cursor_moved, &sigc::signal<void, int, int>::emit));
-  doc->signal_encoding_changed.connect(sigc::mem_fun(signal_encoding_changed, &sigc::signal<void, int>::emit));
-  doc->signal_overwrite_toggled.connect(sigc::mem_fun(signal_overwrite_toggled, &sigc::signal<void, bool>::emit));
-  doc->signal_title_changed.connect(sigc::mem_fun(signal_title_changed, &sigc::signal<void, std::string>::emit));
+  doc->signal_can_undo.connect
+    (sigc::mem_fun(signal_can_undo, &sigc::signal<void, bool>::emit));
+  doc->signal_can_redo.connect
+    (sigc::mem_fun(signal_can_redo, &sigc::signal<void, bool>::emit));
+  // TODO FIXME XXX For some reason that I cannot figure out yet this
+  // completely breaks with libsigc++ and doesn't even build.
+  // doc->signal_readonly_set.connect
+  //   (sigc::mem_fun(signal_rom_set, &sigc::signal<void, bool, bool>::emit));
+  doc->signal_file_changed.connect
+    (sigc::mem_fun(signal_file_changed, &sigc::signal<void, std::string>::emit));
+  doc->signal_cursor_moved.connect
+    (sigc::mem_fun(signal_cursor_moved, &sigc::signal<void, int, int>::emit));
+  doc->signal_encoding_changed.connect
+    (sigc::mem_fun(signal_encoding_changed, &sigc::signal<void, int>::emit));
+  doc->signal_overwrite_toggled.connect
+    (sigc::mem_fun(signal_overwrite_toggled, &sigc::signal<void, bool>::emit));
+  doc->signal_title_changed.connect
+    (sigc::mem_fun(signal_title_changed, &sigc::signal<void, std::string>::emit));
 #ifdef ENABLE_SPELL
-  doc->signal_auto_spell_set.connect(sigc::mem_fun(signal_auto_spell_set, &sigc::signal<void, bool>::emit));
-  doc->signal_dictionary_changed.connect(sigc::mem_fun(signal_dictionary_changed, &sigc::signal<void, std::string>::emit));
+  doc->signal_auto_spell_set.connect
+    (sigc::mem_fun(signal_auto_spell_set, &sigc::signal<void, bool>::emit));
+  doc->signal_dictionary_changed.connect
+    (sigc::mem_fun(signal_dictionary_changed, &sigc::signal<void, std::string>::emit));
 #endif
-  doc->signal_wrap_text_set.connect(sigc::mem_fun(signal_wrap_text_set, &sigc::signal<void, bool>::emit));
-  doc->signal_line_numbers_set.connect(sigc::mem_fun(signal_line_numbers_set, &sigc::signal<void, bool>::emit));
-  doc->signal_dict_lookup_request.connect(sigc::mem_fun(signal_dict_lookup_request, &sigc::signal<void, std::string>::emit));
+  doc->signal_wrap_text_set.connect
+    (sigc::mem_fun(signal_wrap_text_set, &sigc::signal<void, bool>::emit));
+  doc->signal_line_numbers_set.connect
+    (sigc::mem_fun(signal_line_numbers_set, &sigc::signal<void, bool>::emit));
+  doc->signal_dict_lookup_request.connect
+    (sigc::mem_fun(signal_dict_lookup_request, &sigc::signal<void, std::string>::emit));
 #ifdef ENABLE_HIGHLIGHT
-  doc->signal_highlight_set.connect(sigc::mem_fun(signal_highlight, &sigc::signal<void, std::string>::emit));
+  doc->signal_highlight_set.connect
+    (sigc::mem_fun(signal_highlight, &sigc::signal<void, std::string>::emit));
 #endif
-  doc->signal_text_view_request_file_open.connect(sigc::mem_fun(signal_text_view_request_file_open, &sigc::signal<void, std::string>::emit));
+  doc->signal_text_view_request_file_open.connect
+    (sigc::mem_fun(signal_text_view_request_file_open, &sigc::signal<void, std::string>::emit));
 
-  doc->get_label().signal_close_clicked.connect(sigc::bind<Document *>(sigc::mem_fun(signal_close_request, &sigc::signal<void, Document *>::emit), doc));
+  doc->get_label().signal_close_clicked.connect
+    (sigc::bind<Document *>(sigc::mem_fun(signal_close_request, &sigc::signal<void, Document *>::emit), doc));
 
   doc->emit_signals();
 

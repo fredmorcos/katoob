@@ -29,6 +29,7 @@
 #define _GNU_SOURCE
 #endif
 #include <cerrno>
+#include <cstring>
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -43,7 +44,6 @@
 #ifdef ENABLE_MAEMO
 #include <gtkmm/settings.h>
 #endif
-#include <cstring>
 
 // TODO:
 // highlight current line
@@ -51,6 +51,8 @@
 // right click on a line -> spell check line
 // right click on a selection -> spell check selection.
 // Conf& _conf for search dialog ?
+// connect the emulator to all our dialogs.
+// custom print won't work ?
 // for searching, We need a way to handle the tashkeel and kashida.
 // unix/windows/mac line feeds.
 // syntax highlighting mode -> spell checker should check comments
@@ -92,7 +94,7 @@ Document::Document(Conf& conf, Encodings& encodings, int num) :
   }
 }
 
-Document::Document(Conf& conf, Encodings& encodings, int encoding, const std::string& file) :
+Document::Document(Conf& conf, Encodings& encodings, int encoding, std::string& file) :
   _label(conf),
   _conf(conf),
   _encodings(encodings),
@@ -201,11 +203,6 @@ Document::Document(Conf& conf, Encodings& encodings, int num, int encoding) :
 }
 
 Document::~Document() {
-  // TODO:
-  // I get: (katoob:14025): Gtk-CRITICAL **: gtk_text_view_get_buffer: assertion `GTK_IS_TEXT_VIEW (text_view)' failed
-  // If I comment this out.
-  // Seems a signal handler is being called during the destruction.
-  notify_callbacks();
   clear_do();
 
   // Disconnect our handlers.
@@ -243,16 +240,6 @@ void Document::connect_signals() {
 					    "toggle-overwrite",
 					    G_CALLBACK (_on_toggle_overwrite),
 					    this);
-
-  signal_rom_set.connect(sigc::bind<bool>(sigc::mem_fun(_label, &Label::set_rom), false));
-}
-
-void Document::emit_rom(bool ro, bool m, bool force) {
-  if ((m != _modified  ) || (ro != _readonly) || (force)) {
-    _readonly = ro;
-    _modified = m;
-    signal_rom_set.emit(ro, m);
-  }
 }
 
 bool Document::has_selection() {
@@ -276,11 +263,14 @@ void Document::clear_do() {
 }
 
 void Document::clear_do(std::vector<KatoobDoElem *>& v) {
-  for (unsigned x = 0; x < v.size(); x++) {
-    delete v[x];
+  while (true) {
+    if (v.size() == 0) {
+	break;
+    }
+    KatoobDoElem *e = v.back();
+    v.pop_back();
+    delete e;
   }
-
-  v.clear();
 }
 
 int Document::get_line_count() {
@@ -320,7 +310,7 @@ bool Document::create(const std::string& str) {
   return true;
 }
 
-void Document::set_text(const std::string& str) {
+void Document::set_text(std::string& str) {
   _text_view.get_buffer()->set_text(str);
 }
 
@@ -348,7 +338,7 @@ void Document::create_ui() {
 #ifndef ENABLE_HIGHLIGHT
   numbers_left = Gtk::TEXT_WINDOW_LEFT;
 #endif
-  on_grab_focus();
+  grab_focus();
 
 #ifdef ENABLE_SPELL
   std::string error;
@@ -398,7 +388,7 @@ void Document::create_ui() {
 
 }
 
-void Document::on_grab_focus() {
+void Document::grab_focus() {
   _text_view.grab_focus();
 }
 
@@ -410,20 +400,16 @@ bool Document::save() {
   return save(_file, _encoding, false);
 }
 
-void Document::set_modified(bool m, bool emit) {
+void Document::set_modified(bool m) {
   if (_text_view.get_buffer()->get_modified() != m) {
     _text_view.get_buffer()->set_modified(m);
-    if (emit) {
-      emit_rom(get_readonly(), m);
-    }
+    signal_modified_set.emit(m);
   }
 }
 
-void Document::set_readonly(bool r, bool emit) {
+void Document::set_readonly(bool r) {
   _text_view.set_editable(!r);
-  if (emit) {
-    emit_rom(r, get_modified());
-  }
+  signal_readonly_set.emit(r);
 }
 
 void Document::scroll_to(int x) {
@@ -441,13 +427,11 @@ bool Document::save(std::string& ofile, int enc, bool replace) {
 
   if (enc == _encodings.utf8()) {
     if (Utils::katoob_write(_conf, ofile, txt, err)) {
-      // We don't emit the signals here but we will do it manually to avoid emitting it many times.
-      set_modified(false, false);
+      set_modified(false);
       if (replace) {
-	set_readonly(false, false);
+	set_readonly(false);
 	set_file(ofile);
       }
-      emit_rom(!replace, false);
       return true;
     }
     else {
@@ -457,10 +441,9 @@ bool Document::save(std::string& ofile, int enc, bool replace) {
   }
   else if (_encodings.convert_from(txt, str, enc) != -1) {
     if (Utils::katoob_write(_conf, ofile, str, err)) {
-      // We don't emit the signals here but we will do it manually to avoid emitting it many times.
-      set_modified(false, false);
+      set_modified(false);
       if (replace) {
-	set_readonly(false, false);
+	set_readonly(false);
 	set_file(ofile);
 
 	// NOTE: We are doing it manually without calling set_encoding() because it will also mark
@@ -468,7 +451,6 @@ bool Document::save(std::string& ofile, int enc, bool replace) {
 	_encoding = enc;
 	signal_encoding_changed.emit(enc);
       }
-      emit_rom(!replace, false);
       return true;
     }
     else {
@@ -520,7 +502,7 @@ void Document::on_insert(const Gtk::TextBuffer::iterator& iter , const Glib::ust
 #endif
 
   on_move_cursor();
-  emit_rom(get_readonly(), true);
+  signal_modified_set.emit(true);
 }
 
 void Document::on_erase(const Gtk::TextBuffer::iterator& start, const Gtk::TextBuffer::iterator& end) {
@@ -536,12 +518,11 @@ void Document::on_erase(const Gtk::TextBuffer::iterator& start, const Gtk::TextB
 #endif
 
   on_move_cursor();
-  emit_rom(get_readonly(), true);
+  signal_modified_set.emit(true);
 }
 
 void Document::on_mark_set_cb(const Gtk::TextBuffer::iterator& iter, const Glib::RefPtr<Gtk::TextBuffer::Mark>& mark) {
-  Glib::RefPtr<Gtk::TextBuffer> buffer = _text_view.get_buffer();
-  if ((buffer) && (mark) && (mark == buffer->get_insert())) {
+  if ((mark) && (mark == _text_view.get_buffer()->get_insert())) {
     on_move_cursor();
   }
 }
@@ -878,7 +859,8 @@ void Document::line_numbers(bool show) {
 void Document::emit_signals() {
   signal_can_undo.emit(can_undo());
   signal_can_redo.emit(can_redo());
-  emit_rom(get_readonly(), get_modified(), true);
+  signal_modified_set.emit(get_modified());
+  signal_readonly_set.emit(get_readonly());
   signal_file_changed.emit(_file);
   signal_encoding_changed.emit(_encoding);
   signal_overwrite_toggled.emit(_overwrite);
@@ -1190,7 +1172,7 @@ bool Document::set_encoding(int e, bool convert, std::string& err) {
   // We are emitting the signal by ourselves because a change in the encoding is not
   // considered a modification by Gtk::TextBuffer
   _text_view.get_buffer()->set_modified(true);
-  emit_rom(get_readonly(), true);
+  signal_modified_set.emit(true);
 
   // TODO: Do we need to be able to undo/redo the change in the encoding ?
   // If yes:
@@ -1657,6 +1639,14 @@ void Document::set_auto_spell(bool st) {
       signal_auto_spell_set.emit(do_spell);
       return;
     }
+
+#if 0
+    if (!spell.ok(error)) {
+      katoob_error(error);
+      signal_auto_spell_set.emit(do_spell);
+      return;
+    }
+#endif
     else {
       do_spell = st;
     }

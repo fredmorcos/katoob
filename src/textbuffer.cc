@@ -2,7 +2,7 @@
  * textbuffer.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,12 @@
 
 #include "textbuffer.hh"
 #include "utils.hh"
+#ifdef ENABLE_EMULATOR
+#include "emulator.hh"
+#endif
+#ifdef ENABLE_MULTIPRESS
+#include "multipress.hh"
+#endif
 
 TextBuffer::TextBuffer(Conf& conf) : _conf(conf)
 #ifdef ENABLE_HIGHLIGHT
@@ -79,6 +85,35 @@ void TextBuffer::on_insert(const Gtk::TextBuffer::iterator& pos, const Glib::ust
     g_signal_stop_emission_by_name(gobj(), "insert-text");
 #endif
   }
+#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
+  else if (text.size() == 1) {
+    std::string val;
+    if (Emulator::get_active()) {
+      if (Emulator::get(text, val)) {
+	// insert.
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+	Gtk::TextBuffer::on_insert(pos, val, val.size());
+#else
+	on_insert_conn.block();
+	insert(pos, val);
+	on_insert_conn.unblock();
+	g_signal_stop_emission_by_name(gobj(), "insert-text");
+#endif
+      }
+    }
+    else if (Multipress::get_active()) {
+      if (Multipress::get(text, _conf.get("multipress_timeout", 1000))) {
+	// We do nothing here. Multipress will call us later.
+	g_signal_stop_emission_by_name(gobj(), "insert-text");
+      }
+    }
+    else {
+#ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
+      Gtk::TextBuffer::on_insert(pos, text, bytes);
+#endif
+    }
+  }
+#endif
   else {
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
     Gtk::TextBuffer::on_insert(pos, text, bytes);

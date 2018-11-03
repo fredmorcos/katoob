@@ -2,7 +2,7 @@
  * utils.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@
 #include <pangomm/attributes.h>
 #include <sys/stat.h>
 #include <gtkmm/label.h>
-#include <sigc++/signal.h>
 #include "conf.hh"
 
 namespace Utils {
@@ -41,11 +40,10 @@ namespace Utils {
   std::string get_data_dir();
   std::string get_dir_separator();
   std::string get_data_path(const char *);
-  std::string get_data_path(const char *, const char *);
-  std::string prepend_home_dir(const char *);
+  std::string prepend_home_dir(char *);
   bool inline is_lam_alef(Glib::ustring&, gunichar);
   bool is_lam_alef(const Glib::ustring&, Glib::ustring&);
-  bool katoob_file_is_writable(const std::string&);
+  bool katoob_file_is_writable(std::string&);
   void katoob_set_color(Conf&, Gtk::Label&, KatoobColor);
   void katoob_set_color(Conf&, Gtk::Label *, KatoobColor);
   bool katoob_write(Conf&, std::string&, std::string&, std::string&);
@@ -72,34 +70,6 @@ namespace Utils {
   bool unlock_file(int, std::string&);
   bool file_is_locked(int fd);
   bool file_is_locked(const std::string&);
-  std::string filename_display_basename(const std::string&);
-
-  void read_stdin(std::string&);
-  bool filename_from_uri(const std::string&, std::string&);
-
-  // TODO: Move to their own header.
-  template <typename A, typename B> void block(sigc::signal<A, B>& signal) {
-    // sigc::slot_list<sigc::slot<A, B> > slots = signal.slots();
-    // sigc::slot_iterator<sigc::slot<A, B> > iter;
-
-    auto slots = signal.slots();
-
-    for (auto iter = slots.begin(); iter != slots.end(); iter++) {
-      iter->block();
-    }
-  }
-
-  template <typename A, typename B> void unblock(sigc::signal<A, B>& signal) {
-    // sigc::slot_list<sigc::slot<A, B> > slots = signal.slots();
-    // sigc::slot_iterator<sigc::slot<A, B> > iter;
-
-    auto slots = signal.slots();
-
-    for (auto iter = slots.begin(); iter != slots.end(); iter++) {
-      iter->unblock();
-    }
-  }
-
 };
 
 #endif /* __UTILS_HH__ */

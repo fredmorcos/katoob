@@ -2,7 +2,7 @@
  * label.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2008 Mohammed Sameer
+ * Copyright (C) 2006 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,27 +30,27 @@
 #include "macros.h"
 
 Label::Label(Conf& conf) :
-	_conf(conf),
-	_readonly(false),
-	_modified(false)
+  _conf(conf),
+  _readonly(false),
+  _modified(false)
 {
-	Gtk::Image *image = Gtk::manage(new Gtk::Image(Gtk::Stock::CLOSE, 
-												Gtk::ICON_SIZE_MENU));
+  Gtk::Image *image = Gtk::manage(new Gtk::Image(Gtk::Stock::CLOSE,
+                                                 Gtk::ICON_SIZE_MENU));
 
-	image->set_size_request(10, 10);
-	close.set_image(*image);
-	close.set_relief(Gtk::RELIEF_NONE);
-	close.set_focus_on_click(false);
+  close.set_image(*image);
+  close.set_relief(Gtk::RELIEF_NONE);
+  close.set_size_request(24, 24);
+  close.set_border_width(0);
 
-	close.signal_clicked().connect(sigc::mem_fun(signal_close_clicked, &sigc::signal<void>::emit));
+  close.signal_clicked().connect(sigc::mem_fun(signal_close_clicked, &sigc::signal<void>::emit));
 
-	pack_start(label);
-	pack_start(close);
-	label.show();
-	if (_conf.get("showclose", true))
-		close.show();
-
-	set_rom(false, false, true);
+  pack_start(label);
+  pack_start(close);
+  label.show();
+  if (_conf.get("showclose", true)) {
+    close.show();
+  }
+  set_normal();
 }
 
 Label::~Label() {
@@ -71,27 +71,52 @@ void Label::reset_gui() {
   else {
     close.hide();
   }
-
-  set_rom(_modified, _readonly, true);
 }
 
-void Label::set_rom(bool ro, bool m, bool force) {
-  // We will always color on normal
-  if ((!ro) && (!m)) {
-    katoob_set_color(_conf, label, Utils::KATOOB_COLOR_NORMAL);
-    _readonly = ro;
-    _modified = m;
+void Label::set_readonly(bool ro, bool force) {
+  // A modified document can't be read only.
+  if (_modified) {
+    return;
   }
-  // read only and force is specified or our status is different.
-  else if ((ro) && (((_readonly == ro) && (force)) || (_readonly != ro))) {
+
+  if (!force) {
+    if (ro == _readonly) {
+      return;
+    }
+  }
+
+  if (ro) {
     katoob_set_color(_conf, label, Utils::KATOOB_COLOR_READONLY);
-    _readonly = ro;
   }
-  // same for modified.
-  else if ((m) && (((_modified == m) && (force)) || (_modified != m))) {
+  else {
+    set_normal();
+  }
+  _readonly = ro;
+}
+
+void Label::set_modified(bool m, bool force) {
+  // A read only document can't be modified.
+  if (_readonly) {
+    return;
+  }
+
+  if (!force) {
+    if (m == _modified) {
+      return;
+    }
+  }
+
+  if (m) {
     katoob_set_color(_conf, label, Utils::KATOOB_COLOR_MODIFIED);
-    _modified = m;
   }
+  else {
+    set_normal();
+  }
+  _modified = m;
+}
+
+void Label::set_normal() {
+  katoob_set_color(_conf, label, Utils::KATOOB_COLOR_NORMAL);
 }
 
 std::string Label::get_text() {

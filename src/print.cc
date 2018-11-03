@@ -2,7 +2,7 @@
  * print.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,12 +26,8 @@
 
 #include "print.hh"
 #include "macros.h"
-#include "document.hh"
 
-Print::Print(Conf& conf,
-             Document *doc,
-             Glib::RefPtr<PageSetup>& page_setup,
-             Glib::RefPtr<PrintSettings>& settings):
+Print::Print(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Glib::RefPtr<PrintSettings>& settings) :
   _conf(conf),
   _doc(doc),
 #ifdef ENABLE_PRINT
@@ -52,12 +48,10 @@ Print::Print(Conf& conf,
   signal_begin_print().connect(sigc::mem_fun(this, &Print::on_begin_print));
   signal_draw_page().connect(sigc::mem_fun(this, &Print::on_draw_page));
   signal_preview().connect(sigc::mem_fun(this, &Print::on_preview), false);
-
 #ifdef ENABLE_PRINT
   signal_create_custom_widget().connect(sigc::mem_fun(this, &Print::on_create_custom_widget));
-#endif
-
   signal_custom_widget_apply().connect(sigc::mem_fun(this, &Print::on_custom_widget_apply));
+#endif
   signal_done().connect(sigc::mem_fun(this, &Print::on_done));
 #endif
 }
@@ -65,11 +59,7 @@ Print::Print(Conf& conf,
 Print::~Print() {
 }
 
-Glib::RefPtr<Print> Print::create(Conf& conf,
-                                  Document *doc,
-                                  Glib::RefPtr<PageSetup>& page_setup,
-                                  Glib::RefPtr<PrintSettings>& settings)
-{
+Glib::RefPtr<Print> Print::create(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Glib::RefPtr<PrintSettings>& settings) {
   return Glib::RefPtr<Print>(new Print(conf, doc, page_setup, settings));
 }
 
@@ -83,6 +73,7 @@ bool Print::run(std::string& error, Gtk::PrintOperationAction print_action) {
     error = err.what();
     return false;
   }
+
 #else
   std::auto_ptr<Glib::Error> e;
   res = Gtk::PrintOperation::run(print_action, e);
@@ -114,8 +105,7 @@ void Print::on_begin_print(const Glib::RefPtr<Gtk::PrintContext>& context) {
   // printing output into pages.
 
   layout = context->create_pango_layout();
-  Pango::FontDescription font =
-    Pango::FontDescription(_conf.print_get("print_font", "Sans Regular 12"));
+  Pango::FontDescription font = Pango::FontDescription(_conf.print_get("print_font", "Sans Regular 12"));
   layout->set_font_description(font);
 
   const double width = context->get_width();
@@ -223,16 +213,14 @@ Gtk::Widget* Print::on_create_custom_widget() {
   applet.get_box().show_all();
   return &applet.get_box();
 }
-#endif
 
 void Print::on_custom_widget_apply(Gtk::Widget *) {
   // Note: the returned widget is the VBox we created in on_create_custom_widget().
   // We don't need to use it, because we can access the applet directly.
-#ifdef ENABLE_PRINT
   applet.apply();
-#endif
   _settings->reset();
 }
+#endif
 
 void Print::on_done(Gtk::PrintOperationResult result) {
   // TODO:

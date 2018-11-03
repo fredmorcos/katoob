@@ -2,7 +2,7 @@
 
 ![][logo]
 
-[logo]: pixmaps/katoob-large.png
+[logo]: data/katoob-large.png
 
 A lightweight multilingual and bi-directional aware text editor.
 
@@ -46,6 +46,8 @@ It should run on most BSD and POSIX compliant operating systems.
   - Move from autotools to meson
   - Remove native Windows support (WSL can be used instead)
   - Remove Maemo support
+  - Fix many build issues due to bitrot over the past 10 years
+  - Use more Gtk stock icons instead of custom PNGs
 
 ## Requirements
 
@@ -108,11 +110,9 @@ ninja install
 
 ## Screenshots
 
-![With line numbers][with-linum]
-![without line numbers][without-linum]
+![][screenshot]
 
-[with-linum]: screenshots/Screenshot_2018-11-02_11-21-16.png
-[without-linum]: screenshots/Screenshot_2018-11-02_11-21-28.png
+[screenshot]: screenshots/Screenshot_2018-11-03_22-49-35.png
 
 ## Thanks
 

@@ -2,7 +2,7 @@
  * label.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2008 Mohammed Sameer
+ * Copyright (C) 2006 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,7 +36,9 @@ public:
   void set_text(int);
   void set_text(const std::string&);
   std::string get_text();
-  void set_rom(bool, bool, bool = false);
+  void set_readonly(bool, bool = false);
+  void set_modified(bool, bool = false);
+  void set_normal();
 
   void reset_gui();
 

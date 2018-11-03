@@ -2,7 +2,7 @@
  * spelldialog.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@
 #include "spelldialog.hh"
 #include "dialogs.hh"
 #include "macros.h"
-#include "document.hh"
 
 // TODO: Add replace all
 // Start checking from the insert mark not from the beginning of the document.
@@ -229,7 +228,6 @@ void SpellDialog::change_clicked_cb() {
 void SpellDialog::check_clicked_cb() {
 #ifdef ENABLE_SPELL
   std::string word = entry.get_text();
-
   if (word.length() > 0) {
     if (_doc->spell_dialog_helper_check(word)) {
       yes.show();

@@ -2,7 +2,7 @@
  * mdi.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,34 +25,29 @@
 #endif /* HAVE_CONFIG_H */
 
 #include <cerrno>
+#include <cstring>
 #include <iostream>
+#include "libintl.h"
 #include "mdi.hh"
-#include "docfactory.hh"
 #include "dialogs.hh"
 #include "filedialog.hh"
 #include "macros.h"
 #include "searchdialog.hh"
 //#include "replacedialog.hh"
-
 #ifdef ENABLE_SPELL
 #include "spelldialog.hh"
 #endif
-
 #ifdef ENABLE_PRINT
 #include "print.hh"
 #endif
-
 #include "dict.hh"
 #include "utils.hh"
 #include <cassert>
-#include <cstring>
 #include "execdialog.hh"
 #include "pipe.hh"
 #include "tempfile.hh"
 #include "openlocationdialog.hh"
 #include "network.hh"
-#include "recent.hh"
-#include "document.hh"
 
 MDI::MDI(Conf& conf, Encodings& enc) :
   _conf(conf),
@@ -63,25 +58,22 @@ MDI::MDI(Conf& conf, Encodings& enc) :
 #endif
 {
   signal_switch_page().connect(sigc::mem_fun(*this, &MDI::signal_switch_page_cb));
-
-  // DocFactory:
-  DocFactory *factory = DocFactory::get();
-  factory->signal_created.connect(sigc::mem_fun(this, &MDI::signal_created_cb));
-  factory->signal_pre_destroyed.connect(sigc::mem_fun(this, &MDI::signal_destroyed_cb));
-
-  factory->signal_rom_set.connect(sigc::mem_fun(this, &MDI::signal_document_rom_cb));
-  factory->signal_file_changed.connect(sigc::mem_fun(this, &MDI::signal_document_file_changed_cb));
-  factory->signal_encoding_changed.connect(sigc::mem_fun(this, &MDI::signal_document_encoding_changed_cb));
-  factory->signal_title_changed.connect(sigc::mem_fun(this, &MDI::signal_document_title_changed_cb));
-#ifdef ENABLE_SPELL
-  factory->signal_auto_spell_set.connect(sigc::mem_fun(this, &MDI::signal_document_spell_enabled_cb));
-#endif
-  factory->signal_dict_lookup_request.connect(sigc::mem_fun(this, &MDI::signal_document_dict_lookup_cb));
-  factory->signal_text_view_request_file_open.connect(sigc::mem_fun(*this, &MDI::signal_text_view_request_file_open_cb));
-  factory->signal_close_request.connect(sigc::mem_fun(this, &MDI::signal_document_label_close_clicked_cb));
+  // 1 minute.
+  Glib::signal_timeout().connect(sigc::mem_fun(this, &MDI::autosave), 1*60*1000);
 }
 
 MDI::~MDI() {
+  // destroy our documents.
+  for (unsigned x = 0; x < children.size(); x++) {
+    delete children[x];
+  }
+
+  for (unsigned x = 0; x < closed_children.size(); x++) {
+    delete closed_children[x];
+  }
+
+  children.clear();
+  closed_children.clear();
 #ifdef ENABLE_PRINT
   page_setup->save();
   settings->save();
@@ -99,7 +91,9 @@ void MDI::scan_temp() {
   if (temps.size() > 0) {
     if (katoob_simple_question(_("Some unrecovered files were found. Try to recover them ?"))) {
       for (std::map<std::string, std::string>::iterator iter = temps.begin(); iter != temps.end(); iter++) {
-	if (DocFactory::get()->create(iter->second)) {
+	Document *doc = create_document();
+	if (doc) {
+	  doc->set_text(iter->second);
 	  if (unlink(iter->first.c_str()) == -1) {
 	    std::cerr << "Failed to unlink " << iter->first << " " << std::strerror(errno) << std::endl;
 	  }
@@ -109,21 +103,43 @@ void MDI::scan_temp() {
   }
 }
 
-void MDI::signal_destroyed_cb(int idx) {
-  remove_page(idx);
-  if (get_n_pages() == 0) {
-    signal_reset_gui.emit(false);
+bool MDI::autosave() {
+  Document *doc;
+  for (unsigned x = 0; x < children.size(); x++) {
+    doc = children[x];
+    if (doc->get_readonly()) {
+      continue;
+    }
+    if (!doc->get_modified()) {
+      continue;
+    }
+    doc->autosave();
   }
+
+  return true;
 }
 
-void MDI::signal_created_cb(Document *doc) {
-  add_document(doc);
-  if (doc->has_file()) {
-    std::string file = doc->get_file();
+Document *MDI::create_document(std::string& file, int enc) {
+  if (enc == -1) {
+    enc = _encodings.default_open();
+  }
+
+  int x = children.size();
+  Document *doc;
+  if (file == "-") {
+    doc = new Document(_conf, _encodings, ++x, enc);
+  }
+  else {
+    doc = new Document(_conf, _encodings, enc, file);
+  }
+
+  if (doc->ok()) {
+    add_document(doc);
     _conf.open_dir(Glib::path_get_basename(file));
 
+    // Ensure absolute path for the file.
     if (Glib::path_is_absolute(file)) {
-      Recent::get()->add_item(file);
+      _conf.recent_prepend(file);
     }
     else {
       std::vector<std::string> elems;
@@ -131,41 +147,60 @@ void MDI::signal_created_cb(Document *doc) {
       elems.push_back(file);
       file = Glib::build_path(Utils::get_dir_separator(), elems);
       elems.clear();
-      Recent::get()->add_item(file);
+      _conf.recent_prepend(file);
     }
+    signal_recent_regenerate.emit();
+    return doc;
+  }
+  else {
+    delete doc;
+    return NULL;
   }
 }
 
-bool MDI::create_document(std::string& file, int enc) {
-  if (enc == -1) {
-    enc = _encodings.default_open();
+Document *MDI::create_document() {
+  int x = children.size();
+  Document *doc = new Document(_conf, _encodings, ++x);
+  if (doc->ok()) {
+    add_document(doc);
+    return doc;
+  }
+  else {
+    delete doc;
+    return NULL;
+  }
+}
+
+void MDI::add_document(Document *doc, bool signals) {
+  // This should be first so when we get the switch_page signal we'll find something.
+  children.push_back(doc);
+
+  if (children.size() == 1) {
+    signal_reset_gui.emit(0);
   }
 
-  return DocFactory::get()->create(file, enc, file == "-");
-}
-
-bool MDI::create_document() {
-  return DocFactory::get()->create();
-}
-
-void MDI::add_document(Document *doc) {
-  // We have zero and we are adding one.
-  if (get_n_pages() == 0) {
-    signal_reset_gui.emit(true);
+  if (signals) {
+    connect_signals(doc);
   }
 
   // This should be first otherwise the documents menu will try to manipulate
   // a menu that has not been added.
+  signal_document_added.emit(doc->get_readonly(), doc->get_modified(), doc->get_title());
 
-  append_page(*doc, doc->get_label());
+  append_page (*doc, doc->get_label());
   set_menu_label_text(*doc, doc->get_title());
 
-  set_current_page(-1);
+  set_current_page (-1);
+
+  // This is here because we can't put it in connect_signals() because the document
+  // is appended after connect_signals()
+  // We will connect to the label directly bypassing the Document object.
+  dynamic_cast<Label *>(get_tab_label(*children[get_current_page()]))->signal_close_clicked.connect(sigc::bind<Document *>(sigc::mem_fun(this, &MDI::signal_document_label_close_clicked_cb), doc));
 }
 
 Document *MDI::get_active() {
   int x = get_current_page();
-  return (x == -1 ? NULL : DocFactory::get()->get_document(x));
+  return (x == -1 ? NULL : children[x]);
 }
 
 void MDI::open_cb() {
@@ -215,17 +250,15 @@ void MDI::signal_transfer_complete_cb(bool st, const std::string& str, const std
     return;
   }
 
-  DocFactory *factory = DocFactory::get();
-
   // We convert it to utf8.
   std::string res;
   if (_encodings.convert_to(str, res, enc) != -1) {
     Document *doc = get_active();
     if (!doc) {
-      factory->create(res);
+      doc = create_document();
     }
     else if (!to_active) {
-      factory->create(res);
+      doc = create_document();
     }
     // Insert.
     if (doc) {
@@ -237,6 +270,9 @@ void MDI::signal_transfer_complete_cb(bool st, const std::string& str, const std
   else {
     katoob_error(res);
   }
+
+  //  std::cout << uri << std::endl;
+  //std::cout << str << std::endl;
 }
 
 void MDI::insert_file_cb() {
@@ -329,7 +365,8 @@ bool MDI::save(bool replace) {
       if (katoob_simple_question((Utils::substitute(_("Are you sure you want to overwrite the file %s ?"), files[0]))))	{
 	if (doc->save(files[0], enc, replace)) {
 	  if (replace) {
-	    Recent::get()->add_item(files[0]);
+	    _conf.recent_prepend(files[0]);
+	    signal_recent_regenerate.emit();
 	  }
 	  _conf.save_dir(str);
 	  return true;
@@ -343,7 +380,8 @@ bool MDI::save(bool replace) {
     else {
       if (doc->save(files[0], enc, replace)) {
 	if (replace) {
-	  Recent::get()->add_item(files[0]);
+	  _conf.recent_prepend(files[0]);
+	  signal_recent_regenerate.emit();
 	}
 	_conf.save_dir(str);
 	return true;
@@ -400,13 +438,13 @@ void MDI::close_cb() {
     close();
   }
 
-  if (get_n_pages() == 0) {
-    signal_reset_gui.emit(false);
+  if (children.size() == 0) {
+    signal_reset_gui.emit(-1);
   }
 }
 
 bool MDI::close(int n) {
-  Document *doc = (n == -1 ? get_active() : DocFactory::get()->get_document(n));
+  Document *doc = (n == -1 ? get_active() : children[n]);
 
   if (!doc) {
     return true;
@@ -436,21 +474,52 @@ bool MDI::close(int n) {
     }
   }
 
+  std::vector<Document *>::iterator iter = children.begin();
+
   int x = (n == -1 ? get_current_page() : n);
 
-  DocFactory::get()->remove_document(x);
+  iter += x;
+  children.erase(iter);
+  remove_page(x);
 
+  // Let's add it to our closed documents vector.
+  // Is it enabled ?
+  if (_conf.get("undo_closed", true)) {
+    doc->autosave();
+    closed_children.push_back(doc);
+    // Now let's see how many items do we have.
+    unsigned x = _conf.get("undo_closedno", 5);
+    if (x != 0) {
+      while (closed_children.size() > x) {
+	Document *_doc = closed_children[0];
+	closed_children.erase(closed_children.begin());
+	signal_closed_document_erased.emit();
+	delete _doc;
+      }
+    }
+    // emit the signal so the menu can rebuild.
+    signal_closed_document_added.emit(doc->get_title());
+  }
+  else {
+    delete doc;
+  }
+  signal_document_removed.emit(x);
   return true;
 }
 
-void MDI::recent_cb(std::string rfile) {
+void MDI::recent_cb(std::string& rfile) {
   // fail if the file is not there.
   if (!Glib::file_test(rfile.c_str(), Glib::FILE_TEST_EXISTS)) {
     katoob_error(Utils::substitute(_("The file \"%s\" doesn't exist."), rfile.c_str()));
     return;
   }
 
+  unsigned x = children.size();
   create_document(rfile, -1);
+  if (children.size() != x) {
+    _conf.recent_prepend(rfile);
+    signal_recent_regenerate.emit();
+  }
 }
 
 void MDI::undo_cb() {
@@ -525,10 +594,8 @@ void MDI::close_all_cb() {
 }
 
 void MDI::save_all_cb() {
-  Document *doc = NULL;
-  int x = 0;
-  while ((doc = DocFactory::get()->get_document(x++)) != NULL) {
-    save(doc);
+  for (unsigned x = 0; x < children.size(); x++) {
+    save(children[x]);
   }
 }
 
@@ -715,9 +782,7 @@ void MDI::replace_dialog_signal_replace_all_cb(ReplaceDialog *dialog) {
     ++x;
     doc->replace();
   }
-// FIXME
-//  katoob_info(Utils::substitute(ngettext("Replaced %d occurence.", "Replaced %d occurences.", x), x));
-  katoob_info(Utils::substitute("Replaced %d occurences.", x));
+  katoob_info(Utils::substitute(ngettext("Replaced %d occurence.", "Replaced %d occurences.", x), x));
 }
 
 void MDI::execute_cb() {
@@ -731,7 +796,8 @@ void MDI::execute_cb() {
   if (dlg.run()) {
     bool new_buffer = dlg.get_new_buffer();
     std::string command = dlg.get_command();
-    _conf.list_prepend("exec-cmd", command, _conf.get("exec_cmd_size", 10));
+    _conf.exec_cmd_prepend(command);
+
     unsigned found = 0;
     for (unsigned x = 0; x < command.size(); x++) {
       // TODO: Can this crash if we have a string that ends in % ?
@@ -778,7 +844,10 @@ void MDI::execute_cb() {
     }
     else {
       // We create a new document then we insert.
-      DocFactory::get()->create(text);
+      Document *d = create_document();
+      if (d) {
+	d->set_text(text);
+      }
     }
   }
 }
@@ -806,9 +875,7 @@ void MDI::do_spell() {
 bool MDI::set_dictionary(std::string& old, std::string& new_dict) {
   std::string error;
   Document *doc = get_active();
-
   assert(doc != NULL);
-
   old = doc->get_dictionary();
   if (!doc->set_dictionary(new_dict, error)) {
     katoob_error(error);
@@ -819,14 +886,36 @@ bool MDI::set_dictionary(std::string& old, std::string& new_dict) {
 #endif
 
 void MDI::signal_switch_page_cb(GtkNotebookPage *p, guint n) {
-  DocFactory *factory = DocFactory::get();
-  factory->set_active(n);
-  factory->emit_signals();
+  children[n]->emit_signals();
   signal_doc_activated.emit(n);
 }
 
 void MDI::activate(int x) {
   set_current_page(x);
+}
+
+void MDI::connect_signals(Document *doc) {
+  // NOTE: Connect new signals whenever the Document class gets new!
+  doc->signal_modified_set.connect(sigc::mem_fun(this, &MDI::signal_document_modified_cb));
+  doc->signal_can_undo.connect(sigc::mem_fun(this, &MDI::signal_document_can_undo_cb));
+  doc->signal_can_redo.connect(sigc::mem_fun(this, &MDI::signal_document_can_redo_cb));
+  doc->signal_readonly_set.connect(sigc::mem_fun(this, &MDI::signal_document_readonly_cb));
+  doc->signal_file_changed.connect(sigc::mem_fun(this, &MDI::signal_document_file_changed_cb));
+  doc->signal_cursor_moved.connect(sigc::mem_fun(this, &MDI::signal_document_cursor_moved_cb));
+  doc->signal_encoding_changed.connect(sigc::mem_fun(this, &MDI::signal_document_encoding_changed_cb));
+  doc->signal_overwrite_toggled.connect(sigc::mem_fun(this, &MDI::signal_document_overwrite_toggled_cb));
+  doc->signal_title_changed.connect(sigc::mem_fun(this, &MDI::signal_document_title_changed_cb));
+#ifdef ENABLE_SPELL
+  doc->signal_auto_spell_set.connect(sigc::mem_fun(this, &MDI::signal_document_spell_enabled_cb));
+  doc->signal_dictionary_changed.connect(sigc::mem_fun(this, &MDI::signal_dictionary_changed_cb));
+#endif
+  doc->signal_wrap_text_set.connect(sigc::mem_fun(this, &MDI::signal_document_wrap_text_cb));
+  doc->signal_line_numbers_set.connect(sigc::mem_fun(this, &MDI::signal_document_line_numbers_cb));
+  doc->signal_dict_lookup_request.connect(sigc::mem_fun(this, &MDI::signal_document_dict_lookup_cb));
+#ifdef ENABLE_HIGHLIGHT
+  doc->signal_highlight_set.connect(sigc::mem_fun(this, &MDI::signal_document_highlight_cb));
+#endif
+  doc->signal_text_view_request_file_open.connect(sigc::mem_fun(*this, &MDI::signal_text_view_request_file_open_cb));
 }
 
 bool MDI::set_encoding(int n, int& o) {
@@ -897,18 +986,37 @@ void MDI::signal_document_title_changed_cb(std::string t) {
   set_menu_label_text(*get_active(), t);
 }
 
-void MDI::signal_document_rom_cb(bool ro, bool m) {
-  signal_document_rom.emit(get_current_page(), ro, m);
+void MDI::signal_document_readonly_cb(bool ro) {
+  signal_document_readonly.emit(get_current_page(), ro);
+  // NOTE: No idea why won't this work when I set it from the document itself.
+  dynamic_cast<Label *>(get_tab_label(*children[get_current_page()]))->set_readonly(ro);
+}
+
+void MDI::signal_document_modified_cb(bool m) {
+  signal_document_modified.emit(get_current_page(), m);
+  // NOTE: No idea why won't this work when I set it from the document itself.
+  dynamic_cast<Label *>(get_tab_label(*children[get_current_page()]))->set_modified(m);
 }
 
 void MDI::signal_document_label_close_clicked_cb(Document *doc) {
-  int x = DocFactory::get()->get_index(doc);
-  assert(x != -1);
-  close(x);
+  for (unsigned x = 0; x < children.size(); x++) {
+    if (children[x] == doc) {
+      close(x);
+      if (children.size() == 0) {
+	signal_reset_gui.emit(-1);
+      }
+      return;
+    }
+  }
 }
 
 void MDI::closed_document_activated_cb(int x) {
-  DocFactory::get()->activate_closed(x);
+  Document *doc = closed_children[x];
+  std::vector<Document *>::iterator iter = closed_children.begin();
+  iter += x;
+  closed_children.erase(iter);
+
+  add_document(doc, false);
 }
 
 void MDI::reset_gui() {
@@ -942,35 +1050,62 @@ void MDI::reset_gui() {
     break;
   }
 
-  DocFactory *factory = DocFactory::get();
-  factory->reset_ui();
+  for (unsigned x = 0; x < children.size(); x++) {
+    children[x]->reset_gui();
+  }
+
+  for (unsigned x = 0; x < closed_children.size(); x++) {
+    closed_children[x]->reset_gui();
+  }
+
+  int total = get_n_pages();
+  for (int x = 0; x < total; x++) {
+    bool m = children[x]->get_modified();
+    bool r = children[x]->get_readonly();
+
+    if (m) {
+      dynamic_cast<Label *>(get_tab_label(*children[x]))->set_modified(children[x]->get_modified(), true);
+    }
+    if (r) {
+	dynamic_cast<Label *>(get_tab_label(*children[x]))->set_readonly(children[x]->get_readonly(), true);
+    }
+    if ((!r) && (!m)) {
+      dynamic_cast<Label *>(get_tab_label(*children[x]))->set_normal();
+    }
+  }
 
 #ifdef ENABLE_PRINT
   settings->reset();
 #endif
 }
 
-void MDI::import_cb(Import *im) {
-  std::string file = SimpleFileDialog::get_file(im->name, FILE_OPEN, _conf);
+void MDI::import_cb(Import im) {
+  std::string file = SimpleFileDialog::get_file(im.name, FILE_OPEN, _conf);
   if (file.size() == 0) {
     return;
   }
 
   std::string out;
-  if (!im->func(file, out)) {
+  if (!im.func(file, out)) {
     katoob_error(out);
     return;
   }
   // is it utf8 ?
   if (_encodings.utf8(out)) {
     // create.
-    DocFactory::get()->create(out);
+    Document *doc = create_document();
+    if (doc) {
+      doc->set_text(out);
+    }
   }
   else {
     std::string res;
     if (_encodings.convert_to(out, res, _encodings.default_open()) != -1) {
       // create.
-      DocFactory::get()->create(res);
+      Document *doc = create_document();
+      if (doc) {
+	doc->set_text(res);
+      }
     }
     else {
       katoob_error(Utils::substitute(_("Couldn't detect the encoding of %s"), file));
@@ -978,13 +1113,13 @@ void MDI::import_cb(Import *im) {
   }
 }
 
-void MDI::export_cb(Export *ex) {
+void MDI::export_cb(Export ex) {
   Document *doc = get_active();
   if (!doc) {
     return;
   }
 
-  std::string file = SimpleFileDialog::get_file(ex->name, FILE_SAVE, _conf);
+  std::string file = SimpleFileDialog::get_file(ex.name, FILE_SAVE, _conf);
   if (file.size() == 0) {
     return;
   }
@@ -996,12 +1131,12 @@ void MDI::export_cb(Export *ex) {
   }
   std::string error;
   std::string out;
-  if (ex->lines) {
+  if (ex.lines) {
     std::vector<Glib::ustring> lines;
     doc->get_lines(lines);
     for (unsigned x = 0; x < lines.size(); x++) {
       std::string tout;
-      if (!ex->func(lines[x], tout, error)) {
+      if (!ex.func(lines[x], tout, error)) {
 	katoob_error(error);
 	return;
       }
@@ -1012,7 +1147,7 @@ void MDI::export_cb(Export *ex) {
   }
   else {
     Glib::ustring text = doc->get_text();
-    if (!ex->func(text, out, error)) {
+    if (!ex.func(text, out, error)) {
       katoob_error(error);
       return;
     }

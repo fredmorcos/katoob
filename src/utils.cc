@@ -2,7 +2,7 @@
  * utils.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,17 +20,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-// #ifdef HAVE_CONFIG_H
 #include <config.h>
-// #endif /* HAVE_CONFIG_H */
-
 #include <glibmm.h>
 #include "utils.hh"
 #include <iostream>
 #include <unistd.h>
 #include <cerrno>
-#include <fcntl.h>
 #include <cstring>
+#include <fcntl.h>
 #include <gtkmm/textview.h>
 #include "macros.h"
 
@@ -44,9 +41,7 @@
 
 std::string Utils::get_data_dir() {
 #ifndef _WIN32
-  return std::string(PREFIX + Utils::get_dir_separator() +
-                     "share" + Utils::get_dir_separator() +
-                     PACKAGE + Utils::get_dir_separator());
+  return std::string(DATADIR_FULL + Utils::get_dir_separator());
 #else
   // FIXME:
   return "./";
@@ -58,16 +53,11 @@ std::string Utils::get_data_path(const char *str) {
   return s;
 }
 
-std::string Utils::get_data_path(const char *str1, const char *str2) {
-  std::string s(get_data_dir() + get_dir_separator() + str1 + get_dir_separator() + str2);
-  return s;
-}
-
 std::string Utils::get_dir_separator() {
   return G_DIR_SEPARATOR_S;
 }
 
-std::string Utils::prepend_home_dir(const char *str) {
+std::string Utils::prepend_home_dir(char *str) {
   return Glib::build_filename(Glib::get_home_dir(), str);
 }
 
@@ -115,7 +105,7 @@ bool inline Utils::is_lam_alef(Glib::ustring& src, gunichar ch) {
   return ret;
 }
 
-bool Utils::katoob_file_is_writable(const std::string& file) {
+bool Utils::katoob_file_is_writable(std::string& file) {
   if (Glib::file_test(file, Glib::FILE_TEST_EXISTS)) {
     return (access(file.c_str(), W_OK) == 0 ? true : false);
   }
@@ -148,14 +138,10 @@ void Utils::katoob_set_color(Conf& conf, Gtk::Label& label, KatoobColor c) {
     break;
   }
 
-  Gdk::Color color;
-
-  color.set_red(r);
-  color.set_green(g);
-  color.set_blue(b);
-
-  label.modify_fg(Gtk::STATE_NORMAL, color);
-  label.modify_fg(Gtk::STATE_ACTIVE, color);
+  Pango::AttrColor color(Pango::Attribute::create_attr_foreground(r, g, b));
+  Pango::AttrList attrs;
+  attrs.insert(color);
+  label.set_attributes(attrs);
 }
 
 void Utils::katoob_set_color(Conf& cf, Gtk::Label *l, KatoobColor c) {
@@ -233,7 +219,7 @@ bool Utils::katoob_write(Conf& conf, std::string& file, std::string& text, std::
 // don't have write access to that directory although we have write access
 // to the target file.
 bool Utils::katoob_write(const char *file, const char *text, unsigned len, std::string& error) {
-  int fd = open(file, O_CREAT|O_TRUNC|O_WRONLY, S_IRWXU);
+  int fd = open(file, O_CREAT|O_TRUNC|O_WRONLY, 0644);
   if (fd == -1) {
     error = Utils::substitute("I can't create the file %s\n", file) + std::strerror(errno);
     return false;
@@ -281,7 +267,7 @@ bool Utils::file_copy(const char *f1, const char *f2, std::string& error) {
     return false;
   }
 
-  ofd = open(f2, O_WRONLY|O_CREAT|O_TRUNC);
+  ofd = open(f2, O_WRONLY|O_CREAT|O_TRUNC, 0644);
   if (ofd == -1) {
     error = std::strerror(errno);
     close(ifd);
@@ -517,63 +503,3 @@ bool Utils::get_recovery_files(std::map<std::string, std::string>& files, std::s
     return false;
   }
 }
-
-std::string Utils::filename_display_basename(const std::string& file) {
-  std::string base;
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try {
-    base = Glib::filename_to_utf8(Glib::path_get_basename(file));
-  }
-  catch (...) {
-    base = Glib::filename_display_basename(file);
-  }
-#else
-  std::auto_ptr<Glib::Error> error;
-  base = Glib::filename_to_utf8(Glib::path_get_basename(file), error);
-  if (error.get()) {
-    base = Glib::filename_display_basename(file);
-  }
-#endif
-  return base;
-}
-
-void Utils::read_stdin(std::string& str) {
-  char buff[1024];
-  while (!std::cin.eof()) {
-    memset(buff, 0x0, 1024);
-    std::cin.read(buff, 1024);
-    str += buff;
-  }
-}
-
-bool Utils::filename_from_uri(const std::string& uri, std::string& res) {
-#ifdef GLIBMM_EXCEPTIONS_ENABLED
-  try {
-    res = Glib::filename_from_uri(uri);
-    return true;
-  }
-  catch(Glib::ConvertError& e) {
-    res = e.what();
-    return false;
-  }
-#else
-  std::auto_ptr<Glib::Error> error;
-  res = Glib::filename_from_uri(uri, error);
-  if (error.get()) {
-    res = error->what();
-    return false;
-  }
-  else {
-    return true;
-  }
-#endif
-}
-
-// Signal utilities.
-//template <typename A, typename B> void Utils::block(sigc::signal<A, B>& signal) {
-
-//}
-
-//template <typename A, typename B> void Utils::unblock(sigc::signal<A, B>& signal) {
-
-//}

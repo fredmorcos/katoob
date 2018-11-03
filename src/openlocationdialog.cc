@@ -2,7 +2,7 @@
  * openlocationdialog.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ OpenLocationDialog::OpenLocationDialog(Conf& conf, Encodings& enc) : _conf(conf)
 
   encoding.set_active(enc.default_open());
 
-  std::vector<std::string> locations = conf.get_list("locations");
+  std::vector<std::string> locations(conf.get_locations());
   for (unsigned x = 0; x < locations.size(); x++) {
     location.append_text(locations[x]);
   }
@@ -93,7 +93,7 @@ bool OpenLocationDialog::run(std::string& out) {
       return false;
     }
     else {
-      _conf.list_prepend("locations", uri, _conf.get("locations_size", 10));
+      _conf.locations_prepend(uri);
       return true;
     }
   }

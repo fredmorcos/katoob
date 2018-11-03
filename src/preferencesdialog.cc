@@ -73,6 +73,9 @@ PreferencesDialog::PreferencesDialog(Conf& conf, Encodings& enc) :
   add_applet(_("Print"), new PrintApplet(_conf));
 #endif
   add_applet(_("Dictionary"), new DictionaryApplet(_conf));
+#ifdef ENABLE_MULTIPRESS
+  add_applet(_("Multipress"), new MultipressApplet(_conf));
+#endif
   add_applet(_("Remote Documents"),new RemoteDocumentsApplet(_conf));
   add_applet(_("Advanced"), new AdvancedApplet(_conf));
   add_applet(_("Network"), new NetworkApplet(_conf));
@@ -82,7 +85,7 @@ PreferencesDialog::PreferencesDialog(Conf& conf, Encodings& enc) :
 
 
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  auto box = dialog.get_action_area();
+  Gtk::ButtonBox* box = dialog.get_action_area();
   box->pack_start(apply);
   //  dialog.add_button(Gtk::Stock::APPLY, Gtk::RESPONSE_APPLY);
   dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);

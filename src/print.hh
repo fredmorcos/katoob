@@ -2,7 +2,7 @@
  * print.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007, 2008 Mohammed Sameer
+ * Copyright (C) 2006, 2007 Mohammed Sameer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,16 +28,12 @@
 #include "previewdialog.hh"
 #include "printsettings.hh"
 #include "pagesetup.hh"
+#include "document.hh"
 #include "applets.hh"
-
-// forward declaration
-class Document;
 
 class Print : public Gtk::PrintOperation {
 public:
-  static Glib::RefPtr<Print> create(Conf&, Document *,
-                                    Glib::RefPtr<PageSetup>&,
-                                    Glib::RefPtr<PrintSettings>&);
+  static Glib::RefPtr<Print> create(Conf&, Document *, Glib::RefPtr<PageSetup>&, Glib::RefPtr<PrintSettings>&);
   virtual ~Print();
   bool run(std::string&, Gtk::PrintOperationAction);
 
@@ -48,16 +44,14 @@ protected:
   void on_begin_print(const Glib::RefPtr<Gtk::PrintContext>&);
   void on_draw_page(const Glib::RefPtr<Gtk::PrintContext>&, int);
 
-  // Custom widget.
 #ifdef ENABLE_PRINT
+  // Custom widget.
   Gtk::Widget* on_create_custom_widget();
+  void on_custom_widget_apply(Gtk::Widget *);
 #endif
 
-  void on_custom_widget_apply(Gtk::Widget *);
-
   // Preview part.
-  bool on_preview(const Glib::RefPtr<Gtk::PrintOperationPreview>&,
-                  const Glib::RefPtr<Gtk::PrintContext>&, Gtk::Window*);
+  bool on_preview(const Glib::RefPtr<Gtk::PrintOperationPreview>&, const Glib::RefPtr<Gtk::PrintContext>&, Gtk::Window*);
   void on_preview_window_hide();
 
   void on_done(Gtk::PrintOperationResult);

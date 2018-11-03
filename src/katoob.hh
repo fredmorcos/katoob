@@ -25,51 +25,54 @@
 
 #include <vector>
 #include <gtkmm/main.h>
-
+#include "window.hh"
+#include "conf.hh"
+#include "encodings.hh"
+#ifdef ENABLE_DBUS
+#include "dbus.hh"
+#endif
 #ifdef ENABLE_MAEMO
 #include <libosso.h>
 #endif
-
-// forward declaration
-class Window;
-class Conf;
-class Encodings;
-class DBus;
 
 /**
  * \brief This is our application entry point.
  */
 class Katoob : public Gtk::Main {
 public:
-  Katoob(int argc, char *argv[]) throw();
+  Katoob(int argc, char *argv[]);
   ~Katoob();
 
-  void run();
+  int run();
+  void window();
 
   void quit_cb();
+#ifdef ENABLE_MAEMO
+  int get_error();
+  bool ok();
+#endif
 private:
 #ifdef ENABLE_MAEMO
   static void hw_event_handler(osso_hw_state_t *, gpointer);
+  //  static void exit_event_handler(gboolean, gpointer);
 #endif
-
-  void create_window();
   void parse(int argc, char *argv[]);
-  void print_usage();
-  void print_help();
-  void print_version();
+  void usage();
+  void help();
+  void version();
 
   /** \brief This is our signal callback. */
   static void signal_cb(int);
 
   /** \brief An instance of the Encodings class. */
-  Encodings *encodings;
+  Encodings encodings;
 
   /** \brief An instance of the Conf class. */
-  Conf *conf;
+  Conf conf;
 
 #ifdef ENABLE_DBUS
   /** \brief An instance of the DBus class (If compiled with DBus support). */
-  DBus *dbus;
+  DBus dbus;
 #endif /* ENABLE_DBUS */
 
   /** \brief our Windows are stored here */

@@ -20,10 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-// #ifdef HAVE_CONFIG_H
 #include <config.h>
-// #endif /* HAVE_CONFIG_H */
-
 #include "isocodes.hh"
 #include "utils.hh"
 #include <cassert>
