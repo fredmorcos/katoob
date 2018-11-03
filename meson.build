@@ -55,6 +55,7 @@ install_data('ui/bars.xml', install_dir: ui_dir)
 install_data('ui/toolbar',  install_dir: ui_dir)
 
 pixmaps_dir = join_paths(get_option('datadir'), 'katoob', 'pixmaps')
+install_data('pixmaps/close.png',        install_dir: pixmaps_dir)
 install_data('pixmaps/green.png',        install_dir: pixmaps_dir)
 install_data('pixmaps/red.png',          install_dir: pixmaps_dir)
 install_data('pixmaps/katoob.png',       install_dir: pixmaps_dir)
