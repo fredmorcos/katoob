@@ -296,6 +296,10 @@ ninja install
   - Fixed a crash with enchant.
   - Documents are now managed by DocFactory, not be MDI anymore.
 
+* 2008-01-26 Mohammed Sameer <msameer@foolab.org>
+  - Release 0.5.9.1
+  - Fixed a problem that caused katoob to ignore keypresses
+
 * 2008-01-11 Mohammed Sameer <msameer@foolab.org>
   - Release 0.5.9
   - This version includes a lot of fixes and changes. Enchant is used
