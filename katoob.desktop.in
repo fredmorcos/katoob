@@ -1,12 +1,22 @@
 [Desktop Entry]
 Name=Katoob
+Name[ar]=كتوب
+Name[ja]=Katoob
+Version=@version@
 GenericName=Katoob Text Editor
 Comment=A lightweight multilingual and bidirectional aware text editor
-MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
-Exec=katoob %F
+Comment[ar]=محرر نصوص متعدد اللغات
+Comment[cz]=Vícejazykový textový editor
+Comment[fr]=Éditeur de texte multilingue Unicode
+Comment[he]=עורך טקסט יוניקוד רב-לשוני
+Comment[ja]=多国語対応Unicodeテキストエディタ
+MimeType=text/english;text/plain;
+TryExec=@prefix@/katoob
+Exec=@prefix@/bin/katoob %F
 Icon=@prefix@/@datadir@/katoob/pixmaps/katoob.svg
 Type=Application
 Terminal=false
-Categories=Development;TextEditor;
+Categories=Utility;TextEditor;
 StartupWMClass=Katoob
 Keywords=Text;Editor;
+Encoding=UTF-8
