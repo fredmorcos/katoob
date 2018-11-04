@@ -2,7 +2,8 @@
  * filedialog.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +21,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include <gtkmm/stock.h>
 #include "filedialog.hh"
 #include "macros.h"
@@ -34,29 +31,21 @@ FileDialog::FileDialog(const std::string& title, Gtk::FileChooserAction action, 
   if (action == FILE_OPEN) {
     set_select_multiple(true);
   }
-#ifndef ENABLE_MAEMO
+
   label.set_text(_("Encoding"));
   box.pack_start(label);
   label.set_padding (20, 0);
-#endif
+
   for (int x = 0; x < _enc.size(); x++) {
     if (((action == FILE_OPEN) && x != _enc.utf8()) || (action == FILE_SAVE)) {
       cbox.append_text(_enc.at(x));
     }
   }
-#ifndef ENABLE_MAEMO
-  box.pack_start (cbox);
-#endif
 
-#ifdef ENABLE_MAEMO
-  caption = new Hildon::Caption(_("Encoding"), cbox);
-  add_extra(*caption);
-  // I must call it otherwise it won't show.
-  caption->show_all();
-#else
+  box.pack_start (cbox);
+
   set_extra_widget(box);
   box.show_all();
-#endif
 
   if ((action == FILE_OPEN) && (enc == -1)) {
     enc = _enc.default_open();
@@ -76,9 +65,6 @@ FileDialog::FileDialog(const std::string& title, Gtk::FileChooserAction action, 
 }
 
 FileDialog::~FileDialog() {
-#ifdef ENABLE_MAEMO
-  delete caption;
-#endif
 }
 
 int FileDialog::encoding() {
@@ -88,11 +74,7 @@ int FileDialog::encoding() {
 }
 
 bool FileDialog::run() {
-#ifdef ENABLE_MAEMO
-  bool st = Hildon::FileChooserDialog::run() == Gtk::RESPONSE_OK;
-#else
   bool st = Gtk::FileChooserDialog::run() == Gtk::RESPONSE_OK;
-#endif
   hide();
   return st;
 }
@@ -101,42 +83,37 @@ std::vector<std::string> FileDialog::get() {
   return get_filenames();
 }
 
-SimpleFileDialog::SimpleFileDialog(const std::string& title, Gtk::FileChooserAction action, Conf& _conf) :
-#ifdef ENABLE_MAEMO
-  Hildon::FileChooserDialog(action) {
-#else
-  Gtk::FileChooserDialog(title, action) {
-#endif
+SimpleFileDialog::SimpleFileDialog(const std::string& title,
+                                   Gtk::FileChooserAction action,
+                                   Conf& _conf):
+  Gtk::FileChooserDialog(title, action)
+{
   // TODO: We want to handle non-local only oneday.
   set_local_only(true);
+
   if (action == FILE_OPEN) {
     set_current_folder(_conf.open_dir());
-  }
-  else {
+  } else {
     set_current_folder(_conf.save_dir());
   }
-#ifndef ENABLE_MAEMO
+
   add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+
   if (action == FILE_OPEN) {
-  add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
-  }
-  else {
+    add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+  } else {
     add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
   }
-#endif
+
   show_all();
 }
 
 SimpleFileDialog::~SimpleFileDialog() {
-
 }
 
 bool SimpleFileDialog::run() {
-#ifdef ENABLE_MAEMO
-  bool st = Hildon::FileChooserDialog::run() == Gtk::RESPONSE_OK;
-#else
   bool st = Gtk::FileChooserDialog::run() == Gtk::RESPONSE_OK;
-#endif
+
   hide();
   if (st) {
     std::string f = get();
@@ -153,13 +130,16 @@ std::string SimpleFileDialog::get() {
   return get_filename();
 }
 
-std::string SimpleFileDialog::get_file(const std::string& title, Gtk::FileChooserAction action, Conf& _conf) {
+std::string SimpleFileDialog::get_file(const std::string& title,
+                                       Gtk::FileChooserAction action,
+                                       Conf& _conf)
+{
   std::string file;
   SimpleFileDialog dialog(title, action, _conf);
+
   if (dialog.run()) {
     return dialog.get();
-  }
-  else {
+  } else {
     return file;
   }
 }

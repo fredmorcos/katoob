@@ -2,7 +2,8 @@
  * window.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,15 +47,9 @@ Window::Window(Conf& conf, Encodings& encodings, std::vector<std::string>& files
   mdi(conf, encodings),
   statusbar(conf),
   box(false, 0) {
-#ifdef ENABLE_MAEMO
-  Hildon::Window::set_menu(menubar);
-  Hildon::Window::add_toolbar(toolbar.get_main());
-  //  Hildon::Window::add_toolbar(toolbar.get_extended());
-#else
   box.pack_start(menubar, Gtk::PACK_SHRINK, 0);
   box.pack_start(toolbar.get_main(), false, false, 0);
   //  box.pack_start(toolbar.get_extended(), Gtk::PACK_SHRINK, 0);
-#endif
   box.pack_start(toolbar.get_extended(), Gtk::PACK_SHRINK, 0);
 
   box.pack_start(mdi, Gtk::PACK_EXPAND_WIDGET, 0);
@@ -95,31 +90,21 @@ Window::Window(Conf& conf, Encodings& encodings, std::vector<std::string>& files
 
   move(conf.get("x", 50), conf.get("y", 50));
   resize (conf.get("w", 500), conf.get("h", 400));
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try {
     set_icon_from_file(Utils::get_data_path("katoob.svg"));
-  }
-#ifndef _WIN32
-  catch (Glib::Error& er) {
+  } catch (Glib::Error& er) {
     std::cout << er.what() << std::endl;
   }
-#else
- catch (...) {
-   // NOTE: Why the hell can't I catch Glib::Error or Glib::FileError under win32 ?
-#ifndef NDEBUG
-   std::cout << "I can't set the main window icon to "
-             << Utils::get_data_path("katoob.svg")
-             << std::endl;
-#endif
- }
-#endif
 #else /* ! GLIBMM_EXCEPTIONS_ENABLED */
- std::auto_ptr<Glib::Error> error;
- set_icon_from_file(Utils::get_data_path("katoob.svg"), error);
- if (error.get()) {
-   std::cout << error->what() << std::endl;
- }
+  std::auto_ptr<Glib::Error> error;
+  set_icon_from_file(Utils::get_data_path("katoob.svg"), error);
+  if (error.get()) {
+    std::cout << error->what() << std::endl;
+  }
 #endif
+
   //  set_title();
  signal_delete_event().connect(sigc::mem_fun(*this, &Window::signal_delete_event_cb));
 
@@ -179,10 +164,6 @@ Window::Window(Conf& conf, Encodings& encodings, std::vector<std::string>& files
   input_window.signal_button_clicked.connect(sigc::mem_fun(*this, &Window::signal_insert_key_cb));
   input_window.signal_dialog_closed.connect(sigc::mem_fun(*this, &Window::signal_input_window_dialog_closed_cb));
 #endif
-#ifdef ENABLE_MAEMO
-  signal_window_state_event().connect(sigc::mem_fun(*this, &Window::signal_window_state_event_cb));
-  is_fullscreen = false;
-#endif
 }
 
 Window::~Window() {
@@ -203,10 +184,6 @@ void Window::connect_toolbar_signals() {
   toolbar.signal_copy_clicked.connect(sigc::mem_fun(mdi, &MDI::copy_cb));
   toolbar.signal_paste_clicked.connect(sigc::mem_fun(mdi, &MDI::paste_cb));
   toolbar.signal_erase_clicked.connect(sigc::mem_fun(mdi, &MDI::erase_cb));
-
-#ifdef ENABLE_MAEMO
-  toolbar.signal_full_screen_clicked.connect(sigc::mem_fun(*this, &Window::toggle_full_screen));
-#endif
 
   // The rest of the extended toolbar signals.
 #ifdef ENABLE_SPELL
@@ -354,18 +331,12 @@ void Window::signal_drag_data_received_cb(const Glib::RefPtr<Gdk::DragContext>& 
 }
 
 void Window::set_title(const char *str) {
-#ifdef ENABLE_MAEMO
-  if (str) {
-    Gtk::Window::set_title(str);
-  }
-#else
   std::stringstream title;
   if (str) {
     title << str << " - ";
   }
   title << PACKAGE;
   Gtk::Window::set_title(title.str());
-#endif
 }
 
 void Window::signal_preferences_activate_cb() {
@@ -624,36 +595,6 @@ void Window::signal_input_toggled_cb(bool active) {
 
 void Window::signal_input_window_dialog_closed_cb() {
   statusbar.set_input_status(false);
-}
-#endif
-
-#ifdef ENABLE_MAEMO
-bool Window::signal_window_state_event_cb(GdkEventWindowState* event) {
-  if (event->type == GDK_WINDOW_STATE) {
-    if (event->changed_mask & GDK_WINDOW_STATE_FULLSCREEN) {
-      if (event->new_window_state & GDK_WINDOW_STATE_FULLSCREEN) {
-	is_fullscreen = true;
-      }
-      else {
-	is_fullscreen = false;
-      }
-    }
-  }
-
-  return false;
-}
-
-void Window::toggle_full_screen() {
-  if (is_fullscreen) {
-    unfullscreen();
-  }
-  else {
-    fullscreen();
-  }
-}
-
-void Window::signal_request_top_cb() {
-  present();
 }
 #endif
 

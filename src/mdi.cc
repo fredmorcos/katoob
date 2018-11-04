@@ -2,7 +2,8 @@
  * mdi.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
 
 #include <cerrno>
 #include <cstring>
@@ -1027,13 +1024,8 @@ void MDI::reset_gui() {
     popup_disable();
   }
 
-#ifdef ENABLE_MAEMO
-  set_show_tabs(_conf.get("showtabs", false));
-  set_scrollable(_conf.get("scrolltabs", false));
-#else
   set_show_tabs(_conf.get("showtabs", true));
   set_scrollable(_conf.get("scrolltabs", true));
-#endif
 
   switch(_conf.get("tabspos", TABS_POS_TOP)) {
   case TABS_POS_BOTTOM:

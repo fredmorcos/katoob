@@ -2,7 +2,8 @@
  * menubar.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +21,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include <gtkmm/menu.h>
 #include <gtkmm/stock.h>
 #include <gdkmm/types.h>
@@ -36,9 +33,6 @@
 #endif
 #include <cassert>
 #include <libgen.h>
-#ifdef ENABLE_MAEMO
-#include <gtkmm/settings.h>
-#endif
 
 // TODO: Integrate with the gtk recent files thing.
 MenuBar::MenuBar(Conf& config, Encodings& encodings
@@ -69,18 +63,13 @@ MenuBar::MenuBar(Conf& config, Encodings& encodings
 #endif
   show_all();
   recent_menu_item->hide();
-#ifdef ENABLE_MAEMO
-  // NOTE: The only way to hide the icons is here. We'll have generated GtkImageMenuItems by
-  // now and GtkSettings will carry the "gtk-menu-images" option.
-  g_object_set(Gtk::Settings::get_default()->gobj(), "gtk-menu-images", FALSE, NULL);
-#endif
 }
 
 MenuBar::~MenuBar() {
 
 }
 
-Gtk::Menu *MenuBar::menu(char *str, Gtk::Menu *menu) {
+Gtk::Menu *MenuBar::menu(const char *str, Gtk::Menu *menu) {
   Gtk::Menu *m = Gtk::manage(new Gtk::Menu());
   if (menu) {
     menu->items().push_back(Gtk::Menu_Helpers::MenuElem(str, *m));
@@ -122,7 +111,6 @@ Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const std::string& str) {
 }
 
 Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const Gtk::StockID& stock_id, guint key, Gdk::ModifierType mod) {
-  // TODO: Missing shortcuts under maemo.
   Gtk::AccelKey _key(key, mod);
   menu->items().push_back(Gtk::Menu_Helpers::StockMenuElem(stock_id, _key));
   return &menu->items().back();
@@ -622,11 +610,7 @@ void MenuBar::signal_export_activate_cb(Export exp) {
 }
 
 void MenuBar::reset_gui() {
-#ifdef ENABLE_MAEMO
-  dynamic_cast<Gtk::CheckMenuItem *>(_line_numbers)->set_active(_conf.get("linenumbers", false));
-#else
   dynamic_cast<Gtk::CheckMenuItem *>(_line_numbers)->set_active(_conf.get("linenumbers", true));
-#endif
 
   dynamic_cast<Gtk::CheckMenuItem *>(_statusbar)->set_active(_conf.get("statusbar", true));
   dynamic_cast<Gtk::CheckMenuItem *>(_wrap_text)->set_active(_conf.get("textwrap", true));

@@ -2,7 +2,8 @@
  * tempfile.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,17 +21,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include <glibmm.h>
 #include <cerrno>
 #include "tempfile.hh"
 #include "utils.hh"
-#ifdef _WIN32
-#include <io.h>
-#endif
+
 TempFile::TempFile() :
   _ok(false),
   name(Glib::get_tmp_dir() + Utils::get_dir_separator() + "katoobXXXXXX") {

@@ -2,7 +2,8 @@
  * toolbar.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __TOOLBAR_HH__
-#define __TOOLBAR_HH__
+#pragma once
 
 #include <gtkmm/toolbar.h>
 #include <gtkmm/separatortoolitem.h>
@@ -75,9 +75,6 @@ public:
   sigc::signal<void> signal_copy_clicked;
   sigc::signal<void> signal_paste_clicked;
   sigc::signal<void> signal_erase_clicked;
-#ifdef ENABLE_MAEMO
-  sigc::signal<void> signal_full_screen_clicked;
-#endif
 
   sigc::signal<void, int> signal_go_to_activated;
   sigc::signal<void, std::string> signal_search_activated;
@@ -126,9 +123,6 @@ private:
   Gtk::ToolButton _copy;
   Gtk::ToolButton _paste;
   Gtk::ToolButton _erase;
-#ifdef ENABLE_MAEMO
-  Gtk::ToolButton _full_screen;
-#endif
 
   /* Extended */
   Gtk::HBox box;
@@ -141,5 +135,3 @@ private:
 #endif
   Gtk::Entry _go_to, _search;
 };
-
-#endif /* __TOOLBAR_HH__ */

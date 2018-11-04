@@ -2,7 +2,8 @@
  * dbus.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,12 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include <iostream>
-//#include <cassert>
 #include "dbus.hh"
 
 #define BUS_NAME "org.foolab.katoob"
@@ -34,7 +30,10 @@
 #define OPEN_FILES "OpenFiles"
 #define PING "Ping"
 
-DBusHandlerResult katoob_dbus_message_handler(DBusConnection *connection, DBusMessage *message, void *user_data) {
+DBusHandlerResult katoob_dbus_message_handler(DBusConnection *connection,
+                                              DBusMessage *message,
+                                              void *user_data)
+{
   return static_cast<DBus *>(user_data)->got_message(connection, message);
 }
 
@@ -89,23 +88,14 @@ DBusHandlerResult DBus::got_message(DBusConnection *connection, DBusMessage *mes
   if ((!connection) || (!message)) {
     return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
   }
+
   std::string method = dbus_message_get_member(message);
+
   if (method == PING) {
     return pong(connection, message);
-  }
-  else if (method == OPEN_FILES) {
+  } else if (method == OPEN_FILES) {
     return open_files(connection, message);
-  }
-#ifdef ENABLE_MAEMO
-  else if (method == "top_application") {
-    signal_request_top.emit();
-    //    DBusMessage *reply = dbus_message_new_method_return(message);
-    //    dbus_connection_send(connection, reply, NULL);
-    //    dbus_message_unref(reply);
-    return DBUS_HANDLER_RESULT_HANDLED;
-  }
-#endif
-  else {
+  } else {
     std::cerr << "Katoob: Unhandled DBus event: " << method << std::endl;
     return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
   }

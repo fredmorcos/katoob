@@ -2,7 +2,8 @@
  * utils.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,21 +32,10 @@
 #include <gtkmm/textview.h>
 #include "macros.h"
 
-#ifdef _WIN32
-#define __KATOOB_CONF_DIR__ "Katoob"
-#elif defined(ENABLE_MAEMO)
-#define __KATOOB_CONF_DIR__ ".osso/katoob"
-#else /* ! _WIN32 */
 #define __KATOOB_CONF_DIR__ ".katoob"
-#endif
 
 std::string Utils::get_data_dir() {
-#ifndef _WIN32
   return std::string(DATADIR_FULL + Utils::get_dir_separator());
-#else
-  // FIXME:
-  return "./";
-#endif
 }
 
 std::string Utils::get_data_path(const char *str) {

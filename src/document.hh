@@ -2,7 +2,8 @@
  * document.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __DOCUMENT_HH__
-#define __DOCUMENT_HH__
+#pragma once
 
 #include <string>
 #include <map>
@@ -40,10 +40,7 @@
 #include "textview.hh"
 #endif
 
-class Document : public Gtk::ScrolledWindow {
-#ifdef ENABLE_MAEMO
-  friend void __tap_and_hold(GtkWidget *, gpointer);
-#endif
+class Document: public Gtk::ScrolledWindow {
 public:
   Document(Conf&, Encodings&, int);
   Document(Conf&, Encodings&, int, std::string&);
@@ -299,9 +296,4 @@ private:
 #endif
 protected:
   void on_populate_popup_cb(Gtk::Menu *);
-#ifdef ENABLE_MAEMO
-  void _tap_and_hold();
-#endif
 };
-
-#endif /* __DOCUMENT_HH__ */

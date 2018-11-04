@@ -2,7 +2,8 @@
  * menubar.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,14 +21,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __MENUBAR_HH__
-#define __MENUBAR_HH__
+#pragma once
 
-#ifdef ENABLE_MAEMO
-#include <gtkmm/menu.h>
-#else
 #include <gtkmm/menubar.h>
-#endif
 #include "conf.hh"
 #include "encodings.hh"
 #include "import.hh"
@@ -42,6 +38,7 @@ public:
   bool get_modified() { return _m; }
   void set_label(std::string& str) { _label = str; }
   const std::string& get_label() { return _label; }
+
 private:
   std::string _label;
   bool _ro, _m;
@@ -52,11 +49,7 @@ struct ClosedDocItem {
   std::string title;
 };
 
-#ifdef ENABLE_MAEMO
-class MenuBar : public Gtk::Menu {
-#else
-class MenuBar : public Gtk::MenuBar {
-#endif
+class MenuBar: public Gtk::MenuBar {
 public:
   MenuBar(Conf&, Encodings&
 #ifdef ENABLE_EMULATOR
@@ -222,7 +215,7 @@ private:
   void signal_highlighter_activate_cb(std::string);
 #endif /* ENABLE_HIGHLIGHT */
 
-  Gtk::Menu *menu(char *, Gtk::Menu * = NULL);
+  Gtk::Menu *menu(const char *, Gtk::Menu * = NULL);
   Gtk::MenuItem *item(Gtk::Menu *, const Gtk::StockID&, guint, Gdk::ModifierType);
   Gtk::MenuItem *item(Gtk::Menu *, const Gtk::StockID&);
   Gtk::MenuItem *item(Gtk::Menu *, const std::string&);
@@ -314,5 +307,3 @@ private:
   std::vector<ClosedDocItem> _closed_documents;
   int _active;
 };
-
-#endif /* __MENUBAR_HH__ */

@@ -2,7 +2,8 @@
  * network.cc
  * This file is part of katoob
  *
- * Copyright (C) 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +21,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include <glibmm/main.h>
 #include "network.hh"
 #include "macros.h"
-#ifdef ENABLE_MAEMO
-#include "maemo-wrapper.hh"
-#endif
 
 class URL {
 public:
@@ -115,27 +109,6 @@ bool Network::add_transfer(const std::string& uri, std::string& error, sigc::slo
     }
     break;
   case 1: // "Get from the environment
-#ifdef ENABLE_MAEMO
-    {
-      std::string host, user, pass;
-      int port;
-      bool auth;
-      if (MaemoProxy::get_info(host, port, auth, user, pass)) {
-	code = populate_proxy(handle, host, port, auth, user, pass);
-	if (code != CURLE_OK) {
-	  error = curl_easy_strerror(code);
-	  curl_easy_cleanup(handle);
-	  return false;
-	}
-	code = curl_easy_setopt(handle, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
-	if (code != CURLE_OK) {
-	  error = curl_easy_strerror(code);
-	  curl_easy_cleanup(handle);
-	  return false;
-	}
-      }
-    }
-#endif
     break;
   case 2: // HTTP
   case 3: // SOCKS4

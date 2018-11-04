@@ -2,7 +2,8 @@
  * main.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
 
 #include <glibmm/thread.h>
 #include "katoob.hh"
@@ -46,15 +43,6 @@ int main(int argc, char *argv[]) {
   //  signal(SIGPIPE, SIG_IGN);
 
   Katoob katoob(argc, argv);
-#ifdef ENABLE_MAEMO
-  if (katoob.ok()) {
-#endif
-    katoob.window();
-    return katoob.run();
-#ifdef ENABLE_MAEMO
-  }
-  else {
-    return katoob.get_error();
-  }
-#endif
+  katoob.window();
+  return katoob.run();
 }

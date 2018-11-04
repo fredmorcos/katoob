@@ -2,7 +2,8 @@
  * window.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __WINDOW_HH__
-#define __WINDOW_HH__
+#pragma once
 
 #include <vector>
 #include <string>
@@ -42,12 +42,8 @@
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
 #include "inputwindow.hh"
 #endif
-#ifdef ENABLE_MAEMO
-#include <hildonmm/window.h>
-class Window : public Hildon::Window {
-#else
+
 class Window : public Gtk::Window {
-#endif
 public:
   Window(Conf&, Encodings&, std::vector<std::string>&);
   ~Window();
@@ -65,9 +61,7 @@ public:
 #endif
 
   void autosave();
-#ifdef ENABLE_MAEMO
-  void signal_request_top_cb();
-#endif
+
 private:
   // Our menubar and tolbar callbacks
   void signal_wrap_text_activate_cb(bool);
@@ -81,14 +75,8 @@ private:
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   void signal_input_toggled_cb(bool);
 #endif
-#ifdef ENABLE_MAEMO
-  void toggle_full_screen();
-#endif
 
   // Signals for various gtk events.
-#ifdef ENABLE_MAEMO
-  bool signal_window_state_event_cb(GdkEventWindowState *);
-#endif
   void signal_drag_data_received_cb(const Glib::RefPtr<Gdk::DragContext>&, int, int, const Gtk::SelectionData&, guint, guint);
   bool signal_delete_event_cb (GdkEventAny*);
 
@@ -151,10 +139,4 @@ private:
 #endif
   sigc::connection signal_wrap_text_activate_conn;
   sigc::connection signal_line_numbers_activate_conn;
-
-#ifdef ENABLE_MAEMO
-  bool is_fullscreen;
-#endif
 };
-
-#endif /* __WINDOW_HH__ */

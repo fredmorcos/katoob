@@ -2,7 +2,8 @@
  * dbus.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,11 +21,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __DBUS_HH__
-#define __DBUS_HH__
+#pragma once
 
 #include <vector>
+#include <string>
 #include <sigc++/signal.h>
+
 #define DBUS_API_SUBJECT_TO_CHANGE 1
 #include <dbus/dbus.h>
 #include <dbus/dbus-glib-lowlevel.h>
@@ -41,11 +43,10 @@ public:
   friend DBusHandlerResult katoob_dbus_message_handler(DBusConnection *, DBusMessage *, void *);
 
   sigc::signal<void, std::vector<std::string>& >signal_open_files;
-#ifdef ENABLE_MAEMO
-  sigc::signal<void> signal_request_top;
-#endif
+
 protected:
   DBusHandlerResult got_message(DBusConnection *, DBusMessage *);
+
 private:
   DBusHandlerResult open_files(DBusConnection *, DBusMessage *);
   DBusHandlerResult pong(DBusConnection *, DBusMessage *);
@@ -53,5 +54,3 @@ private:
   DBusConnection *server;
   bool _ok;
 };
-
-#endif /* __DBUS_HH__ */

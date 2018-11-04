@@ -2,7 +2,8 @@
  * applets.hh
  * This file is part of katoob
  *
- * Copyright (C) 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __APPLETS_HH__
-#define __APPLETS_HH__
+#pragma once
 
 #include <gtkmm/box.h>
 #include <gtkmm/checkbutton.h>
@@ -30,9 +30,6 @@
 #include <gtkmm/adjustment.h>
 #include <gtkmm/spinbutton.h>
 #include <gtkmm/colorbutton.h>
-#ifdef ENABLE_MAEMO
-#include <hildonmm/color-button.h>
-#endif
 #include <gtkmm/fontbutton.h>
 #include <gtkmm/comboboxtext.h>
 #include <gtkmm/frame.h>
@@ -100,11 +97,7 @@ private:
   Gtk::Label tabspos_label, readonly_label, modified_label, normal_label;
   Gtk::ComboBoxText tabspos;
   Gtk::Table tabs_table;
-#ifdef ENABLE_MAEMO
-  Hildon::ColorButton readonly, modified, normal;
-#else
   Gtk::ColorButton readonly, modified, normal;
-#endif
 };
 
 class EditorApplet : public Applet {
@@ -284,5 +277,3 @@ private:
   Gtk::Table table2;
   Gtk::CheckButton proxytunnel, proxyauth;
 };
-
-#endif /* __APPLETS_HH__ */

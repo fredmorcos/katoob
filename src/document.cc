@@ -2,7 +2,8 @@
  * document.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
 
 #include "document.hh"
 #ifndef _GNU_SOURCE
@@ -41,9 +38,6 @@
 #include "macros.h"
 #include "textbuffer.hh"
 #include "utils.hh"
-#ifdef ENABLE_MAEMO
-#include <gtkmm/settings.h>
-#endif
 
 // TODO:
 // highlight current line
@@ -70,12 +64,6 @@ void _on_toggle_overwrite(GtkTextView *textview, gpointer user_data) {
   static_cast<Document *>(user_data)->on_toggle_overwrite();
 }
 
-#ifdef ENABLE_MAEMO
-void __tap_and_hold(GtkWidget *widget, gpointer user_data) {
-  static_cast<Document *>(user_data)->_tap_and_hold();
-}
-#endif
-
 Document::Document(Conf& conf, Encodings& encodings, int num) :
   _label(conf),
   _conf(conf),
@@ -87,14 +75,15 @@ Document::Document(Conf& conf, Encodings& encodings, int num) :
   _line_numbers(false),
   __on_move_cursor(0),
   __on_toggle_overwrite(0),
-  _overwrite(false) {
+  _overwrite(false)
+{
   _label.set_text(num);
   if (!create()) {
     _ok = false;
   }
 }
 
-Document::Document(Conf& conf, Encodings& encodings, int encoding, std::string& file) :
+Document::Document(Conf& conf, Encodings& encodings, int encoding, std::string& file):
   _label(conf),
   _conf(conf),
   _encodings(encodings),
@@ -103,7 +92,8 @@ Document::Document(Conf& conf, Encodings& encodings, int encoding, std::string& 
   _line_numbers(false),
   __on_move_cursor(0),
   __on_toggle_overwrite(0),
-  _overwrite(false) {
+  _overwrite(false)
+{
   std::string contents;
 
   if (Glib::file_test(file, Glib::FILE_TEST_IS_DIR)) {
@@ -112,11 +102,11 @@ Document::Document(Conf& conf, Encodings& encodings, int encoding, std::string& 
   }
 
   // If the file is not there, We will pretend that we did open it.
-  if ((Glib::file_test(file, Glib::FILE_TEST_EXISTS)) && (Glib::file_test(file, Glib::FILE_TEST_IS_REGULAR))) {
+  if ((Glib::file_test(file, Glib::FILE_TEST_EXISTS)) &&
+      (Glib::file_test(file, Glib::FILE_TEST_IS_REGULAR))) {
     try {
       contents = Glib::file_get_contents(file);
-    }
-    catch (Glib::FileError& err) {
+    } catch (Glib::FileError& err) {
       katoob_error(err.what());
       return;
     }
@@ -316,10 +306,6 @@ void Document::set_text(std::string& str) {
 
 void Document::create_ui() {
   _text_view.signal_expose_event().connect(sigc::mem_fun(*this, &Document::expose_event_cb));
-#ifdef ENABLE_MAEMO
-  g_signal_connect(_text_view.gobj(), "tap-and-hold", G_CALLBACK(__tap_and_hold), this);
-  gtk_widget_tap_and_hold_setup(GTK_WIDGET(_text_view.gobj()), NULL, NULL, GTK_TAP_AND_HOLD_NONE);
-#endif
 
   //#ifdef ENABLE_HIGHLIGHT
   //  _text_view.set_buffer(SourceBuffer::create());
@@ -368,11 +354,7 @@ void Document::create_ui() {
   spell_checker_connect_worker();
 
   misspelled_tag = _text_view.get_buffer()->create_tag();
-#ifndef ENABLE_MAEMO
   misspelled_tag->property_underline() = Pango::UNDERLINE_ERROR;
-#else
-  g_object_set(misspelled_tag->gobj(), "underline", PANGO_UNDERLINE_ERROR, NULL);
-#endif
 #endif
 
   // TODO: Make these configurable ?
@@ -381,11 +363,6 @@ void Document::create_ui() {
   add(_text_view);
   show_all();
   reset_gui();
-#ifdef ENABLE_MAEMO
-  // Hide the Input Method menu. We put this here so GtkSettings will have the property already.
-  g_object_set(Gtk::Settings::get_default()->gobj(), "gtk-show-input-method-menu", FALSE, NULL);
-#endif
-
 }
 
 void Document::grab_focus() {
@@ -1799,9 +1776,3 @@ void Document::autosave() {
     std::cerr << "Failed to write to temp file: " << std::strerror(errno) << std::endl;
   }
 }
-
-#ifdef ENABLE_MAEMO
-void Document::_tap_and_hold() {
-  g_signal_emit_by_name(GTK_WIDGET(_text_view.gobj()), "popup-menu");
-}
-#endif
