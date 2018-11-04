@@ -2,7 +2,8 @@
  * spell.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __SPELL_HH__
-#define __SPELL_HH__
+#pragma once
 
 #include <enchant-2/enchant.h>
 #include <string>
@@ -46,5 +46,3 @@ private:
 };
 
 void katoob_spell_list_available(std::vector<std::string>&);
-
-#endif /* __SPELL_HH__ */

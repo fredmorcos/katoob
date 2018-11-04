@@ -326,7 +326,6 @@ void Document::create_ui() {
 #endif
   grab_focus();
 
-#ifdef ENABLE_SPELL
   std::string error;
 
   do_spell = _conf.get("spell_check", true);
@@ -355,7 +354,6 @@ void Document::create_ui() {
 
   misspelled_tag = _text_view.get_buffer()->create_tag();
   misspelled_tag->property_underline() = Pango::UNDERLINE_ERROR;
-#endif
 
   // TODO: Make these configurable ?
   _search_from_beginning = true;
@@ -473,10 +471,8 @@ void Document::on_insert(const Gtk::TextBuffer::iterator& iter , const Glib::ust
     undo(KATOOB_DO_INSERT, str, Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())->get_mark_insert_position());
   }
 
-#ifdef ENABLE_SPELL
   spell_checker_on_insert(iter, len);
   spell_checker_connect_worker();
-#endif
 
   on_move_cursor();
   signal_modified_set.emit(true);
@@ -489,10 +485,8 @@ void Document::on_erase(const Gtk::TextBuffer::iterator& start, const Gtk::TextB
     b->clear_deleted();
   }
 
-#ifdef ENABLE_SPELL
   spell_checker_on_erase(start, end);
   spell_checker_connect_worker();
-#endif
 
   on_move_cursor();
   signal_modified_set.emit(true);
@@ -843,10 +837,8 @@ void Document::emit_signals() {
   signal_overwrite_toggled.emit(_overwrite);
   on_move_cursor();
   signal_title_changed.emit(get_title());
-#ifdef ENABLE_SPELL
   signal_auto_spell_set.emit(do_spell);
   signal_dictionary_changed.emit(spell_dict);
-#endif
 #ifdef ENABLE_HIGHLIGHT
   signal_highlight_set.emit(_highlight);
 #endif
@@ -1220,7 +1212,7 @@ void Document::on_populate_popup_cb(Gtk::Menu *menu) {
     item = &menu->items().back();
     item->signal_activate().connect(sigc::bind<std::string>(sigc::mem_fun(*this, &Document::dict_menu_item_activated), word));
   }
-#ifdef ENABLE_SPELL
+
   if (get_readonly()) {
     return;
   }
@@ -1269,10 +1261,8 @@ void Document::on_populate_popup_cb(Gtk::Menu *menu) {
       }
     }
   }
-#endif
 }
 
-#ifdef ENABLE_SPELL
 void Document::spell_checker_connect_worker() {
   if (do_spell) {
     if (!spell_worker_conn.connected()) {
@@ -1671,7 +1661,6 @@ bool Document::set_dictionary(std::string& dict, std::string& error) {
   }
   return false;
 }
-#endif
 
 void Document::reset_gui() {
   line_numbers(_conf.get("linenumbers", false));

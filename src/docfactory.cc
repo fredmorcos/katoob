@@ -2,7 +2,8 @@
  * docfactory.cc
  * This file is part of katoob
  *
- * Copyright (C) 2008 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
 
 #include "docfactory.hh"
 #include "document.hh"
@@ -84,12 +81,12 @@ Document *DocFactory::process(Document *doc) {
     (sigc::mem_fun(signal_overwrite_toggled, &sigc::signal<void, bool>::emit));
   doc->signal_title_changed.connect
     (sigc::mem_fun(signal_title_changed, &sigc::signal<void, std::string>::emit));
-#ifdef ENABLE_SPELL
+
   doc->signal_auto_spell_set.connect
     (sigc::mem_fun(signal_auto_spell_set, &sigc::signal<void, bool>::emit));
   doc->signal_dictionary_changed.connect
     (sigc::mem_fun(signal_dictionary_changed, &sigc::signal<void, std::string>::emit));
-#endif
+
   doc->signal_wrap_text_set.connect
     (sigc::mem_fun(signal_wrap_text_set, &sigc::signal<void, bool>::emit));
   doc->signal_line_numbers_set.connect

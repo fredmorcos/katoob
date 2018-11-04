@@ -56,9 +56,7 @@ public:
   void open_files(std::vector<std::string>&);
 #endif
 
-#ifdef ENABLE_SPELL
   void on_document_spell_enabled_cb(bool);
-#endif
 
   void autosave();
 
@@ -103,9 +101,9 @@ private:
   void signal_document_title_changed_cb(std::string, int);
   void signal_document_wrap_text_cb(bool);
   void signal_document_line_numbers_cb(bool);
-#ifdef ENABLE_SPELL
+
   void signal_document_dictionary_changed_cb(std::string d) { toolbar.set_dictionary(d); }
-#endif
+
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   void signal_input_window_dialog_closed_cb();
 #endif
@@ -134,9 +132,9 @@ private:
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   InputWindow input_window;
 #endif
-#ifdef ENABLE_SPELL
+
   sigc::connection signal_auto_spell_activate_conn;
-#endif
+
   sigc::connection signal_wrap_text_activate_conn;
   sigc::connection signal_line_numbers_activate_conn;
 };

@@ -117,10 +117,9 @@ public:
   sigc::signal<void> signal_beside_activate;
 
   sigc::signal<void> signal_execute_activate;
-#ifdef ENABLE_SPELL
+
   sigc::signal<void> signal_spell_activate;
   sigc::signal<void, bool> signal_auto_spell_activate;
-#endif
 
   sigc::signal<void> signal_save_all_activate;
   sigc::signal<void> signal_close_all_activate;
@@ -177,9 +176,9 @@ private:
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   void build_submenu(Gtk::Menu *, std::vector<std::string>&, Gtk::RadioButtonGroup&, int);
 #endif
-#ifdef ENABLE_SPELL
+
   void signal_auto_spell_activate_cb();
-#endif
+
   void signal_toolbar_activate_cb();
   void signal_extended_toolbar_activate_cb();
   void signal_statusbar_activate_cb();
@@ -287,10 +286,10 @@ private:
 
   /* Tools */
   Gtk::MenuItem *_execute;
-#ifdef ENABLE_SPELL
+
   Gtk::MenuItem *_spell;
   Gtk::MenuItem *_auto_spell;
-#endif
+
   /* Documents */
   Gtk::MenuItem *_save_all;
   Gtk::MenuItem *_close_all;

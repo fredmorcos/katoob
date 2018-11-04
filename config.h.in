@@ -30,4 +30,3 @@
 /* #define ENABLE_ISOCODES   "@enable_isocodes@" */
 /* #define ENABLE_NLS        "@enable_nls@" */
 /* #define ENABLE_PRINT      "@enable_print@" */
-/* #define ENABLE_SPELL      "@enable_spell@" */

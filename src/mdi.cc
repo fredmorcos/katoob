@@ -31,9 +31,7 @@
 #include "macros.h"
 #include "searchdialog.hh"
 //#include "replacedialog.hh"
-#ifdef ENABLE_SPELL
 #include "spelldialog.hh"
-#endif
 #ifdef ENABLE_PRINT
 #include "print.hh"
 #endif
@@ -849,7 +847,6 @@ void MDI::execute_cb() {
   }
 }
 
-#ifdef ENABLE_SPELL
 void MDI::set_auto_spell(bool s) {
   Document *doc = get_active();
   if (!doc) {
@@ -880,7 +877,6 @@ bool MDI::set_dictionary(std::string& old, std::string& new_dict) {
   }
   return true;
 }
-#endif
 
 void MDI::signal_switch_page_cb(GtkNotebookPage *p, guint n) {
   children[n]->emit_signals();
@@ -902,10 +898,10 @@ void MDI::connect_signals(Document *doc) {
   doc->signal_encoding_changed.connect(sigc::mem_fun(this, &MDI::signal_document_encoding_changed_cb));
   doc->signal_overwrite_toggled.connect(sigc::mem_fun(this, &MDI::signal_document_overwrite_toggled_cb));
   doc->signal_title_changed.connect(sigc::mem_fun(this, &MDI::signal_document_title_changed_cb));
-#ifdef ENABLE_SPELL
+
   doc->signal_auto_spell_set.connect(sigc::mem_fun(this, &MDI::signal_document_spell_enabled_cb));
   doc->signal_dictionary_changed.connect(sigc::mem_fun(this, &MDI::signal_dictionary_changed_cb));
-#endif
+
   doc->signal_wrap_text_set.connect(sigc::mem_fun(this, &MDI::signal_document_wrap_text_cb));
   doc->signal_line_numbers_set.connect(sigc::mem_fun(this, &MDI::signal_document_line_numbers_cb));
   doc->signal_dict_lookup_request.connect(sigc::mem_fun(this, &MDI::signal_document_dict_lookup_cb));

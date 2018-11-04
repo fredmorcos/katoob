@@ -2,7 +2,8 @@
  * mdi.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __MDI_HH__
-#define __MDI_HH__
+#pragma once
 
 #include <vector>
 #include <gtkmm/notebook.h>
@@ -79,11 +79,9 @@ public:
   void save_all_cb();
   void close_all_cb();
 
-#ifdef ENABLE_SPELL
   void set_auto_spell(bool);
   void do_spell();
   bool set_dictionary(std::string&, std::string&);
-#endif
 
   void goto_line_cb();
   void goto_line_cb2(int);
@@ -119,9 +117,9 @@ public:
   sigc::signal<void, std::string, int> signal_document_title_changed;
   sigc::signal<void, bool> signal_document_wrap_text;
   sigc::signal<void, bool> signal_document_line_numbers;
-#ifdef ENABLE_SPELL
+
   sigc::signal<void, std::string> signal_document_dictionary_changed;
-#endif
+
 #ifdef ENABLE_HIGHLIGHT
   sigc::signal<void, std::string> signal_document_highlight;
 #endif
@@ -129,9 +127,7 @@ public:
   sigc::signal<void, bool, bool, std::string> signal_document_added;
   sigc::signal<void, int> signal_document_removed;
 
-#ifdef ENABLE_SPELL
   sigc::signal<void, bool> signal_document_spell_enabled;
-#endif
 
   sigc::signal<void> signal_closed_document_erased;
   sigc::signal<void, std::string>signal_closed_document_added;
@@ -170,10 +166,10 @@ private:
 #ifdef ENABLE_HIGHLIGHT
   void signal_document_highlight_cb(std::string x) { signal_document_highlight.emit(x); }
 #endif
-#ifdef ENABLE_SPELL
+
   void signal_document_spell_enabled_cb(bool s) { signal_document_spell_enabled.emit(s); }
   void signal_dictionary_changed_cb(std::string d) { signal_document_dictionary_changed.emit(d); }
-#endif
+
   void signal_document_wrap_text_cb(bool w) { signal_document_wrap_text.emit(w); }
   void signal_document_line_numbers_cb(bool ln) { signal_document_line_numbers.emit(ln); }
 
@@ -198,5 +194,3 @@ private:
   Glib::RefPtr<PrintSettings> settings;
 #endif
 };
-
-#endif /* __MDI_HH__ */

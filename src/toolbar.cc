@@ -44,11 +44,8 @@ Toolbar::Toolbar(Conf& conf) :
   _paste(Gtk::Stock::PASTE),
   _erase(Gtk::Stock::DELETE),
   _go_to_l(_("Goto Line")),
-  _search_l(_("Search"))
-#ifdef ENABLE_SPELL
-  ,
+  _search_l(_("Search")),
   _dictionary_l(_("Spelling Dictionary"))
-#endif
 {
   create_main();
   create_extended();
@@ -140,7 +137,6 @@ void Toolbar::create_extended() {
   box.pack_start(_go_to_l, false, false, 10);
   box.pack_start(_go_to, false, false);
 
-#ifdef ENABLE_SPELL
   box.pack_start(_dictionary_l, false, false, 10);
   box.pack_start(_dictionary, false, false);
 
@@ -154,7 +150,7 @@ void Toolbar::create_extended() {
   // TODO: I want to connect without the callback step.
   signal_dictionary_changed_conn = _dictionary.signal_changed().connect(sigc::mem_fun(*this, &Toolbar::dictionary_changed_cb));
   //  signal_dictionary_changed_conn = _dictionary.signal_changed().connect(sigc::bind<std::string>(sigc::mem_fun(signal_dictionary_changed, &sigc::signal<void, std::string>::emit), _dictionary.get_active_text()));
-#endif
+
   _search.signal_activate().connect(sigc::mem_fun(*this, &Toolbar::search_activate_cb));
   _go_to.signal_activate().connect(sigc::mem_fun(*this, &Toolbar::go_to_activate_cb));
 
@@ -187,7 +183,6 @@ void Toolbar::set_beside() {
   _conf.set("toolbartype","both_horiz");
 }
 
-#ifdef ENABLE_SPELL
 void Toolbar::set_dictionary(std::string& d) {
   signal_dictionary_changed_conn.block();
   _dictionary.set_active_text(d);
@@ -197,7 +192,6 @@ void Toolbar::set_dictionary(std::string& d) {
 std::string Toolbar::get_dictionary() {
   return _dictionary.get_active_text();
 }
-#endif
 
 void Toolbar::reset_gui() {
   _conf.get("toolbar", true) == true ? _main.show() : _main.hide();
@@ -232,11 +226,9 @@ void Toolbar::reset_gui(bool enable) {
   _copy.set_sensitive(enable);
   _paste.set_sensitive(enable);
   _erase.set_sensitive(enable);
-#ifdef ENABLE_SPELL
   _dictionary.set_sensitive(enable);
   _spell.set_sensitive(enable);
   _dictionary.set_sensitive(enable);
-#endif
   _go_to.set_sensitive(enable);
   _search.set_sensitive(enable);
   _extra_buttons.set_sensitive(enable);
@@ -283,11 +275,9 @@ void Toolbar::enable_redo(bool s) {
   _redo.set_sensitive(s);
 }
 
-#ifdef ENABLE_SPELL
 void Toolbar::enable_dictionary(bool s) {
   _dictionary.set_sensitive(s);
 }
-#endif
 
 void Toolbar::set_read_only(bool r) {
   _save.set_sensitive(!r);

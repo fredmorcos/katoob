@@ -2,7 +2,8 @@
  * preferencesdialog.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
 
 #include <gtkmm/stock.h>
 #include <gtkmm/enums.h>
@@ -66,9 +63,9 @@ PreferencesDialog::PreferencesDialog(Conf& conf, Encodings& enc) :
   add_applet(_("Editor"), new EditorApplet(_conf));
   add_applet(_("Encodings"), new EncodingsApplet(_conf, _enc));
   add_applet(_("File Save"), new FileSaveApplet(_conf));
-#ifdef ENABLE_SPELL
+
   add_applet(_("Spell Checker"), new SpellCheckerApplet(_conf));
-#endif
+
 #ifdef ENABLE_PRINT
   add_applet(_("Print"), new PrintApplet(_conf));
 #endif

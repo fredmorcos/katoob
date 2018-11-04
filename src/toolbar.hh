@@ -31,9 +31,7 @@
 #include <gtkmm/separator.h>
 #include <gtkmm/comboboxtext.h>
 #include "conf.hh"
-#ifdef ENABLE_SPELL
 #include "spellmenu.hh"
-#endif
 
 class Toolbar {
 public:
@@ -54,10 +52,10 @@ public:
   void set_icons();
   void set_both();
   void set_beside();
-#ifdef ENABLE_SPELL
+
   void set_dictionary(std::string&);
   std::string get_dictionary();
-#endif
+
   void reset_gui();
   void reset_gui(bool);
 
@@ -78,10 +76,10 @@ public:
 
   sigc::signal<void, int> signal_go_to_activated;
   sigc::signal<void, std::string> signal_search_activated;
-#ifdef ENABLE_SPELL
+
   sigc::signal<void> signal_spell_clicked;
   sigc::signal<void, std::string> signal_dictionary_changed;
-#endif
+
   sigc::signal<void, std::string> signal_extra_button_clicked;
 
 private:
@@ -95,12 +93,10 @@ private:
   void create_extra_button(std::string&);
   void extra_button_clicked(std::string str) { signal_extra_button_clicked.emit(str); }
 
-#ifdef ENABLE_SPELL
   void dictionary_changed_cb() {
     signal_dictionary_changed.emit(_dictionary.get_active_text());
   }
   sigc::connection signal_dictionary_changed_conn;
-#endif
 
   Conf& _conf;
 
@@ -128,10 +124,10 @@ private:
   Gtk::HBox box;
   Gtk::HSeparator sep;
   Gtk::Label _go_to_l, _search_l;
-#ifdef ENABLE_SPELL
+
   Gtk::Label _dictionary_l;
   Gtk::Button _spell;
   SpellMenu _dictionary;
-#endif
+
   Gtk::Entry _go_to, _search;
 };

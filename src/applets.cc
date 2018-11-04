@@ -518,7 +518,6 @@ void FileSaveApplet::backup_toggled_cb() {
 }
 
 /* SpellCheckerApplet */
-#ifdef ENABLE_SPELL
 SpellCheckerApplet::SpellCheckerApplet(Conf& _conf) : Applet::Applet(_conf) {
   spell_check.set_use_underline();
 
@@ -560,12 +559,12 @@ void SpellCheckerApplet::apply() {
     _conf.set("misspelled_blue", color.get_blue());
   */
 }
+
 /*
 void SpellCheckerApplet::spell_check_toggled_cb() {
   misspelled.set_sensitive(spell_check.get_active());
 }
 */
-#endif
 
 /* PrintApplet */
 #ifdef ENABLE_PRINT

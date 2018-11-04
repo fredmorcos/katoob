@@ -341,16 +341,14 @@ void MenuBar::tools(Conf& config
   tools_menu = menu(_("_Tools"));
   _execute = item(tools_menu, _("_Execute Command On Buffer..."), GDK_e, Gdk::ModifierType(GDK_CONTROL_MASK));
   _execute->signal_activate().connect(sigc::mem_fun(signal_execute_activate, &sigc::signal<void>::emit));
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS) || defined(ENABLE_SPELL)
+
   separator(tools_menu);
-#endif
-#ifdef ENABLE_SPELL
+
   _spell = item(tools_menu, Gtk::Stock::SPELL_CHECK, GDK_F7, Gdk::ModifierType(GDK_CONTROL_MASK));
   _spell->signal_activate().connect(sigc::mem_fun(signal_spell_activate, &sigc::signal<void>::emit));
 
   _auto_spell = check_item(tools_menu, _("_Autocheck Spelling"));
   _auto_spell->signal_activate().connect(sigc::mem_fun(*this, &MenuBar::signal_auto_spell_activate_cb));
-#endif
 
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   Gtk::RadioButtonGroup input_group;
@@ -617,9 +615,8 @@ void MenuBar::reset_gui() {
 
   dynamic_cast<Gtk::CheckMenuItem *>(_toolbar)->set_active(_conf.get("toolbar", true));
   dynamic_cast<Gtk::CheckMenuItem *>(_extended_toolbar)->set_active(_conf.get("extended_toolbar", true));
-#ifdef ENABLE_SPELL
+
   dynamic_cast<Gtk::CheckMenuItem *>(_auto_spell)->set_active(_conf.get("spell_check", true));
-#endif
 
   const std::string& toolbartype = _conf.get("toolbartype", "both");
   if (toolbartype == "text") {
@@ -649,11 +646,10 @@ void MenuBar::reset_gui() {
   document_set_active(_active);
 }
 
-#ifdef ENABLE_SPELL
 void MenuBar::signal_auto_spell_activate_cb() {
   signal_auto_spell_activate.emit(dynamic_cast<Gtk::CheckMenuItem *>(_auto_spell)->get_active());
 }
-#endif
+
 void MenuBar::signal_toolbar_activate_cb() {
   signal_toolbar_activate.emit(dynamic_cast<Gtk::CheckMenuItem *>(_toolbar)->get_active());
 }
@@ -714,11 +710,9 @@ void MenuBar::enable_line_numbers(bool s) {
   dynamic_cast<Gtk::CheckMenuItem *>(_line_numbers)->set_active(s);
 }
 
-#ifdef ENABLE_SPELL
 void MenuBar::enable_auto_spell(bool s) {
   dynamic_cast<Gtk::CheckMenuItem *>(_auto_spell)->set_active(s);
 }
-#endif
 
 void MenuBar::reset_gui(bool enable) {
   _save->set_sensitive(enable);
@@ -748,10 +742,8 @@ void MenuBar::reset_gui(bool enable) {
   _wrap_text->set_sensitive(enable);
   _encoding_menu->set_sensitive(enable);
   _execute->set_sensitive(enable);
-#ifdef ENABLE_SPELL
   _spell->set_sensitive(enable);
   _auto_spell->set_sensitive(enable);
-#endif
 #ifdef ENABLE_EMULATOR
   _emulator_menu->set_sensitive(enable);
 #endif

@@ -36,9 +36,7 @@
 #include <gtkmm/liststore.h>
 #include <gtkmm/scrolledwindow.h>
 #include "conf.hh"
-#ifdef ENABLE_SPELL
 #include "spellmenu.hh"
-#endif
 #include "dialogs.hh"
 
 class Applet {
@@ -157,7 +155,6 @@ private:
   Gtk::HBox fs_box1;
 };
 
-#ifdef ENABLE_SPELL
 class SpellCheckerApplet : public Applet {
 public:
   SpellCheckerApplet(Conf&);
@@ -170,7 +167,6 @@ private:
   Gtk::HBox /*sc_box1,*/ sc_box2;
   //  Gtk::ColorButton misspelled;
 };
-#endif
 
 #ifdef ENABLE_PRINT
 class PrintApplet : public Applet {

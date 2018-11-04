@@ -186,10 +186,9 @@ void Window::connect_toolbar_signals() {
   toolbar.signal_erase_clicked.connect(sigc::mem_fun(mdi, &MDI::erase_cb));
 
   // The rest of the extended toolbar signals.
-#ifdef ENABLE_SPELL
   toolbar.signal_dictionary_changed.connect(sigc::mem_fun(*this, &Window::signal_dictionary_changed_cb));
   toolbar.signal_spell_clicked.connect(sigc::mem_fun(mdi, &MDI::do_spell));
-#endif
+
   toolbar.signal_search_activated.connect(sigc::mem_fun(*this, &Window::signal_search_activated_cb));
   toolbar.signal_go_to_activated.connect(sigc::mem_fun(mdi, &MDI::goto_line_cb2));
 
@@ -241,10 +240,9 @@ void Window::connect_menubar_signals() {
 
   menubar.signal_execute_activate.connect(sigc::mem_fun(mdi, &MDI::execute_cb));
 
-#ifdef ENABLE_SPELL
   menubar.signal_spell_activate.connect(sigc::mem_fun(mdi, &MDI::do_spell));
   signal_auto_spell_activate_conn = menubar.signal_auto_spell_activate.connect(sigc::mem_fun(mdi, &MDI::set_auto_spell));
-#endif
+
   menubar.signal_save_all_activate.connect(sigc::mem_fun(mdi, &MDI::save_all_cb));
   menubar.signal_close_all_activate.connect(sigc::mem_fun(mdi, &MDI::close_all_cb));
 
@@ -269,9 +267,7 @@ void Window::connect_menubar_signals() {
 }
 
 void Window::connect_mdi_signals() {
-#ifdef ENABLE_SPELL
   mdi.signal_document_spell_enabled.connect(sigc::mem_fun(*this, &Window::on_document_spell_enabled_cb));
-#endif
   mdi.signal_document_wrap_text.connect(sigc::mem_fun(*this, &Window::signal_document_wrap_text_cb));
   mdi.signal_document_line_numbers.connect(sigc::mem_fun(*this, &Window::signal_document_line_numbers_cb));
 
@@ -290,9 +286,8 @@ void Window::connect_mdi_signals() {
   mdi.signal_document_can_undo.connect(sigc::mem_fun(*this, &Window::signal_document_can_undo_cb));
   mdi.signal_document_modified.connect(sigc::mem_fun(*this, &Window::signal_document_modified_cb));
   mdi.signal_document_title_changed.connect(sigc::mem_fun(*this, &Window::signal_document_title_changed_cb));
-#ifdef ENABLE_SPELL
+
   mdi.signal_document_dictionary_changed.connect(sigc::mem_fun(*this, &Window::signal_document_dictionary_changed_cb));
-#endif
 
   mdi.signal_doc_activated.connect(sigc::mem_fun(*this, &Window::on_doc_activated));
   mdi.signal_reset_gui.connect(sigc::mem_fun(*this, &Window::on_reset_gui));
@@ -348,14 +343,12 @@ void Window::signal_preferences_activate_cb() {
   }
 }
 
-#ifdef ENABLE_SPELL
 void Window::on_document_spell_enabled_cb(bool s) {
   signal_auto_spell_activate_conn.block();
   menubar.enable_auto_spell(s);
   toolbar.enable_dictionary(s);
   signal_auto_spell_activate_conn.unblock();
 }
-#endif
 
 bool Window::signal_delete_event_cb(GdkEventAny *event) {
   if (mdi.close_all()) {
@@ -512,14 +505,12 @@ void Window::reset_gui() {
   */
 }
 
-#ifdef ENABLE_SPELL
 void Window::signal_dictionary_changed_cb(std::string d) {
   std::string old;
   if (!mdi.set_dictionary(old, d)) {
     toolbar.set_dictionary(old);
   }
 }
-#endif
 
 #ifdef ENABLE_DBUS
 void Window::open_files(std::vector<std::string>& f) {

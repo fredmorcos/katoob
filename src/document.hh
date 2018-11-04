@@ -31,9 +31,7 @@
 #include "encodings.hh"
 #include "label.hh"
 #include "undoredo.hh"
-#ifdef ENABLE_SPELL
 #include "spell.hh"
-#endif
 #ifdef ENABLE_HIGHLIGHT
 #include "sourceview.hh"
 #else
@@ -116,10 +114,9 @@ public:
   sigc::signal<void, std::string> signal_highlight_set;
 #endif /* ENABLE_HIGHLIGHT */
   sigc::signal<void, std::string> signal_dict_lookup_request;
-#ifdef ENABLE_SPELL
+
   sigc::signal<void, bool> signal_auto_spell_set;
   sigc::signal<void, std::string> signal_dictionary_changed;
-#endif
 
   void undo();
   void redo();
@@ -146,7 +143,6 @@ public:
   bool search_next();
   void replace();
 
-#ifdef ENABLE_SPELL
   void set_auto_spell(bool);
 
   // Interaction with the spell dialog.
@@ -160,7 +156,7 @@ public:
   void spell_dialog_helper_recheck();
   bool set_dictionary(std::string&, std::string&);
   std::string get_dictionary() { return spell_dict; }
-#endif
+
   bool is_empty() { return (_text_view.get_buffer()->begin().get_offset() == _text_view.get_buffer()->end().get_offset()); }
 
   void reset_gui();
@@ -236,7 +232,7 @@ private:
   bool expose_event_cb(GdkEventExpose *);
   void paint_line_numbers(Glib::RefPtr<Gdk::Window>&, GdkEventExpose *);
   //  void get_line_bounds(const Gtk::TextIter&, Gtk::TextIter&, Gtk::TextIter&);
-#ifdef ENABLE_SPELL
+
   Spell spell;
   bool do_spell;
   std::vector<bool> lines;
@@ -259,7 +255,6 @@ private:
   void spell_menu_add_to_dictionary_cb(std::string, Gtk::TextIter&, Gtk::TextIter&);
   std::string get_next_misspelled();
   std::string spell_dict;
-#endif
 
   void dict_menu_item_activated(std::string&);
 

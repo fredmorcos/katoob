@@ -2,7 +2,8 @@
  * docfactory.hh
  * This file is part of katoob
  *
- * Copyright (C) 2008 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __DOCFACTORY_HH__
-#define __DOCFACTORY_HH__
+#pragma once
 
 #include <string>
 #include <vector>
@@ -231,7 +231,6 @@ public:
    */
   sigc::signal<void, std::string> signal_dict_lookup_request;
 
-#ifdef ENABLE_SPELL
   /**
    * \brief emitted when a document changes the "auto check spelling" property.
    */
@@ -241,7 +240,6 @@ public:
    * \brief emitted when the spell dictionary gets changed.
    */
   sigc::signal<void, std::string> signal_dictionary_changed;
-#endif
 
   /**
    * \brief emitted when the Document Label close button is clicked.
@@ -291,5 +289,3 @@ private:
   std::vector<Document *> children, closed_children;
   std::vector<int> numbers;
 };
-
-#endif /* __DOCFACTORY_HH__ */

@@ -2,7 +2,8 @@
  * spelldialog.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
 
 #include <gtkmm/stock.h>
 #include "spelldialog.hh"
@@ -112,9 +109,7 @@ SpellDialog::SpellDialog(Document *doc) :
 SpellDialog::~SpellDialog() {
   // NOTE: Recheck the whole document.
   // The user might've added new words to the dictionary.
-#ifdef ENABLE_SPELL
   _doc->spell_dialog_helper_recheck();
-#endif
 }
 
 void SpellDialog::close_clicked_cb() {
@@ -122,7 +117,6 @@ void SpellDialog::close_clicked_cb() {
 }
 
 void SpellDialog::run() {
-#ifdef ENABLE_SPELL
   std::string word;
 
   _doc->spell_dialog_mode();
@@ -143,7 +137,6 @@ void SpellDialog::run() {
   // NOTE: This is bad but it's needed otherwise the first word won't highlight.
   _doc->spell_dialog_mode();
   _doc->spell_dialog_helper_has_misspelled(word);
-#endif
 
   loop = Glib::MainLoop::create();
   loop->run();
@@ -179,7 +172,6 @@ void SpellDialog::selection_signal_changed_cb() {
 }
 
 void SpellDialog::next() {
-#ifdef ENABLE_SPELL
   std::string word;
 
   if (!_doc->spell_dialog_helper_has_misspelled(word)) {
@@ -190,7 +182,6 @@ void SpellDialog::next() {
   _doc->spell_dialog_helper_get_suggestions(word, suggestions);
 
   got_misspelled(word, suggestions);
-#endif
 }
 
 void SpellDialog::ignore_clicked_cb() {
@@ -198,35 +189,28 @@ void SpellDialog::ignore_clicked_cb() {
 }
 
 void SpellDialog::ignore_all_clicked_cb() {
-#ifdef ENABLE_SPELL
   std::string old_word = misspelled_word.get_text();
   _doc->spell_dialog_helper_add_to_session(old_word);
   next();
-#endif
 }
 
 void SpellDialog::add_clicked_cb() {
-#ifdef ENABLE_SPELL
   std::string old_word = misspelled_word.get_text();
   _doc->spell_dialog_helper_add_to_personal(old_word);
   next();
-#endif
 }
 
 void SpellDialog::change_clicked_cb() {
-#ifdef ENABLE_SPELL
   std::string old_word = misspelled_word.get_text();
   std::string new_word = entry.get_text();
   if (new_word.length() > 0) {
     _doc->spell_dialog_helper_replace(old_word, new_word);
     next();
   }
-#endif
 }
 
 // TODO: Add check_and_suggest() method to our speller class.
 void SpellDialog::check_clicked_cb() {
-#ifdef ENABLE_SPELL
   std::string word = entry.get_text();
   if (word.length() > 0) {
     if (_doc->spell_dialog_helper_check(word)) {
@@ -242,7 +226,6 @@ void SpellDialog::check_clicked_cb() {
       populate_suggestions(suggestions);
     }
   }
-#endif
 }
 
 bool SpellDialog::signal_key_press_event_cb(GdkEventKey *key) {
