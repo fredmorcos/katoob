@@ -36,6 +36,8 @@ mandir = get_option('mandir')
 mandir_de = join_paths(mandir, 'de', 'man1')
 appsdir = join_paths(datadir, 'applications')
 docdir = join_paths(datadir, 'doc', 'katoob')
+multipressdir = join_paths(datadir_full, 'multipress')
+emulatordir = join_paths(datadir_full, 'emulator')
 
 conf = configuration_data()
 conf.set('package', 'katoob')
@@ -58,6 +60,12 @@ conf_inc = include_directories('.')
 
 install_man('man/katoob.1')
 install_man('man/katoob.de.1', install_dir: mandir_de)
+
+install_data('data/multipress/arabic', install_dir: multipressdir)
+
+install_data('data/emulator/arabic', install_dir: emulatordir)
+install_data('data/emulator/hebrew', install_dir: emulatordir)
+install_data('data/emulator/fr_transliteration', install_dir: emulatordir)
 
 install_data('data/toolbar', install_dir: datadir_full)
 
