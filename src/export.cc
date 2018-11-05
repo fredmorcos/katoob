@@ -2,7 +2,8 @@
  * export.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +21,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include "export.hh"
 #include "macros.h"
 #include "utils.hh"
@@ -34,22 +31,18 @@
 #ifdef HAVE_BZIP2
 #include <bzlib.h>
 #endif
-#ifdef HAVE_FRIBIDI
 #include <fribidi/fribidi.h>
 #include "shape_arabic.h"
-#endif
 
 // TODO: Export HTML character references.
 
 void export_init(std::vector<Export>& exprt) {
   Export exp;
 
-#ifdef HAVE_FRIBIDI
   exp.name = _("_Text file with no unicode control characters...");
   exp.func = katoob_export_plain;
   exp.lines = false;
   exprt.push_back(exp);
-#endif
 
 #ifdef HAVE_GZIP
   exp.name = _("Text file compressed with _gzip");
@@ -65,15 +58,12 @@ void export_init(std::vector<Export>& exprt) {
   exprt.push_back(exp);
 #endif
 
-#ifdef HAVE_FRIBIDI
   exp.name = _("Text with _shaping and bidi applied");
   exp.func = katoob_export_bidi_shape;
   exp.lines = true;
   exprt.push_back(exp);
-#endif
 }
 
-#ifdef HAVE_FRIBIDI
 bool katoob_export_plain(Glib::ustring& text, std::string& out, std::string& error) {
   gunichar *ch = new gunichar[text.size()+1];
   for (unsigned i = 0; i < text.size(); i++) {
@@ -93,7 +83,6 @@ bool katoob_export_plain(Glib::ustring& text, std::string& out, std::string& err
 
   return true;
 }
-#endif
 
 #ifdef HAVE_GZIP
 bool katoob_export_gz(Glib::ustring& text, std::string& out, std::string& error) {
@@ -146,7 +135,6 @@ bool katoob_export_bz2(Glib::ustring& text, std::string& out, std::string& error
 }
 #endif
 
-#ifdef HAVE_FRIBIDI
 bool katoob_export_bidi_shape(Glib::ustring& text, std::string& out, std::string& error) {
   // We apply shaping first then bidi.
   // Memory representation  0 1 2 3
@@ -197,4 +185,3 @@ bool katoob_export_bidi_shape(Glib::ustring& text, std::string& out, std::string
 
   return true;
 }
-#endif

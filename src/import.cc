@@ -2,7 +2,8 @@
  * import.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +21,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include <glibmm/miscutils.h>
 #include "import.hh"
 #include "macros.h"
@@ -36,10 +33,8 @@
 #include <glibmm/fileutils.h>
 #include <glibmm/ustring.h>
 #include "utils.hh"
-#ifdef HAVE_FRIBIDI
 #include <fribidi/fribidi.h>
 #include "shape_arabic.h"
-#endif
 
 void import_init(std::vector<Import>& import) {
   Import imp;
@@ -60,11 +55,9 @@ void import_init(std::vector<Import>& import) {
   import.push_back(imp);
 #endif
 
-#ifdef HAVE_FRIBIDI
   imp.name = _("Text with _shaping and bidi applied");
   imp.func = katoob_import_bidi_shape;
   import.push_back(imp);
-#endif
 }
 
 bool katoob_import_html(std::string& file, std::string& _out) {
@@ -195,7 +188,6 @@ bool katoob_import_bz2(std::string& file, std::string& out) {
 }
 #endif
 
-#ifdef HAVE_FRIBIDI
 bool katoob_import_bidi_shape(std::string& file, std::string& out) {
   Glib::ustring contents;
 
@@ -254,4 +246,3 @@ bool katoob_import_bidi_shape(std::string& file, std::string& out) {
 
   return true;
 }
-#endif

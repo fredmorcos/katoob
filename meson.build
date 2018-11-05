@@ -135,6 +135,7 @@ executable(
      'src/multipress.cc',
      'src/multipresswindow.cc',
      'src/toolbar.cc',
+     'src/shape_arabic.c',
      'src/xdgmime/xdgmimealias.c',
      'src/xdgmime/xdgmimealias.h',
      'src/xdgmime/xdgmime.c',

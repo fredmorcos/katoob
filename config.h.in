@@ -19,7 +19,6 @@
 
 /* #define HAVE_GZIP    "@have_gzip@" */
 /* #define HAVE_BZIP2   "@have_bzip2@" */
-/* #define HAVE_FRIBIDI "@have_fribidi@" */
 /* #define HAVE_MMAP    "@have_mmap@" */
 
 /* #define ENABLE_DBUS       "@enable_dbus@" */
