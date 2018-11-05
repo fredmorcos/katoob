@@ -15,7 +15,7 @@
 #define DATADIR "@datadir@"
 #define DATADIR_FULL "@datadir_full@"
 
-/* #define XDG_PREFIX "@xdg_prefix@" */
+#define XDG_PREFIX "@xdg_prefix@"
 
 /* #define HAVE_GZIP    "@have_gzip@" */
 /* #define HAVE_BZIP2   "@have_bzip2@" */

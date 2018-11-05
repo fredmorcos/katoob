@@ -20,6 +20,9 @@ if meson.get_compiler('c').get_id() == 'clang'
     add_global_arguments(extra_args_clang, language: 'c')
 endif
 
+shared_mime_info = dependency('shared-mime-info')
+shared_mime_info_prefix = shared_mime_info.get_pkgconfig_variable('prefix')
+
 isocodes = dependency('iso-codes')
 isocodes_prefix = isocodes.get_pkgconfig_variable('prefix')
 
@@ -33,6 +36,7 @@ deps = [dependency('gtkmm-2.4'),
         dependency('dbus-glib-1'),
         dependency('expat'),
         dependency('libcurl'),
+        shared_mime_info,
         isocodes]
 
 prefix = get_option('prefix')
@@ -51,6 +55,7 @@ conf.set('version', meson.project_version())
 conf.set('prefix', prefix)
 conf.set('datadir', datadir)
 conf.set('datadir_full', datadir_full)
+conf.set('xdg_prefix', shared_mime_info_prefix)
 conf.set('isocodes_prefix', isocodes_prefix)
 
 configure_file(input: 'config.h.in',
