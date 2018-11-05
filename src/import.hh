@@ -36,11 +36,6 @@ public:
 
 void import_init(std::vector<Import>&);
 bool katoob_import_html(std::string&, std::string&);
-#ifdef HAVE_GZIP
 bool katoob_import_gz(std::string&, std::string&);
-#endif
-#ifdef HAVE_BZIP2
 bool katoob_import_bz2(std::string&, std::string&);
-#endif
-
 bool katoob_import_bidi_shape(std::string&, std::string&);

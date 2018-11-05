@@ -24,12 +24,8 @@
 #include <glibmm/miscutils.h>
 #include "import.hh"
 #include "macros.h"
-#ifdef HAVE_GZIP
 #include <zlib.h>
-#endif
-#ifdef HAVE_BZIP2
 #include <bzlib.h>
-#endif
 #include <glibmm/fileutils.h>
 #include <glibmm/ustring.h>
 #include "utils.hh"
@@ -43,17 +39,13 @@ void import_init(std::vector<Import>& import) {
   imp.func = katoob_import_html;
   import.push_back(imp);
 
-#ifdef HAVE_GZIP
   imp.name = _("Text file compressed with _gzip");
   imp.func = katoob_import_gz;
   import.push_back(imp);
-#endif
 
-#ifdef HAVE_BZIP2
   imp.name = _("Text file compressed with _bzip2");
   imp.func = katoob_import_bz2;
   import.push_back(imp);
-#endif
 
   imp.name = _("Text with _shaping and bidi applied");
   imp.func = katoob_import_bidi_shape;
@@ -99,7 +91,6 @@ bool katoob_import_html(std::string& file, std::string& _out) {
   return true;
 }
 
-#ifdef HAVE_GZIP
 bool katoob_import_gz(std::string& file, std::string& out) {
   // Is it really a gzipped file ?
   FILE *fp = fopen(file.c_str(), "rb");
@@ -155,9 +146,7 @@ bool katoob_import_gz(std::string& file, std::string& out) {
   gzclose(zfile);
   return true;
 }
-#endif
 
-#ifdef HAVE_BZIP2
 bool katoob_import_bz2(std::string& file, std::string& out) {
   BZFILE *bzfile;
   bzfile = BZ2_bzopen(file.c_str(), "rb");
@@ -186,7 +175,6 @@ bool katoob_import_bz2(std::string& file, std::string& out) {
   BZ2_bzclose(bzfile);
   return true;
 }
-#endif
 
 bool katoob_import_bidi_shape(std::string& file, std::string& out) {
   Glib::ustring contents;

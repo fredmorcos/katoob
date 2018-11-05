@@ -37,14 +37,7 @@ public:
 };
 
 void export_init(std::vector<Export>&);
-
 bool katoob_export_plain(Glib::ustring&, std::string&, std::string&);
-
-#ifdef HAVE_GZIP
 bool katoob_export_gz(Glib::ustring&, std::string&, std::string&);
-#endif
-#ifdef HAVE_BZIP2
 bool katoob_export_bz2(Glib::ustring&, std::string&, std::string&);
-#endif
-
 bool katoob_export_bidi_shape(Glib::ustring&, std::string&, std::string&);

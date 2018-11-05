@@ -17,9 +17,6 @@
 
 #define XDG_PREFIX "@xdg_prefix@"
 
-/* #define HAVE_GZIP    "@have_gzip@" */
-/* #define HAVE_BZIP2   "@have_bzip2@" */
-
 /* #define ENABLE_DBUS       "@enable_dbus@" */
 /* #define ENABLE_ISOCODES   "@enable_isocodes@" */
 /* #define ENABLE_NLS        "@enable_nls@" */

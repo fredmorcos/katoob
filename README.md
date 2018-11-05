@@ -68,6 +68,9 @@ Katoob is now being developed and modernized on Archlinux.
 * dbus-glib-1
 * expat
 * libcurl
+* zlib
+* shared-mime-info
+* isocodes
 
 ### Building and Installation
 

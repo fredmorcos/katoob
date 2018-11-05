@@ -20,6 +20,8 @@ if meson.get_compiler('c').get_id() == 'clang'
     add_global_arguments(extra_args_clang, language: 'c')
 endif
 
+bzip2 = meson.get_compiler('c').find_library('bz2', required: true)
+
 shared_mime_info = dependency('shared-mime-info')
 shared_mime_info_prefix = shared_mime_info.get_pkgconfig_variable('prefix')
 
@@ -36,6 +38,8 @@ deps = [dependency('gtkmm-2.4'),
         dependency('dbus-glib-1'),
         dependency('expat'),
         dependency('libcurl'),
+        dependency('zlib'),
+        bzip2,
         shared_mime_info,
         isocodes]
 

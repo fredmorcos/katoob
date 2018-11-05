@@ -24,13 +24,9 @@
 #include "export.hh"
 #include "macros.h"
 #include "utils.hh"
-#ifdef HAVE_GZIP
 #include <zlib.h>
 #include "tempfile.hh"
-#endif
-#ifdef HAVE_BZIP2
 #include <bzlib.h>
-#endif
 #include <fribidi/fribidi.h>
 #include "shape_arabic.h"
 
@@ -44,19 +40,15 @@ void export_init(std::vector<Export>& exprt) {
   exp.lines = false;
   exprt.push_back(exp);
 
-#ifdef HAVE_GZIP
   exp.name = _("Text file compressed with _gzip");
   exp.func = katoob_export_gz;
   exp.lines = false;
   exprt.push_back(exp);
-#endif
 
-#ifdef HAVE_BZIP2
   exp.name = _("Text file compressed with _bzip2");
   exp.func = katoob_export_bz2;
   exp.lines = false;
   exprt.push_back(exp);
-#endif
 
   exp.name = _("Text with _shaping and bidi applied");
   exp.func = katoob_export_bidi_shape;
@@ -84,7 +76,6 @@ bool katoob_export_plain(Glib::ustring& text, std::string& out, std::string& err
   return true;
 }
 
-#ifdef HAVE_GZIP
 bool katoob_export_gz(Glib::ustring& text, std::string& out, std::string& error) {
   TempFile tf;
   if (!tf.ok(error)) {
@@ -106,9 +97,7 @@ bool katoob_export_gz(Glib::ustring& text, std::string& out, std::string& error)
   gzclose(zfile);
   return tf.read(out, error);
 }
-#endif
 
-#ifdef HAVE_BZIP2
 bool katoob_export_bz2(Glib::ustring& text, std::string& out, std::string& error) {
   unsigned dest_len;
 
@@ -133,7 +122,6 @@ bool katoob_export_bz2(Glib::ustring& text, std::string& out, std::string& error
   free(dest);
   return true;
 }
-#endif
 
 bool katoob_export_bidi_shape(Glib::ustring& text, std::string& out, std::string& error) {
   // We apply shaping first then bidi.
