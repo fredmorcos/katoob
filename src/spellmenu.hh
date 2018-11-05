@@ -24,9 +24,7 @@
 #pragma once
 
 #include <gtkmm/comboboxtext.h>
-#ifdef ENABLE_ISOCODES
 #include "isocodes.hh"
-#endif
 
 class SpellMenu : public Gtk::ComboBoxText {
 public:
@@ -37,7 +35,5 @@ public:
   //  void append_text(const Glib::ustring&);
 private:
   std::vector<std::string> dicts;
-#ifdef ENABLE_ISOCODES
   IsoCodes iso_codes;
-#endif
 };

@@ -2,7 +2,8 @@
  * isocodes.hh
  * This file is part of katoob
  *
- * Copyright (C) 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __ISOCODES_HH__
-#define __ISOCODES_HH__
+#pragma once
 
 #include <expat.h>
 #include <map>
@@ -37,8 +37,12 @@ public:
   void lang_codes(const char *, const char **);
 
 private:
-  void filter(const std::string&, const char **, const std::string&, const std::string&, const std::string&, std::map<std::string, std::string>&, const char *);
+  void filter(const std::string&,
+              const char **,
+              const std::string&,
+              const std::string&,
+              const std::string&,
+              std::map<std::string, std::string>&,
+              const char *);
   static std::map<std::string, std::string> _lang_codes, _country_codes;
 };
-
-#endif /* __ISOCODES_HH__ */

@@ -2,7 +2,8 @@
  * spellmenu.cc
  * This file is part of katoob
  *
- * Copyright (C) 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,41 +21,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include "spellmenu.hh"
 #include "spell.hh"
-#ifdef ENABLE_ISOCODES
 #include <cassert>
-#endif
 
 SpellMenu::SpellMenu() {
   katoob_spell_list_available(dicts);
   for (unsigned x = 0; x < dicts.size(); x++) {
-#ifdef ENABLE_ISOCODES
     append_text(iso_codes.translate(dicts[x]));
-#else
-    append_text(dicts[x]);
-#endif
   }
 }
 
 const Glib::ustring SpellMenu::get_active_text() {
-#ifdef ENABLE_ISOCODES
   int x = get_active_row_number();
   assert(x != -1);
   return dicts[x];
-#else
-  return Gtk::ComboBoxText::get_active_text();
-#endif
 }
 
 void SpellMenu::set_active_text(const Glib::ustring& str) {
-#ifdef ENABLE_ISOCODES
   return Gtk::ComboBoxText::set_active_text(iso_codes.translate(str));
-#else
-  return Gtk::ComboBoxText::set_active_text(str);
-#endif
 }
