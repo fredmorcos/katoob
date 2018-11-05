@@ -49,6 +49,7 @@ It should run on most BSD and POSIX compliant operating systems.
   - Fix many build issues due to bitrot over the past 10 years
   - Use more Gtk stock icons instead of custom PNGs
   - Merge patches from Debian
+  - Use GIO instead of xdgmime
 
 ## Requirements
 
