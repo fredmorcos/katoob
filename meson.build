@@ -1,4 +1,10 @@
-project('katoob', ['cpp', 'c'])
+project('katoob', ['cpp', 'c'],
+        license: 'GPL2+',
+        version: '0.6.0-alpha',
+        meson_version: '>= 0.48.1',
+        default_options: ['c_std=c11',
+                          'cpp_std=c++17',
+                          'warning_level=3'])
 
 extra_args = ['-Wextra', '-Wpedantic']
 extra_args_clang = ['-ferror-limit=0', '-Db_lundef=false']
@@ -41,7 +47,7 @@ emulatordir = join_paths(datadir_full, 'emulator')
 
 conf = configuration_data()
 conf.set('package', 'katoob')
-conf.set('version', '0.6.0-alpha')
+conf.set('version', meson.project_version())
 conf.set('prefix', prefix)
 conf.set('datadir', datadir)
 conf.set('datadir_full', datadir_full)
