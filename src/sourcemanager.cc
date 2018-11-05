@@ -2,7 +2,8 @@
  * sourcemanager.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
 
 #include "xdgmime/xdgmime.h"
 #include "sourcemanager.hh"
@@ -72,16 +69,28 @@ std::string SourceManager::get_language_for_file(const std::string& file) {
   }
 
   for (SourceCategoryIter iter = cats.begin(); iter != cats.end(); iter++) {
-    for (unsigned x = 0; x < iter->second.size(); x++) {
-      GtkSourceLanguage *lang = gtk_source_language_manager_get_language(manager, iter->second[x].c_str());
-      gchar **mimes =  gtk_source_language_get_mime_types(lang);
+    for (auto ty = iter->second.begin(); ty != iter->second.end(); ty++) {
+    // for (unsigned x = 0; x < iter->second.size(); x++) {
+      GtkSourceLanguage *lang =
+        gtk_source_language_manager_get_language(manager, ty->c_str());
+      gchar **mimes = gtk_source_language_get_mime_types(lang);
+
+      if (!mimes) {
+        std::cerr << "Error getting mimetypes for " << *ty
+                  << " (ID: " << gtk_source_language_get_id(lang)
+                  << ", Name: " << gtk_source_language_get_name(lang)
+                  << ")" << std::endl;
+        continue;
+      }
+
       gchar **m = mimes;
+
       while (*m) {
-	if (!strcmp(*m, _mime)) {
-	  g_strfreev(mimes);
-	  return iter->second[x];
-	}
-	++m;
+        if (!strcmp(*m, _mime)) {
+          g_strfreev(mimes);
+          return *ty;
+        }
+        ++m;
       }
       g_strfreev(mimes);
     }

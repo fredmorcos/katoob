@@ -2,7 +2,8 @@
  * textbuffer.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +21,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include "textbuffer.hh"
 #include "utils.hh"
 #ifdef ENABLE_EMULATOR
@@ -33,17 +30,16 @@
 #include "multipress.hh"
 #endif
 
-TextBuffer::TextBuffer(Conf& conf) : _conf(conf)
-#ifdef ENABLE_HIGHLIGHT
-    , Gtk::TextBuffer(GTK_TEXT_BUFFER(gtk_source_buffer_new(NULL)))
-#endif
+TextBuffer::TextBuffer(Conf& conf):
+  _conf(conf),
+  Gtk::TextBuffer(GTK_TEXT_BUFFER(gtk_source_buffer_new(NULL)))
 {
   _insert = create_mark(begin());
   _erase = 0;
-#ifdef ENABLE_HIGHLIGHT
+
   // We don't want gtksourceview to manage the undo for us. We are doing it anyway.
   gtk_source_buffer_set_max_undo_levels(GTK_SOURCE_BUFFER(gobj()), 0);
-#endif
+
 #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   on_insert_conn = signal_insert().connect(sigc::mem_fun(this, &TextBuffer::on_insert), false);
   signal_erase().connect(sigc::mem_fun(this, &TextBuffer::on_erase), false);
@@ -129,7 +125,6 @@ void TextBuffer::on_erase(const Gtk::TextBuffer::iterator& start, const Gtk::Tex
 #endif
 }
 
-#ifdef ENABLE_HIGHLIGHT
 void TextBuffer::set_highlight(bool s) {
   gtk_source_buffer_set_highlight_syntax(GTK_SOURCE_BUFFER(gobj()), s ?  TRUE : FALSE);
 }
@@ -137,4 +132,3 @@ void TextBuffer::set_highlight(bool s) {
 void TextBuffer::set_language(GtkSourceLanguage* lang) {
   gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(gobj()), lang);
 }
-#endif

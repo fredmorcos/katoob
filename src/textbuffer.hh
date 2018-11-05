@@ -2,7 +2,8 @@
  * textbuffer.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,14 +21,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __TEXTBUFFER_HH__
-#define __TEXTBUFFER_HH__
+#pragma once
 
 #include <gtkmm/textbuffer.h>
-#ifdef ENABLE_HIGHLIGHT
 #include <gtksourceview/gtksourcebuffer.h>
 #include "sourcemanager.hh"
-#endif
 #include "conf.hh"
 
 class TextBuffer : public Gtk::TextBuffer {
@@ -41,10 +39,10 @@ public:
   int get_erase_line() { return _erase; }
   std::string& get_deleted() { return _deleted; }
   void clear_deleted() { _deleted.clear(); }
-#ifdef ENABLE_HIGHLIGHT
+
   void set_highlight(bool);
   void set_language(GtkSourceLanguage *);
-#endif
+
 protected:
   void on_insert (const Gtk::TextBuffer::iterator&, const Glib::ustring&, int);
   Glib::RefPtr<Mark> _insert;
@@ -57,5 +55,3 @@ private:
   int _erase;
   Conf& _conf;
 };
-
-#endif /* __TEXTBUFFER_HH__ */

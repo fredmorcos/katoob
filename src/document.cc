@@ -148,12 +148,10 @@ Document::Document(Conf& conf, Encodings& encodings, int encoding, std::string& 
   _ok = true;
   set_modified(false);
 
-#ifdef ENABLE_HIGHLIGHT
   // auto highlight.
   if (conf.get("highlight_auto", true)) {
     set_highlight(SourceManager::get_language_for_file(file));
   }
-#endif
 }
 
 Document::Document(Conf& conf, Encodings& encodings, int num, int encoding) :
@@ -321,9 +319,8 @@ void Document::create_ui() {
   set_readonly(_readonly);
 
   numbers_right = Gtk::TEXT_WINDOW_RIGHT;
-#ifndef ENABLE_HIGHLIGHT
   numbers_left = Gtk::TEXT_WINDOW_LEFT;
-#endif
+
   grab_focus();
 
   std::string error;
@@ -802,27 +799,15 @@ void Document::line_numbers(bool show) {
       _text_view.set_border_window_size(numbers_right, 0);
     }
     if (_conf.get("numbers_left", true)) {
-#ifndef ENABLE_HIGHLIGHT
       _text_view.set_border_window_size(numbers_left, 20);
-#else
-      _text_view.show_line_numbers(true);
-#endif
     }
     else {
-#ifndef ENABLE_HIGHLIGHT
       _text_view.set_border_window_size(numbers_left, 0);
-#else
-      _text_view.show_line_numbers(false);
-#endif
     }
   }
   else {
     _text_view.set_border_window_size(numbers_right, 0);
-#ifndef ENABLE_HIGHLIGHT
     _text_view.set_border_window_size(numbers_left, 0);
-#else
-    _text_view.show_line_numbers(false);
-#endif
   }
   //#endif
 }
@@ -839,9 +824,9 @@ void Document::emit_signals() {
   signal_title_changed.emit(get_title());
   signal_auto_spell_set.emit(do_spell);
   signal_dictionary_changed.emit(spell_dict);
-#ifdef ENABLE_HIGHLIGHT
+
   signal_highlight_set.emit(_highlight);
-#endif
+
   signal_wrap_text_set.emit((_text_view.get_wrap_mode() == Gtk::WRAP_NONE ? false : true));
   signal_line_numbers_set.emit(_line_numbers);
 }
@@ -1021,25 +1006,18 @@ bool Document::expose_event_cb(GdkEventExpose *event) {
   }
   // TODO: Should we connect/disconnect this when needed since the spell
   // is handled by an idle worker ??
-#ifndef ENABLE_HIGHLIGHT
+
   Glib::RefPtr<Gdk::Window> wl = _text_view.get_window(numbers_left);
-#endif
   Glib::RefPtr<Gdk::Window> wr = _text_view.get_window(numbers_right);
 
-  if (
-#ifndef ENABLE_HIGHLIGHT
-      (!wl) &&
-#endif
-      (!wr)) {
+  if ((!wl) && (!wr)) {
     return false;
   }
 
-#ifndef ENABLE_HIGHLIGHT
   // left.
   if ((wl) && (wl->gobj() == event->window)) {
     paint_line_numbers(wl, event);
   }
-#endif
 
   if ((wr) && (wr->gobj() == event->window)) {
     paint_line_numbers(wr, event);
@@ -1285,19 +1263,21 @@ bool Document::spell_checker_worker() {
     //      std::cout << "Got Line " << iter.get_line() << std::endl;
     spell_checker_check(iter);
     lines[iter.get_line()] = false;
-  }
-  else {
+  } else {
     spell_worker_conn.disconnect();
   }
+
   // We will always return true.
   return true;
 }
 
 bool Document::spell_checker_has_lines() {
-  for (unsigned x = 0; x < lines.size(); x++) {
-    if (lines[x])
+  for (auto i = lines.begin(); i != lines.end(); i++) {
+    if (*i) {
       return true;
+    }
   }
+
   return false;
 }
 
@@ -1566,7 +1546,9 @@ bool Document::spell_checker_get_next(Gtk::TextIter& start, Gtk::TextIter& end, 
   return true;
 }
 
-bool Document::spell_checker_check_word(const Gtk::TextIter& iter, std::string& word, int& s, int& e, bool mark) {
+bool Document::spell_checker_check_word(const Gtk::TextIter& iter,
+                                        std::string& word,
+                                        int& s, int& e, bool mark) {
   Gtk::TextIter _s = iter, _e = iter;
   _s.set_offset(s);
   _e.set_offset(e);
@@ -1631,14 +1613,21 @@ void Document::set_auto_spell(bool st) {
   signal_auto_spell_set.emit(do_spell);
 }
 
-void Document::spell_menu_item_activate_cb(std::string old_word, std::string new_word, Gtk::TextIter& start, Gtk::TextIter& end) {
+void Document::spell_menu_item_activate_cb(std::string old_word,
+                                           std::string new_word,
+                                           Gtk::TextIter& start,
+                                           Gtk::TextIter& end)
+{
   // TODO: This will cause the whole line to be rechecked.
   _text_view.get_buffer()->erase(start, end);
   _text_view.get_buffer()->insert_at_cursor(new_word);
   spell.replace(old_word, new_word);
 }
 
-void Document::spell_menu_add_to_dictionary_cb(std::string str, Gtk::TextIter& start, Gtk::TextIter& end) {
+void Document::spell_menu_add_to_dictionary_cb(std::string str,
+                                               Gtk::TextIter& start,
+                                               Gtk::TextIter& end)
+{
   spell.to_personal(str);
 
   // TODO: We need to remove the tag from the word.
@@ -1707,7 +1696,6 @@ void Document::reset_gui() {
   set_tab_width();
 }
 
-#ifdef ENABLE_HIGHLIGHT
 void Document::set_highlight(const std::string& x) {
   if (_highlight == x) {
     return;
@@ -1724,7 +1712,6 @@ void Document::set_highlight(const std::string& x) {
     Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())->set_highlight(true);
   }
 }
-#endif
 
 void Document::signal_text_view_request_file_open_cb(std::string filename) {
   signal_text_view_request_file_open.emit(filename);

@@ -325,16 +325,15 @@ EditorApplet::EditorApplet(Conf& _conf) :
   textwrap.set_use_underline();
   linenumbers.set_use_underline();
   default_font.set_use_underline();
-#ifdef ENABLE_HIGHLIGHT
+
   highlight_auto.set_use_underline();
-#endif
 
   textwrap.set_label(_("Text _Wrapping is on by default"));
   linenumbers.set_label(_("Show _Line numbers by default"));
   default_font.set_label(_("Use the default _font"));
-#ifdef ENABLE_HIGHLIGHT
+
   highlight_auto.set_label(_("_Automatic syntax highlighting for known file types"));
-#endif
+
   linenumbers_label.set_text(_("Line numbers position"));
   linenumbers_pos.append_text(_("Right"));
   linenumbers_pos.append_text(_("Left"));
@@ -348,9 +347,9 @@ EditorApplet::EditorApplet(Conf& _conf) :
   box.pack_start(linenumbers, false, false);
   box.pack_start(ed_box1, false, false);
   box.pack_start(font_frame, false, false);
-#ifdef ENABLE_HIGHLIGHT
+
   box.pack_start(highlight_auto, false, false);
-#endif
+
   box.pack_start(ed_box3, false, false);
 
   font_frame.add(ed_box2);
@@ -364,9 +363,8 @@ EditorApplet::EditorApplet(Conf& _conf) :
   textwrap.set_active(_conf.get("textwrap", true));
   linenumbers.set_active(_conf.get("linenumbers", false));
   default_font.set_active(_conf.get("default_font", true));
-#ifdef ENABLE_HIGHLIGHT
+
   highlight_auto.set_active(_conf.get("highlight_auto", true));
-#endif
 
   bool r = _conf.get("numbers_right", true);
   bool l = _conf.get("numbers_left", true);
@@ -401,9 +399,8 @@ void EditorApplet::apply() {
   _conf.set("linenumbers", linenumbers.get_active());
   _conf.set("default_font", default_font.get_active());
   _conf.set("font", font.get_font_name().c_str());
-#ifdef ENABLE_HIGHLIGHT
+
   _conf.set("highlight_auto", highlight_auto.get_active());
-#endif
 
   bool r, l;
   switch (linenumbers_pos.get_active_row_number()) {

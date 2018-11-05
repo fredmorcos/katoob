@@ -2,7 +2,8 @@
  * sourceview.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +21,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include "sourceview.hh"
 //#include "gtkmm/private/widget_p.h"
 #include <gtksourceview/gtksourcelanguagemanager.h>
@@ -33,11 +30,7 @@ void _drag_data_received_cb(GtkWidget *self, GdkDragContext *context, gint x, gi
 }
 
 SourceView::SourceView() :
-#ifdef ENABLE_HIGHLIGHT
   TextView(GTK_TEXT_VIEW(gtk_source_view_new())),
-#else
-  TextView(),
-#endif
   __drag_data_received(0) {
   __drag_data_received = g_signal_connect(G_OBJECT(gobj()), "drag_data_received", G_CALLBACK(_drag_data_received_cb), this);
 }

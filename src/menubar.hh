@@ -72,9 +72,8 @@ public:
   void enable_auto_spell(bool);
   void set_read_only(int, bool);
   void reset_gui(bool);
-#ifdef ENABLE_HIGHLIGHT
+
   void set_highlight(std::string);
-#endif
 
   sigc::signal<void> signal_create_activate;
   sigc::signal<void> signal_open_activate;
@@ -135,9 +134,9 @@ public:
   sigc::signal<void, int> signal_encoding_activate;
   sigc::signal<void, int> signal_document_activate;
   sigc::signal<void, int> signal_closed_document_activate;
-#ifdef ENABLE_HIGHLIGHT
+
   sigc::signal<void, std::string> signal_highlighter_activate;
-#endif
+
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   sigc::signal<void, int, int> signal_layout_activate;
 #endif
@@ -209,10 +208,8 @@ private:
   void signal_import_activate_cb(Import);
   void signal_export_activate_cb(Export);
 
-#ifdef ENABLE_HIGHLIGHT
   void create_highlighters();
   void signal_highlighter_activate_cb(std::string);
-#endif /* ENABLE_HIGHLIGHT */
 
   Gtk::Menu *menu(const char *, Gtk::Menu * = NULL);
   Gtk::MenuItem *item(Gtk::Menu *, const Gtk::StockID&, guint, Gdk::ModifierType);
@@ -238,9 +235,8 @@ private:
 #ifdef ENABLE_MULTIPRESS
   Gtk::Menu *_multipress_menu;
 #endif
-#ifdef ENABLE_HIGHLIGHT
+
   Gtk::Menu *highlight;
-#endif
 
   Gtk::MenuItem *recent_menu_item;
 

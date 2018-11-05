@@ -93,10 +93,10 @@ Document *DocFactory::process(Document *doc) {
     (sigc::mem_fun(signal_line_numbers_set, &sigc::signal<void, bool>::emit));
   doc->signal_dict_lookup_request.connect
     (sigc::mem_fun(signal_dict_lookup_request, &sigc::signal<void, std::string>::emit));
-#ifdef ENABLE_HIGHLIGHT
+
   doc->signal_highlight_set.connect
     (sigc::mem_fun(signal_highlight, &sigc::signal<void, std::string>::emit));
-#endif
+
   doc->signal_text_view_request_file_open.connect
     (sigc::mem_fun(signal_text_view_request_file_open, &sigc::signal<void, std::string>::emit));
 

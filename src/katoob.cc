@@ -60,9 +60,8 @@ Katoob::Katoob(int argc, char *argv[]):
     dbus.start();
   }
 #endif
-#ifdef ENABLE_HIGHLIGHT
+
   SourceManager::init();
-#endif
 
   Glib::set_application_name(PACKAGE);
   // Let's connect our signals.

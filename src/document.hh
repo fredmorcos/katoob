@@ -32,11 +32,7 @@
 #include "label.hh"
 #include "undoredo.hh"
 #include "spell.hh"
-#ifdef ENABLE_HIGHLIGHT
 #include "sourceview.hh"
-#else
-#include "textview.hh"
-#endif
 
 class Document: public Gtk::ScrolledWindow {
 public:
@@ -64,9 +60,7 @@ public:
   int get_encoding() { return _encoding; }
   bool set_encoding(int, bool, std::string&);
 
-#ifdef ENABLE_HIGHLIGHT
   void set_highlight(const std::string&);
-#endif
 
   std::string get_title() { return _label.get_text(); }
 
@@ -110,9 +104,9 @@ public:
   sigc::signal<void, bool> signal_wrap_text_set;
   sigc::signal<void, bool> signal_line_numbers_set;
   sigc::signal<void, std::string> signal_text_view_request_file_open;
-#ifdef ENABLE_HIGHLIGHT
+
   sigc::signal<void, std::string> signal_highlight_set;
-#endif /* ENABLE_HIGHLIGHT */
+
   sigc::signal<void, std::string> signal_dict_lookup_request;
 
   sigc::signal<void, bool> signal_auto_spell_set;
@@ -172,15 +166,10 @@ private:
 
   void signal_text_view_request_file_open_cb(std::string);
 
-#ifdef ENABLE_HIGHLIGHT
   SourceView _text_view;
-#else
-  TextView _text_view;
-#endif
+
   Gtk::TextWindowType numbers_right;
-#ifndef ENABLE_HIGHLIGHT
   Gtk::TextWindowType numbers_left;
-#endif
 
   void get_lines(Gtk::TextIter&, Gtk::TextIter&, std::vector<std::string>&);
   void get_lines(Gtk::TextIter&, Gtk::TextIter&, std::vector<Glib::ustring>&);
@@ -286,9 +275,8 @@ private:
   void on_toggle_overwrite();
   void on_mark_set_cb(const Gtk::TextBuffer::iterator&, const Glib::RefPtr<Gtk::TextBuffer::Mark>&);
 
-#ifdef ENABLE_HIGHLIGHT
   std::string _highlight;
-#endif
+
 protected:
   void on_populate_popup_cb(Gtk::Menu *);
 };

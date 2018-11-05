@@ -246,12 +246,10 @@ public:
    */
   sigc::signal<void, Document *> signal_close_request;
 
-#ifdef ENABLE_HIGHLIGHT
   /**
    * \brief emitted when the Document changes its syntax highlighting language.
    */
   sigc::signal<void, std::string> signal_highlight;
-#endif
 
 private:
   /**

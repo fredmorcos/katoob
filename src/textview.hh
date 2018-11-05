@@ -2,7 +2,8 @@
  * textview.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,26 +21,21 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __TEXTVIEW_HH__
-#define __TEXTVIEW_HH__
+#pragma once
 
 #include <gtkmm/textview.h>
 #include <gtk/gtktextview.h>
 
-
-
 class TextView : public Gtk::TextView {
 public:
   TextView();
-#ifdef ENABLE_HIGHLIGHT
   TextView(GtkTextView *);
-#endif
+
   virtual ~TextView();
   sigc::signal<void, std::string> signal_text_view_request_file_open;
 
   // They are not protected because we need to call them from our SourceView and I don't
   // want to include sourceview.hh and declare them as friends.
-  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>&, int, int, const Gtk::SelectionData&, guint, guint);
+  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>&,
+                                     int, int, const Gtk::SelectionData&, guint, guint);
 };
-
-#endif /* __TEXTVIEW_HH__ */

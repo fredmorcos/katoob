@@ -255,9 +255,8 @@ void Window::connect_menubar_signals() {
   menubar.signal_encoding_activate.connect(sigc::mem_fun(*this, &Window::signal_encoding_activate_cb));
   menubar.signal_document_activate.connect(sigc::mem_fun(mdi, &MDI::activate));
 
-#ifdef ENABLE_HIGHLIGHT
   menubar.signal_highlighter_activate.connect(sigc::mem_fun(mdi, &MDI::set_highlight));
-#endif
+
   menubar.signal_closed_document_activate.connect(sigc::mem_fun(mdi, &MDI::closed_document_activated_cb));
 
   // Import
@@ -273,9 +272,8 @@ void Window::connect_mdi_signals() {
 
   mdi.signal_recent_regenerate.connect(sigc::mem_fun(menubar, &MenuBar::create_recent));
 
-#ifdef ENABLE_HIGHLIGHT
   mdi.signal_document_highlight.connect(sigc::mem_fun(menubar, &MenuBar::set_highlight));
-#endif
+
   // Document status signals.
   mdi.signal_document_encoding_changed.connect(sigc::mem_fun(*this, &Window::signal_document_encoding_changed_cb));
   mdi.signal_document_overwrite_toggled.connect(sigc::mem_fun(*this, &Window::signal_document_overwrite_toggled_cb));

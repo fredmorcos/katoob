@@ -28,9 +28,7 @@
 #include "menubar.hh"
 #include "macros.h"
 #include "utils.hh"
-#ifdef ENABLE_HIGHLIGHT
 #include "sourcemanager.hh"
-#endif
 #include <cassert>
 #include <libgen.h>
 
@@ -58,9 +56,9 @@ MenuBar::MenuBar(Conf& config, Encodings& encodings
 	);
   documents(config);
   help(config);
-#ifdef ENABLE_HIGHLIGHT
+
   create_highlighters();
-#endif
+
   show_all();
   recent_menu_item->hide();
 }
@@ -764,26 +762,22 @@ void MenuBar::signal_recent_activate_cb(std::string& str) {
   signal_recent_activate.emit(str);
 }
 
-#ifdef ENABLE_HIGHLIGHT
 void MenuBar::create_highlighters() {
-  Gtk::Menu *item;
-  Gtk::MenuItem *_item;
-  Gtk::RadioButtonGroup highlighters_radio;
-
   highlight = menu(_("_Highlight"), view_menu);
 
-  _item = radio_item(highlight, highlighters_radio, _("None"));
+  Gtk::RadioButtonGroup highlighters_radio;
+  Gtk::MenuItem* _item = radio_item(highlight, highlighters_radio, _("None"));
   _item->signal_activate().connect(sigc::bind<std::string>(sigc::mem_fun(*this, &MenuBar::signal_highlighter_activate_cb), ""));
 
   SourceCategory& cats = SourceManager::get_categories();
-  SourceCategoryIter iter;
 
-  for (iter = cats.begin(); iter != cats.end(); iter++) {
-    item = menu(const_cast<char *>(iter->first.c_str()), highlight);
-    for (unsigned x = 0; x < iter->second.size(); x++) {
-      _item = radio_item(item, highlighters_radio, SourceManager::get_name(iter->second[x]));
-      _item->property_user_data().set_value(const_cast<char *>(iter->second[x].c_str()));
-      _item->signal_activate().connect(sigc::bind<std::string>(sigc::mem_fun(*this, &MenuBar::signal_highlighter_activate_cb), iter->second[x]));
+  for (SourceCategoryIter iter = cats.begin(); iter != cats.end(); iter++) {
+    Gtk::Menu* item = menu(const_cast<char *>(iter->first.c_str()), highlight);
+
+    for (auto i = iter->second.begin(); i != iter->second.end(); i++) {
+      _item = radio_item(item, highlighters_radio, SourceManager::get_name(*i));
+      _item->property_user_data().set_value(const_cast<char *>(i->c_str()));
+      _item->signal_activate().connect(sigc::bind<std::string>(sigc::mem_fun(*this, &MenuBar::signal_highlighter_activate_cb), *i));
     }
   }
 }
@@ -858,4 +852,3 @@ void MenuBar::set_highlight(std::string id) {
   // Just in case.
   _ignore_highlighting_changed_signal_hack = false;
 }
-#endif

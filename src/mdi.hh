@@ -120,9 +120,8 @@ public:
 
   sigc::signal<void, std::string> signal_document_dictionary_changed;
 
-#ifdef ENABLE_HIGHLIGHT
   sigc::signal<void, std::string> signal_document_highlight;
-#endif
+
   sigc::signal<void, int> signal_doc_activated;
   sigc::signal<void, bool, bool, std::string> signal_document_added;
   sigc::signal<void, int> signal_document_removed;
@@ -137,9 +136,8 @@ public:
 
   void signal_extra_button_clicked_cb(std::string);
 
-#ifdef ENABLE_HIGHLIGHT
   void set_highlight(std::string);
-#endif
+
   void scan_temp();
   bool autosave();
 
@@ -163,9 +161,7 @@ private:
   void signal_transfer_complete_cb(bool, const std::string&, const std::string, int, bool);
   void signal_dict_transfer_complete_cb(bool, const std::string&, std::string);
 
-#ifdef ENABLE_HIGHLIGHT
   void signal_document_highlight_cb(std::string x) { signal_document_highlight.emit(x); }
-#endif
 
   void signal_document_spell_enabled_cb(bool s) { signal_document_spell_enabled.emit(s); }
   void signal_dictionary_changed_cb(std::string d) { signal_document_dictionary_changed.emit(d); }

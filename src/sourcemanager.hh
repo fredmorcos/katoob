@@ -2,7 +2,8 @@
  * sourcemanager.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __SOURCEMANAGER_HH__
-#define __SOURCEMANAGER_HH__
+#pragma once
 
 #include <map>
 #include <vector>
@@ -39,6 +39,7 @@ public:
   static GtkSourceLanguage *get_language(const std::string&);
   static std::string get_language_for_file(const std::string&);
   static const char *get_name(const std::string&);
+
 private:
   SourceManager();
   ~SourceManager();
@@ -46,5 +47,3 @@ private:
   static GtkSourceLanguageManager *manager;
   static SourceCategory cats;
 };
-
-#endif /* __SOURCEMANAGER_HH__ */

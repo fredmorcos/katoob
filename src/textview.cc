@@ -2,7 +2,8 @@
  * textview.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,15 +33,10 @@ TextView::TextView() {
 }
 
 TextView::~TextView() {
-
 }
 
-#ifdef ENABLE_HIGHLIGHT
 TextView::TextView(GtkTextView *tv) : Gtk::TextView(tv) {
-
 }
-
-#endif
 
 // TODO: Need to check this under maemo but how ?
 void TextView::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time) {

@@ -905,9 +905,9 @@ void MDI::connect_signals(Document *doc) {
   doc->signal_wrap_text_set.connect(sigc::mem_fun(this, &MDI::signal_document_wrap_text_cb));
   doc->signal_line_numbers_set.connect(sigc::mem_fun(this, &MDI::signal_document_line_numbers_cb));
   doc->signal_dict_lookup_request.connect(sigc::mem_fun(this, &MDI::signal_document_dict_lookup_cb));
-#ifdef ENABLE_HIGHLIGHT
+
   doc->signal_highlight_set.connect(sigc::mem_fun(this, &MDI::signal_document_highlight_cb));
-#endif
+
   doc->signal_text_view_request_file_open.connect(sigc::mem_fun(*this, &MDI::signal_text_view_request_file_open_cb));
 }
 
@@ -1155,14 +1155,12 @@ void MDI::signal_extra_button_clicked_cb(std::string str) {
   doc->insert(str);
 }
 
-#ifdef ENABLE_HIGHLIGHT
 void MDI::set_highlight(std::string x) {
   Document *doc = get_active();
   if (doc) {
     doc->set_highlight(x);
   }
 }
-#endif
 
 void MDI::signal_text_view_request_file_open_cb(std::string filename) {
   create_document(filename);

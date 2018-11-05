@@ -118,9 +118,7 @@ private:
   Gtk::SpinButton tab_width;
   Gtk::Adjustment tab_width_adj;
   Gtk::Label tab_width_label;
-#ifdef ENABLE_HIGHLIGHT
   Gtk::CheckButton highlight_auto;
-#endif
 };
 
 class EncodingsApplet : public Applet {
