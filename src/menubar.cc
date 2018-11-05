@@ -33,27 +33,16 @@
 #include <libgen.h>
 
 // TODO: Integrate with the gtk recent files thing.
-MenuBar::MenuBar(Conf& config, Encodings& encodings
-#ifdef ENABLE_EMULATOR
-		 , std::vector<std::string>& em
-#endif
-#ifdef ENABLE_MULTIPRESS
-		 , std::vector<std::string>& mp
-#endif
-		 ) :
-  _conf(config) {
+MenuBar::MenuBar(Conf& config, Encodings& encodings,
+                 std::vector<std::string>& em,
+                 std::vector<std::string>& mp):
+  _conf(config)
+{
   file(config);
   edit(config);
   search(config);
   view(config, encodings);
-  tools(config
-#ifdef ENABLE_EMULATOR
-	, em
-#endif
-#ifdef ENABLE_MULTIPRESS
-	, mp
-#endif
-	);
+  tools(config, em, mp);
   documents(config);
   help(config);
 
@@ -328,17 +317,15 @@ void MenuBar::view(Conf& config, Encodings& encodings) {
     }
 }
 
-void MenuBar::tools(Conf& config
-#ifdef ENABLE_EMULATOR
-		    , std::vector<std::string>& em
-#endif
-#ifdef ENABLE_MULTIPRESS
-		    , std::vector<std::string>& mp
-#endif
-) {
+void MenuBar::tools(Conf& config,
+                    std::vector<std::string>& em,
+                    std::vector<std::string>& mp)
+{
   tools_menu = menu(_("_Tools"));
-  _execute = item(tools_menu, _("_Execute Command On Buffer..."), GDK_e, Gdk::ModifierType(GDK_CONTROL_MASK));
-  _execute->signal_activate().connect(sigc::mem_fun(signal_execute_activate, &sigc::signal<void>::emit));
+  _execute = item(tools_menu, _("_Execute Command On Buffer..."),
+                  GDK_e, Gdk::ModifierType(GDK_CONTROL_MASK));
+  _execute->signal_activate().connect
+    (sigc::mem_fun(signal_execute_activate, &sigc::signal<void>::emit));
 
   separator(tools_menu);
 
@@ -348,31 +335,26 @@ void MenuBar::tools(Conf& config
   _auto_spell = check_item(tools_menu, _("_Autocheck Spelling"));
   _auto_spell->signal_activate().connect(sigc::mem_fun(*this, &MenuBar::signal_auto_spell_activate_cb));
 
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   Gtk::RadioButtonGroup input_group;
   _input_menu = menu(_("Input"), tools_menu);
   Gtk::MenuItem *__item = radio_item(_input_menu, input_group, _("Default"));
   dynamic_cast<Gtk::RadioMenuItem *>(__item)->set_active(true);
   __item->signal_activate().connect(sigc::bind<int, int>(sigc::mem_fun(*this, &MenuBar::signal_layout_activate_cb), -1, -1));
-#endif
-#ifdef ENABLE_EMULATOR
+
   _emulator_menu = menu(_("Keyboard emulator"), _input_menu);
   build_submenu(_emulator_menu, em, input_group, 0);
-#endif
-#ifdef ENABLE_MULTIPRESS
+
   _multipress_menu = menu(_("Multipress"), _input_menu);
   build_submenu(_multipress_menu, mp, input_group, 1);
-#endif
 }
 
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
 void MenuBar::build_submenu(Gtk::Menu *menu, std::vector<std::string>& items, Gtk::RadioButtonGroup& group, int num) {
   for (unsigned x = 0; x < items.size(); x++) {
-      Gtk::MenuItem *_item = radio_item(menu, group, items[x]);
-      _item->signal_activate().connect(sigc::bind<int, int>(sigc::mem_fun(*this, &MenuBar::signal_layout_activate_cb), num, x));
+    Gtk::MenuItem *_item = radio_item(menu, group, items[x]);
+    _item->signal_activate().connect
+      (sigc::bind<int, int>(sigc::mem_fun(*this, &MenuBar::signal_layout_activate_cb), num, x));
   }
 }
-#endif
 
 void MenuBar::documents(Conf& config) {
   documents_menu = menu(_("_Documents"));
@@ -395,11 +377,9 @@ void MenuBar::help(Conf& config) {
   _about->signal_activate().connect(mem_fun(signal_about_activate, &sigc::signal<void>::emit));
 }
 
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
 void MenuBar::signal_layout_activate_cb(int x, int y) {
   signal_layout_activate.emit(x, y);
 }
-#endif
 
 void MenuBar::set_encoding(unsigned e) {
   assert (e <= encoding_menu_items.size());
@@ -742,9 +722,7 @@ void MenuBar::reset_gui(bool enable) {
   _execute->set_sensitive(enable);
   _spell->set_sensitive(enable);
   _auto_spell->set_sensitive(enable);
-#ifdef ENABLE_EMULATOR
   _emulator_menu->set_sensitive(enable);
-#endif
   _save_all->set_sensitive(enable);
   _close_all->set_sensitive(enable);
 }

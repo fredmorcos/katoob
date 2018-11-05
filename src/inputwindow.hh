@@ -2,7 +2,8 @@
  * inputwindow.hh
  * This file is part of katoob
  *
- * Copyright (C) 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __INPUTWINDOW_HH__
-#define __INPUTWINDOW_HH__
+#pragma once
 
 #include <gtkmm/dialog.h>
 #include <gtkmm/scrolledwindow.h>
@@ -67,5 +67,3 @@ private:
   std::vector<Gtk::Button *> buttons;
   std::vector<Gtk::Label *> labels;
 };
-
-#endif /* __INPUTWINDOW_HH__ */

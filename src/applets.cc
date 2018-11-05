@@ -774,7 +774,6 @@ void DictionaryApplet::list_dicts_clicked_cb() {
   return;
 }
 
-#ifdef ENABLE_MULTIPRESS
 /* MultipressApplet */
 MultipressApplet::MultipressApplet(Conf& _conf) :
   Applet::Applet(_conf),
@@ -794,7 +793,6 @@ MultipressApplet::MultipressApplet(Conf& _conf) :
 void MultipressApplet::apply() {
   _conf.set("multipress_timeout", multipress_timeout.get_value_as_int());
 }
-#endif
 
 /* RemoteDocumentsApplet */
 RemoteDocumentsApplet::RemoteDocumentsApplet(Conf& _conf) :

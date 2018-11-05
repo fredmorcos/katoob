@@ -2,7 +2,8 @@
  * statusbar.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
 
 #include <string>
 #include "statusbar.hh"
@@ -41,9 +38,9 @@ Statusbar::Statusbar(Conf& conf) :
 
   pack_start(enc, false, false);
   pack_start(overwrite, false, false);
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
+
   pack_start(input, false, false);
-#endif
+
   pack_start(sbar, false, false);
 
   enc.set_size_request(150, -1);
@@ -52,11 +49,11 @@ Statusbar::Statusbar(Conf& conf) :
 
   set_overwrite(false);
   set_position(1, 1);
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
+
   input.set_label(_("Input"));
   input.signal_toggled().connect(sigc::mem_fun(*this, &Statusbar::signal_input_toggled_cb));
   activate_input(false);
-#endif
+
   show_all();
   red.hide();
 }
@@ -98,7 +95,6 @@ void Statusbar::set_encoding(std::string e) {
   enc.set_text(e);
 }
 
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
 bool Statusbar::set_input_status(bool active) {
   if (active == input.get_active()) {
     return false;
@@ -120,4 +116,3 @@ void Statusbar::signal_input_toggled_cb() {
 void Statusbar::activate_input(bool active) {
   input.set_sensitive(active);
 }
-#endif

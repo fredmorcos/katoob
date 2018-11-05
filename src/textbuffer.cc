@@ -23,12 +23,8 @@
 
 #include "textbuffer.hh"
 #include "utils.hh"
-#ifdef ENABLE_EMULATOR
 #include "emulator.hh"
-#endif
-#ifdef ENABLE_MULTIPRESS
 #include "multipress.hh"
-#endif
 
 TextBuffer::TextBuffer(Conf& conf):
   _conf(conf),
@@ -81,7 +77,6 @@ void TextBuffer::on_insert(const Gtk::TextBuffer::iterator& pos, const Glib::ust
     g_signal_stop_emission_by_name(gobj(), "insert-text");
 #endif
   }
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   else if (text.size() == 1) {
     std::string val;
     if (Emulator::get_active()) {
@@ -109,7 +104,6 @@ void TextBuffer::on_insert(const Gtk::TextBuffer::iterator& pos, const Glib::ust
 #endif
     }
   }
-#endif
   else {
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
     Gtk::TextBuffer::on_insert(pos, text, bytes);

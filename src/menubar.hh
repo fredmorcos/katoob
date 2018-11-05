@@ -51,14 +51,7 @@ struct ClosedDocItem {
 
 class MenuBar: public Gtk::MenuBar {
 public:
-  MenuBar(Conf&, Encodings&
-#ifdef ENABLE_EMULATOR
-, std::vector<std::string>&
-#endif
-#ifdef ENABLE_MULTIPRESS
-, std::vector<std::string>&
-#endif
-);
+  MenuBar(Conf&, Encodings&, std::vector<std::string>&, std::vector<std::string>&);
   ~MenuBar();
 
   void create_recent();
@@ -137,9 +130,8 @@ public:
 
   sigc::signal<void, std::string> signal_highlighter_activate;
 
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   sigc::signal<void, int, int> signal_layout_activate;
-#endif
+
   void document_add(std::string&, bool, bool);
   void document_remove(int);
   void document_set_active(int);
@@ -160,21 +152,13 @@ private:
   void edit(Conf&);
   void search(Conf&);
   void view(Conf&, Encodings&);
-  void tools(Conf&
-#ifdef ENABLE_EMULATOR
-	     , std::vector<std::string>&
-#endif
-#ifdef ENABLE_MULTIPRESS
-	     , std::vector<std::string>&
-#endif
-	     );
+  void tools(Conf&, std::vector<std::string>&, std::vector<std::string>&);
   void documents(Conf&);
   void help(Conf&);
   void recent(Conf&);
   void encodings(Conf&);
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
+
   void build_submenu(Gtk::Menu *, std::vector<std::string>&, Gtk::RadioButtonGroup&, int);
-#endif
 
   void signal_auto_spell_activate_cb();
 
@@ -189,9 +173,9 @@ private:
   void signal_both_activate_cb();
 
   void signal_recent_activate_cb(std::string&);
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
+
   void signal_layout_activate_cb(int, int);
-#endif
+
   void signal_encoding_activate_cb(unsigned);
   void signal_document_activate_cb(int);
   void signal_closed_document_activate_cb(int);
@@ -226,15 +210,10 @@ private:
 
   /* File */
   Gtk::Menu *recent_menu, *_import_menu, *_export_menu, *toolbars_menu, *_encoding_menu;
-#ifdef ENABLE_EMULATOR
+
   Gtk::Menu *_emulator_menu;
-#endif
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   Gtk::Menu *_input_menu;
-#endif
-#ifdef ENABLE_MULTIPRESS
   Gtk::Menu *_multipress_menu;
-#endif
 
   Gtk::Menu *highlight;
 

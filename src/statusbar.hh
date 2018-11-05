@@ -2,7 +2,8 @@
  * statusbar.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +21,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __STATUSBAR_HH__
-#define __STATUSBAR_HH__
+#pragma once
 
 #include <gtkmm/box.h>
 #include <gtkmm/statusbar.h>
 #include <gtkmm/image.h>
 #include <gtkmm/label.h>
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
 #include <gtkmm/togglebutton.h>
-#endif
 #include "conf.hh"
 
 class Statusbar : public Gtk::HBox {
@@ -42,25 +40,21 @@ public:
   void set_modified(bool);
   void reset_gui();
   void show(bool);
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
+
   bool get_input_status();
   bool set_input_status(bool);
   void activate_input(bool);
 
   sigc::signal<void, bool> signal_input_toggled;
-#endif
+
 private:
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   void signal_input_toggled_cb();
-#endif
+
   Conf& _conf;
 
   Gtk::Statusbar sbar;
   Gtk::Image red, green;
   Gtk::Label enc, tips, overwrite;
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
-  Gtk::ToggleButton input;
-#endif
-};
 
-#endif /* __STATUSBAR_HH__ */
+  Gtk::ToggleButton input;
+};

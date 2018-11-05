@@ -33,15 +33,9 @@
 #include "statusbar.hh"
 #include "conf.hh"
 #include "encodings.hh"
-#ifdef ENABLE_EMULATOR
 #include "emulator.hh"
-#endif
-#ifdef ENABLE_MULTIPRESS
 #include "multipress.hh"
-#endif
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
 #include "inputwindow.hh"
-#endif
 
 class Window : public Gtk::Window {
 public:
@@ -70,9 +64,8 @@ private:
   void signal_quit_activate_cb();
   void signal_dictionary_changed_cb(std::string);
   void signal_search_activated_cb(std::string);
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
+
   void signal_input_toggled_cb(bool);
-#endif
 
   // Signals for various gtk events.
   void signal_drag_data_received_cb(const Glib::RefPtr<Gdk::DragContext>&, int, int, const Gtk::SelectionData&, guint, guint);
@@ -104,9 +97,8 @@ private:
 
   void signal_document_dictionary_changed_cb(std::string d) { toolbar.set_dictionary(d); }
 
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   void signal_input_window_dialog_closed_cb();
-#endif
+
   void on_doc_activated(int);
   void on_reset_gui(int);
 
@@ -114,12 +106,9 @@ private:
   void on_document_removed_cb(int);
 
   // Our members.
-#ifdef ENABLE_EMULATOR
   Emulator _emulator;
-#endif
-#ifdef ENABLE_MULTIPRESS
   Multipress _multipress;
-#endif
+
   Conf& _conf;
   Encodings& _encodings;
 
@@ -129,9 +118,8 @@ private:
   Statusbar statusbar;
 
   Gtk::VBox box;
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
+
   InputWindow input_window;
-#endif
 
   sigc::connection signal_auto_spell_activate_conn;
 

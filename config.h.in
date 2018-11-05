@@ -23,9 +23,6 @@
 /* #define HAVE_MMAP    "@have_mmap@" */
 
 /* #define ENABLE_DBUS       "@enable_dbus@" */
-/* #define ENABLE_EMULATOR   "@enable_emulator@" */
-/* #define ENABLE_MULTIPRESS "@enable_multipress@" */
-/* #define ENABLE_HIGHLIGHT  "@enable_highlight@" */
 /* #define ENABLE_MAEMO      "@enable_maemo@" */
 /* #define ENABLE_ISOCODES   "@enable_isocodes@" */
 /* #define ENABLE_NLS        "@enable_nls@" */

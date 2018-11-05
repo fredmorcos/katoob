@@ -35,14 +35,7 @@
 Window::Window(Conf& conf, Encodings& encodings, std::vector<std::string>& files) :
   _conf(conf),
   _encodings(encodings),
-  menubar(conf, encodings
-#ifdef ENABLE_EMULATOR
-	  , Emulator::list_layouts()
-#endif
-#ifdef ENABLE_MULTIPRESS
-	  , Multipress::list_layouts()
-#endif
-	  ),
+  menubar(conf, encodings, Emulator::list_layouts(), Multipress::list_layouts()),
   toolbar(conf),
   mdi(conf, encodings),
   statusbar(conf),
@@ -106,7 +99,7 @@ Window::Window(Conf& conf, Encodings& encodings, std::vector<std::string>& files
 #endif
 
   //  set_title();
- signal_delete_event().connect(sigc::mem_fun(*this, &Window::signal_delete_event_cb));
+  signal_delete_event().connect(sigc::mem_fun(*this, &Window::signal_delete_event_cb));
 
   // We don't call show_all(); here as our statusbar needs to hide a few things!
   box.show();
@@ -117,21 +110,19 @@ Window::Window(Conf& conf, Encodings& encodings, std::vector<std::string>& files
   if (doc) {
     doc->grab_focus();
   }
-#if (defined ENABLE_EMULATOR) || (defined ENABLE_MULTIPRESS)
+
   std::string err;
-#endif
-#ifdef ENABLE_EMULATOR
+
   if (!Emulator::ok(err)) {
     err += _(" The keyboard emulator will not work.");
     katoob_error(err);
   }
-#endif
-#ifdef ENABLE_MULTIPRESS
+
   if (!Multipress::ok(err)) {
     err += _(" Multipress will not work.");
     katoob_error(err);
   }
-#endif
+
   std::string ver = conf.get_version();
   if ((ver.size() == 0) && conf.ok()) {
     katoob_info(_("A lot of the configuration options have been changed in this version.\nPlease adjust the configuration first."));
@@ -142,28 +133,26 @@ Window::Window(Conf& conf, Encodings& encodings, std::vector<std::string>& files
   std::list<Gtk::TargetEntry> targets;
   targets.push_back(Gtk::TargetEntry("text/uri-list") );
   drag_dest_set(targets, Gtk::DEST_DEFAULT_ALL,
-		Gdk::ACTION_DEFAULT |
-		Gdk::ACTION_COPY |
-		Gdk::ACTION_MOVE |
-		Gdk::ACTION_LINK |
-		Gdk::ACTION_PRIVATE |
-		Gdk::ACTION_ASK
-		);
+                Gdk::ACTION_DEFAULT |
+                Gdk::ACTION_COPY |
+                Gdk::ACTION_MOVE |
+                Gdk::ACTION_LINK |
+                Gdk::ACTION_PRIVATE |
+                Gdk::ACTION_ASK
+                );
 
   signal_drag_data_received().connect(sigc::mem_fun(*this, &Window::signal_drag_data_received_cb));
 
   // Multipress.
-#ifdef ENABLE_MULTIPRESS
+
   _multipress.signal_invalid_key.connect(sigc::mem_fun(*this, &Window::signal_invalid_key_cb));
   _multipress.signal_insert_key.connect(sigc::mem_fun(*this, &Window::signal_insert_key_cb));
-#endif
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
+
   // Statusbar input button.
   statusbar.signal_input_toggled.connect(mem_fun(*this, &Window::signal_input_toggled_cb));
   // The input window signals.
   input_window.signal_button_clicked.connect(sigc::mem_fun(*this, &Window::signal_insert_key_cb));
   input_window.signal_dialog_closed.connect(sigc::mem_fun(*this, &Window::signal_input_window_dialog_closed_cb));
-#endif
 }
 
 Window::~Window() {
@@ -249,9 +238,9 @@ void Window::connect_menubar_signals() {
   menubar.signal_about_activate.connect(sigc::ptr_fun(&AboutDialog::run));
 
   menubar.signal_recent_activate.connect(sigc::mem_fun(mdi, &MDI::recent_cb));
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
+
   menubar.signal_layout_activate.connect(sigc::mem_fun(*this, &Window::signal_layout_activate_cb));
-#endif
+
   menubar.signal_encoding_activate.connect(sigc::mem_fun(*this, &Window::signal_encoding_activate_cb));
   menubar.signal_document_activate.connect(sigc::mem_fun(mdi, &MDI::activate));
 
@@ -364,50 +353,39 @@ void Window::signal_quit_activate_cb() {
   }
 }
 
-#if defined(ENABLE_MULTIPRESS) || defined(ENABLE_EMULATOR)
 void Window::signal_layout_activate_cb(int which, int x) {
   // TODO: Store the input_window state and restore it when we enable any.
   assert(which < 2);
-#ifdef ENABLE_EMULATOR
+
   if (which == 0) {
     _emulator.activate(x);
-#ifdef ENABLE_MULTIPRESS
+
     _multipress.activate(-1);
     statusbar.activate_input(true);
     if (input_window.is_visible()) {
       signal_input_toggled_cb(true);
     }
-#endif
+
   }
   else
-#endif
-#ifdef ENABLE_MULTIPRESS
     if (which == 1) {
-
       _multipress.activate(x);
-#ifdef ENABLE_EMULATOR
+
       _emulator.activate(-1);
-#endif
+
       statusbar.activate_input(true);
       if (input_window.is_visible()) {
-	signal_input_toggled_cb(true);
+        signal_input_toggled_cb(true);
       }
+    } else {
+      // x is -1 here but I'll set it manually just in case.
+      _emulator.activate(-1);
+
+      _multipress.activate(-1);
+      statusbar.activate_input(false);
+      statusbar.set_input_status(false);
     }
-    else
-#endif
-      {
-	// x is -1 here but I'll set it manually just in case.
-#ifdef ENABLE_EMULATOR
-	_emulator.activate(-1);
-#endif
-#ifdef ENABLE_MULTIPRESS
-	_multipress.activate(-1);
-	statusbar.activate_input(false);
-	statusbar.set_input_status(false);
-#endif
-      }
 }
-#endif
 
 void Window::signal_encoding_activate_cb(int e) {
   int x;
@@ -530,7 +508,6 @@ void Window::signal_line_numbers_activate_cb(bool s) {
   mdi.set_line_numbers(s);
 }
 
-#ifdef ENABLE_MULTIPRESS
 void Window::signal_insert_key_cb(std::string& str) {
   Document *doc = mdi.get_active();
   assert(doc != NULL);
@@ -552,40 +529,34 @@ void Window::signal_invalid_key_cb(GdkEventKey *event) {
       gchar out[6];
       int len = g_unichar_to_utf8(ch, out);
       if (len != 0) {
-	std::string str(out, len);
-	doc->insert(str);
+        std::string str(out, len);
+        doc->insert(str);
       }
     }
   }
 #endif
 }
-#endif
 
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
 void Window::signal_input_toggled_cb(bool active) {
   if (!active) {
     input_window.hide();
     return;
   }
 
-#ifdef ENABLE_EMULATOR
   if (_emulator.get_active()) {
     input_window.set_layout(_emulator.get_layout());
   }
   else
-#endif
-#ifdef ENABLE_MULTIPRESS
     if (_multipress.get_active()) {
-    input_window.set_layout(_multipress.get_layout());
-  }
-#endif
+      input_window.set_layout(_multipress.get_layout());
+    }
+
   input_window.show();
 }
 
 void Window::signal_input_window_dialog_closed_cb() {
   statusbar.set_input_status(false);
 }
-#endif
 
 void Window::autosave() {
   mdi.autosave();
