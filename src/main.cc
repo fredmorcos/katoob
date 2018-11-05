@@ -21,6 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <config.h>
 #include <glibmm/thread.h>
 #include "katoob.hh"
 #include "macros.h"
@@ -34,11 +35,9 @@
  * to run its main loop.
  */
 int main(int argc, char *argv[]) {
-#ifdef ENABLE_NLS
   bindtextdomain (PACKAGE, PACKAGE_LOCALE_DIR);
   bind_textdomain_codeset (PACKAGE, "UTF-8");
   textdomain (PACKAGE);
-#endif
 
   //  signal(SIGPIPE, SIG_IGN);
 

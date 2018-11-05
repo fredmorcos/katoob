@@ -2,7 +2,8 @@
  * macros.h
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __MACROS_H__
-#define __MACROS_H__
+#pragma once
 
 #ifdef ENABLE_NLS
 #include <locale>
@@ -47,5 +47,3 @@
 #define TABS_POS_BOTTOM                 102
 #define TABS_POS_RIGHT                  103
 #define TABS_POS_LEFT                   104
-
-#endif /* __MACROS_H__ */

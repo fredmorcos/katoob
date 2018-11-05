@@ -52,6 +52,7 @@ appsdir = join_paths(datadir, 'applications')
 docdir = join_paths(datadir, 'doc', 'katoob')
 multipressdir = join_paths(datadir_full, 'multipress')
 emulatordir = join_paths(datadir_full, 'emulator')
+localedir = join_paths(datadir_full, 'locale')
 
 conf = configuration_data()
 conf.set('package', 'katoob')
@@ -61,6 +62,8 @@ conf.set('datadir', datadir)
 conf.set('datadir_full', datadir_full)
 conf.set('xdg_prefix', shared_mime_info_prefix)
 conf.set('isocodes_prefix', isocodes_prefix)
+conf.set('package_locale_dir', localedir)
+conf.set('ENABLE_NLS', get_option('enable-nls'))
 
 configure_file(input: 'config.h.in',
                output: 'config.h',

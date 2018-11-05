@@ -6,17 +6,19 @@
 #define URL "https://github.com/fredmorcos/katoob"
 #define URL_LABEL "Katoob on Github"
 #define URL_ISSUES "https://github.com/fredmorcos/katoob/issues"
-
 #define PACKAGE_BUGREPORTS URL_ISSUES
 
 #define PREFIX "@prefix@"
 #define ISOCODES_PREFIX "@isocodes_prefix@"
+
+#define PACKAGE_LOCALE_DIR "@package_locale_dir@"
 
 #define DATADIR "@datadir@"
 #define DATADIR_FULL "@datadir_full@"
 
 #define XDG_PREFIX "@xdg_prefix@"
 
-/* #define ENABLE_DBUS       "@enable_dbus@" */
-/* #define ENABLE_NLS        "@enable_nls@" */
-/* #define ENABLE_PRINT      "@enable_print@" */
+#mesondefine ENABLE_NLS
+
+/* #define ENABLE_DBUS  "@enable_dbus@" */
+/* #define ENABLE_PRINT "@enable_print@" */
