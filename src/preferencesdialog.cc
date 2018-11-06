@@ -66,9 +66,8 @@ PreferencesDialog::PreferencesDialog(Conf& conf, Encodings& enc) :
 
   add_applet(_("Spell Checker"), new SpellCheckerApplet(_conf));
 
-#ifdef ENABLE_PRINT
   add_applet(_("Print"), new PrintApplet(_conf));
-#endif
+
   add_applet(_("Dictionary"), new DictionaryApplet(_conf));
 
   add_applet(_("Multipress"), new MultipressApplet(_conf));

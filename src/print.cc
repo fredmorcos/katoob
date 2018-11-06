@@ -2,7 +2,8 @@
  * print.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,19 +21,13 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include "print.hh"
 #include "macros.h"
 
 Print::Print(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Glib::RefPtr<PrintSettings>& settings) :
   _conf(conf),
   _doc(doc),
-#ifdef ENABLE_PRINT
   applet(conf),
-#endif
   _page_setup(page_setup),
   _settings(settings) {
 
@@ -48,10 +43,10 @@ Print::Print(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Gli
   signal_begin_print().connect(sigc::mem_fun(this, &Print::on_begin_print));
   signal_draw_page().connect(sigc::mem_fun(this, &Print::on_draw_page));
   signal_preview().connect(sigc::mem_fun(this, &Print::on_preview), false);
-#ifdef ENABLE_PRINT
+
   signal_create_custom_widget().connect(sigc::mem_fun(this, &Print::on_create_custom_widget));
   signal_custom_widget_apply().connect(sigc::mem_fun(this, &Print::on_custom_widget_apply));
-#endif
+
   signal_done().connect(sigc::mem_fun(this, &Print::on_done));
 #endif
 }
@@ -207,7 +202,6 @@ void Print::on_preview_window_hide() {
   }
 }
 
-#ifdef ENABLE_PRINT
 Gtk::Widget* Print::on_create_custom_widget() {
   set_custom_tab_label(_("Other"));
   applet.get_box().show_all();
@@ -220,7 +214,6 @@ void Print::on_custom_widget_apply(Gtk::Widget *) {
   applet.apply();
   _settings->reset();
 }
-#endif
 
 void Print::on_done(Gtk::PrintOperationResult result) {
   // TODO:

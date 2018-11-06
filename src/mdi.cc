@@ -32,9 +32,7 @@
 #include "searchdialog.hh"
 //#include "replacedialog.hh"
 #include "spelldialog.hh"
-#ifdef ENABLE_PRINT
 #include "print.hh"
-#endif
 #include "dict.hh"
 #include "utils.hh"
 #include <cassert>
@@ -46,11 +44,9 @@
 
 MDI::MDI(Conf& conf, Encodings& enc) :
   _conf(conf),
-  _encodings(enc)
-#ifdef ENABLE_PRINT
-  , page_setup(PageSetup::create(_conf)),
+  _encodings(enc),
+  page_setup(PageSetup::create(_conf)),
   settings(PrintSettings::create(_conf))
-#endif
 {
   signal_switch_page().connect(sigc::mem_fun(*this, &MDI::signal_switch_page_cb));
   // 1 minute.
@@ -69,10 +65,9 @@ MDI::~MDI() {
 
   children.clear();
   closed_children.clear();
-#ifdef ENABLE_PRINT
+
   page_setup->save();
   settings->save();
-#endif
 }
 
 void MDI::scan_temp() {
@@ -389,7 +384,6 @@ bool MDI::save(bool replace) {
   return false;
 }
 
-#ifdef ENABLE_PRINT
 void MDI::print_cb() {
   Document *doc = get_active();
   if (!doc) {
@@ -425,7 +419,6 @@ void MDI::page_setup_cb() {
   // NOTE: All this so we can get our damn parent!
   page_setup->reset(Gtk::run_page_setup_dialog(*(dynamic_cast<Gtk::Window *>(get_parent()->get_parent())), page_setup->get_page_setup(), settings));
 }
-#endif
 
 void MDI::close_cb() {
   Document *doc = get_active();
@@ -1062,9 +1055,7 @@ void MDI::reset_gui() {
     }
   }
 
-#ifdef ENABLE_PRINT
   settings->reset();
-#endif
 }
 
 void MDI::import_cb(Import im) {

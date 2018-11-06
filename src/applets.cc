@@ -564,7 +564,6 @@ void SpellCheckerApplet::spell_check_toggled_cb() {
 */
 
 /* PrintApplet */
-#ifdef ENABLE_PRINT
 PrintApplet::PrintApplet(Conf& _conf) :
   Applet::Applet(_conf)
   //  dpi_x_adj(0,0,0),
@@ -627,7 +626,6 @@ void PrintApplet::gui_show_advanced_toggled_cb() {
 print_frame.set_sensitive(gui_show_advanced.get_active());
 }
 */
-#endif
 
 /* DictionaryApplet */
 DictionaryApplet::DictionaryApplet(Conf& _conf) :

@@ -33,9 +33,7 @@ Toolbar::Toolbar(Conf& conf) :
   _create(Gtk::Stock::NEW),
   _open(Gtk::Stock::OPEN),
   _save(Gtk::Stock::SAVE),
-#ifdef ENABLE_PRINT
   _print(Gtk::Stock::PRINT),
-#endif
   _close(Gtk::Stock::CLOSE),
   _undo(Gtk::Stock::UNDO),
   _redo(Gtk::Stock::REDO),
@@ -67,9 +65,7 @@ void Toolbar::create_main() {
   _main.append(_create);
   _main.append(_open);
   _main.append(_save);
-#ifdef ENABLE_PRINT
   _main.append(_print);
-#endif
   _main.append(s1);
   _main.append(_close);
   _main.append(s2);
@@ -85,9 +81,9 @@ void Toolbar::create_main() {
   _create.set_tooltip_text(_("Create a new file"));
   _open.set_tooltip_text(_("Open a file for editing"));
   _save.set_tooltip_text(_("Save the existing file"));
-#ifdef ENABLE_PRINT
+
   _print.set_tooltip_text(_("Print this document"));
-#endif
+
   _close.set_tooltip_text(_("Close the active file"));
   _undo.set_tooltip_text(_("Undo"));
   _redo.set_tooltip_text(_("Redo"));
@@ -101,9 +97,9 @@ void Toolbar::create_main() {
   _create.set_is_important();
   _open.set_is_important();
   _save.set_is_important();
-#ifdef ENABLE_PRINT
+
   _print.set_is_important();
-#endif
+
   _close.set_is_important();
   _undo.set_is_important();
   _redo.set_is_important();
@@ -118,9 +114,9 @@ void Toolbar::create_main() {
   _create.signal_clicked().connect(sigc::mem_fun(signal_create_clicked, &sigc::signal<void>::emit));
   _open.signal_clicked().connect(sigc::mem_fun(signal_open_clicked, &sigc::signal<void>::emit));
   _save.signal_clicked().connect(sigc::mem_fun(signal_save_clicked, &sigc::signal<void>::emit));
-#ifdef ENABLE_PRINT
+
   _print.signal_clicked().connect(sigc::mem_fun(signal_print_clicked, &sigc::signal<void>::emit));
-#endif
+
   _close.signal_clicked().connect(sigc::mem_fun(signal_close_clicked, &sigc::signal<void>::emit));
   _undo.signal_clicked().connect(sigc::mem_fun(signal_undo_clicked, &sigc::signal<void>::emit));
   _redo.signal_clicked().connect(sigc::mem_fun(signal_redo_clicked, &sigc::signal<void>::emit));
@@ -216,9 +212,9 @@ void Toolbar::reset_gui() {
 
 void Toolbar::reset_gui(bool enable) {
   _save.set_sensitive(enable);
-#ifdef ENABLE_PRINT
+
   _print.set_sensitive(enable);
-#endif
+
   _close.set_sensitive(enable);
   _undo.set_sensitive(enable);
   _redo.set_sensitive(enable);

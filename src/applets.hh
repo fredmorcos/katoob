@@ -166,7 +166,6 @@ private:
   //  Gtk::ColorButton misspelled;
 };
 
-#ifdef ENABLE_PRINT
 class PrintApplet : public Applet {
 public:
   PrintApplet(Conf&);
@@ -177,7 +176,6 @@ private:
   Gtk::FontButton print_font;
   Gtk::HBox p_box2;
 };
-#endif
 
 class DictionaryApplet : public Applet {
 public:

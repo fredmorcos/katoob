@@ -75,11 +75,11 @@ public:
   sigc::signal<void> signal_save_as_activate;
   sigc::signal<void> signal_save_copy_activate;
   sigc::signal<void> signal_revert_activate;
-#ifdef ENABLE_PRINT
+
   sigc::signal<void> signal_print_activate;
   sigc::signal<void> signal_print_preview_activate;
   sigc::signal<void> signal_page_setup_activate;
-#endif
+
   sigc::signal<void> signal_close_activate;
   sigc::signal<void> signal_quit_activate;
 
@@ -226,11 +226,11 @@ private:
   Gtk::MenuItem *_save_as;
   Gtk::MenuItem *_save_copy;
   Gtk::MenuItem *_revert;
-#ifdef ENABLE_PRINT
+
   Gtk::MenuItem *_print;
   Gtk::MenuItem *_print_preview;
   Gtk::MenuItem *_page_setup;
-#endif
+
   Gtk::MenuItem *_close;
   Gtk::MenuItem *_quit;
   /* Edit */

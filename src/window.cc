@@ -163,9 +163,9 @@ void Window::connect_toolbar_signals() {
   toolbar.signal_create_clicked.connect(sigc::mem_fun(mdi, &MDI::create_cb));
   toolbar.signal_open_clicked.connect(sigc::mem_fun(mdi, &MDI::open_cb));
   toolbar.signal_save_clicked.connect(sigc::mem_fun(mdi, &MDI::save_cb));
-#ifdef ENABLE_PRINT
+
   toolbar.signal_print_clicked.connect(sigc::mem_fun(mdi, &MDI::print_cb));
-#endif
+
   toolbar.signal_close_clicked.connect(sigc::mem_fun(mdi, &MDI::close_cb));
   toolbar.signal_undo_clicked.connect(sigc::mem_fun(mdi, &MDI::undo_cb));
   toolbar.signal_redo_clicked.connect(sigc::mem_fun(mdi, &MDI::redo_cb));
@@ -192,11 +192,11 @@ void Window::connect_menubar_signals() {
   menubar.signal_save_as_activate.connect(sigc::mem_fun(mdi, &MDI::save_as_cb));
   menubar.signal_save_copy_activate.connect(sigc::mem_fun(mdi, &MDI::save_copy_cb));
   menubar.signal_revert_activate.connect(sigc::mem_fun(mdi, &MDI::revert_cb));
-#ifdef ENABLE_PRINT
+
   menubar.signal_print_activate.connect(sigc::mem_fun(mdi, &MDI::print_cb));
   menubar.signal_print_preview_activate.connect(sigc::mem_fun(mdi, &MDI::print_preview_cb));
   menubar.signal_page_setup_activate.connect(sigc::mem_fun(mdi, &MDI::page_setup_cb));
-#endif
+
   menubar.signal_close_activate.connect(sigc::mem_fun(mdi, &MDI::close_cb));
   menubar.signal_quit_activate.connect(sigc::mem_fun(*this, &Window::signal_quit_activate_cb));
 

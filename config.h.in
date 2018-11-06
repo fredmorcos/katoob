@@ -20,4 +20,3 @@
 
 #mesondefine ENABLE_NLS
 
-/* #define ENABLE_PRINT "@enable_print@" */

@@ -63,9 +63,9 @@ public:
   sigc::signal<void> signal_create_clicked;
   sigc::signal<void> signal_open_clicked;
   sigc::signal<void> signal_save_clicked;
-#ifdef ENABLE_PRINT
+
   sigc::signal<void> signal_print_clicked;
-#endif
+
   sigc::signal<void> signal_close_clicked;
   sigc::signal<void> signal_undo_clicked;
   sigc::signal<void> signal_redo_clicked;
@@ -109,9 +109,9 @@ private:
   Gtk::ToolButton _create;
   Gtk::ToolButton _open;
   Gtk::ToolButton _save;
-#ifdef ENABLE_PRINT
+
   Gtk::ToolButton _print;
-#endif
+
   Gtk::ToolButton _close;
   Gtk::ToolButton _undo;
   Gtk::ToolButton _redo;

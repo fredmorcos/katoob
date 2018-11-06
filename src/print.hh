@@ -2,7 +2,8 @@
  * print.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __PRINT_HH__
-#define __PRINT_HH__
+#pragma once
 
 #include <gtkmm/printoperation.h>
 #include "conf.hh"
@@ -44,11 +44,9 @@ protected:
   void on_begin_print(const Glib::RefPtr<Gtk::PrintContext>&);
   void on_draw_page(const Glib::RefPtr<Gtk::PrintContext>&, int);
 
-#ifdef ENABLE_PRINT
   // Custom widget.
   Gtk::Widget* on_create_custom_widget();
   void on_custom_widget_apply(Gtk::Widget *);
-#endif
 
   // Preview part.
   bool on_preview(const Glib::RefPtr<Gtk::PrintOperationPreview>&, const Glib::RefPtr<Gtk::PrintContext>&, Gtk::Window*);
@@ -64,14 +62,10 @@ private:
   Glib::RefPtr<Pango::Layout> layout;
   Document *_doc;
 
-#ifdef ENABLE_PRINT
   PrintApplet applet;
-#endif
 
   PreviewDialog *_preview;
   Glib::RefPtr<PageSetup>& _page_setup;
   Glib::RefPtr<PrintSettings>& _settings;
   std::vector<std::vector<int> > pages;
 };
-
-#endif /* __PRINT_HH__ */

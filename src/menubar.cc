@@ -158,7 +158,6 @@ void MenuBar::file(Conf& config) {
     item(_export_menu, exports[x].name)->signal_activate().connect(sigc::bind<Export>(sigc::mem_fun(this, &MenuBar::signal_export_activate_cb), exports[x]));
   }
 
-#ifdef ENABLE_PRINT
   separator(file_menu);
   _page_setup = item(file_menu, _("Page Set_up..."));
   _page_setup->signal_activate().connect(sigc::mem_fun(signal_page_setup_activate, &sigc::signal<void>::emit));
@@ -168,7 +167,7 @@ void MenuBar::file(Conf& config) {
 
   _print = item(file_menu, Gtk::Stock::PRINT, GDK_p, Gdk::ModifierType(GDK_CONTROL_MASK));
   _print->signal_activate().connect(sigc::mem_fun(signal_print_activate, &sigc::signal<void>::emit));
-#endif
+
   separator(file_menu);
   _close = item(file_menu, Gtk::Stock::CLOSE);
   _close->signal_activate().connect(sigc::mem_fun(signal_close_activate, &sigc::signal<void>::emit));
@@ -700,10 +699,9 @@ void MenuBar::reset_gui(bool enable) {
   _export_menu->set_sensitive(enable);
   _import_menu->set_sensitive(enable);
 
-#ifdef ENABLE_PRINT
   _print_preview->set_sensitive(enable);
   _print->set_sensitive(enable);
-#endif
+
   _close->set_sensitive(enable);
   _undo->set_sensitive(enable);
   _redo->set_sensitive(enable);

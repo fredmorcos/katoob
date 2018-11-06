@@ -30,10 +30,8 @@
 #include "encodings.hh"
 #include "import.hh"
 #include "export.hh"
-#ifdef ENABLE_PRINT
 #include "pagesetup.hh"
 #include "printsettings.hh"
-#endif
 
 class MDI : public Gtk::Notebook {
 public:
@@ -55,11 +53,11 @@ public:
   void save_as_cb();
   void save_copy_cb();
   void revert_cb();
-#ifdef ENABLE_PRINT
+
   void print_cb();
   void page_setup_cb();
   void print_preview_cb();
-#endif
+
   void close_cb();
 
   void recent_cb(std::string&);
@@ -185,8 +183,7 @@ private:
 
   Conf& _conf;
   Encodings& _encodings;
-#ifdef ENABLE_PRINT
+
   Glib::RefPtr<PageSetup> page_setup;
   Glib::RefPtr<PrintSettings> settings;
-#endif
 };
