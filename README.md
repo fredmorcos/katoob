@@ -118,7 +118,7 @@ ninja install
 
 ![][screenshot]
 
-[screenshot]: screenshots/Screenshot_2018-11-03_22-49-35.png
+[screenshot]: screenshots/Screenshot_2018-11-06_20-31-19.png
 
 ## Thanks
 
