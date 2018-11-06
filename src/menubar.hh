@@ -134,9 +134,9 @@ public:
 
   void document_add(std::string&, bool, bool);
   void document_remove(int);
-  void document_set_active(int);
-  void document_set_modified(int, bool);
-  void document_set_readonly(int, bool);
+  void document_set_active(size_t);
+  void document_set_modified(size_t, bool);
+  void document_set_readonly(size_t , bool);
   void document_set_label(int, std::string&);
 
 
@@ -279,5 +279,5 @@ private:
   Conf& _conf;
   std::vector<DocItem> _documents;
   std::vector<ClosedDocItem> _closed_documents;
-  int _active;
+  size_t _active;
 };

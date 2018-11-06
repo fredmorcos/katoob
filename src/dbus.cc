@@ -53,7 +53,8 @@ void DBus::start() {
     return;
   }
 
-  DBusObjectPathVTable katoob_dbus_vtable = {NULL, katoob_dbus_message_handler, NULL};
+  DBusObjectPathVTable katoob_dbus_vtable =
+    {NULL, katoob_dbus_message_handler, NULL, NULL, NULL, NULL};
 
   if (!dbus_connection_register_object_path(server, BUS_PATH, &katoob_dbus_vtable, this)) {
     std::cerr << "Not enough memory to register dbus object path." << std::endl;

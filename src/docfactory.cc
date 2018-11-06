@@ -42,7 +42,8 @@ Document *DocFactory::create(std::string& str) {
 
 Document *DocFactory::create(std::string& file, int encoding, bool is_stdin) {
   if (is_stdin) {
-    return process(new Document(*_conf, *_enc, get_unused_number(), encoding == -1 ? _enc->default_open() : encoding));
+    return process(new Document(*_conf, *_enc, get_unused_number(),
+                                encoding == -1 ? _enc->default_open() : encoding));
   }
   else {
     return process(new Document(*_conf, *_enc, encoding, file));
@@ -197,15 +198,19 @@ int DocFactory::get_index(Document *doc) {
   return -1;
 }
 
-Document *DocFactory::get_document(int idx) {
-  if ((idx < 0) || (idx >= children.size())) {
+Document *DocFactory::get_document(size_t idx) {
+  if (idx >= children.size()) {
     return NULL;
   }
 
   return children[idx];
 }
 
-bool DocFactory::get_info(int idx, std::string& title, bool& read_only, bool& modified) {
+bool DocFactory::get_info(size_t idx,
+                          std::string& title,
+                          bool& read_only,
+                          bool& modified)
+{
   if (idx >= children.size()) {
     return false;
   }
@@ -219,7 +224,11 @@ bool DocFactory::get_info(int idx, std::string& title, bool& read_only, bool& mo
   return true;
 }
 
-bool DocFactory::get_closed_info(int idx, std::string& title, bool& read_only, bool& modified) {
+bool DocFactory::get_closed_info(size_t idx,
+                                 std::string& title,
+                                 bool& read_only,
+                                 bool& modified)
+{
   if (idx >= closed_children.size()) {
     return false;
   }
@@ -233,7 +242,7 @@ bool DocFactory::get_closed_info(int idx, std::string& title, bool& read_only, b
   return true;
 }
 
-void DocFactory::activate_closed(int idx) {
+void DocFactory::activate_closed(size_t idx) {
   assert(idx < closed_children.size());
 
   Document *doc = closed_children[idx];

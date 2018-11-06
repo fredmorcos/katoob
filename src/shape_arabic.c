@@ -1077,8 +1077,7 @@ gunichar *unshape_arabic(gunichar *src, unsigned len, unsigned *_len) {
       continue;
     }
     else {
-      int i;
-      for (i = 0; i < unshaping_table[ch].len; i++) {
+      for (unsigned int i = 0; i < unshaping_table[ch].len; i++) {
         out[y++] = unshaping_table[ch].letters[i];
       }
     }

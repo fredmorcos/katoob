@@ -2,7 +2,8 @@
  * network.hh
  * This file is part of katoob
  *
- * Copyright (C) 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __NETWORK_HH__
-#define __NETWORK_HH__
+#pragma once
 
 #include <string>
 #include <map>
@@ -34,7 +34,10 @@ class Network {
 public:
   Network(Conf&);
   ~Network();
-  static bool add_transfer(const std::string&, std::string&, sigc::slot<void, bool, const std::string&>, void *get_handle = NULL);
+  static bool add_transfer(const std::string&,
+                           std::string&,
+                           sigc::slot<void, bool, const std::string&>,
+                           void *get_handle = NULL);
   static bool network_perform();
   static void del_transfer(void *);
   static void destroy();
@@ -45,14 +48,19 @@ private:
   Network& operator=(const Network&);
 
   static void clean_handle(void *);
-  static CURLcode populate_proxy(CURL *, const std::string&, const int& port, const bool&, const std::string&, const std::string&);
-  static size_t __curl_data_callback(void *ptr, size_t size, size_t nmemb, void  *stream);
+  static CURLcode populate_proxy(CURL *,
+                                 const std::string&,
+                                 const int& port,
+                                 const bool&,
+                                 const std::string&, const std::string&);
+  static size_t __curl_data_callback(void *ptr,
+                                     size_t size,
+                                     size_t nmemb,
+                                     void  *stream);
 
   static Conf *conf;
-  static std::map<CURL *, sigc::slot<void, bool, const std::string&> > cons;
+  static std::map<CURL *, sigc::slot<void, bool, const std::string&>> cons;
   static std::map<CURL *, std::string> data;
   static CURLM *m_handle;
   static sigc::connection conn;
 };
-
-#endif /* __NETWORK_HH__ */

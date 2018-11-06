@@ -67,5 +67,5 @@ private:
   PreviewDialog *_preview;
   Glib::RefPtr<PageSetup>& _page_setup;
   Glib::RefPtr<PrintSettings>& _settings;
-  std::vector<std::vector<int> > pages;
+  std::vector<std::vector<int>> pages;
 };

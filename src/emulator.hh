@@ -42,7 +42,7 @@ public:
 
 private:
   static std::vector<std::string> names;
-  static std::vector<std::map<std::string, std::string> > layouts;
+  static std::vector<std::map<std::string, std::string>> layouts;
   static bool _ok;
   static std::string _err;
   static int layout;

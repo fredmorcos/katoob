@@ -59,7 +59,7 @@ void TextView::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& conte
       katoob_error(e.what());
     }
 #else
-    std::auto_ptr<Glib::Error> error;
+    std::unique_ptr<Glib::Error> error;
     std::string filename = Glib::filename_from_uri(selection_data.get_data_as_string(), error);
     if (error.get()) {
       katoob_error(error->what());

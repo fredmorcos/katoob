@@ -2,7 +2,8 @@
  * previewdialog.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
 
 #include <gtkmm/stock.h>
 #include "previewdialog.hh"
@@ -142,7 +139,9 @@ void PreviewDialog::recalculate_gui() {
   ff.set_sensitive(!(c == n_pages));
 }
 
-PreviewDialog *PreviewDialog::create(const Glib::RefPtr<Gtk::PrintOperationPreview>& preview, const Glib::RefPtr<Gtk::PrintContext>& context, Gtk::Window* parent) {
+PreviewDialog *PreviewDialog::create(const Glib::RefPtr<Gtk::PrintOperationPreview>& preview,
+                                     const Glib::RefPtr<Gtk::PrintContext>& context, Gtk::Window* parent)
+{
   return new PreviewDialog(preview, context, parent);
 }
 
@@ -159,7 +158,7 @@ void PreviewDialog::signal_area_realize_cb() {
   }
 }
 
-bool PreviewDialog::signal_area_expose_event_cb(GdkEventExpose *event) {
+bool PreviewDialog::signal_area_expose_event_cb(GdkEventExpose *KATOOB_UNUSED(event)) {
   if (n_pages == 0) {
     return false;
   }
@@ -170,7 +169,7 @@ bool PreviewDialog::signal_area_expose_event_cb(GdkEventExpose *event) {
   return true;
 }
 
-void PreviewDialog::signal_preview_ready_cb(const Glib::RefPtr<Gtk::PrintContext>& ctx) {
+void PreviewDialog::signal_preview_ready_cb(const Glib::RefPtr<Gtk::PrintContext>& KATOOB_UNUSED(ctx)) {
   n_pages =  signal_get_n_pages.emit();
   pages.set_range(1, n_pages);
   label.set_text(Utils::substitute(_("of %i"), n_pages));
@@ -192,4 +191,3 @@ void PreviewDialog::signal_preview_got_page_size_cb(const Glib::RefPtr<Gtk::Prin
       }
   }
 }
-

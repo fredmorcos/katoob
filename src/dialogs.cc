@@ -2,7 +2,8 @@
  * dialogs.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,10 +21,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include <gtkmm/messagedialog.h>
 #include <gtkmm/stock.h>
 #include <gtkmm/label.h>
@@ -33,6 +30,7 @@
 #include <gtkmm/textview.h>
 #include "dialogs.hh"
 #include "macros.h"
+#include "utils.hh"
 
 bool katoob_simple_question(const std::string& message) {
   Gtk::MessageDialog dlg(message, false, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_YES_NO, true);
@@ -144,7 +142,7 @@ ActivityMeter::ActivityMeter() : dialog(_("Please wait..."), true, true) {
   dialog.signal_response().connect(sigc::mem_fun(this, &ActivityMeter::signal_response_cb));
 }
 
-void ActivityMeter::signal_response_cb(int res) {
+void ActivityMeter::signal_response_cb(int KATOOB_UNUSED(res)) {
   quit();
   signal_cancel_clicked.emit();
 }

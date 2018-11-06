@@ -2,7 +2,8 @@
  * dialogs.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __DIALOHS_HH__
-#define __DIALOHS_HH__
+#pragma once
 
 #include <string>
 #include <glibmm/main.h>
@@ -52,5 +52,3 @@ private:
 };
 
 Glib::RefPtr<ActivityMeter> katoob_activity();
-
-#endif /* __DIALOHS_HH__ */

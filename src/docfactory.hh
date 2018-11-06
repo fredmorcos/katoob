@@ -83,7 +83,7 @@ public:
    * \param idx the Document index to return.
    * \return a pointer to a Document or NULL
    */
-  Document *get_document(int idx);
+  Document *get_document(size_t idx);
 
   /**
    * \brief get the index of a Document given a pointer to its object.
@@ -106,7 +106,7 @@ public:
    * \param modified  a reference to a bool that will carry the Document modified state.
    * \return true if idx can be mapped to a Document, false otherwise.
    */
-  bool get_info(int idx, std::string& title, bool& read_only, bool& modified);
+  bool get_info(size_t idx, std::string& title, bool& read_only, bool& modified);
 
   /**
    * \brief retrieve some information about a closed document.
@@ -116,13 +116,13 @@ public:
    * \param modified  a reference to a bool that will carry the Document modified state.
    * \return true if idx can be mapped to a Document, false otherwise.
    */
-  bool get_closed_info(int idx, std::string& title, bool& read_only, bool& modified);
+  bool get_closed_info(size_t idx, std::string& title, bool& read_only, bool& modified);
 
   /**
    * \brief Activate a closed Document.
    * \param the index of the closed Document
    */
-  void activate_closed(int idx);
+  void activate_closed(size_t idx);
 
   /**
    * \brief this should be called when the configuration's changed (Preferences Dialog for example)

@@ -26,6 +26,7 @@
 #include <gtkmm/label.h>
 #include "inputwindow.hh"
 #include "macros.h"
+#include "utils.hh"
 
 InputWindow::InputWindow() : Gtk::Dialog(_("Input Window"), false, true),
 			     _type(INPUT_DISPLAY_NONE) {
@@ -58,7 +59,7 @@ void InputWindow::set_layout(std::map<std::string, std::string>& em) {
   rebuild();
 }
 
-void InputWindow::set_layout(std::map<std::string, std::vector<std::string> >& mp) {
+void InputWindow::set_layout(std::map<std::string, std::vector<std::string>>& mp) {
   if (mp == _mp) {
     return;
   }
@@ -109,7 +110,7 @@ void InputWindow::multipress_rebuild() {
 
   unsigned w = 0;
 
-  std::map<std::string, std::vector<std::string> >::iterator iter;
+  std::map<std::string, std::vector<std::string>>::iterator iter;
   for (iter = _mp.begin(); iter != _mp.end(); iter++) {
     w > iter->second.size() ? w : iter->second.size();
   }
@@ -152,7 +153,7 @@ void InputWindow::button_clicked_cb(unsigned x) {
   signal_button_clicked.emit(str);
 }
 
-void InputWindow::signal_response_cb(unsigned x) {
+void InputWindow::signal_response_cb(unsigned KATOOB_UNUSED(x)) {
   hide();
   signal_dialog_closed.emit();
 }

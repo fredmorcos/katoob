@@ -23,6 +23,7 @@
 
 #include "print.hh"
 #include "macros.h"
+#include "utils.hh"
 
 Print::Print(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Glib::RefPtr<PrintSettings>& settings) :
   _conf(conf),
@@ -70,7 +71,7 @@ bool Print::run(std::string& error, Gtk::PrintOperationAction print_action) {
   }
 
 #else
-  std::auto_ptr<Glib::Error> e;
+  std::unique_ptr<Glib::Error> e;
   res = Gtk::PrintOperation::run(print_action, e);
   if (e.get()) {
     error = e->what();
@@ -155,7 +156,7 @@ void Print::on_draw_page(const Glib::RefPtr<Gtk::PrintContext>& context, int nr)
     return;
   }
 
-  if (nr > pages.size()) {
+  if (nr >= 0 && static_cast<size_t>(nr) > pages.size()) {
     // This shouldn't happen but just in case.
     return;
   }
@@ -215,7 +216,7 @@ void Print::on_custom_widget_apply(Gtk::Widget *) {
   _settings->reset();
 }
 
-void Print::on_done(Gtk::PrintOperationResult result) {
+void Print::on_done(Gtk::PrintOperationResult KATOOB_UNUSED(result)) {
   // TODO:
   //  _preview.clear();
 }

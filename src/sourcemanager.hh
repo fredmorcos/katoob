@@ -29,7 +29,7 @@
 #include <gtksourceview/gtksourcelanguagemanager.h>
 #include <gtksourceview/gtksourcelanguage.h>
 
-typedef std::map<std::string, std::vector<std::string> > SourceCategory;
+typedef std::map<std::string, std::vector<std::string>> SourceCategory;
 typedef SourceCategory::iterator SourceCategoryIter;
 
 class SourceManager {

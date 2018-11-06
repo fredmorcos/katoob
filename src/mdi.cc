@@ -46,7 +46,7 @@ MDI::MDI(Conf& conf, Encodings& enc) :
   _conf(conf),
   _encodings(enc),
   page_setup(PageSetup::create(_conf)),
-  settings(PrintSettings::create(_conf))
+  settings(PrintSettings::create())
 {
   signal_switch_page().connect(sigc::mem_fun(*this, &MDI::signal_switch_page_cb));
   // 1 minute.
@@ -81,13 +81,13 @@ void MDI::scan_temp() {
   if (temps.size() > 0) {
     if (katoob_simple_question(_("Some unrecovered files were found. Try to recover them ?"))) {
       for (std::map<std::string, std::string>::iterator iter = temps.begin(); iter != temps.end(); iter++) {
-	Document *doc = create_document();
-	if (doc) {
-	  doc->set_text(iter->second);
-	  if (unlink(iter->first.c_str()) == -1) {
-	    std::cerr << "Failed to unlink " << iter->first << " " << std::strerror(errno) << std::endl;
-	  }
-	}
+        Document *doc = create_document();
+        if (doc) {
+          doc->set_text(iter->second);
+          if (unlink(iter->first.c_str()) == -1) {
+            std::cerr << "Failed to unlink " << iter->first << " " << std::strerror(errno) << std::endl;
+          }
+        }
       }
     }
   }
@@ -234,7 +234,12 @@ void MDI::open_location_cb() {
   }
 }
 
-void MDI::signal_transfer_complete_cb(bool st, const std::string& str, const std::string uri, int enc,  bool to_active) {
+void MDI::signal_transfer_complete_cb(bool st,
+                                      const std::string& str,
+                                      const std::string KATOOB_UNUSED(uri),
+                                      int enc,
+                                      bool to_active)
+{
   if (!st) {
     katoob_error(str);
     return;
@@ -284,16 +289,16 @@ void MDI::insert_file_cb() {
 
     for (unsigned int x = 0; x < files.size(); x++) {
       if (Utils::katoob_read(files[x], contents)) {
-	int tenc = _encodings.convert_to(contents, contents2, enc);
-	if (tenc == -1) {
-	  katoob_error(Utils::substitute(_("Couldn't detect the encoding of %s"), files[x]));
-	}
-	else {
-	  doc->insert(tenc == _encodings.utf8() ? contents : contents2);
-	}
+        int tenc = _encodings.convert_to(contents, contents2, enc);
+        if (tenc == -1) {
+          katoob_error(Utils::substitute(_("Couldn't detect the encoding of %s"), files[x]));
+        }
+        else {
+          doc->insert(tenc == _encodings.utf8() ? contents : contents2);
+        }
       }
       else {
-	katoob_error(contents);
+        katoob_error(contents);
       }
     }
   }
@@ -353,31 +358,31 @@ bool MDI::save(bool replace) {
 
     if (Glib::file_test (files[0], Glib::FILE_TEST_EXISTS)) {
       if (katoob_simple_question((Utils::substitute(_("Are you sure you want to overwrite the file %s ?"), files[0]))))	{
-	if (doc->save(files[0], enc, replace)) {
-	  if (replace) {
-	    _conf.recent_prepend(files[0]);
-	    signal_recent_regenerate.emit();
-	  }
-	  _conf.save_dir(str);
-	  return true;
-	}
-	else {
-	  return false;
-	}
+        if (doc->save(files[0], enc, replace)) {
+          if (replace) {
+            _conf.recent_prepend(files[0]);
+            signal_recent_regenerate.emit();
+          }
+          _conf.save_dir(str);
+          return true;
+        }
+        else {
+          return false;
+        }
       }
       return false;
     }
     else {
       if (doc->save(files[0], enc, replace)) {
-	if (replace) {
-	  _conf.recent_prepend(files[0]);
-	  signal_recent_regenerate.emit();
-	}
-	_conf.save_dir(str);
-	return true;
+        if (replace) {
+          _conf.recent_prepend(files[0]);
+          signal_recent_regenerate.emit();
+        }
+        _conf.save_dir(str);
+        return true;
       }
       else {
-	return false;
+        return false;
       }
     }
   }
@@ -449,10 +454,10 @@ bool MDI::close(int n) {
     switch(katoob_question(message)) {
     case Gtk::RESPONSE_YES:
       if (save()) {
-	break;
+        break;
       }
       else {
-	return false;
+        return false;
       }
     case Gtk::RESPONSE_NO:
       break;
@@ -479,10 +484,10 @@ bool MDI::close(int n) {
     unsigned x = _conf.get("undo_closedno", 5);
     if (x != 0) {
       while (closed_children.size() > x) {
-	Document *_doc = closed_children[0];
-	closed_children.erase(closed_children.begin());
-	signal_closed_document_erased.emit();
-	delete _doc;
+        Document *_doc = closed_children[0];
+        closed_children.erase(closed_children.begin());
+        signal_closed_document_erased.emit();
+        delete _doc;
       }
     }
     // emit the signal so the menu can rebuild.
@@ -790,7 +795,7 @@ void MDI::execute_cb() {
     for (unsigned x = 0; x < command.size(); x++) {
       // TODO: Can this crash if we have a string that ends in % ?
       if ((command[x] == '%') && (command[x+1] == 's')) {
-	++found;
+        ++found;
       }
     }
 
@@ -805,15 +810,15 @@ void MDI::execute_cb() {
     TempFile tf;
     if (found == 1) {
       if (!tf.ok(error)) {
-	katoob_error(error);
-	return;
+        katoob_error(error);
+        return;
       }
 
       // Write the buffer contents.
       text = doc->get_text();
       if (!tf.write(text, error)) {
-	katoob_error(error);
-	return;
+        katoob_error(error);
+        return;
       }
       text.clear();
       cmd = Utils::substitute(command, tf.get_name());
@@ -834,7 +839,7 @@ void MDI::execute_cb() {
       // We create a new document then we insert.
       Document *d = create_document();
       if (d) {
-	d->set_text(text);
+        d->set_text(text);
       }
     }
   }
@@ -871,7 +876,7 @@ bool MDI::set_dictionary(std::string& old, std::string& new_dict) {
   return true;
 }
 
-void MDI::signal_switch_page_cb(GtkNotebookPage *p, guint n) {
+void MDI::signal_switch_page_cb(GtkNotebookPage *KATOOB_UNUSED(p), guint n) {
   children[n]->emit_signals();
   signal_doc_activated.emit(n);
 }
@@ -929,14 +934,18 @@ bool MDI::set_encoding(int n, int& o) {
 void MDI::signal_document_dict_lookup_cb(std::string word) {
   std::string uri = Dict::construct_uri(_conf, word);
 
-  sigc::slot<void, bool, const std::string&> slot = sigc::bind(sigc::mem_fun(this, &MDI::signal_dict_transfer_complete_cb), word);
+  sigc::slot<void, bool, const std::string&> slot =
+    sigc::bind(sigc::mem_fun(this, &MDI::signal_dict_transfer_complete_cb), word);
   std::string error;
   if (!Network::add_transfer(uri, error, slot)) {
     katoob_error(error);
   }
 }
 
-void MDI::signal_dict_transfer_complete_cb(bool st, const std::string& str, std::string word) {
+void MDI::signal_dict_transfer_complete_cb(bool st,
+                                           const std::string& str,
+                                           std::string KATOOB_UNUSED(word))
+{
   if (!st) {
     katoob_error(str);
     return;
@@ -961,7 +970,7 @@ void MDI::signal_dict_transfer_complete_cb(bool st, const std::string& str, std:
     if (katoob_big_info(defs[0], doc != NULL)) {
       // not needed but just in case!
       if (doc) {
-	doc->insert(defs[0]);
+        doc->insert(defs[0]);
       }
     }
   }
@@ -989,7 +998,7 @@ void MDI::signal_document_label_close_clicked_cb(Document *doc) {
     if (children[x] == doc) {
       close(x);
       if (children.size() == 0) {
-	signal_reset_gui.emit(-1);
+        signal_reset_gui.emit(-1);
       }
       return;
     }
@@ -1048,7 +1057,7 @@ void MDI::reset_gui() {
       dynamic_cast<Label *>(get_tab_label(*children[x]))->set_modified(children[x]->get_modified(), true);
     }
     if (r) {
-	dynamic_cast<Label *>(get_tab_label(*children[x]))->set_readonly(children[x]->get_readonly(), true);
+      dynamic_cast<Label *>(get_tab_label(*children[x]))->set_readonly(children[x]->get_readonly(), true);
     }
     if ((!r) && (!m)) {
       dynamic_cast<Label *>(get_tab_label(*children[x]))->set_normal();
@@ -1083,7 +1092,7 @@ void MDI::import_cb(Import im) {
       // create.
       Document *doc = create_document();
       if (doc) {
-	doc->set_text(res);
+        doc->set_text(res);
       }
     }
     else {
@@ -1116,8 +1125,8 @@ void MDI::export_cb(Export ex) {
     for (unsigned x = 0; x < lines.size(); x++) {
       std::string tout;
       if (!ex.func(lines[x], tout, error)) {
-	katoob_error(error);
-	return;
+        katoob_error(error);
+        return;
       }
       out += tout;
       // TODO: We need to check whether the document has a \n at the end or not.

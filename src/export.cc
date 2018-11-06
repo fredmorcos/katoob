@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "export.hh"
-#include "macros.h"
-#include "utils.hh"
 #include <zlib.h>
-#include "tempfile.hh"
 #include <bzlib.h>
 #include <fribidi/fribidi.h>
 #include "shape_arabic.h"
+#include "export.hh"
+#include "macros.h"
+#include "utils.hh"
+#include "tempfile.hh"
 
 // TODO: Export HTML character references.
 
@@ -56,7 +56,9 @@ void export_init(std::vector<Export>& exprt) {
   exprt.push_back(exp);
 }
 
-bool katoob_export_plain(Glib::ustring& text, std::string& out, std::string& error) {
+bool katoob_export_plain(Glib::ustring& text, std::string& out,
+                         std::string& KATOOB_UNUSED(error))
+{
   gunichar *ch = new gunichar[text.size()+1];
   for (unsigned i = 0; i < text.size(); i++) {
     ch[i] = text[i];

@@ -27,7 +27,7 @@
 
 class URL {
 public:
-  URL(const char *url) : _url(url) {}
+  URL(const char *url): _url(url) {}
 
   ~URL() {
     if (_url) {
@@ -42,13 +42,20 @@ public:
     _url = NULL;
     return url;
   }
+
 private:
   URL(const URL&);
   URL& operator=(const URL&);
   const char *_url;
 };
 
-CURLcode Network::populate_proxy(CURL *handle, const std::string& host, const int& port, const bool& auth, const std::string& user, const std::string& pass) {
+CURLcode Network::populate_proxy(CURL *handle,
+                                 const std::string& host,
+                                 const int& port,
+                                 const bool& auth,
+                                 const std::string& user,
+                                 const std::string& pass)
+{
   CURLcode code;
   code = curl_easy_setopt(handle, CURLOPT_PROXY, host.c_str());
   if (code != CURLE_OK) {
@@ -73,8 +80,11 @@ CURLcode Network::populate_proxy(CURL *handle, const std::string& host, const in
   }
 }
 
-bool Network::add_transfer(const std::string& uri, std::string& error, sigc::slot<void, bool, const std::string&> slot, void *get_handle) {
-
+bool Network::add_transfer(const std::string& uri,
+                           std::string& error,
+                           sigc::slot<void, bool, const std::string&> slot,
+                           void *get_handle)
+{
   if (!m_handle) {
     m_handle = curl_multi_init();
   }
@@ -115,14 +125,14 @@ bool Network::add_transfer(const std::string& uri, std::string& error, sigc::slo
   case 4: // SOCKS5
     if (proxyauth == true) {
       if (proxyuser.size() == 0) {
-	error = _("Please set the proxy authentication username.");
-	curl_easy_cleanup(handle);
-	return false;
+        error = _("Please set the proxy authentication username.");
+        curl_easy_cleanup(handle);
+        return false;
       }
       if (proxypass.size() == 0) {
-	error = _("Please set the proxy authentication password.");
-	curl_easy_cleanup(handle);
-	return false;
+        error = _("Please set the proxy authentication password.");
+        curl_easy_cleanup(handle);
+        return false;
       }
     }
 
@@ -131,14 +141,26 @@ bool Network::add_transfer(const std::string& uri, std::string& error, sigc::slo
       curl_easy_cleanup(handle);
       return false;
     }
-    code = populate_proxy(handle, proxyhost, proxyport, proxyauth, proxyuser, proxypass);
+
+    code = populate_proxy(handle,
+                          proxyhost,
+                          proxyport,
+                          proxyauth,
+                          proxyuser,
+                          proxypass);
+
     if (code != CURLE_OK) {
       error = curl_easy_strerror(code);
       curl_easy_cleanup(handle);
       return false;
     }
 
-    code = curl_easy_setopt(handle, CURLOPT_PROXYTYPE, proxytype == 2 ? CURLPROXY_HTTP : proxytype == 3 ? CURLPROXY_SOCKS4 : CURLPROXY_SOCKS5);
+    code = curl_easy_setopt(handle,
+                            CURLOPT_PROXYTYPE,
+                            proxytype == 2 ? CURLPROXY_HTTP :
+                            proxytype == 3 ? CURLPROXY_SOCKS4 :
+                            CURLPROXY_SOCKS5);
+
     if (code != CURLE_OK) {
       error = curl_easy_strerror(code);
       curl_easy_cleanup(handle);
@@ -148,7 +170,10 @@ bool Network::add_transfer(const std::string& uri, std::string& error, sigc::slo
     break;
 
   default:
-    error = "The proxy setting code is not in sync. with the network code. Please inform the developer.";
+    error =
+      "The proxy setting code is not in sync with the network code. "
+      "Please inform the developer.";
+
     return false;
   }
 
@@ -243,8 +268,11 @@ Network::~Network() {
 }
 
 void Network::del_transfer(void *handle) {
-  std::map<CURL *, sigc::slot<void, bool, const std::string&> >::iterator iter = cons.find(handle);
+  std::map<CURL *, sigc::slot<void, bool, const std::string&>>::iterator iter =
+    cons.find(handle);
+
   std::map<CURL *, std::string>::iterator d_iter = data.find(handle);
+
   clean_handle(handle);
   cons.erase(iter);
   data.erase(d_iter);
@@ -253,6 +281,7 @@ void Network::del_transfer(void *handle) {
 void Network::clean_handle(void *handle) {
   char *url;
   CURLcode code = curl_easy_getinfo(handle, CURLINFO_PRIVATE, &url);
+
   if (code == CURLE_OK) {
     URL url2(url);
     // TODO: error
@@ -292,26 +321,28 @@ bool Network::network_perform() {
     conn.block();
   }
 
-  if (running_handles < cons.size()) {
+  if (running_handles < 0 || static_cast<size_t>(running_handles) < cons.size()) {
     while (true) {
       msg = curl_multi_info_read(m_handle, &msgs_in_queue);
-      if (msg == NULL) {
-	return true;
-      }
-      else {
-	if (msg->msg == CURLMSG_DONE) {
-	  // done.
-	  bool good = msg->data.result == CURLE_OK;
 
-	  std::map<CURL *, sigc::slot<void, bool, const std::string&> >::iterator iter = cons.find(msg->easy_handle);
-	  std::map<CURL *, std::string>::iterator d_iter = data.find(msg->easy_handle);
-	  std::string er = curl_easy_strerror(msg->data.result);
-	  iter->second(good, good ? d_iter->second : er);
-	  clean_handle(msg->easy_handle);
-	  cons.erase(iter);
-	  data.erase(d_iter);
-	  //	  curl_easy_cleanup(msg->easy_handle);
-	}
+      if (msg == NULL) {
+        return true;
+      } else {
+        if (msg->msg == CURLMSG_DONE) {
+          // done.
+          bool good = msg->data.result == CURLE_OK;
+
+          std::map<CURL *, sigc::slot<void, bool, const std::string&>>::iterator iter =
+            cons.find(msg->easy_handle);
+          std::map<CURL *, std::string>::iterator d_iter = data.find(msg->easy_handle);
+          std::string er = curl_easy_strerror(msg->data.result);
+
+          iter->second(good, good ? d_iter->second : er);
+          clean_handle(msg->easy_handle);
+          cons.erase(iter);
+          data.erase(d_iter);
+          //	  curl_easy_cleanup(msg->easy_handle);
+        }
       }
     }
   }
@@ -338,9 +369,9 @@ void Network::destroy() {
 }
 
 /* Our static members */
-std::map<CURL *, sigc::slot<void, bool, const std::string&> > Network::cons;
+std::map<CURL *, sigc::slot<void, bool, const std::string&>> Network::cons;
 std::map<CURL *, std::string> Network::data;
-//std::map<CURL *, sigc::signal<void, bool, const std::string&> > *Network::cons = NULL;
+//std::map<CURL *, sigc::signal<void, bool, const std::string&>> *Network::cons = NULL;
 //std::map<CURL *, std::string> *Network::data = NULL;
 Conf *Network::conf = NULL;
 CURLM *Network::m_handle = NULL;

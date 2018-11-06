@@ -2,7 +2,8 @@
  * dict.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __DICT_HH__
-#define __DICT_HH__
+#pragma once
 
 #include <string>
 #include <vector>
@@ -38,5 +38,3 @@ namespace Dict {
   bool parse_defs(const std::string&, std::vector<std::string>&);
   bool parse_dbs(const std::string&, std::map<std::string, std::string>&);
 };
-
-#endif /* __DICT_HH__ */

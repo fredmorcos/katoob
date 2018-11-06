@@ -2,7 +2,8 @@
  * encodings.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  */
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
 
 #include <iostream>
 #include <cassert>
@@ -353,7 +350,7 @@ bool Encodings::convert(const Glib::ustring& text, std::string& res, unsigned in
     return false;
   }
 #else
-  std::auto_ptr<Glib::Error> error;
+  std::unique_ptr<Glib::Error> error;
   res = Glib::convert (text, get_charset(to), get_charset(from), error);
   if (error.get()) {
     err = error->what();

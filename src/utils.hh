@@ -30,6 +30,8 @@
 #include <gtkmm/label.h>
 #include "conf.hh"
 
+#define KATOOB_UNUSED(x)
+
 namespace Utils {
   typedef enum {
     KATOOB_COLOR_READONLY,

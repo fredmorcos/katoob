@@ -52,5 +52,4 @@ private:
   DBusHandlerResult pong(DBusConnection *, DBusMessage *);
   bool connect(DBusConnection **);
   DBusConnection *server;
-  bool _ok;
 };

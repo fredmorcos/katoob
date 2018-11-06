@@ -21,6 +21,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <iostream>
+#include <system_error>
+#include <cstring>
+#include <errno.h>
 #include <config.h>
 #include <glibmm/thread.h>
 #include "katoob.hh"
@@ -35,9 +39,9 @@
  * to run its main loop.
  */
 int main(int argc, char *argv[]) {
-  bindtextdomain (PACKAGE, PACKAGE_LOCALE_DIR);
-  bind_textdomain_codeset (PACKAGE, "UTF-8");
-  textdomain (PACKAGE);
+  (void) bindtextdomain(PACKAGE, PACKAGE_LOCALE_DIR);
+  (void) bind_textdomain_codeset(PACKAGE, "UTF-8");
+  (void) textdomain(PACKAGE);
 
   //  signal(SIGPIPE, SIG_IGN);
 

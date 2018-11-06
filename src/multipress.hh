@@ -34,12 +34,12 @@ public:
   ~Multipress();
   static bool ok(std::string&);
   static std::vector<std::string>& list_layouts();
-  static bool parse_file(std::string&, std::map<std::string, std::vector<std::string> >&);
+  static bool parse_file(std::string&, std::map<std::string, std::vector<std::string>>&);
   static void activate(int);
   static bool get_active();
   static bool get(const std::string&, int);
 
-  static std::map<std::string, std::vector<std::string> >& get_layout();
+  static std::map<std::string, std::vector<std::string>>& get_layout();
 
   static sigc::signal<void, std::string&> signal_insert_key;
   static sigc::signal<void, GdkEventKey *> signal_invalid_key;
@@ -53,6 +53,6 @@ private:
   static bool _ok;
   static std::string _err;
   static std::vector<std::string> names;
-  static std::vector<std::map<std::string, std::vector<std::string> > > layouts;
+  static std::vector<std::map<std::string, std::vector<std::string>>> layouts;
   static int layout;
 };

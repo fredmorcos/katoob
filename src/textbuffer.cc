@@ -27,8 +27,8 @@
 #include "multipress.hh"
 
 TextBuffer::TextBuffer(Conf& conf):
-  _conf(conf),
-  Gtk::TextBuffer(GTK_TEXT_BUFFER(gtk_source_buffer_new(NULL)))
+  Gtk::TextBuffer(GTK_TEXT_BUFFER(gtk_source_buffer_new(NULL))),
+  _conf(conf)
 {
   _insert = create_mark(begin());
   _erase = 0;
@@ -111,7 +111,9 @@ void TextBuffer::on_insert(const Gtk::TextBuffer::iterator& pos, const Glib::ust
   }
 }
 
-void TextBuffer::on_erase(const Gtk::TextBuffer::iterator& start, const Gtk::TextBuffer::iterator& end) {
+void TextBuffer::on_erase(const Gtk::TextBuffer::iterator& start,
+                          const Gtk::TextBuffer::iterator& end)
+{
   _erase = end.get_line();
   _deleted = get_text(start, end, false);
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED

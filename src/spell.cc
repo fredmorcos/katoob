@@ -21,9 +21,10 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "spell.hh"
 #include <cassert>
+#include "spell.hh"
 #include "macros.h"
+#include "utils.hh"
 
 Spell::Spell() :
   broker(NULL),
@@ -108,10 +109,11 @@ void Spell::to_personal(std::string& s) {
 }
 
 void _dict_describe_cb(const char * const lang_tag,
-		       const char * const provider_name,
-		       const char * const provider_desc,
-		       const char * const provider_file,
-		       void * user_data) {
+                       const char * const KATOOB_UNUSED(provider_name),
+                       const char * const KATOOB_UNUSED(provider_desc),
+                       const char * const KATOOB_UNUSED(provider_file),
+                       void * user_data)
+{
   static_cast<std::vector<std::string> *>(user_data)->push_back(lang_tag);
 }
 

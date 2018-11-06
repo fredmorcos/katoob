@@ -35,7 +35,7 @@ public:
   void show();
   void hide();
   void set_layout(std::map<std::string, std::string>&);
-  void set_layout(std::map<std::string, std::vector<std::string> >&);
+  void set_layout(std::map<std::string, std::vector<std::string>>&);
 
   sigc::signal<void, std::string&> signal_button_clicked;
   sigc::signal<void> signal_dialog_closed;
@@ -59,7 +59,7 @@ private:
   void button_clicked_cb(unsigned);
 
   std::map<std::string, std::string> _em;
-  std::map<std::string, std::vector<std::string> > _mp;
+  std::map<std::string, std::vector<std::string>> _mp;
 
   // Our Widgets.
   Gtk::ScrolledWindow sw;

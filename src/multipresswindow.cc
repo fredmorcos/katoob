@@ -24,6 +24,7 @@
 #include <cassert>
 #include <gdk/gdkkeysyms.h>
 #include "multipresswindow.hh"
+#include "utils.hh"
 
 MultipressWindow::MultipressWindow() : Gtk::Window(), loop(Glib::MainLoop::create()) {
   set_position(Gtk::WIN_POS_CENTER);
@@ -188,7 +189,7 @@ void MultipressWindow::show_next() {
   // get_window()->invalidate_rect(Gdk::Rectangle(x, y, w, h), false);
 }
 
-bool MultipressWindow::on_expose_event(GdkEventExpose *event) {
+bool MultipressWindow::on_expose_event(GdkEventExpose *KATOOB_UNUSED(event)) {
   Glib::RefPtr<Gdk::GC> gc = Gdk::GC::create(get_window());
   Glib::RefPtr<Pango::Layout> layout = create_pango_layout(_to_draw);
 

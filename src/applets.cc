@@ -754,18 +754,20 @@ void DictionaryApplet::list_dicts_clicked_cb() {
     return;
   }
 
-  sigc::slot<void, bool, const std::string&> slot = sigc::mem_fun(this, &DictionaryApplet::signal_dict_transfer_complete_cb);
+  sigc::slot<void, bool, const std::string&> slot =
+    sigc::mem_fun(this, &DictionaryApplet::signal_dict_transfer_complete_cb);
 
   std::string uri = Dict::construct_lsdb_uri(_conf, host, port);
 
   std::string error;
-  if (!Network::add_transfer(uri, error, slot), handle) {
+  if (!Network::add_transfer(uri, error, slot, handle)) {
     katoob_error(error);
   }
 
   meter = katoob_activity();
 
-  conn = meter->signal_cancel_clicked.connect(sigc::mem_fun(this, &DictionaryApplet::signal_cancel_clicked_cb));
+  conn = meter->signal_cancel_clicked.connect
+    (sigc::mem_fun(this, &DictionaryApplet::signal_cancel_clicked_cb));
 
   meter->run();
 
@@ -877,7 +879,8 @@ AdvancedApplet::AdvancedApplet(Conf& _conf) :
   saveonexit.set_active(_conf.get("saveonexit", true));
   savewinpos.set_active(_conf.get("savewinpos", true));
 
-  savewinpos.signal_toggled().connect(sigc::mem_fun(*this, &AdvancedApplet::savewinpos_toggled_cb));
+  savewinpos.signal_toggled().connect
+    (sigc::mem_fun(*this, &AdvancedApplet::savewinpos_toggled_cb));
   savewinpos.toggled();
 }
 

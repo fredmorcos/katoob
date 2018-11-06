@@ -30,12 +30,15 @@
 #include "utils.hh"
 
 Emulator::Emulator() {
-  std::string dir(Utils::get_data_dir() + Utils::get_dir_separator() + "emulator" + Utils::get_dir_separator());
+  std::string dir(Utils::get_data_dir() +
+                  Utils::get_dir_separator() +
+                  "emulator" +
+                  Utils::get_dir_separator());
 
-  std::auto_ptr<Glib::Dir> d;
+  std::unique_ptr<Glib::Dir> d;
 
   try {
-    d = std::auto_ptr<Glib::Dir>(new Glib::Dir(dir));
+    d = std::unique_ptr<Glib::Dir>(new Glib::Dir(dir));
   }
   catch (Glib::FileError& e) {
     _err = e.what();
@@ -44,29 +47,31 @@ Emulator::Emulator() {
 
   Glib::DirIterator start = d->begin();
   Glib::DirIterator end = d->end();
+
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
-  std::auto_ptr<Glib::Error> error;
+  std::unique_ptr<Glib::Error> error;
 #endif
+
   while (start != end) {
     std::map<std::string, std::string> map;
     std::string file = dir + *start;
     if (parse_file(file, map)) {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try {
-	std::string _utf8 = Glib::filename_to_utf8(*start);
-	names.push_back(_utf8);
+        std::string _utf8 = Glib::filename_to_utf8(*start);
+        names.push_back(_utf8);
       }
       catch (Glib::ConvertError& er) {
-	names.push_back(*start);
+        names.push_back(*start);
       }
 #else
       std::string _utf8 = Glib::filename_to_utf8(*start, error);
       if (error.get()) {
-	names.push_back(*start);
-	error.reset();
+        names.push_back(*start);
+        error.reset();
       }
       else {
-	names.push_back(_utf8);
+        names.push_back(_utf8);
       }
 #endif
       layouts.push_back(map);
@@ -109,8 +114,8 @@ bool Emulator::parse_file(std::string& file, std::map<std::string, std::string>&
 }
 
 bool Emulator::get(const std::string& key, std::string& value) {
-  assert(layout < layouts.size());
   assert(layout >= 0);
+  assert(static_cast<size_t>(layout) < layouts.size());
 
   std::map<std::string, std::string>::iterator iter = layouts[layout].find(key);
   if (iter == layouts[layout].end()) {
@@ -121,7 +126,7 @@ bool Emulator::get(const std::string& key, std::string& value) {
 }
 
 void Emulator::activate(int x) {
-  assert((x == -1) || (x < layouts.size()));
+  assert((x == -1) || (static_cast<size_t>(x) < layouts.size()));
   layout = x;
 }
 
@@ -135,7 +140,7 @@ std::map<std::string, std::string>& Emulator::get_layout() {
 }
 
 std::vector<std::string> Emulator::names;
-std::vector<std::map<std::string, std::string> > Emulator::layouts;
+std::vector<std::map<std::string, std::string>> Emulator::layouts;
 bool Emulator::_ok = false;
 int Emulator::layout = -1;
 std::string Emulator::_err;

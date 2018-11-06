@@ -91,7 +91,7 @@ Window::Window(Conf& conf, Encodings& encodings, std::vector<std::string>& files
     std::cout << er.what() << std::endl;
   }
 #else /* ! GLIBMM_EXCEPTIONS_ENABLED */
-  std::auto_ptr<Glib::Error> error;
+  std::unique_ptr<Glib::Error> error;
   set_icon_from_file(Utils::get_data_path("katoob.svg"), error);
   if (error.get()) {
     std::cout << error->what() << std::endl;
@@ -286,11 +286,16 @@ void Window::connect_mdi_signals() {
   mdi.signal_closed_document_added.connect(sigc::mem_fun(menubar, &MenuBar::signal_closed_document_added));
 }
 
-void Window::signal_drag_data_received_cb(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection, guint info, guint time) {
+void Window::signal_drag_data_received_cb
+(const Glib::RefPtr<Gdk::DragContext>& KATOOB_UNUSED(context),
+ int KATOOB_UNUSED(x), int KATOOB_UNUSED(y),
+ const Gtk::SelectionData& selection,
+ guint KATOOB_UNUSED(info), guint KATOOB_UNUSED(time))
+{
   std::vector<std::string> files = selection.get_uris();
   std::string filename;
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
-  std::auto_ptr<Glib::Error> error;
+  std::unique_ptr<Glib::Error> error;
 #endif
 
   for (unsigned x = 0; x < files.size(); x++) {
@@ -337,7 +342,7 @@ void Window::on_document_spell_enabled_cb(bool s) {
   signal_auto_spell_activate_conn.unblock();
 }
 
-bool Window::signal_delete_event_cb(GdkEventAny *event) {
+bool Window::signal_delete_event_cb(GdkEventAny *KATOOB_UNUSED(event)) {
   if (mdi.close_all()) {
     signal_quit.emit();
     return false;
@@ -424,7 +429,7 @@ void Window::signal_document_modified_cb(int x, bool m) {
   menubar.document_set_modified(x, m);
 }
 
-void Window::signal_document_file_changed_cb(std::string f) {
+void Window::signal_document_file_changed_cb(std::string KATOOB_UNUSED(f)) {
   // TODO: Do we need this ??
   //  set_title(const_cast<char *>(f.c_str()));
 }

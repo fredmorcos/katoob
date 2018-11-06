@@ -2,7 +2,8 @@
  * pagesetup.hh
  * This file is part of katoob
  *
- * Copyright (C) 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __PAGESETUP_HH__
-#define __PAGESETUP_HH__
+#pragma once
 
 #include <gtkmm/pagesetup.h>
 #include "conf.hh"
@@ -41,5 +41,3 @@ private:
   Glib::RefPtr<Gtk::PageSetup> _page_setup;
   Conf& _conf;
 };
-
-#endif /* __PAGESETUP_HH__ */

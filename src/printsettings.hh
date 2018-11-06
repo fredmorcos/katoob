@@ -24,12 +24,11 @@
 #pragma once
 
 #include <gtkmm/printsettings.h>
-#include "conf.hh"
 
 class PrintSettings : public Gtk::PrintSettings {
 public:
-  static Glib::RefPtr<PrintSettings> create(Conf&);
-  PrintSettings(Conf&);
+  static Glib::RefPtr<PrintSettings> create();
+  PrintSettings();
   ~PrintSettings();
   void reset();
   void save();
@@ -37,5 +36,4 @@ public:
 private:
   void foreach_load(const Glib::ustring&, const Glib::ustring&);
   void foreach_save(const Glib::ustring&, const Glib::ustring&);
-  Conf& _conf;
 };

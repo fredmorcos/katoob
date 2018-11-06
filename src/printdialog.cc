@@ -380,15 +380,12 @@ bool PrintDialog::init_backend() {
   // if it's a custom printer then we'll use 36 as a margin for now - TODO
   Gtk::TreeModel::iterator iter = t_selection->get_selected();
   if (iter) {
-    Gtk::TreeModel::Row row = *iter;
-    int n = row[id];
-
-    int a = paper_size.get_active_row_number();
-
+    // Gtk::TreeModel::Row row = *iter;
+    // int n = row[id];
+    // int a = paper_size.get_active_row_number();
     int p = orientation.get_active_row_number();
     assert (p < 2);
-
-    int w, h;
+    // int w, h;
 
     // if (n == -1) {
     //   backend->set_margins(36, 36, 36, 36);
@@ -482,19 +479,21 @@ void PrintDialog::process() {
   // TODO: Save settings.
 }
 
-bool PrintDialog::ok(std::string& er) {
+bool PrintDialog::ok(std::string& KATOOB_UNUSED(er)) {
   // return backend->ok(er);
+  return false;
 }
 
 void PrintDialog::start_process() {
   // backend->start_process();
 }
 
-bool PrintDialog::end_process(std::string& er) {
+bool PrintDialog::end_process(std::string& KATOOB_UNUSED(er)) {
   // return backend->end_process(er);
+  return false;
 }
 
-void PrintDialog::add_line(std::string& l) {
+void PrintDialog::add_line(std::string& KATOOB_UNUSED(l)) {
   // backend->add_line(l);
 }
 

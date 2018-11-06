@@ -50,8 +50,8 @@ IsoCodes::IsoCodes() {
       return;
     }
     if (_lang_codes.size() == 0) {
-      bindtextdomain (LANG_CODES, ISOCODESLOCALEDIR);
-      bind_textdomain_codeset (LANG_CODES, "UTF-8");
+      (void) bindtextdomain(LANG_CODES, ISOCODESLOCALEDIR);
+      (void) bind_textdomain_codeset(LANG_CODES, "UTF-8");
       file = Utils::substitute("%s/share/xml/iso-codes/%s.xml", ISOCODES_PREFIX, LANG_CODES);
       Utils::katoob_read(file, str);
 
@@ -61,8 +61,8 @@ IsoCodes::IsoCodes() {
       XML_ParserReset(p, NULL);
     }
     if (_country_codes.size() == 0) {
-      bindtextdomain(COUNTRY_CODES, ISOCODESLOCALEDIR);
-      bind_textdomain_codeset (COUNTRY_CODES, "UTF-8");
+      (void) bindtextdomain(COUNTRY_CODES, ISOCODESLOCALEDIR);
+      (void) bind_textdomain_codeset (COUNTRY_CODES, "UTF-8");
       file = Utils::substitute("%s/share/xml/iso-codes/%s.xml", ISOCODES_PREFIX, COUNTRY_CODES);
       Utils::katoob_read(file, str);
 
@@ -70,6 +70,7 @@ IsoCodes::IsoCodes() {
       XML_SetElementHandler(p, __country_codes, NULL);
       XML_Parse(p, str.c_str(), str.size(), 1);
     }
+
     XML_ParserFree(p);
   }
 }
@@ -82,7 +83,14 @@ void IsoCodes::lang_codes(const char *elem, const char **attrs) {
   return filter(elem, attrs, "iso_639_entry", "iso_639_1_code", "name", _lang_codes, LANG_CODES);
 }
 
-void IsoCodes::filter(const std::string& elem, const char **attrs, const std::string& tag, const std::string& attr1, const std::string& attr2, std::map<std::string, std::string>& mp, const char *domain) {
+void IsoCodes::filter(const std::string& elem,
+                      const char **attrs,
+                      const std::string& tag,
+                      const std::string& attr1,
+                      const std::string& attr2,
+                      std::map<std::string, std::string>& mp,
+                      const char *KATOOB_UNUSED(domain))
+{
   if (elem != tag) {
     return;
   }

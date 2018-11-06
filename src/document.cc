@@ -52,15 +52,18 @@
 // syntax highlighting mode -> spell checker should check comments
 // and strings only!
 
-void _on_move_cursor(GtkTextView *textview,
-		     GtkMovementStep arg1,
-		     gint arg2,
-		     gboolean arg3,
-		     gpointer user_data) {
+void _on_move_cursor(GtkTextView *KATOOB_UNUSED(textview),
+                     GtkMovementStep KATOOB_UNUSED(arg1),
+                     gint KATOOB_UNUSED(arg2),
+                     gboolean KATOOB_UNUSED(arg3),
+                     gpointer user_data)
+{
   static_cast<Document *>(user_data)->on_move_cursor();
 }
 
-void _on_toggle_overwrite(GtkTextView *textview, gpointer user_data) {
+void _on_toggle_overwrite(GtkTextView *KATOOB_UNUSED(textview),
+                          gpointer user_data)
+{
   static_cast<Document *>(user_data)->on_toggle_overwrite();
 }
 
@@ -138,7 +141,7 @@ Document::Document(Conf& conf, Encodings& encodings, int encoding, std::string& 
     _label.set_text(Glib::filename_display_basename(file));
   }
 #else
-  std::auto_ptr<Glib::Error> error;
+  std::unique_ptr<Glib::Error> error;
   _label.set_text(Glib::filename_to_utf8(Glib::path_get_basename(file), error));
   if (error.get()) {
     _label.set_text(Glib::filename_display_basename(file));
@@ -449,7 +452,7 @@ void Document::set_file(std::string& nfile) {
     f = Glib::filename_display_basename(nfile);
   }
 #else
-  std::auto_ptr<Glib::Error> error;
+  std::unique_ptr<Glib::Error> error;
   std::string f = Glib::filename_to_utf8(Glib::path_get_basename(nfile), error);
   if (error.get()) {
   // We should not be getting here anyway but just in case ?
@@ -489,7 +492,9 @@ void Document::on_erase(const Gtk::TextBuffer::iterator& start, const Gtk::TextB
   signal_modified_set.emit(true);
 }
 
-void Document::on_mark_set_cb(const Gtk::TextBuffer::iterator& iter, const Glib::RefPtr<Gtk::TextBuffer::Mark>& mark) {
+void Document::on_mark_set_cb(const Gtk::TextBuffer::iterator& KATOOB_UNUSED(iter),
+                              const Glib::RefPtr<Gtk::TextBuffer::Mark>& mark)
+{
   if ((mark) && (mark == _text_view.get_buffer()->get_insert())) {
     on_move_cursor();
   }
@@ -1025,9 +1030,14 @@ bool Document::expose_event_cb(GdkEventExpose *event) {
   return false;
 }
 
-void Document::paint_line_numbers(Glib::RefPtr<Gdk::Window>& win, GdkEventExpose *event) {
+void Document::paint_line_numbers(Glib::RefPtr<Gdk::Window>& win,
+                                  GdkEventExpose *KATOOB_UNUSED(event))
+{
   // Let's get the current line number.
-  int current_line = _text_view.get_buffer()->get_iter_at_mark(_text_view.get_buffer()->get_insert()).get_line() + 1;
+  int current_line = _text_view
+    .get_buffer()
+    ->get_iter_at_mark(_text_view.get_buffer()->get_insert())
+    .get_line() + 1;
 
   win->clear();
 
@@ -1143,7 +1153,7 @@ bool Document::revert(std::string& err) {
   }
   else {
     std::string c;
-    if (!_encodings.convert_to(contents, c, _encoding) == -1) {
+    if (_encodings.convert_to(contents, c, _encoding) == -1) {
       err = c;
       return false;
     }
@@ -1281,8 +1291,11 @@ bool Document::spell_checker_has_lines() {
   return false;
 }
 
-void Document::spell_checker_on_insert(const Gtk::TextIter& iter, int len) {
-  int pos = Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())->get_mark_insert_line();
+void Document::spell_checker_on_insert(const Gtk::TextIter& iter,
+                                       int KATOOB_UNUSED(len))
+{
+  int pos = Glib::RefPtr<TextBuffer>::cast_dynamic
+    (_text_view.get_buffer())->get_mark_insert_line();
   int end = iter.get_line();
   if (pos == end) {
     // TODO: There's a possibility it might be valid if the line contains
@@ -1299,9 +1312,12 @@ void Document::spell_checker_on_insert(const Gtk::TextIter& iter, int len) {
   }
 }
 
-void Document::spell_checker_on_erase(const Gtk::TextIter& start, const Gtk::TextIter& end) {
+void Document::spell_checker_on_erase(const Gtk::TextIter& KATOOB_UNUSED(start),
+                                      const Gtk::TextIter& end)
+{
   unsigned s = end.get_line();
-  unsigned e = Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())->get_erase_line();
+  unsigned e = Glib::RefPtr<TextBuffer>::cast_dynamic
+    (_text_view.get_buffer())->get_erase_line();
 
   if (s == e) {
     lines[s] = true;

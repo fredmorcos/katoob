@@ -40,7 +40,7 @@ AboutDialog::AboutDialog() {
   catch (...) {
   }
 #else
-  std::auto_ptr<Glib::Error> error;
+  std::unique_ptr<Glib::Error> error;
   Glib::RefPtr<Gdk::Pixbuf> icon = Gdk::Pixbuf::create_from_file(Utils::get_data_path("katoob.svg"), 150, -1, true, error);
     set_logo(icon);
 #endif

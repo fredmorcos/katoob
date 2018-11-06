@@ -113,7 +113,7 @@ void MenuBar::separator(Gtk::Menu *menu) {
   menu->items().push_back(Gtk::Menu_Helpers::SeparatorElem());
 }
 
-void MenuBar::file(Conf& config) {
+void MenuBar::file(Conf& KATOOB_UNUSED(config)) {
   file_menu = menu(_("_File"));
 
   _create = item(file_menu, Gtk::Stock::NEW);
@@ -200,7 +200,7 @@ void MenuBar::create_recent() {
     }
 #else
     // Note: We will skip non valid files for now.
-    std::auto_ptr<Glib::Error> error;
+    std::unique_ptr<Glib::Error> error;
     base = Glib::filename_to_utf8(Glib::path_get_basename(_conf.get_recent()[x]), error);
     if (error.get()) {
       base = Glib::filename_display_basename(_conf.get_recent()[x]);
@@ -211,7 +211,7 @@ void MenuBar::create_recent() {
   }
 }
 
-void MenuBar::edit(Conf& config) {
+void MenuBar::edit(Conf& KATOOB_UNUSED(config)) {
   edit_menu = menu(_("_Edit"));
   _undo = item(edit_menu, Gtk::Stock::UNDO, GDK_z, Gdk::ModifierType(GDK_CONTROL_MASK));
   _undo->signal_activate().connect(sigc::mem_fun(signal_undo_activate, &sigc::signal<void>::emit));
@@ -245,7 +245,7 @@ void MenuBar::edit(Conf& config) {
   _preferences->signal_activate().connect(sigc::mem_fun(signal_preferences_activate, &sigc::signal<void>::emit));
 }
 
-void MenuBar::search(Conf& config) {
+void MenuBar::search(Conf& KATOOB_UNUSED(config)) {
   search_menu = menu(_("_Search"));
 
   _find = item(search_menu, Gtk::Stock::FIND);
@@ -262,7 +262,7 @@ void MenuBar::search(Conf& config) {
   _goto_line->signal_activate().connect(sigc::mem_fun(signal_goto_line_activate, &sigc::signal<void>::emit));
 }
 
-void MenuBar::view(Conf& config, Encodings& encodings) {
+void MenuBar::view(Conf& KATOOB_UNUSED(config), Encodings& encodings) {
   Gtk::RadioButtonGroup toolbars, encoding;
   view_menu = menu(_("_View"));
 
@@ -316,7 +316,7 @@ void MenuBar::view(Conf& config, Encodings& encodings) {
     }
 }
 
-void MenuBar::tools(Conf& config,
+void MenuBar::tools(Conf& KATOOB_UNUSED(config),
                     std::vector<std::string>& em,
                     std::vector<std::string>& mp)
 {
@@ -355,7 +355,7 @@ void MenuBar::build_submenu(Gtk::Menu *menu, std::vector<std::string>& items, Gt
   }
 }
 
-void MenuBar::documents(Conf& config) {
+void MenuBar::documents(Conf& KATOOB_UNUSED(config)) {
   documents_menu = menu(_("_Documents"));
   _save_all = item(documents_menu, _("Save _All"));
   _save_all->signal_activate().connect(mem_fun(signal_save_all_activate, &sigc::signal<void>::emit));
@@ -370,7 +370,7 @@ void MenuBar::documents(Conf& config) {
   documents_menu->show_all();
 }
 
-void MenuBar::help(Conf& config) {
+void MenuBar::help(Conf& KATOOB_UNUSED(config)) {
   help_menu = menu(_("_Help"));
   _about = item(help_menu, Gtk::Stock::ABOUT, GDK_t, Gdk::ModifierType(GDK_CONTROL_MASK));
   _about->signal_activate().connect(mem_fun(signal_about_activate, &sigc::signal<void>::emit));
@@ -432,7 +432,7 @@ void MenuBar::document_add(std::string& label, bool ro, bool m) {
   _ignore_document_clicked_signal_hack = false;
 }
 
-void MenuBar::document_set_active(int x) {
+void MenuBar::document_set_active(size_t x) {
   _active = x;
   if (_active >= opened_menu->items().size()) {
     return;
@@ -465,7 +465,7 @@ void MenuBar::document_set_label(int x, std::string& str)
   dynamic_cast<Gtk::Label *>(opened_menu->items()[x].get_child())->set_text(str);
 }
 
-void MenuBar::document_set_modified(int x, bool m)
+void MenuBar::document_set_modified(size_t x, bool m)
 {
   assert (x < _documents.size());
 
@@ -477,7 +477,7 @@ void MenuBar::document_set_modified(int x, bool m)
   document_set_modified(opened_menu->items()[x], m);
 }
 
-void MenuBar::document_set_readonly(int x, bool ro)
+void MenuBar::document_set_readonly(size_t x, bool ro)
 {
   assert (x < _documents.size());
 

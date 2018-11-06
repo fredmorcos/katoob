@@ -21,18 +21,32 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "sourceview.hh"
-//#include "gtkmm/private/widget_p.h"
 #include <gtksourceview/gtksourcelanguagemanager.h>
+#include "sourceview.hh"
+#include "utils.hh"
 
-void _drag_data_received_cb(GtkWidget *self, GdkDragContext *context, gint x, gint y, GtkSelectionData *selection_data, guint info, guint time, void *user_data) {
-  static_cast<TextView *>(user_data)->on_drag_data_received(Glib::wrap(context, true), x, y, Glib::wrap(selection_data, true), info, time);
+void _drag_data_received_cb(GtkWidget *KATOOB_UNUSED(self),
+                            GdkDragContext *context,
+                            gint x,
+                            gint y,
+                            GtkSelectionData *selection_data,
+                            guint info,
+                            guint time,
+                            void *user_data)
+{
+  static_cast<TextView *>(user_data)
+    ->on_drag_data_received(Glib::wrap(context, true),
+                            x, y, Glib::wrap(selection_data, true),
+                            info, time);
 }
 
 SourceView::SourceView() :
   TextView(GTK_TEXT_VIEW(gtk_source_view_new())),
   __drag_data_received(0) {
-  __drag_data_received = g_signal_connect(G_OBJECT(gobj()), "drag_data_received", G_CALLBACK(_drag_data_received_cb), this);
+  __drag_data_received = g_signal_connect(G_OBJECT(gobj()),
+                                          "drag_data_received",
+                                          G_CALLBACK(_drag_data_received_cb),
+                                          this);
 }
 
 SourceView::~SourceView() {

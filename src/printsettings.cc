@@ -24,11 +24,11 @@
 #include "printsettings.hh"
 #include <iostream>
 
-Glib::RefPtr<PrintSettings> PrintSettings::create(Conf& conf) {
-  return Glib::RefPtr<PrintSettings>(new PrintSettings(conf));
+Glib::RefPtr<PrintSettings> PrintSettings::create() {
+  return Glib::RefPtr<PrintSettings>(new PrintSettings());
 }
 
-PrintSettings::PrintSettings(Conf& conf): _conf(conf) {
+PrintSettings::PrintSettings() {
   reset();
 }
 

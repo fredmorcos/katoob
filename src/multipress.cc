@@ -27,45 +27,50 @@
 #include "multipress.hh"
 #include "utils.hh"
 
-
 Multipress::Multipress() {
-  std::string dir(Utils::get_data_dir() + Utils::get_dir_separator() + "multipress" + Utils::get_dir_separator());
+  std::string dir(Utils::get_data_dir() +
+                  Utils::get_dir_separator() +
+                  "multipress" +
+                  Utils::get_dir_separator());
 
-  std::auto_ptr<Glib::Dir> d;
+  std::unique_ptr<Glib::Dir> d;
 
   try {
-    d = std::auto_ptr<Glib::Dir>(new Glib::Dir(dir));
-  }
-  catch (Glib::FileError& e) {
+    d = std::unique_ptr<Glib::Dir>(new Glib::Dir(dir));
+  } catch (Glib::FileError& e) {
     _err = e.what();
     return;
   }
 
   Glib::DirIterator start = d->begin();
   Glib::DirIterator end = d->end();
+
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
-  std::auto_ptr<Glib::Error> error;
+  std::unique_ptr<Glib::Error> error;
 #endif
+
   while (start != end) {
-    std::map<std::string, std::vector<std::string> > map;
+    std::map<std::string, std::vector<std::string>> map;
     std::string file = dir + *start;
     if (parse_file(file, map)) {
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try {
-	std::string _utf8 = Glib::filename_to_utf8(*start);
-	names.push_back(_utf8);
+        std::string _utf8 = Glib::filename_to_utf8(*start);
+        names.push_back(_utf8);
       }
       catch (Glib::ConvertError& er) {
-	names.push_back(*start);
+        names.push_back(*start);
       }
 #else
+
       std::string _utf8 = Glib::filename_to_utf8(*start, error);
       if (error.get()) {
-	names.push_back(*start);
-	error.reset();
+        names.push_back(*start);
+        error.reset();
       }
       else {
-	names.push_back(_utf8);
+        names.push_back(_utf8);
       }
 #endif
       layouts.push_back(map);
@@ -73,6 +78,7 @@ Multipress::Multipress() {
     }
     start++;
   }
+
   window = new MultipressWindow;
   window->signal_insert_key.connect(sigc::ptr_fun(&Multipress::signal_insert_key_cb));
   window->signal_invalid_key.connect(sigc::ptr_fun(&Multipress::signal_invalid_key_cb));
@@ -92,7 +98,9 @@ bool Multipress::ok(std::string& e) {
   return _ok;
 }
 
-bool Multipress::parse_file(std::string& file, std::map<std::string, std::vector<std::string> >& map) {
+bool Multipress::parse_file(std::string& file,
+                            std::map<std::string, std::vector<std::string>>& map)
+{
   std::ifstream ifs;
   ifs.open(file.c_str());
   if (ifs.is_open()) {
@@ -112,7 +120,7 @@ bool Multipress::parse_file(std::string& file, std::map<std::string, std::vector
 }
 
 bool Multipress::get(const std::string& key, int timeout) {
-  assert(layout < layouts.size());
+  assert(layout < 0 || static_cast<size_t>(layout) < layouts.size());
   assert(layout >= 0);
 
   std::vector<std::string> values;
@@ -130,7 +138,7 @@ bool Multipress::get(const std::string& key, int timeout) {
 }
 
 bool Multipress::get_values(const std::string& key, std::vector<std::string>& values) {
-  std::map<std::string, std::vector<std::string> >::iterator iter = layouts[layout].find(key);
+  std::map<std::string, std::vector<std::string>>::iterator iter = layouts[layout].find(key);
 
   if (iter == layouts[layout].end()) {
     return false;
@@ -144,7 +152,7 @@ bool Multipress::get_values(const std::string& key, std::vector<std::string>& va
 }
 
 void Multipress::activate(int x) {
-  assert((x == -1) || (x < layouts.size()));
+  assert((x == -1) || (static_cast<size_t>(x) < layouts.size()));
   layout = x;
 }
 
@@ -170,7 +178,7 @@ bool Multipress::signal_change_key_cb(const std::string& nkey) {
   return true;
 }
 
-std::map<std::string, std::vector<std::string> >& Multipress::get_layout() {
+std::map<std::string, std::vector<std::string>>& Multipress::get_layout() {
   assert(layout != -1);
   return layouts[layout];
 }
@@ -179,7 +187,7 @@ sigc::signal<void, std::string&> Multipress::signal_insert_key;
 sigc::signal<void, GdkEventKey *> Multipress::signal_invalid_key;
 MultipressWindow *Multipress::window;
 std::vector<std::string> Multipress::names;
-std::vector<std::map<std::string, std::vector<std::string> > > Multipress::layouts;
+std::vector<std::map<std::string, std::vector<std::string>>> Multipress::layouts;
 bool Multipress::_ok = false;
 int Multipress::layout = -1;
 std::string Multipress::_err;

@@ -2,7 +2,8 @@
  * sourceview.hh
  * This file is part of katoob
  *
- * Copyright (C) 2006 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,8 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __SOURCECVIEW_HH__
-#define __SOURCECVIEW_HH__
+#pragma once
 
 #include <gtksourceview/gtksourceview.h>
 #include <gtksourceview/gtksourcebuffer.h>
@@ -37,6 +37,11 @@ private:
   unsigned long __drag_data_received;
 };
 
-void _drag_data_received_cb(GtkWidget *, GdkDragContext *, gint, gint, GtkSelectionData*, guint, guint, void *);
-
-#endif /* __SOURCECVIEW_HH__ */
+void _drag_data_received_cb(GtkWidget *,
+                            GdkDragContext *,
+                            gint,
+                            gint,
+                            GtkSelectionData*,
+                            guint,
+                            guint,
+                            void *);
