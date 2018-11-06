@@ -47,7 +47,6 @@ Katoob::Katoob(int argc, char *argv[]):
 
   parse(argc, argv);
 
-#ifdef ENABLE_DBUS
   if (dbus.ping()) {
     if (dbus.open_files(files)) {
       exit(0);
@@ -59,7 +58,6 @@ Katoob::Katoob(int argc, char *argv[]):
   else {
     dbus.start();
   }
-#endif
 
   SourceManager::init();
 
@@ -163,9 +161,7 @@ void Katoob::window() {
   Window *win = new Window(conf, encodings, files);
   win->signal_quit.connect(sigc::mem_fun(*this, &Katoob::quit_cb));
   children.push_back(win);
-#ifdef ENABLE_DBUS
   dbus.signal_open_files.connect(sigc::mem_fun(win, &Window::open_files));
-#endif
 }
 
 /**

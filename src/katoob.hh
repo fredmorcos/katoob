@@ -28,9 +28,7 @@
 #include "window.hh"
 #include "conf.hh"
 #include "encodings.hh"
-#ifdef ENABLE_DBUS
 #include "dbus.hh"
-#endif
 
 /**
  * \brief This is our application entry point.
@@ -60,10 +58,8 @@ private:
   /** \brief An instance of the Conf class. */
   Conf conf;
 
-#ifdef ENABLE_DBUS
   /** \brief An instance of the DBus class (If compiled with DBus support). */
   DBus dbus;
-#endif /* ENABLE_DBUS */
 
   /** \brief our Windows are stored here */
   static std::vector<Window *> children;

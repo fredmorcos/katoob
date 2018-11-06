@@ -488,7 +488,6 @@ void Window::signal_dictionary_changed_cb(std::string d) {
   }
 }
 
-#ifdef ENABLE_DBUS
 void Window::open_files(std::vector<std::string>& f) {
   for (unsigned int x = 0; x < f.size(); x++) {
     mdi.create_document(f[x]);
@@ -498,7 +497,6 @@ void Window::open_files(std::vector<std::string>& f) {
   }
   present();
 }
-#endif
 
 void Window::signal_wrap_text_activate_cb(bool s) {
   mdi.set_wrap_text(s);

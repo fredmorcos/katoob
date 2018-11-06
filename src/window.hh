@@ -46,9 +46,7 @@ public:
   sigc::signal<void> signal_quit;
 
   // Our methods.
-#ifdef ENABLE_DBUS
   void open_files(std::vector<std::string>&);
-#endif
 
   void on_document_spell_enabled_cb(bool);
 
