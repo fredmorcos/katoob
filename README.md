@@ -63,7 +63,6 @@ Katoob is now being developed and modernized on Archlinux.
 * gtkmm-2.4
 * glibmm-2.4
 * giomm-2.4
-* gconfmm-2.6
 * gtksourceview-2.0
 * enchant-2
 * dbus-1

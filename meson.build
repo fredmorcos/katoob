@@ -31,7 +31,6 @@ isocodes_prefix = isocodes.get_pkgconfig_variable('prefix')
 deps = [dependency('gtkmm-2.4'),
         dependency('glibmm-2.4'),
         dependency('giomm-2.4'),
-        dependency('gconfmm-2.6'),
         dependency('gtksourceview-2.0'),
         dependency('enchant-2'),
         dependency('fribidi'),
