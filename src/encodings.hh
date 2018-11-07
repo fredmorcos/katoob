@@ -32,7 +32,8 @@
  * \brief This structure represents an Encoding.
  */
 struct Encoding {
-  /** \brief The friendly name of the encoding (ex: Arabic (Windows). */
+  /** \brief The friendly name of the encoding (ex: Arabic
+      (Windows). */
   std::string name;
   /** \brief The actual name of the encoding (ex: WINDOWS-1256). */
   std::string encoding;
@@ -49,13 +50,14 @@ struct Language {
 };
 
 /**
- * \brief This class contains all of the encoding and languages we know and
- *        methods to convert between them.
+ * \brief This class contains all of the encoding and languages we
+ *        know and methods to convert between them.
  *
- * Each Encoding has a friendly Encoding::name to be shown to the user and another
- * Encoding::encoding that is known by the encoding conversion methods.
- * Each Language has a also a "friendly" Encoding::name and all the encodings
- * (Language::children) this Language can be encoded in.
+ * Each Encoding has a friendly Encoding::name to be shown to the user
+ * and another Encoding::encoding that is known by the encoding
+ * conversion methods.  Each Language has a also a "friendly"
+ * Encoding::name and all the encodings (Language::children) this
+ * Language can be encoded in.
  */
 class Encodings {
 public:
@@ -74,12 +76,19 @@ public:
   int default_open();
   int size();
   const std::string& at(unsigned);
+  std::vector<Encoding *>::iterator begin();
+  std::vector<Encoding *>::iterator end();
   bool utf8(const Glib::ustring&);
   int utf8();
   int convert_from(const Glib::ustring&, std::string&, int);
   int convert_to(const Glib::ustring&, std::string&, int);
+
 private:
-  bool convert(const Glib::ustring&, std::string&, unsigned int, unsigned int, std::string&);
+  bool convert(const Glib::ustring&,
+               std::string&,
+               unsigned int,
+               unsigned int,
+               std::string&);
   /** \brief a vector holding all the encodings (Encoding) we know.  */
   std::vector<Encoding *> _encodings;
   /** \brief a vector holding all the languages (Language) we know. */
@@ -88,6 +97,7 @@ private:
   int _default_save;
   /** \brief our default open encoding. */
   int _default_open;
+
 protected:
   friend class Conf;
   void default_save(unsigned);

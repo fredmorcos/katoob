@@ -21,7 +21,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtksourceview/gtksourcelanguagemanager.h>
 #include "sourceview.hh"
 #include "utils.hh"
 

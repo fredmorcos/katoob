@@ -23,8 +23,7 @@
 
 #pragma once
 
-#include <gtksourceview/gtksourceview.h>
-#include <gtksourceview/gtksourcebuffer.h>
+#include <gtksourceview/gtksource.h>
 #include "textview.hh"
 #include "sourcemanager.hh"
 

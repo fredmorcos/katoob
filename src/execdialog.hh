@@ -23,10 +23,7 @@
 
 #pragma once
 
-#include <gtkmm/dialog.h>
-#include <gtkmm/label.h>
-#include <gtkmm/checkbutton.h>
-#include <gtkmm/comboboxentrytext.h>
+#include <gtkmm.h>
 #include "conf.hh"
 
 class ExecDialog: public Gtk::Dialog {
@@ -39,6 +36,6 @@ public:
 private:
   Gtk::Label label, tips;
   Gtk::CheckButton new_buffer;
-  Gtk::ComboBoxEntryText command;
+  Gtk::ComboBoxText command;
   Gtk::HBox box;
 };

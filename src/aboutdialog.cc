@@ -42,8 +42,6 @@ AboutDialog::AboutDialog() {
               << e.what() << std::endl;
   }
 
-  std::vector<std::string> authors;
-  std::vector<std::string> artists;
   std::stringstream license;
 
   license
@@ -74,10 +72,12 @@ AboutDialog::AboutDialog() {
     (_("Copyright \xc2\xa9 2002, 2007 Mohammed Sameer.\n"
        "Copyright \xc2\xa9 2008, 2018 Frederic-Gerald Morcos.\n"));
 
+  std::vector<Glib::ustring> authors;
   authors.push_back(_("Mohammed Sameer"));
   authors.push_back(_("Frederic-Gerald Morcos"));
   set_authors(authors);
 
+  std::vector<Glib::ustring> artists;
   artists.push_back(_("Mohammed Sameer"));
   artists.push_back(_("Mostafa Hussein"));
   artists.push_back(_("Frederic-Gerald Morcos"));

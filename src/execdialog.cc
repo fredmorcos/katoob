@@ -22,12 +22,11 @@
  */
 
 #include "execdialog.hh"
-#include <gtkmm/stock.h>
 #include "macros.h"
 
 ExecDialog::ExecDialog(Conf& conf) {
   set_modal();
-  Gtk::VBox *vbox = Gtk::Dialog::get_vbox();
+  Gtk::Box *vbox = Gtk::Dialog::get_vbox();
   vbox->pack_start(box);
   vbox->pack_start(tips);
   vbox->pack_start(new_buffer);
@@ -49,7 +48,7 @@ ExecDialog::ExecDialog(Conf& conf) {
 
   std::vector<std::string> cmds(conf.get_exec_cmd());
   for (unsigned x = 0; x < cmds.size(); x++) {
-    command.append_text(cmds[x]);
+    command.append(cmds[x]);
   }
   if (cmds.size() > 0) {
     command.set_active_text(cmds[0]);

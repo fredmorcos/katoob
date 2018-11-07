@@ -323,17 +323,31 @@ const std::string& Encodings::name(unsigned x) {
 
 /**
  * \brief convert a string from one encoding to another.
+ *
  * \param text the string to convert
+ *
  * \param res the output result of the conversion
+ *
  * \param from the encoding position to convert from
+ *
  * \param to the encoding position to convert to
- * \param err a string to contain an error in case of a conversion error.
- * \return true if the conversion is correct, false otherwise. err is set to any error.
+ *
+ * \param err a string to contain an error in case of a conversion
+ * error.
+ *
+ * \return true if the conversion is correct, false otherwise. err is
+ * set to any error.
  */
-bool Encodings::convert(const Glib::ustring& text, std::string& res, unsigned int from, unsigned int to, std::string& err) {
+bool Encodings::convert(const Glib::ustring& text,
+                        std::string& res,
+                        unsigned int from,
+                        unsigned int to,
+                        std::string& err)
+{
   assert(from <= _encodings.size());
   assert(to <= _encodings.size());
   assert(from != to);
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try {
     res = Glib::convert (text, get_charset(to), get_charset(from));
@@ -369,12 +383,21 @@ bool Encodings::convert(const Glib::ustring& text, std::string& res, unsigned in
 
 /**
  * \brief convert to utf8 from an encoding.
+ *
  * \param in the string to convert.
- * \param out a string to contain the conversion output or the error in case of an error.
+ *
+ * \param out a string to contain the conversion output or the error
+ * in case of an error.
+ *
  * \param enc the encoding position to convert from.
- * \return -1 in case of error, out wil contain the error string. otherwise the encoding.
+ *
+ * \return -1 in case of error, out wil contain the error
+ * string. otherwise the encoding.
  */
-int Encodings::convert_to(const Glib::ustring& in, std::string& out, int enc) {
+int Encodings::convert_to(const Glib::ustring& in,
+                          std::string& out,
+                          int enc)
+{
   std::string err;
   if (in.validate()) {
     out = in;
@@ -391,12 +414,21 @@ int Encodings::convert_to(const Glib::ustring& in, std::string& out, int enc) {
 
 /**
  * \brief convert from utf8 to an encoding.
+ *
  * \param in the string to convert.
- * \param out a string to contain the conversion output or the error in case of an error.
+ *
+ * \param out a string to contain the conversion output or the error
+ * in case of an error.
+ *
  * \param enc the encoding position to convert to.
- * \return -1 in case of error, out wil contain the error string. otherwise the encoding.
+ *
+ * \return -1 in case of error, out wil contain the error
+ * string. otherwise the encoding.
  */
-int Encodings::convert_from(const Glib::ustring& in, std::string& out, int enc) {
+int Encodings::convert_from(const Glib::ustring& in,
+                            std::string& out,
+                            int enc)
+{
   if (enc == utf8()) {
     out = in;
     return enc;
@@ -428,8 +460,11 @@ int Encodings::languages() {
 }
 
 /**
- * \brief get the number of encodings belonging to a language given its position.
+ * \brief get the number of encodings belonging to a language given
+ * its position.
+ *
  * \param x the position of the language.
+ *
  * \return the number of encodings.
  */
 int Encodings::languages(int x) {
@@ -446,7 +481,9 @@ std::string& Encodings::language(int x) {
 }
 
 /**
- * \brief get the name name of an encoding given the language and encoding positions.
+ * \brief get the name name of an encoding given the language and
+ * encoding positions.
+ *
  * \param x the position of the language
  * \param y the position of the encoding within the language children.
  * \return the name of the encoding.
@@ -480,12 +517,23 @@ int Encodings::size() {
 }
 
 /**
- * \brief get the name of the encoding given its position (ex: Arabic (Windows)).
+ * \brief get the name of the encoding given its position (ex: Arabic
+ * (Windows)).
+ *
  * \param x the encoding position.
+ *
  * \return the name of the encoding.
  */
 const std::string& Encodings::at(unsigned x) {
   return _encodings[x]->name;
+}
+
+std::vector<Encoding *>::iterator Encodings::begin() {
+  return _encodings.begin();
+}
+
+std::vector<Encoding *>::iterator Encodings::end() {
+  return _encodings.end();
 }
 
 /**

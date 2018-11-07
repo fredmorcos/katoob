@@ -31,9 +31,7 @@
 #include <iostream>
 #include <sstream>
 #include <cassert>
-#include <gtkmm/enums.h>
-#include <gtkmm/image.h>
-#include <gtkmm/stock.h>
+#include <gtkmm.h>
 #include "dialogs.hh"
 #include "macros.h"
 #include "textbuffer.hh"
@@ -306,7 +304,7 @@ void Document::set_text(std::string& str) {
 }
 
 void Document::create_ui() {
-  _text_view.signal_expose_event().connect(sigc::mem_fun(*this, &Document::expose_event_cb));
+  _text_view.signal_draw().connect(sigc::mem_fun(*this, &Document::draw_cb));
 
   //#ifdef ENABLE_HIGHLIGHT
   //  _text_view.set_buffer(SourceBuffer::create());
@@ -317,7 +315,7 @@ void Document::create_ui() {
   set_shadow_type(Gtk::SHADOW_IN);
   _text_view.set_left_margin(10);
   _text_view.set_right_margin(10);
-  _text_view.set_flags(Gtk::CAN_FOCUS);
+  _text_view.set_can_focus();
 
   set_readonly(_readonly);
 
@@ -1005,7 +1003,7 @@ void Document::replace() {
   }
 }
 
-bool Document::expose_event_cb(GdkEventExpose *event) {
+bool Document::draw_cb(GdkEventExpose *event) {
   if (!_line_numbers) {
     return false;
   }
@@ -1039,7 +1037,8 @@ void Document::paint_line_numbers(Glib::RefPtr<Gdk::Window>& win,
     ->get_iter_at_mark(_text_view.get_buffer()->get_insert())
     .get_line() + 1;
 
-  win->clear();
+  // TODO: figure out what to replace this with
+  // win->clear();
 
   // We need to calculate the maximum width possible.
   Gtk::TextIter end = _text_view.get_buffer()->end();
@@ -1075,20 +1074,32 @@ void Document::paint_line_numbers(Glib::RefPtr<Gdk::Window>& win,
     _text_view.get_line_yrange(end, top1, top2);
 
     _text_view.buffer_to_window_coords(w, 0, top1, top1, top2);
+
     std::string w;
+
     if (current_line == x + 1) {
       w = Utils::substitute("<b>%i</b>", ++x);
-      layout->set_markup(w.c_str());
-    }
-    else {
+    } else {
       w = Utils::substitute("%i", ++x);
-      // NOTE: Why set_text() will keep it bold ?
-      layout->set_markup(w.c_str());
     }
+
+    layout->set_markup(w.c_str());
+
+    _text_view.get_style_context()->render_layout(win->get_offscreen_surface(), 2, top2, layout);
 
     // TODO: This one is not working !!!
     //_text_view.get_style()->paint_layout(win, st, false, rect, _text_view, dummy3, 0, top2, layout);
-    gtk_paint_layout (dynamic_cast<Gtk::Widget&>(_text_view).gobj()->style, win->gobj(), (GtkStateType)GTK_WIDGET_STATE (_text_view.gobj()), FALSE, NULL, dynamic_cast<Gtk::Widget&>(_text_view).gobj(), NULL, 2, top2, layout->gobj());
+
+    // gtk_paint_layout (dynamic_cast<Gtk::Widget&>(_text_view).gobj()->style,
+    //                   win->gobj(),
+    //                   (GtkStateType) GTK_WIDGET_STATE(_text_view.gobj()),
+    //                   FALSE,
+    //                   NULL,
+    //                   dynamic_cast<Gtk::Widget&>(_text_view).gobj(),
+    //                   NULL,
+    //                   2,
+    //                   top2,
+    //                   layout->gobj());
   }
 }
 
@@ -1193,12 +1204,20 @@ void Document::on_populate_popup_cb(Gtk::Menu *menu) {
     if (word[word.size()-1] == '\n') {
       word = word.substr(0, word.size()-1);
     }
-    menu->items().push_back(Gtk::Menu_Helpers::SeparatorElem());
-    Gtk::MenuItem *item;
-    std::string str = _("Define ") + word;
-    menu->items().push_back(Gtk::Menu_Helpers::MenuElem(str));
-    item = &menu->items().back();
-    item->signal_activate().connect(sigc::bind<std::string>(sigc::mem_fun(*this, &Document::dict_menu_item_activated), word));
+
+    size_t len = menu->get_children().size();
+
+    auto sep = Gtk::SeparatorMenuItem();
+    menu->insert(sep, len);
+
+    len = menu->get_children().size();
+
+    auto item = Gtk::MenuItem(_("Define ") + word);
+
+    item.signal_activate().connect
+      (sigc::bind<std::string>(sigc::mem_fun(*this, &Document::dict_menu_item_activated), word));
+
+    menu->insert(item, len);
   }
 
   if (get_readonly()) {
@@ -1208,6 +1227,12 @@ void Document::on_populate_popup_cb(Gtk::Menu *menu) {
   if (do_spell) {
     if (start.has_tag(misspelled_tag)) {
       // Misspelled word.
+
+      size_t len = menu->get_children().size();
+
+      auto set = Gtk::SeparatorMenuItem();
+      menu->insert(sep, len);
+
       menu->items().push_front(Gtk::Menu_Helpers::SeparatorElem());
       Gtk::Menu *spell_menu = Gtk::manage( new Gtk::Menu());
       std::string str(_("Spelling Suggestions"));

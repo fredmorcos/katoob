@@ -32,20 +32,21 @@ OpenLocationDialog::OpenLocationDialog(Conf& conf,
 {
   set_modal();
   set_position(Gtk::WIN_POS_CENTER);
-  Gtk::VBox *vbox = Gtk::Dialog::get_vbox();
+  Gtk::Box *vbox = Gtk::Dialog::get_vbox();
 
   label1.set_text(_("Location"));
   label2.set_text(_("Encoding"));
 
-  for (int x = 0; x < enc.size(); x++) {
-    encoding.append_text(enc.at(x));
+  for (auto& v: enc) {
+    encoding.append(v->name);
   }
 
   encoding.set_active(enc.default_open());
 
   std::vector<std::string> locations(conf.get_locations());
-  for (unsigned x = 0; x < locations.size(); x++) {
-    location.append_text(locations[x]);
+
+  for (auto& v: locations) {
+    location.append(v);
   }
 
   to_active.set_active(conf.get("open_location_to_active", false));

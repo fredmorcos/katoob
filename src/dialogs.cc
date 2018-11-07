@@ -21,13 +21,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtkmm/messagedialog.h>
-#include <gtkmm/stock.h>
-#include <gtkmm/label.h>
-#include <gtkmm/spinbutton.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/textview.h>
 #include "dialogs.hh"
 #include "macros.h"
 #include "utils.hh"
@@ -91,11 +84,10 @@ int katoob_question(const std::string& message) {
 }
 
 int katoob_goto_dialog() {
-  Gtk::VBox *box;
   Gtk::HBox hbox;
-  Gtk::Dialog dialog(_("Goto Line"), true, true);
+  Gtk::Dialog dialog(_("Goto Line"), true);
 
-  box = dialog.get_vbox();
+  Gtk::Box *box = dialog.get_vbox();
   box->pack_start(hbox);
 
   hbox.set_border_width(5);
@@ -104,7 +96,7 @@ int katoob_goto_dialog() {
   hbox.pack_start (label);
   label.set_justify (Gtk::JUSTIFY_LEFT);
 
-  Gtk::Adjustment adjustment(1, 1, 1000000000);
+  Glib::RefPtr<Gtk::Adjustment> adjustment = Gtk::Adjustment::create(1, 1, 1000000000);
 
   Gtk::SpinButton go_to(adjustment);
   hbox.pack_start(go_to);
@@ -134,7 +126,9 @@ Glib::RefPtr<ActivityMeter> katoob_activity() {
   return Glib::RefPtr<ActivityMeter>(new ActivityMeter);
 }
 
-ActivityMeter::ActivityMeter() : dialog(_("Please wait..."), true, true) {
+ActivityMeter::ActivityMeter():
+  dialog(_("Please wait..."), true)
+{
   loop = Glib::MainLoop::create();
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   dialog.get_vbox()->pack_start(bar, true, true);

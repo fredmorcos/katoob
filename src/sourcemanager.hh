@@ -26,8 +26,7 @@
 #include <map>
 #include <vector>
 #include <string>
-#include <gtksourceview/gtksourcelanguagemanager.h>
-#include <gtksourceview/gtksourcelanguage.h>
+#include <gtksourceview/gtksource.h>
 
 typedef std::map<std::string, std::vector<std::string>> SourceCategory;
 typedef SourceCategory::iterator SourceCategoryIter;

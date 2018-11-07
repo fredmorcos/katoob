@@ -25,8 +25,7 @@
 
 #include <string>
 #include <map>
-#include <gtkmm/textview.h>
-#include <gtkmm/scrolledwindow.h>
+#include <gtkmm.h>
 #include "conf.hh"
 #include "encodings.hh"
 #include "label.hh"
@@ -218,7 +217,7 @@ private:
   bool is_whole_word(Gtk::TextIter& s, Gtk::TextIter& e) { return (s.starts_word() && e.ends_word()); }
   void highlight(Gtk::TextIter&, Gtk::TextIter&);
 
-  bool expose_event_cb(GdkEventExpose *);
+  bool draw_cb(GdkEventExpose *);
   void paint_line_numbers(Glib::RefPtr<Gdk::Window>&, GdkEventExpose *);
   //  void get_line_bounds(const Gtk::TextIter&, Gtk::TextIter&, Gtk::TextIter&);
 

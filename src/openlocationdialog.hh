@@ -23,11 +23,7 @@
 
 #pragma once
 
-#include <gtkmm/dialog.h>
-#include <gtkmm/label.h>
-#include <gtkmm/checkbutton.h>
-#include <gtkmm/comboboxentrytext.h>
-#include <gtkmm/box.h>
+#include <gtkmm.h>
 #include "conf.hh"
 #include "encodings.hh"
 
@@ -45,7 +41,7 @@ public:
 private:
   Gtk::Label label1, label2;
   Gtk::CheckButton to_active;
-  Gtk::ComboBoxEntryText location, encoding;
+  Gtk::ComboBoxText location, encoding;
   Gtk::HBox box1, box2;
 
   std::string uri;

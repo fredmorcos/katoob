@@ -24,9 +24,8 @@
 #pragma once
 
 #include <string>
-#include <glibmm/main.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/progressbar.h>
+#include <glibmm.h>
+#include <gtkmm.h>
 
 bool katoob_simple_question(const std::string&);
 void katoob_error(const std::string&);
