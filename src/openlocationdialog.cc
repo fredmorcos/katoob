@@ -2,7 +2,8 @@
  * openlocationdialog.cc
  * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * Copyright (C) 2002-2007 Mohammed Sameer
+ * Copyright (C) 2008-2018 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +21,15 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif /* HAVE_CONFIG_H */
-
 #include "openlocationdialog.hh"
 #include <gtkmm/stock.h>
 #include "macros.h"
 #include "utils.hh"
 
-OpenLocationDialog::OpenLocationDialog(Conf& conf, Encodings& enc) : _conf(conf) {
+OpenLocationDialog::OpenLocationDialog(Conf& conf,
+                                       Encodings& enc):
+  _conf(conf)
+{
   set_modal();
   set_position(Gtk::WIN_POS_CENTER);
   Gtk::VBox *vbox = Gtk::Dialog::get_vbox();
@@ -65,7 +65,6 @@ OpenLocationDialog::OpenLocationDialog(Conf& conf, Encodings& enc) : _conf(conf)
   box1.set_border_width(5);
   box2.set_border_width(5);
 
-
   add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
 
@@ -74,7 +73,6 @@ OpenLocationDialog::OpenLocationDialog(Conf& conf, Encodings& enc) : _conf(conf)
 }
 
 OpenLocationDialog::~OpenLocationDialog() {
-
 }
 
 std::string& OpenLocationDialog::get_uri() {
