@@ -28,7 +28,7 @@ See the file COPYING for details.
 ## Authors
 
 * Original author (2002-2007) Mohammed Sameer <msameer@foolab.org>
-* Maintainer (2008-2018) Frederic-Gerald Morcos <fred.morcos@gmail.com>
+* Maintainer (2008-2018) Frederic-Gerald Morcos <fm+Katoob@fredmorcos.com>
 
 ## About
 
@@ -40,7 +40,7 @@ It should run on most BSD and POSIX compliant operating systems.
 
 ## News
 
-* 2018-11-02 Frederic-Gerald Morcos <fred.morcos@gmail.com>
+* 2018-11-02 Frederic-Gerald Morcos <fm+Katoob@fredmorcos.com>
   - Version 0.6.0-alpha
   - Move from enchant-1 to enchant-2
   - Move from autotools to meson
