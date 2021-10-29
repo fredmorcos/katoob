@@ -4,24 +4,21 @@
 
 [logo]: data/katoob-large.png
 
-A lightweight multilingual and bi-directional aware text editor.
+Katoob is a lightweight, multilingual and bi-directional aware text editor written in C++
+using [Gtkmm](https://gtkmm.org).
 
-## Copyright
+## Copyright & License
 
 * Katoob Copyright (c) 2002-2007 Mohammed Sameer.
 * Katoob Copyright (c) 2008-2018 Frederic-Gerald Morcos.
 
-## License
+This program is free software; you can redistribute it and/or modify it under the terms of
+the GNU General Public License as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later version.
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or (at
-your option) any later version.
-
-This program is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
 
 See the file COPYING for details.
 
@@ -32,29 +29,47 @@ See the file COPYING for details.
 
 ## About
 
-Katoob is a lightweight multilingual BiDi aware text editor. It
-supports opening and saving files in multiple encodings.  The main
-support is some for Arabic language specific features.
+Katoob is a lightweight multilingual BiDi aware text editor. It supports opening and
+saving files in multiple encodings.  The main support is some for Arabic language specific
+features.
 
-It should run on most BSD and POSIX compliant operating systems.
+It should run on the BSDs, Linuxes and POSIX-compatible operating systems. For the time
+being. it can run on Windows using the [Windows Subsystem for
+Linux](https://docs.microsoft.com/en-us/windows/wsl/about).
 
-## News
+## Features
 
-* 2018-11-02 Frederic-Gerald Morcos <fm+Katoob@fredmorcos.com>
-  - Version 0.6.0-alpha
-  - Move from enchant-1 to enchant-2
-  - Move from autotools to meson
-  - Remove native Windows support (WSL can be used instead)
-  - Remove Maemo support
-  - Fix many build issues due to bitrot over the past 10 years
-  - Use more Gtk stock icons instead of custom PNGs
-  - Merge patches from Debian
-  - Use GIO instead of xdgmime
+* Multiple codepage support "not just UTF-8".
+* The ability to Open/Save files in multiple encodings.
+* Search/Replace/Replace all.
+* Configurable Undo/Redo.
+* Read from stdin via pipe "cat file | katoob -".
+* Open multiple files from the command line.
+* An MDI Interface.
+* Line wrapping.
+* The ability to select the toolbar style.
+* Recent files Menu.
+* An encodings menu to change the encoding on the fly.
+* The statusbar has an indicator weather the file is modified or NOT.
+* Read only files Can't be modified.
+* Display the used encoding in the status-bar.
+* GNOME 2 human interface guidelines compliant interface.
+* GNOME menu entry.
+* Syntax highlighting.
+* Spell checking on the fly or when required.
+* Per document settings on the fly.
+* An extended toolbar offering some common functions.
+
+## Screenshots
+
+![][screenshot]
+
+[screenshot]: screenshots/Screenshot_2018-11-06_20-31-19.png
 
 ## Requirements
 
-Katoob was originally developed on Debian GNU/Linux but it should work
-on any GNU/Linux distro.
+Katoob was originally developed on Debian GNU/Linux but it should work on any GNU/Linux
+distro.
 
 Katoob is now being developed and modernized on Archlinux.
 
@@ -90,34 +105,103 @@ and to install:
 ninja install
 ```
 
-## Features
+## News
 
-* Multiple codepage support "not just UTF-8"
-* The ability to Open/Save files in multiple encodings
-* Search/Replace/Replace all
-* Configurable Undo/Redo
-* Read from stdin via pipe "cat file | katoob -"
-* Open multiple files from the command line
-* An MDI Interface
-* Line wrapping
-* The ability to select the toolbar style
-* Recent files Menu
-* An encodings menu to change the encoding on the fly
-* The statusbar has an indicator weather the file is modified or NOT
-* Read only files Can't be modified
-* Display the used encoding in the statusbar
-* GNOME 2 human interface guidelines compliant interface
-* GNOME menu entry.
-* Syntax highlighting.
-* Spell checking on the fly or when required.
-* Per document settings on the fly.
-* An extended toolbar offering some common functions.
+* 2018-11-02 Frederic-Gerald Morcos <fm+Katoob@fredmorcos.com>
+  - Version 0.6.0-alpha
+  - Move from enchant-1 to enchant-2
+  - Move from autotools to meson
+  - Remove native Windows support (WSL can be used instead)
+  - Remove Maemo support
+  - Fix many build issues due to bitrot over the past 10 years
+  - Use more Gtk stock icons instead of custom PNGs
+  - Merge patches from Debian
+  - Use GIO instead of xdgmime
 
-## Screenshots
+## TODO
 
-![][screenshot]
+- [ ] Replace the modified icons (`red.png` and `green.png`) with a Gtk widget.
 
-[screenshot]: screenshots/Screenshot_2018-11-06_20-31-19.png
+- [ ] Evaluate `CMake` as a better alternative to `meson`, especially for native builds on
+Windows.
+
+- [ ] Add CI/CD pipelines for Ubuntu, Windows and MacOS.
+
+- [ ] Port printing to be handled by `Gtk` and perhaps `cairo`.
+
+- [ ] Fix compilation warnings.
+
+- [ ] Fix runtime warnings.
+
+- [ ] Grep for `TODO`s and `FIXME`s.
+
+- [ ] Port to `Gtk3` and `gtksourceview3-mm`.
+
+- [ ] Port to `Gtk4` and `gtksourceview4`.
+
+- [ ] Add Emacs bindings.
+
+- [ ] Separate and improve the usability of the search and spell checking dialogs.
+
+- [ ] Re-design the preferences dialog.
+
+- [ ] Improve Undo/Redo state.
+  - [ ] Recognize when the document reaches back to a saved state.
+
+- [ ] Display document information in the status bar.
+
+- [ ] Auto-save.
+
+- [ ] Multiple clipboards.
+
+- [ ] Auto-wrapping.
+
+- [ ] Insert common text like date, time, licenses, username and other options.
+
+- [ ] Ability to change the editor's theme.
+
+- [ ] Ability to change the color of the spell-checker's underline.
+
+- [ ] A basic or advanced HTML Editor.
+
+- [ ] Export to HTML.
+
+- [ ] Plugins interface.
+
+- [ ] Customizable toolbar.
+
+- [ ] Git support.
+
+- [ ] Support UNIX, Windows and MacOS line-endings.
+
+- [ ] Load & save settings support for PrintDialog.
+
+- [ ] Improve the encodings menu.
+
+- [ ] Execute command on highlighted text.
+
+- [ ] Export HTML numeric character references again.
+
+- [ ] HTML numeric character references cover all non-latin range.
+
+- [ ] BiDi control characters are visible.
+
+- [ ] Shortcut for RTL emulator.
+
+- [ ] No way to force a document to RTL or LTR.
+
+- [ ] Do we need the Xkb switcher back?
+
+- [ ] Complete the languages names in the encodings drop-down menu.
+
+- [ ] Some BiDi related problems.
+
+- [ ] Show Hindi/Arabic digits based on context.
+
+- [ ] Possibility of using a different font per-script.
+
+- [ ] The shortcuts don't work anymore when using the emulator.
+  - E.g. typing Ctrl-Q there inserts an Arabic qaf.
 
 ## Thanks
 
@@ -212,9 +296,7 @@ ninja install
   - The 2nd bug hunting feast, Many thanks. ;)
   - German manpage
 
-* fribidi Authors
-
-* gtkspell Author
+* Fribidi and Gtkspell authors.
 
 ## Translations
 
@@ -242,55 +324,6 @@ ninja install
 
 * Czech
   - Jan Grmela <mail@grmela.com>
-
-## Mohammed Sameer's TODO
-
-* Port the entire source code to CMake
-* Enhance the search and spell checking dialog
-* Port to gtk printing
-* Fix compilation warnings
-* Fix runtime warnings
-* Rewrite preferences dialog
-* PrintDialog, Load and save settings.
-* Further enhancing the encodings menu
-* We need to use the new gtk printing framework once gtk 2.10 hits Debian
-* When we undo until we reach a state where the document is identical
-  to the saved copy, we should mark it as not modified
-
-* grep TODO *.c
-* grep FIXME *.c
-
-* Execute command on highlighted text
-* Export HTML Numerical character references again.
-* HTML numerical ref. cover all non-latin range
-* Display some information in the statusbar
-* Auto save
-* Multiple clipboards
-* Auto wrapping
-* insert common elements "date, time, GPL, Name, any options"
-* bidi control characters are visible
-* shortcut for rtl, emulator
-* No way to force a document to RTL or LTR.
-* Do we need the xkb switcher back ?
-* Complete the lanuages names in the encodings dropdown list
-* Workarounds for Gtk
-* Some bidi related problems
-* Editor foreground/backgrond
-* Allow the color of the spell checker error underline to be configurable
-* show hindi digits or arabic digits or by context
-
-* Emmanuel Beffara
-  - Possibility of using a different font per script
-  - The shortcuts don't work anymore when using the emulator, (typing
-    Ctrl-Q there inserts a qaf...)
-
-* A basic or advanced HTML Editor
-* Export to HTML
-* Plugins interface
-* Customisable toolbar
-* Splash screen? ;) "Need to modify an existing image"
-* Perhaps CVS support
-* Line ends: UNIX/Windows/Mac
 
 ## Old Changelog and News
 
