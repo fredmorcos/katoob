@@ -6,7 +6,7 @@ project('katoob', ['cpp', 'c'],
                           'cpp_std=c++17',
                           'warning_level=3'])
 
-extra_args = ['-Wextra', '-Wpedantic']
+extra_args = ['-Wpedantic']
 extra_args_clang = ['-ferror-limit=0', '-Db_lundef=false']
 
 add_global_arguments(extra_args, language: 'cpp')
