@@ -1,2 +1,4 @@
 build
 src/katoob@exe
+.cache
+compile_commands.json
