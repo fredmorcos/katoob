@@ -28,10 +28,10 @@ shared_mime_info_prefix = shared_mime_info.get_pkgconfig_variable('prefix')
 isocodes = dependency('iso-codes')
 isocodes_prefix = isocodes.get_pkgconfig_variable('prefix')
 
-deps = [dependency('gtkmm-2.4'),
+deps = [dependency('gtkmm-3.0'),
         dependency('glibmm-2.68'),
         dependency('giomm-2.68'),
-        dependency('gtksourceview-2.0'),
+        dependency('gtksourceview-3.0'),
         dependency('enchant-2'),
         dependency('fribidi'),
         dependency('dbus-1'),
