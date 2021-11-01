@@ -22,30 +22,28 @@
  */
 
 #include "openlocationdialog.hh"
-#include <gtkmm/stock.h>
 #include "macros.h"
 #include "utils.hh"
+#include <gtkmm.h>
 
-OpenLocationDialog::OpenLocationDialog(Conf& conf,
-                                       Encodings& enc):
-  _conf(conf)
-{
+OpenLocationDialog::OpenLocationDialog(Conf &conf, Encodings &enc)
+    : _conf(conf) {
   set_modal();
   set_position(Gtk::WIN_POS_CENTER);
-  Gtk::VBox *vbox = Gtk::Dialog::get_vbox();
+  Gtk::Box *vbox = this->Gtk::Dialog::get_vbox();
 
   label1.set_text(_("Location"));
   label2.set_text(_("Encoding"));
 
   for (int x = 0; x < enc.size(); x++) {
-    encoding.append_text(enc.at(x));
+    encodingsComboBox.append(enc.at(x));
   }
 
-  encoding.set_active(enc.default_open());
+  encodingsComboBox.set_active(enc.default_open());
 
   std::vector<std::string> locations(conf.get_locations());
   for (unsigned x = 0; x < locations.size(); x++) {
-    location.append_text(locations[x]);
+    locationsComboBox.append(locations[x]);
   }
 
   to_active.set_active(conf.get("open_location_to_active", false));
@@ -54,9 +52,9 @@ OpenLocationDialog::OpenLocationDialog(Conf& conf,
   to_active.set_label(_("_Insert into the active document."));
 
   box1.pack_start(label1, false, false, 10);
-  box1.pack_start(location, true, true);
+  box1.pack_start(locationsComboBox, true, true);
   box2.pack_start(label2, false, false, 10);
-  box2.pack_start(encoding, true, true);
+  box2.pack_start(encodingsComboBox, true, true);
 
   vbox->pack_start(box1, true, true);
   vbox->pack_start(box2, true, true);
@@ -69,28 +67,24 @@ OpenLocationDialog::OpenLocationDialog(Conf& conf,
   add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
 
   // TODO: Any idea why do I need to set this explicitly ?
-  location.set_size_request(500, -1);
+  locationsComboBox.set_size_request(500, -1);
 }
 
-OpenLocationDialog::~OpenLocationDialog() {
-}
+OpenLocationDialog::~OpenLocationDialog() {}
 
-std::string& OpenLocationDialog::get_uri() {
-  return uri;
-}
+std::string &OpenLocationDialog::get_uri() { return uri; }
 
-bool OpenLocationDialog::run(std::string& out) {
+bool OpenLocationDialog::run(std::string &out) {
   show_all();
 
   if (Gtk::Dialog::run() == Gtk::RESPONSE_ACCEPT) {
     hide();
-    Gtk::Entry *entry = location.get_entry();
+    Gtk::Entry *entry = locationsComboBox.get_entry();
     uri = entry->get_text();
     if (uri.size() == 0) {
       out = _("You must enter a location to open.");
       return false;
-    }
-    else {
+    } else {
       _conf.locations_prepend(uri);
       return true;
     }
@@ -100,12 +94,10 @@ bool OpenLocationDialog::run(std::string& out) {
 }
 
 int OpenLocationDialog::get_encoding() {
-  return _encodings.get(encoding.get_active_text());
+  return _encodings.get(encodingsComboBox.get_active_text());
 }
 
-bool OpenLocationDialog::insert_to_active() {
-  return to_active.get_active();
-}
+bool OpenLocationDialog::insert_to_active() { return to_active.get_active(); }
 
 void OpenLocationDialog::disable_insert_to_active() {
   to_active.set_sensitive(false);
