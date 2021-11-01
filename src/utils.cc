@@ -22,7 +22,9 @@
  */
 
 #include "utils.hh"
+#include "gtkmm/stylecontext.h"
 #include "macros.h"
+#include "src/textview.hh"
 #include <cerrno>
 #include <config.h>
 #include <cstring>
@@ -349,13 +351,9 @@ std::string Utils::substitute(const std::string &orig, const std::string &a,
 }
 
 std::string Utils::katoob_get_default_font() {
-  Gtk::TextView tv;
-  tv.show();
-  GtkStyle *s = gtk_rc_get_style(GTK_WIDGET(tv.gobj()));
-  char *font = pango_font_description_to_string(s->font_desc);
-  std::string _font(font);
-  g_free(font);
-  return _font;
+  Gtk::TextView textView;
+  textView.show();
+  return textView.get_pango_context()->get_font_description().to_string();
 }
 
 std::vector<std::string> Utils::split(const std::string &src, const char n) {
