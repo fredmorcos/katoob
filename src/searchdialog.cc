@@ -29,7 +29,7 @@
 #include <gtkmm.h>
 
 SearchDialog::SearchDialog()
-    : dialog(_("Find"), true, true), label(_("Search for:")),
+    : dialog(_("Find"), true), label(_("Search for:")),
       _whole_word(_("Match entire word only")), _match_case(_("Match case")),
       //  regex(_("Regular expression")),
       _wrap(_("Wrap search")), _cursor(_("Search from the cursor position")),
@@ -39,7 +39,7 @@ SearchDialog::SearchDialog()
 
   dialog.set_position(Gtk::WIN_POS_CENTER);
 
-  Gtk::VBox *box = dialog.get_vbox();
+  Gtk::Box *box = dialog.get_vbox();
 
   box->pack_start(hbox);
   hbox.pack_start(label, false, false, 10);

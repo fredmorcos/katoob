@@ -23,6 +23,7 @@
 
 #include "spelldialog.hh"
 #include "dialogs.hh"
+#include "gdk/gdkkeysyms.h"
 #include "macros.h"
 #include <gtkmm.h>
 
@@ -236,7 +237,7 @@ void SpellDialog::check_clicked_cb() {
 
 bool SpellDialog::signal_key_press_event_cb(GdkEventKey *key) {
   if ((key) && (key->type == GDK_KEY_PRESS) && (key->state == 0) &&
-      (key->keyval == GDK_Escape)) {
+      (key->keyval == GDK_KEY_Escape)) {
     close_clicked_cb();
     return true;
   }

@@ -28,7 +28,7 @@
 #include <gtkmm.h>
 
 InputWindow::InputWindow()
-    : Gtk::Dialog(_("Input Window"), false, true), _type(INPUT_DISPLAY_NONE) {
+    : Gtk::Dialog(_("Input Window"), false), _type(INPUT_DISPLAY_NONE) {
   add_button(Gtk::Stock::CLOSE, Gtk::RESPONSE_OK);
   get_vbox()->pack_start(sw, true, true);
   sw.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);

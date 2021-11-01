@@ -129,7 +129,7 @@ Window::Window(Conf &conf, Encodings &encodings,
   }
 
   // DnD
-  std::list<Gtk::TargetEntry> targets;
+  std::vector<Gtk::TargetEntry> targets;
   targets.push_back(Gtk::TargetEntry("text/uri-list"));
   drag_dest_set(targets, Gtk::DEST_DEFAULT_ALL,
                 Gdk::ACTION_DEFAULT | Gdk::ACTION_COPY | Gdk::ACTION_MOVE |
@@ -340,7 +340,7 @@ void Window::signal_drag_data_received_cb(
     int KATOOB_UNUSED(x), int KATOOB_UNUSED(y),
     const Gtk::SelectionData &selection, guint KATOOB_UNUSED(info),
     guint KATOOB_UNUSED(time)) {
-  std::vector<std::string> files = selection.get_uris();
+  std::vector<Glib::ustring> files = selection.get_uris();
   std::string filename;
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
   std::unique_ptr<Glib::Error> error;

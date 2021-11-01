@@ -29,7 +29,7 @@
 #include <gtkmm.h>
 
 ReplaceDialog::ReplaceDialog()
-    : dialog(_("Find"), true, true), label(_("Search for:")),
+    : dialog(_("Find"), true), label(_("Search for:")),
       label2(_("Replace with:")), _whole_word(_("Match entire word only")),
       _match_case(_("Match case")), _wrap(_("Wrap search")),
       _cursor(_("Search from the cursor position")),
@@ -42,7 +42,7 @@ ReplaceDialog::ReplaceDialog()
 
   dialog.set_position(Gtk::WIN_POS_CENTER);
 
-  Gtk::VBox *box = dialog.get_vbox();
+  Gtk::Box *box = dialog.get_vbox();
 
   box->pack_start(hbox);
   box->pack_start(hbox2);

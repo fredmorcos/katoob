@@ -28,7 +28,7 @@
 SpellMenu::SpellMenu() {
   katoob_spell_list_available(dicts);
   for (unsigned x = 0; x < dicts.size(); x++) {
-    append_text(iso_codes.translate(dicts[x]));
+    append(iso_codes.translate(dicts[x]));
   }
 }
 
@@ -38,6 +38,6 @@ const Glib::ustring SpellMenu::get_active_text() {
   return dicts[x];
 }
 
-void SpellMenu::set_active_text(const Glib::ustring& str) {
+void SpellMenu::set_active_text(const Glib::ustring &str) {
   return Gtk::ComboBoxText::set_active_text(iso_codes.translate(str));
 }

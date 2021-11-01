@@ -34,7 +34,7 @@ PreferencesDialog::PreferencesDialog(Conf &conf, Encodings &enc)
   dialog.set_title(_("Preferences"));
   dialog.set_modal(true);
 
-  Gtk::VBox *vbox = dialog.get_vbox();
+  Gtk::Box *vbox = dialog.get_vbox();
   vbox->pack_start(paned);
 
   sw.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
