@@ -23,36 +23,38 @@
 
 #pragma once
 
+#include "conf.hh"
+#include "dialogs.hh"
+#include "glibmm/refptr.h"
+#include "spellmenu.hh"
+#include <gtkmm/adjustment.h>
 #include <gtkmm/box.h>
 #include <gtkmm/checkbutton.h>
-#include <gtkmm/table.h>
-#include <gtkmm/label.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/spinbutton.h>
 #include <gtkmm/colorbutton.h>
-#include <gtkmm/fontbutton.h>
 #include <gtkmm/comboboxtext.h>
+#include <gtkmm/fontbutton.h>
 #include <gtkmm/frame.h>
+#include <gtkmm/label.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/scrolledwindow.h>
-#include "conf.hh"
-#include "spellmenu.hh"
-#include "dialogs.hh"
+#include <gtkmm/spinbutton.h>
+#include <gtkmm/table.h>
 
 class Applet {
 public:
-  Applet(Conf&);
+  Applet(Conf &);
   virtual ~Applet();
-  virtual Gtk::Widget& get_box();
-  virtual void apply()=0;
+  virtual Gtk::Widget &get_box();
+  virtual void apply() = 0;
+
 protected:
   Gtk::VBox box;
-  Conf& _conf;
+  Conf &_conf;
 };
 
 class GeneralApplet : public Applet {
 public:
-  GeneralApplet(Conf&);
+  GeneralApplet(Conf &);
   virtual void apply();
 
 private:
@@ -62,21 +64,22 @@ private:
   Gtk::CheckButton undo, undo_closed;
   Gtk::Table general_table1, general_table2;
   Gtk::Label undo_label, exec_label, undo_closed_label;
-  Gtk::Adjustment undono_adj, exec_adj, undo_closed_adj;
+  Glib::RefPtr<Gtk::Adjustment> undono_adj, exec_adj, undo_closed_adj;
   Gtk::SpinButton undono, exec_cmd_size, undo_closedno;
 };
 
 class InterfaceApplet : public Applet {
 public:
-  InterfaceApplet(Conf&);
+  InterfaceApplet(Conf &);
   virtual void apply();
 
 private:
   void recent_toggled_cb();
   void toolbar_toggled_cb();
 
-  Gtk::CheckButton toolbar, extended_toolbar, statusbar, recent, showclose, extra_buttons;
-  Gtk::Adjustment recentno_adj;
+  Gtk::CheckButton toolbar, extended_toolbar, statusbar, recent, showclose,
+      extra_buttons;
+  Glib::RefPtr<Gtk::Adjustment> recentno_adj;
   Gtk::SpinButton recentno;
   Gtk::Label recentno_label, toolbartype_label;
   Gtk::Table interface_table;
@@ -85,7 +88,7 @@ private:
 
 class TabsApplet : public Applet {
 public:
-  TabsApplet(Conf&);
+  TabsApplet(Conf &);
   virtual void apply();
 
 private:
@@ -100,7 +103,7 @@ private:
 
 class EditorApplet : public Applet {
 public:
-  EditorApplet(Conf&);
+  EditorApplet(Conf &);
   virtual void apply();
 
 private:
@@ -116,20 +119,20 @@ private:
   Gtk::VBox ed_box2;
   Gtk::HBox ed_box3;
   Gtk::SpinButton tab_width;
-  Gtk::Adjustment tab_width_adj;
+  Glib::RefPtr<Gtk::Adjustment> tab_width_adj;
   Gtk::Label tab_width_label;
   Gtk::CheckButton highlight_auto;
 };
 
 class EncodingsApplet : public Applet {
 public:
-  EncodingsApplet(Conf&, Encodings&);
+  EncodingsApplet(Conf &, Encodings &);
   virtual void apply();
 
 private:
   void locale_enc_toggled_cb();
 
-  Encodings& _enc;
+  Encodings &_enc;
 
   Gtk::ComboBoxText save_enc, saved_enc;
   Gtk::CheckButton locale_enc;
@@ -141,7 +144,7 @@ private:
 
 class FileSaveApplet : public Applet {
 public:
-  FileSaveApplet(Conf&);
+  FileSaveApplet(Conf &);
   virtual void apply();
 
 private:
@@ -155,20 +158,20 @@ private:
 
 class SpellCheckerApplet : public Applet {
 public:
-  SpellCheckerApplet(Conf&);
+  SpellCheckerApplet(Conf &);
   virtual void apply();
 
 private:
   Gtk::CheckButton spell_check;
   SpellMenu default_dict;
-  Gtk::Label default_dict_label;//, misspelled_label;
+  Gtk::Label default_dict_label; //, misspelled_label;
   Gtk::HBox /*sc_box1,*/ sc_box2;
   //  Gtk::ColorButton misspelled;
 };
 
 class PrintApplet : public Applet {
 public:
-  PrintApplet(Conf&);
+  PrintApplet(Conf &);
   virtual void apply();
 
 private:
@@ -179,13 +182,13 @@ private:
 
 class DictionaryApplet : public Applet {
 public:
-  DictionaryApplet(Conf&);
+  DictionaryApplet(Conf &);
   virtual void apply();
 
 private:
   void dict_toggled_cb();
   void list_dicts_clicked_cb();
-  void signal_dict_transfer_complete_cb(bool, const std::string&);
+  void signal_dict_transfer_complete_cb(bool, const std::string &);
   void signal_cancel_clicked_cb();
 
   sigc::connection conn;
@@ -199,7 +202,7 @@ private:
   Gtk::Label dict_host_label, dict_port_label, dict_name_label;
   Gtk::Entry dict_host;
   Gtk::SpinButton dict_port;
-  Gtk::Adjustment dict_port_adj;
+  Glib::RefPtr<Gtk::Adjustment> dict_port_adj;
   Gtk::Button list_dicts;
   Gtk::Table dictionary_table;
   // The tree view.
@@ -214,11 +217,11 @@ private:
 
 class MultipressApplet : public Applet {
 public:
-  MultipressApplet(Conf&);
+  MultipressApplet(Conf &);
   virtual void apply();
 
 private:
-  Gtk::Adjustment multipress_timeout_adj;
+  Glib::RefPtr<Gtk::Adjustment> multipress_timeout_adj;
   Gtk::SpinButton multipress_timeout;
   Gtk::HBox m_box1;
   Gtk::Label multipress_timeout_l;
@@ -226,20 +229,20 @@ private:
 
 class RemoteDocumentsApplet : public Applet {
 public:
-  RemoteDocumentsApplet(Conf&);
+  RemoteDocumentsApplet(Conf &);
   virtual void apply();
 
 private:
   Gtk::CheckButton open_location_to_active;
   Gtk::SpinButton locations_size;
-  Gtk::Adjustment locations_size_adj;
+  Glib::RefPtr<Gtk::Adjustment> locations_size_adj;
   Gtk::Label locations_size_label;
   Gtk::HBox r_box1, r_box2;
 };
 
 class AdvancedApplet : public Applet {
 public:
-  AdvancedApplet(Conf&);
+  AdvancedApplet(Conf &);
   virtual void apply();
 
 private:
@@ -248,21 +251,23 @@ private:
   Gtk::CheckButton saveonexit, savewinpos;
   Gtk::Frame pos, size;
   Gtk::Label x_label, y_label, w_label, h_label;
-  Gtk::Adjustment x_adj, y_adj, w_adj, h_adj;
+  Glib::RefPtr<Gtk::Adjustment> x_adj, y_adj, w_adj, h_adj;
   Gtk::Table pos_table, size_table;
   Gtk::SpinButton x, y, w, h;
 };
 
 class NetworkApplet : public Applet {
 public:
-  NetworkApplet(Conf&);
+  NetworkApplet(Conf &);
   virtual void apply();
+
 private:
-  Gtk::Adjustment timeout_adj, proxyport_adj;
+  Glib::RefPtr<Gtk::Adjustment> timeout_adj, proxyport_adj;
   Gtk::SpinButton timeout, proxyport;
   Gtk::ComboBoxText proxytype;
   Gtk::Entry proxyhost, proxyuser, proxypass;
-  Gtk::Label proxyhost_l, proxyport_l, timeout_l, proxytype_l, proxyuser_l, proxypass_l;
+  Gtk::Label proxyhost_l, proxyport_l, timeout_l, proxytype_l, proxyuser_l,
+      proxypass_l;
   Gtk::Table table;
   Gtk::Table table2;
   Gtk::CheckButton proxytunnel, proxyauth;
