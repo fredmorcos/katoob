@@ -22,17 +22,17 @@
  */
 
 #include "execdialog.hh"
-#include <gtkmm/stock.h>
 #include "macros.h"
+#include <gtkmm.h>
 
-ExecDialog::ExecDialog(Conf& conf) {
+ExecDialog::ExecDialog(Conf &conf) {
   set_modal();
-  Gtk::VBox *vbox = Gtk::Dialog::get_vbox();
+  Gtk::Box *vbox = this->Gtk::Dialog::get_vbox();
   vbox->pack_start(box);
   vbox->pack_start(tips);
   vbox->pack_start(new_buffer);
   box.pack_start(label);
-  box.pack_start(command);
+  box.pack_start(commands);
 
   label.set_text(_("Command to execute"));
   tips.set_text(_("'%s' will be substituted with a temporary "
@@ -48,28 +48,27 @@ ExecDialog::ExecDialog(Conf& conf) {
   add_button(Gtk::Stock::OK, Gtk::RESPONSE_ACCEPT);
 
   std::vector<std::string> cmds(conf.get_exec_cmd());
+
   for (unsigned x = 0; x < cmds.size(); x++) {
-    command.append_text(cmds[x]);
+    commands.append(cmds[x]);
   }
+
   if (cmds.size() > 0) {
-    command.set_active_text(cmds[0]);
+    commands.set_active_text(cmds[0]);
   }
 
   new_buffer.set_active(conf.get("exec_cmd_in_new", true));
 }
 
-ExecDialog::~ExecDialog() {
-
-}
+ExecDialog::~ExecDialog() {}
 
 bool ExecDialog::run() {
   show_all();
   if (Gtk::Dialog::run() == Gtk::RESPONSE_ACCEPT) {
-    Gtk::Entry *entry = command.get_entry();
+    Gtk::Entry *entry = commands.get_entry();
     if (entry->get_text().size() == 0) {
       return false;
-    }
-    else {
+    } else {
       return true;
     }
   }
@@ -77,9 +76,7 @@ bool ExecDialog::run() {
 }
 
 std::string ExecDialog::get_command() {
-  return command.get_entry()->get_text();
+  return commands.get_entry()->get_text();
 }
 
-bool ExecDialog::get_new_buffer() {
-  return new_buffer.get_active();
-}
+bool ExecDialog::get_new_buffer() { return new_buffer.get_active(); }

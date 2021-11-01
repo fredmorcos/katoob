@@ -23,22 +23,21 @@
 
 #pragma once
 
-#include <gtkmm/dialog.h>
-#include <gtkmm/label.h>
-#include <gtkmm/checkbutton.h>
-#include <gtkmm/comboboxentrytext.h>
 #include "conf.hh"
+#include "gtkmm/comboboxtext.h"
+#include <gtkmm.h>
 
-class ExecDialog: public Gtk::Dialog {
+class ExecDialog : public Gtk::Dialog {
 public:
-  ExecDialog(Conf&);
+  ExecDialog(Conf &);
   ~ExecDialog();
   bool run();
   std::string get_command();
   bool get_new_buffer();
+
 private:
   Gtk::Label label, tips;
   Gtk::CheckButton new_buffer;
-  Gtk::ComboBoxEntryText command;
+  Gtk::ComboBoxText commands;
   Gtk::HBox box;
 };
