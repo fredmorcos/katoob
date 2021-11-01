@@ -120,6 +120,8 @@ ninja install
 
 ## TODO
 
+- [ ] Replace usages of `Gtk::manage(new ...)` with `Gtk::make_managed<W>(...)`.
+
 - [ ] Replace the modified icons (`red.png` and `green.png`) with a Gtk widget.
 
 - [ ] Evaluate `CMake` as a better alternative to `meson`, especially for native builds on
