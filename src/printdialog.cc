@@ -24,6 +24,7 @@
 #include "printdialog.hh"
 #include "dialogs.hh"
 #include "filedialog.hh"
+#include "gtkmm/adjustment.h"
 #include "macros.h"
 #include "previewdialog.hh"
 #include "utils.hh"
@@ -59,8 +60,10 @@ PrintDialog::PrintDialog(Conf &conf, Document *doc,
       all_radio(range_group, _("_All"), true),
       selection_radio(range_group, _("_Selection"), true),
       lines_radio(range_group, _("_Lines"), true), printer_frame(_("Printer:")),
-      from_adj(1, 1, 1), to_adj(1, 1, 1),
-      copies_button_adj(_conf.print_get("copies", 1), 1, 100),
+      from_adj(Gtk::Adjustment::create(1, 1, 1)),
+      to_adj(Gtk::Adjustment::create(1, 1, 1)),
+      copies_button_adj(
+          Gtk::Adjustment::create(_conf.print_get("copies", 1), 1, 100)),
       lines_from(from_adj), lines_to(to_adj), copies_button(copies_button_adj),
       browse(Gtk::Stock::SAVE_AS), location_label(_("Location:")),
       copies_label(_("Number of copies")), range_frame(_("Print range")),
@@ -74,7 +77,7 @@ PrintDialog::PrintDialog(Conf &conf, Document *doc,
   /*
   set_resizable (false);
   */
-  Gtk::VBox *box = dialog.get_vbox();
+  Gtk::Box *box = dialog.get_vbox();
   box->set_spacing(5);
 
   record.add(id);
@@ -109,8 +112,8 @@ PrintDialog::PrintDialog(Conf &conf, Document *doc,
 
   box1.pack_start(to_file);
 
-  print_menu.append_text(_("Create a PDF document"));
-  print_menu.append_text(_("Create a Postscript document"));
+  print_menu.append(_("Create a PDF document"));
+  print_menu.append(_("Create a Postscript document"));
 
   box1.pack_start(print_menu, false, false);
   box->pack_start(box1);
@@ -156,8 +159,8 @@ PrintDialog::PrintDialog(Conf &conf, Document *doc,
   box7.pack_start(orientation_label, false, false);
   box7.pack_start(orientation, true, true);
 
-  orientation.append_text(_("Portrait"));
-  orientation.append_text(_("Landscape"));
+  orientation.append(_("Portrait"));
+  orientation.append(_("Landscape"));
 
   box->pack_start(box6, false, false);
   box->pack_start(box7, false, false);
@@ -263,8 +266,8 @@ void PrintDialog::lines(int num) {
   lines_from.set_sensitive(true);
   lines_to.set_sensitive(true);
   */
-  from_adj.set_upper(num - 1);
-  to_adj.set_upper(num);
+  from_adj->set_upper(num - 1);
+  to_adj->set_upper(num);
 }
 
 void PrintDialog::reset_paper_size(int x) {
@@ -272,7 +275,7 @@ void PrintDialog::reset_paper_size(int x) {
   if (x == -1) {
     Paper *_Papers = Papers;
     while (!_Papers->name.empty()) {
-      paper_size.append_text(_Papers->name);
+      paper_size.append(_Papers->name);
       _Papers++;
     }
     paper_size.set_active(_conf.print_get(

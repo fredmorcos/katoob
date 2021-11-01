@@ -76,7 +76,7 @@ private:
   Gtk::RadioButton lines_radio;
   Gtk::HBox box2;
   Gtk::Frame printer_frame;
-  Gtk::Adjustment from_adj, to_adj, copies_button_adj;
+  Glib::RefPtr<Gtk::Adjustment> from_adj, to_adj, copies_button_adj;
   Gtk::SpinButton lines_from;
   Gtk::SpinButton lines_to;
   Gtk::SpinButton copies_button;
