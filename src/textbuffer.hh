@@ -24,7 +24,7 @@
 #pragma once
 
 #include <gtkmm/textbuffer.h>
-#include <gtksourceview/gtksourcebuffer.h>
+#include <gtksourceview/gtksource.h>
 #include "sourcemanager.hh"
 #include "conf.hh"
 

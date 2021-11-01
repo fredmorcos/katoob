@@ -24,6 +24,7 @@
 #include "docfactory.hh"
 #include "document.hh"
 #include <cassert>
+#include <glibmm/main.h>
 
 int get_unused_number() {
   static int foo = 0;
@@ -31,7 +32,7 @@ int get_unused_number() {
   return foo;
 }
 
-Document *DocFactory::create(std::string& str) {
+Document *DocFactory::create(std::string &str) {
   Document *doc = process(new Document(*_conf, *_enc, get_unused_number()));
   if (doc) {
     doc->set_text(str);
@@ -40,12 +41,12 @@ Document *DocFactory::create(std::string& str) {
   return doc;
 }
 
-Document *DocFactory::create(std::string& file, int encoding, bool is_stdin) {
+Document *DocFactory::create(std::string &file, int encoding, bool is_stdin) {
   if (is_stdin) {
-    return process(new Document(*_conf, *_enc, get_unused_number(),
-                                encoding == -1 ? _enc->default_open() : encoding));
-  }
-  else {
+    return process(
+        new Document(*_conf, *_enc, get_unused_number(),
+                     encoding == -1 ? _enc->default_open() : encoding));
+  } else {
     return process(new Document(*_conf, *_enc, encoding, file));
   }
 }
@@ -64,45 +65,48 @@ Document *DocFactory::process(Document *doc) {
   children.push_back(doc);
   signal_created.emit(doc);
 
-  doc->signal_can_undo.connect
-    (sigc::mem_fun(signal_can_undo, &sigc::signal<void, bool>::emit));
-  doc->signal_can_redo.connect
-    (sigc::mem_fun(signal_can_redo, &sigc::signal<void, bool>::emit));
+  doc->signal_can_undo.connect(
+      sigc::mem_fun(signal_can_undo, &sigc::signal<void, bool>::emit));
+  doc->signal_can_redo.connect(
+      sigc::mem_fun(signal_can_redo, &sigc::signal<void, bool>::emit));
   // TODO FIXME XXX For some reason that I cannot figure out yet this
   // completely breaks with libsigc++ and doesn't even build.
   // doc->signal_readonly_set.connect
   //   (sigc::mem_fun(signal_rom_set, &sigc::signal<void, bool, bool>::emit));
-  doc->signal_file_changed.connect
-    (sigc::mem_fun(signal_file_changed, &sigc::signal<void, std::string>::emit));
-  doc->signal_cursor_moved.connect
-    (sigc::mem_fun(signal_cursor_moved, &sigc::signal<void, int, int>::emit));
-  doc->signal_encoding_changed.connect
-    (sigc::mem_fun(signal_encoding_changed, &sigc::signal<void, int>::emit));
-  doc->signal_overwrite_toggled.connect
-    (sigc::mem_fun(signal_overwrite_toggled, &sigc::signal<void, bool>::emit));
-  doc->signal_title_changed.connect
-    (sigc::mem_fun(signal_title_changed, &sigc::signal<void, std::string>::emit));
+  doc->signal_file_changed.connect(sigc::mem_fun(
+      signal_file_changed, &sigc::signal<void, std::string>::emit));
+  doc->signal_cursor_moved.connect(
+      sigc::mem_fun(signal_cursor_moved, &sigc::signal<void, int, int>::emit));
+  doc->signal_encoding_changed.connect(
+      sigc::mem_fun(signal_encoding_changed, &sigc::signal<void, int>::emit));
+  doc->signal_overwrite_toggled.connect(
+      sigc::mem_fun(signal_overwrite_toggled, &sigc::signal<void, bool>::emit));
+  doc->signal_title_changed.connect(sigc::mem_fun(
+      signal_title_changed, &sigc::signal<void, std::string>::emit));
 
-  doc->signal_auto_spell_set.connect
-    (sigc::mem_fun(signal_auto_spell_set, &sigc::signal<void, bool>::emit));
-  doc->signal_dictionary_changed.connect
-    (sigc::mem_fun(signal_dictionary_changed, &sigc::signal<void, std::string>::emit));
+  doc->signal_auto_spell_set.connect(
+      sigc::mem_fun(signal_auto_spell_set, &sigc::signal<void, bool>::emit));
+  doc->signal_dictionary_changed.connect(sigc::mem_fun(
+      signal_dictionary_changed, &sigc::signal<void, std::string>::emit));
 
-  doc->signal_wrap_text_set.connect
-    (sigc::mem_fun(signal_wrap_text_set, &sigc::signal<void, bool>::emit));
-  doc->signal_line_numbers_set.connect
-    (sigc::mem_fun(signal_line_numbers_set, &sigc::signal<void, bool>::emit));
-  doc->signal_dict_lookup_request.connect
-    (sigc::mem_fun(signal_dict_lookup_request, &sigc::signal<void, std::string>::emit));
+  doc->signal_wrap_text_set.connect(
+      sigc::mem_fun(signal_wrap_text_set, &sigc::signal<void, bool>::emit));
+  doc->signal_line_numbers_set.connect(
+      sigc::mem_fun(signal_line_numbers_set, &sigc::signal<void, bool>::emit));
+  doc->signal_dict_lookup_request.connect(sigc::mem_fun(
+      signal_dict_lookup_request, &sigc::signal<void, std::string>::emit));
 
-  doc->signal_highlight_set.connect
-    (sigc::mem_fun(signal_highlight, &sigc::signal<void, std::string>::emit));
+  doc->signal_highlight_set.connect(
+      sigc::mem_fun(signal_highlight, &sigc::signal<void, std::string>::emit));
 
-  doc->signal_text_view_request_file_open.connect
-    (sigc::mem_fun(signal_text_view_request_file_open, &sigc::signal<void, std::string>::emit));
+  doc->signal_text_view_request_file_open.connect(
+      sigc::mem_fun(signal_text_view_request_file_open,
+                    &sigc::signal<void, std::string>::emit));
 
-  doc->get_label().signal_close_clicked.connect
-    (sigc::bind<Document *>(sigc::mem_fun(signal_close_request, &sigc::signal<void, Document *>::emit), doc));
+  doc->get_label().signal_close_clicked.connect(sigc::bind<Document *>(
+      sigc::mem_fun(signal_close_request,
+                    &sigc::signal<void, Document *>::emit),
+      doc));
 
   doc->emit_signals();
 
@@ -122,9 +126,11 @@ DocFactory::~DocFactory() {
   closed_children.clear();
 }
 
-DocFactory::DocFactory(Conf *conf, Encodings *enc) : _conf(conf), _enc(enc), active(-1) {
+DocFactory::DocFactory(Conf *conf, Encodings *enc)
+    : _conf(conf), _enc(enc), active(-1) {
   // 1 minute.
-  Glib::signal_timeout().connect(sigc::mem_fun(this, &DocFactory::autosave), 1*60*1000);
+  Glib::signal_timeout().connect(sigc::mem_fun(this, &DocFactory::autosave),
+                                 1 * 60 * 1000);
 }
 
 bool DocFactory::autosave() {
@@ -158,7 +164,8 @@ void DocFactory::destroy() {
 }
 
 void DocFactory::remove_document(int idx) {
-  // We emit this before deleting the Document to allow our MDI to remove the Document.
+  // We emit this before deleting the Document to allow our MDI to remove the
+  // Document.
   signal_pre_destroyed.emit(idx);
 
   // Now we erase:
@@ -175,15 +182,14 @@ void DocFactory::remove_document(int idx) {
     unsigned x = _conf->get("undo_closedno", 5);
     if ((x != 0) && (x < closed_children.size())) {
       while (closed_children.size() > x) {
-	Document *_doc = closed_children[0];
-	closed_children.erase(closed_children.begin());
-	delete _doc;
+        Document *_doc = closed_children[0];
+        closed_children.erase(closed_children.begin());
+        delete _doc;
       }
     }
     // emit the signal so the menu can rebuild.
     signal_closed.emit();
-  }
-  else {
+  } else {
     delete doc;
   }
   signal_destroyed.emit();
@@ -206,11 +212,8 @@ Document *DocFactory::get_document(size_t idx) {
   return children[idx];
 }
 
-bool DocFactory::get_info(size_t idx,
-                          std::string& title,
-                          bool& read_only,
-                          bool& modified)
-{
+bool DocFactory::get_info(size_t idx, std::string &title, bool &read_only,
+                          bool &modified) {
   if (idx >= children.size()) {
     return false;
   }
@@ -224,11 +227,8 @@ bool DocFactory::get_info(size_t idx,
   return true;
 }
 
-bool DocFactory::get_closed_info(size_t idx,
-                                 std::string& title,
-                                 bool& read_only,
-                                 bool& modified)
-{
+bool DocFactory::get_closed_info(size_t idx, std::string &title,
+                                 bool &read_only, bool &modified) {
   if (idx >= closed_children.size()) {
     return false;
   }
@@ -246,7 +246,7 @@ void DocFactory::activate_closed(size_t idx) {
   assert(idx < closed_children.size());
 
   Document *doc = closed_children[idx];
-  closed_children.erase(closed_children.begin()+idx);
+  closed_children.erase(closed_children.begin() + idx);
   children.push_back(doc);
 
   signal_created.emit(doc);
@@ -258,9 +258,9 @@ void DocFactory::reset_ui() {
     children[x]->reset_gui();
   }
 
-  // FIXME: We don't reset the GUI of closed Documents. A signal might get emitted
-  // but we don't want the GUI to really respond.
-  // I need to block the emission of all signals first probably.
+  // FIXME: We don't reset the GUI of closed Documents. A signal might get
+  // emitted but we don't want the GUI to really respond. I need to block the
+  // emission of all signals first probably.
 
   unsigned x = _conf->get("undo_closedno", 5);
   if ((x != 0) && (x < closed_children.size())) {
@@ -275,9 +275,7 @@ void DocFactory::reset_ui() {
   signal_closed.emit();
 }
 
-void DocFactory::set_active(int idx) {
-  active = idx;
-}
+void DocFactory::set_active(int idx) { active = idx; }
 
 void DocFactory::emit_signals() {
   assert(active != -1);

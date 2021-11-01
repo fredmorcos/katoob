@@ -23,25 +23,19 @@
 
 #pragma once
 
-#include <gtksourceview/gtksourceview.h>
-#include <gtksourceview/gtksourcebuffer.h>
-#include "textview.hh"
 #include "sourcemanager.hh"
+#include "textview.hh"
+#include <gtksourceview/gtksource.h>
 
 class SourceView : public TextView {
 public:
   SourceView();
   virtual ~SourceView();
   void show_line_numbers(bool);
+
 private:
   unsigned long __drag_data_received;
 };
 
-void _drag_data_received_cb(GtkWidget *,
-                            GdkDragContext *,
-                            gint,
-                            gint,
-                            GtkSelectionData*,
-                            guint,
-                            guint,
-                            void *);
+void _drag_data_received_cb(GtkWidget *, GdkDragContext *, gint, gint,
+                            GtkSelectionData *, guint, guint, void *);
