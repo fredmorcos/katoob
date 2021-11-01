@@ -22,22 +22,32 @@
  */
 
 #include "document.hh"
+#include "glibmm/refptr.h"
+#include "gtkmm/menuitem.h"
+#include "gtkmm/object.h"
+#include "gtkmm/stockid.h"
+#include "gtkmm/widget.h"
+#include "sigc++/functors/mem_fun.h"
+#include <gtkmm-2.4/gtkmm/imagemenuitem.h>
+#include <gtkmm-2.4/gtkmm/separatormenuitem.h>
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif
-#include <cerrno>
-#include <cstring>
-#include <string>
-#include <iostream>
-#include <sstream>
-#include <cassert>
-#include <gtkmm/enums.h>
-#include <gtkmm/image.h>
-#include <gtkmm/stock.h>
 #include "dialogs.hh"
 #include "macros.h"
 #include "textbuffer.hh"
 #include "utils.hh"
+#include <cassert>
+#include <cerrno>
+#include <cstring>
+#include <glibmm/fileutils.h>
+#include <glibmm/miscutils.h>
+#include <gtkmm/enums.h>
+#include <gtkmm/image.h>
+#include <gtkmm/stock.h>
+#include <iostream>
+#include <sstream>
+#include <string>
 
 // TODO:
 // highlight current line
@@ -54,49 +64,32 @@
 
 void _on_move_cursor(GtkTextView *KATOOB_UNUSED(textview),
                      GtkMovementStep KATOOB_UNUSED(arg1),
-                     gint KATOOB_UNUSED(arg2),
-                     gboolean KATOOB_UNUSED(arg3),
-                     gpointer user_data)
-{
+                     gint KATOOB_UNUSED(arg2), gboolean KATOOB_UNUSED(arg3),
+                     gpointer user_data) {
   static_cast<Document *>(user_data)->on_move_cursor();
 }
 
 void _on_toggle_overwrite(GtkTextView *KATOOB_UNUSED(textview),
-                          gpointer user_data)
-{
+                          gpointer user_data) {
   static_cast<Document *>(user_data)->on_toggle_overwrite();
 }
 
-Document::Document(Conf& conf, Encodings& encodings, int num) :
-  _label(conf),
-  _conf(conf),
-  _encodings(encodings),
-  _ok(true),
-  _modified(false),
-  _encoding(_encodings.utf8()),
-  _readonly(false),
-  _line_numbers(false),
-  __on_move_cursor(0),
-  __on_toggle_overwrite(0),
-  _overwrite(false)
-{
+Document::Document(Conf &conf, Encodings &encodings, int num)
+    : _label(conf), _conf(conf), _encodings(encodings), _ok(true),
+      _modified(false), _encoding(_encodings.utf8()), _readonly(false),
+      _line_numbers(false), __on_move_cursor(0), __on_toggle_overwrite(0),
+      _overwrite(false) {
   _label.set_text(num);
   if (!create()) {
     _ok = false;
   }
 }
 
-Document::Document(Conf& conf, Encodings& encodings, int encoding, std::string& file):
-  _label(conf),
-  _conf(conf),
-  _encodings(encodings),
-  _ok(false),
-  _readonly(false),
-  _line_numbers(false),
-  __on_move_cursor(0),
-  __on_toggle_overwrite(0),
-  _overwrite(false)
-{
+Document::Document(Conf &conf, Encodings &encodings, int encoding,
+                   std::string &file)
+    : _label(conf), _conf(conf), _encodings(encodings), _ok(false),
+      _readonly(false), _line_numbers(false), __on_move_cursor(0),
+      __on_toggle_overwrite(0), _overwrite(false) {
   std::string contents;
 
   if (Glib::file_test(file, Glib::FILE_TEST_IS_DIR)) {
@@ -104,12 +97,12 @@ Document::Document(Conf& conf, Encodings& encodings, int encoding, std::string& 
     return;
   }
 
-  // If the file is not there, We will pretend that we did open it.
-  if ((Glib::file_test(file, Glib::FILE_TEST_EXISTS)) &&
-      (Glib::file_test(file, Glib::FILE_TEST_IS_REGULAR))) {
+  // If the file is not there, we will pretend that we did open it.
+  if (Glib::file_test(file, Glib::FILE_TEST_EXISTS) &&
+      Glib::file_test(file, Glib::FILE_TEST_IS_REGULAR)) {
     try {
       contents = Glib::file_get_contents(file);
-    } catch (Glib::FileError& err) {
+    } catch (Glib::FileError &err) {
       katoob_error(err.what());
       return;
     }
@@ -124,7 +117,8 @@ Document::Document(Conf& conf, Encodings& encodings, int encoding, std::string& 
   int enc = _encodings.convert_to(contents, contents2, encoding);
   if (enc == -1) {
     _ok = false;
-    katoob_error(Utils::substitute(_("Couldn't detect the encoding of %s"), file));
+    katoob_error(
+        Utils::substitute(_("Couldn't detect the encoding of %s"), file));
     return;
   }
   _encoding = enc;
@@ -136,8 +130,7 @@ Document::Document(Conf& conf, Encodings& encodings, int encoding, std::string& 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try {
     _label.set_text(Glib::filename_to_utf8(Glib::path_get_basename(file)));
-  }
-  catch (Glib::ConvertError& err) {
+  } catch (Glib::ConvertError &err) {
     _label.set_text(Glib::filename_display_basename(file));
   }
 #else
@@ -157,16 +150,10 @@ Document::Document(Conf& conf, Encodings& encodings, int encoding, std::string& 
   }
 }
 
-Document::Document(Conf& conf, Encodings& encodings, int num, int encoding) :
-  _label(conf),
-  _conf(conf),
-  _encodings(encodings),
-  _ok(false),
-  _readonly(false),
-  _line_numbers(false),
-  __on_move_cursor(0),
-  __on_toggle_overwrite(0),
-  _overwrite(false) {
+Document::Document(Conf &conf, Encodings &encodings, int num, int encoding)
+    : _label(conf), _conf(conf), _encodings(encodings), _ok(false),
+      _readonly(false), _line_numbers(false), __on_move_cursor(0),
+      __on_toggle_overwrite(0), _overwrite(false) {
   // TODO: Bad, We are reading character by character.
   std::string contents;
   char ch;
@@ -201,7 +188,8 @@ Document::~Document() {
     g_signal_handler_disconnect(G_OBJECT(_text_view.gobj()), __on_move_cursor);
   }
   if (__on_toggle_overwrite) {
-    g_signal_handler_disconnect(G_OBJECT(_text_view.gobj()), __on_toggle_overwrite);
+    g_signal_handler_disconnect(G_OBJECT(_text_view.gobj()),
+                                __on_toggle_overwrite);
   }
 
   // let's remove our temporary file.
@@ -214,23 +202,26 @@ Document::~Document() {
 }
 
 void Document::connect_signals() {
-  insert_conn = _text_view.get_buffer()->signal_insert().connect(sigc::mem_fun(this, &Document::on_insert));
-  erase_conn = _text_view.get_buffer()->signal_erase().connect(sigc::mem_fun(*this, &Document::on_erase));
+  insert_conn = _text_view.get_buffer()->signal_insert().connect(
+      sigc::mem_fun(this, &Document::on_insert));
+  erase_conn = _text_view.get_buffer()->signal_erase().connect(
+      sigc::mem_fun(*this, &Document::on_erase));
 
-  _text_view.signal_populate_popup().connect(sigc::mem_fun(*this, &Document::on_populate_popup_cb));
-  _text_view.get_buffer()->signal_mark_set().connect(sigc::mem_fun(*this, &Document::on_mark_set_cb));
+  _text_view.signal_populate_popup().connect(
+      sigc::mem_fun(*this, &Document::on_populate_popup_cb));
+  _text_view.get_buffer()->signal_mark_set().connect(
+      sigc::mem_fun(*this, &Document::on_mark_set_cb));
 
-  _text_view.signal_text_view_request_file_open.connect(sigc::mem_fun(*this, &Document::signal_text_view_request_file_open_cb));
+  _text_view.signal_text_view_request_file_open.connect(
+      sigc::mem_fun(*this, &Document::signal_text_view_request_file_open_cb));
 
   // TODO: How can one access the move-cursor signal ?
-  __on_move_cursor = g_signal_connect_after(G_OBJECT(_text_view.gobj()),
-					    "move-cursor",
-					    G_CALLBACK (_on_move_cursor),
-					    this);
-  __on_toggle_overwrite = g_signal_connect (G_OBJECT(_text_view.gobj()),
-					    "toggle-overwrite",
-					    G_CALLBACK (_on_toggle_overwrite),
-					    this);
+  __on_move_cursor =
+      g_signal_connect_after(G_OBJECT(_text_view.gobj()), "move-cursor",
+                             G_CALLBACK(_on_move_cursor), this);
+  __on_toggle_overwrite =
+      g_signal_connect(G_OBJECT(_text_view.gobj()), "toggle-overwrite",
+                       G_CALLBACK(_on_toggle_overwrite), this);
 }
 
 bool Document::has_selection() {
@@ -244,19 +235,17 @@ void Document::block_do() {
   do_undo = false;
 }
 
-void Document::unblock_do() {
-  do_undo = true;
-}
+void Document::unblock_do() { do_undo = true; }
 
 void Document::clear_do() {
   clear_do(_undo);
   clear_do(_redo);
 }
 
-void Document::clear_do(std::vector<KatoobDoElem *>& v) {
+void Document::clear_do(std::vector<KatoobDoElem *> &v) {
   while (true) {
     if (v.size() == 0) {
-	break;
+      break;
     }
     KatoobDoElem *e = v.back();
     v.pop_back();
@@ -265,18 +254,22 @@ void Document::clear_do(std::vector<KatoobDoElem *>& v) {
 }
 
 int Document::get_line_count() {
-  return _text_view.get_buffer()->get_char_count() ? _text_view.get_buffer()->get_line_count() : 0;
+  return _text_view.get_buffer()->get_char_count()
+             ? _text_view.get_buffer()->get_line_count()
+             : 0;
 }
 
-bool Document::create(const std::string& str) {
+bool Document::create(const std::string &str) {
   if (!Utils::create_recovery_file(_tmp_file, _tmp_file_fd)) {
-    katoob_error(Utils::substitute(_("Failed to create the autorecovery file %s"), _tmp_file));
+    katoob_error(Utils::substitute(
+        _("Failed to create the autorecovery file %s"), _tmp_file));
     return false;
   }
 
   std::string error;
   if (!Utils::lock_file(_tmp_file_fd, error)) {
-    katoob_error(Utils::substitute("Failed to lock the temporary file: %s", error));
+    katoob_error(
+        Utils::substitute("Failed to lock the temporary file: %s", error));
     return false;
   }
 
@@ -287,26 +280,25 @@ bool Document::create(const std::string& str) {
     return true;
   }
 
-  // We must connect the signals first so that the spell checker can create its lines
-  // We will block do_undo
+  // We must connect the signals first so that the spell checker can create its
+  // lines We will block do_undo
   if (do_undo) {
     do_undo = false;
-    set_text(const_cast<std::string&>(str));
+    set_text(const_cast<std::string &>(str));
     do_undo = true;
-  }
-  else {
-    set_text(const_cast<std::string&>(str));
+  } else {
+    set_text(const_cast<std::string &>(str));
   }
 
   return true;
 }
 
-void Document::set_text(std::string& str) {
+void Document::set_text(std::string &str) {
   _text_view.get_buffer()->set_text(str);
 }
 
 void Document::create_ui() {
-  _text_view.signal_expose_event().connect(sigc::mem_fun(*this, &Document::expose_event_cb));
+  _text_view.signal_draw().connect(sigc::mem_fun(*this, &Document::draw));
 
   //#ifdef ENABLE_HIGHLIGHT
   //  _text_view.set_buffer(SourceBuffer::create());
@@ -317,7 +309,7 @@ void Document::create_ui() {
   set_shadow_type(Gtk::SHADOW_IN);
   _text_view.set_left_margin(10);
   _text_view.set_right_margin(10);
-  _text_view.set_flags(Gtk::CAN_FOCUS);
+  _text_view.set_can_focus();
 
   set_readonly(_readonly);
 
@@ -363,17 +355,11 @@ void Document::create_ui() {
   reset_gui();
 }
 
-void Document::grab_focus() {
-  _text_view.grab_focus();
-}
+void Document::grab_focus() { _text_view.grab_focus(); }
 
-bool Document::has_focus() {
-  return _text_view.has_focus();
-}
+bool Document::has_focus() { return _text_view.has_focus(); }
 
-bool Document::save() {
-  return save(_file, _encoding, false);
-}
+bool Document::save() { return save(_file, _encoding, false); }
 
 void Document::set_modified(bool m) {
   if (_text_view.get_buffer()->get_modified() != m) {
@@ -392,11 +378,12 @@ void Document::scroll_to(int x) {
   _text_view.get_buffer()->place_cursor(iter);
   _text_view.scroll_to(iter);
   /*
-    _text_view.get_buffer()->move_mark(_text_view.get_buffer()->get_insert(), iter);
+    _text_view.get_buffer()->move_mark(_text_view.get_buffer()->get_insert(),
+    iter);
   */
 }
 
-bool Document::save(std::string& ofile, int enc, bool replace) {
+bool Document::save(std::string &ofile, int enc, bool replace) {
   std::string txt = _text_view.get_buffer()->get_text();
   std::string str, err;
 
@@ -404,50 +391,45 @@ bool Document::save(std::string& ofile, int enc, bool replace) {
     if (Utils::katoob_write(_conf, ofile, txt, err)) {
       set_modified(false);
       if (replace) {
-	set_readonly(false);
-	set_file(ofile);
+        set_readonly(false);
+        set_file(ofile);
       }
       return true;
-    }
-    else {
+    } else {
       katoob_error(err);
       return false;
     }
-  }
-  else if (_encodings.convert_from(txt, str, enc) != -1) {
+  } else if (_encodings.convert_from(txt, str, enc) != -1) {
     if (Utils::katoob_write(_conf, ofile, str, err)) {
       set_modified(false);
       if (replace) {
-	set_readonly(false);
-	set_file(ofile);
+        set_readonly(false);
+        set_file(ofile);
 
-	// NOTE: We are doing it manually without calling set_encoding() because it will also mark
-	// the Document as modified but it's not.
-	_encoding = enc;
-	signal_encoding_changed.emit(enc);
+        // NOTE: We are doing it manually without calling set_encoding() because
+        // it will also mark the Document as modified but it's not.
+        _encoding = enc;
+        signal_encoding_changed.emit(enc);
       }
       return true;
-    }
-    else {
+    } else {
       katoob_error(err);
       return false;
     }
-  }
-  else {
+  } else {
     katoob_error(str);
     return false;
   }
 }
 
-void Document::set_file(std::string& nfile) {
+void Document::set_file(std::string &nfile) {
   _file = nfile;
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   std::string f;
   try {
     f = Glib::filename_to_utf8(Glib::path_get_basename(nfile));
-  }
-  catch (...) {
+  } catch (...) {
     // We shouldn't be here.
     f = Glib::filename_display_basename(nfile);
   }
@@ -455,7 +437,7 @@ void Document::set_file(std::string& nfile) {
   std::unique_ptr<Glib::Error> error;
   std::string f = Glib::filename_to_utf8(Glib::path_get_basename(nfile), error);
   if (error.get()) {
-  // We should not be getting here anyway but just in case ?
+    // We should not be getting here anyway but just in case ?
     f = Glib::filename_display_basename(nfile);
   }
 #endif
@@ -465,10 +447,13 @@ void Document::set_file(std::string& nfile) {
   signal_title_changed.emit(f);
 }
 
-void Document::on_insert(const Gtk::TextBuffer::iterator& iter , const Glib::ustring& str, int len) {
+void Document::on_insert(const Gtk::TextBuffer::iterator &iter,
+                         const Glib::ustring &str, int len) {
   // Let's add to our undo stack.
   if (do_undo) {
-    undo(KATOOB_DO_INSERT, str, Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())->get_mark_insert_position());
+    undo(KATOOB_DO_INSERT, str,
+         Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())
+             ->get_mark_insert_position());
   }
 
   spell_checker_on_insert(iter, len);
@@ -478,9 +463,11 @@ void Document::on_insert(const Gtk::TextBuffer::iterator& iter , const Glib::ust
   signal_modified_set.emit(true);
 }
 
-void Document::on_erase(const Gtk::TextBuffer::iterator& start, const Gtk::TextBuffer::iterator& end) {
+void Document::on_erase(const Gtk::TextBuffer::iterator &start,
+                        const Gtk::TextBuffer::iterator &end) {
   if (do_undo) {
-    Glib::RefPtr<TextBuffer> b =  Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer());
+    Glib::RefPtr<TextBuffer> b =
+        Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer());
     undo(KATOOB_DO_DELETE, b->get_deleted(), start.get_offset());
     b->clear_deleted();
   }
@@ -492,9 +479,9 @@ void Document::on_erase(const Gtk::TextBuffer::iterator& start, const Gtk::TextB
   signal_modified_set.emit(true);
 }
 
-void Document::on_mark_set_cb(const Gtk::TextBuffer::iterator& KATOOB_UNUSED(iter),
-                              const Glib::RefPtr<Gtk::TextBuffer::Mark>& mark)
-{
+void Document::on_mark_set_cb(
+    const Gtk::TextBuffer::iterator &KATOOB_UNUSED(iter),
+    const Glib::RefPtr<Gtk::TextBuffer::Mark> &mark) {
   if ((mark) && (mark == _text_view.get_buffer()->get_insert())) {
     on_move_cursor();
   }
@@ -507,11 +494,12 @@ void Document::on_toggle_overwrite() {
 }
 
 void Document::on_move_cursor() {
-  Gtk::TextIter iter = _text_view.get_buffer()->get_iter_at_mark(_text_view.get_buffer()->get_insert());
-  signal_cursor_moved.emit(calculate_column(iter)+1, iter.get_line()+1);
+  Gtk::TextIter iter = _text_view.get_buffer()->get_iter_at_mark(
+      _text_view.get_buffer()->get_insert());
+  signal_cursor_moved.emit(calculate_column(iter) + 1, iter.get_line() + 1);
 }
 
-int Document::calculate_column(Gtk::TextIter& iter) {
+int Document::calculate_column(Gtk::TextIter &iter) {
   // TODO: How to get the actual tab width ?
 
   int column = 0;
@@ -527,7 +515,7 @@ int Document::calculate_column(Gtk::TextIter& iter) {
   return column;
 }
 
-void Document::insert(const std::string& str) {
+void Document::insert(const std::string &str) {
   _text_view.get_buffer()->insert_at_cursor(str);
 }
 
@@ -559,15 +547,14 @@ void Document::redo() {
   redo(e);
 
   int x = _redo.size();
-  if(x == 0) {
+  if (x == 0) {
     signal_can_redo.emit(false);
-  }
-  else if (x == 1) {
+  } else if (x == 1) {
     signal_can_redo.emit(true);
   }
 }
 
-void Document::undo(KatoobDoType a, const std::string& t, int p) {
+void Document::undo(KatoobDoType a, const std::string &t, int p) {
   KatoobDoElem *e = new KatoobDoElem(a, t, p);
   _undo.push_back(e);
   if (_undo.size() == 1) {
@@ -602,8 +589,7 @@ void Document::redo(KatoobDoElem *e) {
     n += Glib::ustring(e->text()).size();
     iter2.set_offset(n);
     _text_view.get_buffer()->erase(iter, iter2);
-  }
-  else {
+  } else {
     // We will insert.
     _text_view.get_buffer()->insert(iter, e->text());
   }
@@ -647,8 +633,7 @@ void Document::undo(KatoobDoElem *e) {
     n += Glib::ustring(e->text()).size();
     iter2.set_offset(n);
     _text_view.get_buffer()->erase(iter, iter2);
-  }
-  else {
+  } else {
     // We will insert.
     _text_view.get_buffer()->insert(iter, e->text());
   }
@@ -680,51 +665,48 @@ void Document::undo(KatoobDoElem *e) {
   }
 }
 
-void Document::get_lines(std::vector<std::string>& l, int x, int y) {
+void Document::get_lines(std::vector<std::string> &l, int x, int y) {
   Gtk::TextIter start, end;
 
   if (x == -1) {
     start = _text_view.get_buffer()->begin();
-  }
-  else {
+  } else {
     start = _text_view.get_buffer()->get_iter_at_line(x);
   }
 
   if (y == -1) {
     end = _text_view.get_buffer()->end();
-  }
-  else {
+  } else {
     end = _text_view.get_buffer()->get_iter_at_line(y);
   }
   get_lines(start, end, l);
 }
 
-void Document::get_lines(std::vector<Glib::ustring>& l, int x, int y) {
+void Document::get_lines(std::vector<Glib::ustring> &l, int x, int y) {
   Gtk::TextIter start, end;
 
   if (x == -1) {
     start = _text_view.get_buffer()->begin();
-  }
-  else {
+  } else {
     start = _text_view.get_buffer()->get_iter_at_line(x);
   }
 
   if (y == -1) {
     end = _text_view.get_buffer()->end();
-  }
-  else {
+  } else {
     end = _text_view.get_buffer()->get_iter_at_line(y);
   }
   get_lines(start, end, l);
 }
 
-void Document::get_selection(std::vector<std::string>& l) {
+void Document::get_selection(std::vector<std::string> &l) {
   Gtk::TextIter start, end;
   _text_view.get_buffer()->get_bounds(start, end);
   get_lines(start, end, l);
 }
 
-void Document::get_lines(Gtk::TextIter& start, Gtk::TextIter& end, std::vector<std::string>& l) {
+void Document::get_lines(Gtk::TextIter &start, Gtk::TextIter &end,
+                         std::vector<std::string> &l) {
   Gtk::TextIter dummy;
   while (start <= end) {
     dummy = start;
@@ -740,7 +722,8 @@ void Document::get_lines(Gtk::TextIter& start, Gtk::TextIter& end, std::vector<s
   }
 }
 
-void Document::get_lines(Gtk::TextIter& start, Gtk::TextIter& end, std::vector<Glib::ustring>& l) {
+void Document::get_lines(Gtk::TextIter &start, Gtk::TextIter &end,
+                         std::vector<Glib::ustring> &l) {
   Gtk::TextIter dummy;
   while (start <= end) {
     dummy = start;
@@ -760,8 +743,8 @@ void Document::select_all() {
   Gtk::TextIter start, end;
 
   _text_view.get_buffer()->get_bounds(start, end);
-  _text_view.get_buffer()->move_mark_by_name ("selection_bound", start);
-  _text_view.get_buffer()->move_mark_by_name ("insert", end);
+  _text_view.get_buffer()->move_mark_by_name("selection_bound", start);
+  _text_view.get_buffer()->move_mark_by_name("insert", end);
 }
 
 void Document::set_wrap_text(bool wrap) {
@@ -769,48 +752,46 @@ void Document::set_wrap_text(bool wrap) {
 }
 
 void Document::line_numbers(bool show) {
-// #ifdef ENABLE_HIGHLIGHT
-//   //  _text_view.set_show_line_numbers(show);
-//   // If we will be showing it on the left side then we need to inform gtksourceview.
+  // #ifdef ENABLE_HIGHLIGHT
+  //   //  _text_view.set_show_line_numbers(show);
+  //   // If we will be showing it on the left side then we need to inform
+  //   gtksourceview.
 
-//   _line_numbers = show;
+  //   _line_numbers = show;
 
-//   if (show) {
-//     if (_conf.get("numbers_right", true)) {
-//       _text_view.set_border_window_size(numbers_right, 20);
-//     }
-//     else {
-//       _text_view.set_border_window_size(numbers_right, 0);
-//     }
-//     if (_conf.get("numbers_left", true)) {
-//       _text_view.se_left_line_numbers(true);
-//     }
-//     else {
-//       _text_view.se_left_line_numbers(false);
-//     }
-//   }
-//   else {
-//     _text_view.set_border_window_size(numbers_right, 0);
-//     _text_view.se_left_line_numbers(false);
-//   }
-//#else
+  //   if (show) {
+  //     if (_conf.get("numbers_right", true)) {
+  //       _text_view.set_border_window_size(numbers_right, 20);
+  //     }
+  //     else {
+  //       _text_view.set_border_window_size(numbers_right, 0);
+  //     }
+  //     if (_conf.get("numbers_left", true)) {
+  //       _text_view.se_left_line_numbers(true);
+  //     }
+  //     else {
+  //       _text_view.se_left_line_numbers(false);
+  //     }
+  //   }
+  //   else {
+  //     _text_view.set_border_window_size(numbers_right, 0);
+  //     _text_view.se_left_line_numbers(false);
+  //   }
+  //#else
   _line_numbers = show;
 
   if (show) {
     if (_conf.get("numbers_right", true)) {
       _text_view.set_border_window_size(numbers_right, 20);
-    }
-    else {
+    } else {
       _text_view.set_border_window_size(numbers_right, 0);
     }
     if (_conf.get("numbers_left", true)) {
       _text_view.set_border_window_size(numbers_left, 20);
-    }
-    else {
+    } else {
       _text_view.set_border_window_size(numbers_left, 0);
     }
-  }
-  else {
+  } else {
     _text_view.set_border_window_size(numbers_right, 0);
     _text_view.set_border_window_size(numbers_left, 0);
   }
@@ -832,7 +813,8 @@ void Document::emit_signals() {
 
   signal_highlight_set.emit(_highlight);
 
-  signal_wrap_text_set.emit((_text_view.get_wrap_mode() == Gtk::WRAP_NONE ? false : true));
+  signal_wrap_text_set.emit(
+      (_text_view.get_wrap_mode() == Gtk::WRAP_NONE ? false : true));
   signal_line_numbers_set.emit(_line_numbers);
 }
 
@@ -842,8 +824,7 @@ bool Document::search() {
   if (_search_match_case) {
     // Gtk will handle this.
     return gtk_search();
-  }
-  else {
+  } else {
     return nongtk_search();
   }
 }
@@ -853,52 +834,52 @@ bool Document::gtk_search() {
   bool found;
   Gtk::TextIter iter, start, end;
   while (true) {
-    if (_search_from_beginning)
-      {
-	if (_search_backwards) {
-	  iter = _text_view.get_buffer()->end();
-	}
-	else {
-	  iter = _text_view.get_buffer()->begin();
-	}
+    if (_search_from_beginning) {
+      if (_search_backwards) {
+        iter = _text_view.get_buffer()->end();
+      } else {
+        iter = _text_view.get_buffer()->begin();
       }
-    else {
+    } else {
       Gtk::TextIter dummy1, dummy2;
       if (_text_view.get_buffer()->get_selection_bounds(dummy1, dummy2)) {
-	if (_search_backwards) {
-	  iter = dummy1;
-	}
-	else {
-	  iter = dummy2;
-	}
-      }
-      else {
-	iter = _text_view.get_buffer()->get_iter_at_mark(_text_view.get_buffer()->get_insert());
+        if (_search_backwards) {
+          iter = dummy1;
+        } else {
+          iter = dummy2;
+        }
+      } else {
+        iter = _text_view.get_buffer()->get_iter_at_mark(
+            _text_view.get_buffer()->get_insert());
       }
     }
 
     if (_search_backwards) {
-      found = iter.backward_search(_search_text, Gtk::TextSearchFlags(Gtk::TEXT_SEARCH_TEXT_ONLY|Gtk::TEXT_SEARCH_VISIBLE_ONLY), start, end);
-    }
-    else {
-      found = iter.forward_search(_search_text, Gtk::TextSearchFlags(Gtk::TEXT_SEARCH_TEXT_ONLY|Gtk::TEXT_SEARCH_VISIBLE_ONLY), start, end);
+      found = iter.backward_search(
+          _search_text,
+          Gtk::TextSearchFlags(Gtk::TEXT_SEARCH_TEXT_ONLY |
+                               Gtk::TEXT_SEARCH_VISIBLE_ONLY),
+          start, end);
+    } else {
+      found = iter.forward_search(
+          _search_text,
+          Gtk::TextSearchFlags(Gtk::TEXT_SEARCH_TEXT_ONLY |
+                               Gtk::TEXT_SEARCH_VISIBLE_ONLY),
+          start, end);
     }
 
     if ((found) && ((_search_whole_word) && (is_whole_word(start, end)))) {
       highlight(start, end);
       _search_from_beginning = false;
       return true;
-    }
-    else if ((found) && (!_search_whole_word)) {
+    } else if ((found) && (!_search_whole_word)) {
       highlight(start, end);
       _search_from_beginning = false;
       return true;
-    }
-    else if ((_search_wrap) && (!_search_from_beginning)) {
+    } else if ((_search_wrap) && (!_search_from_beginning)) {
       _search_from_beginning = true;
       return gtk_search();
-    }
-    else {
+    } else {
       return false;
     }
   }
@@ -930,32 +911,38 @@ bool Document::nongtk_search() {
   while (true) {
     if (_search_from_beginning) {
       if (_search_backwards) {
-	iter = buffer->end();
+        iter = buffer->end();
+      } else {
+        iter = buffer->begin();
       }
-      else {
-	iter = buffer->begin();
-      }
-    }
-    else {
+    } else {
       Gtk::TextIter dummy1, dummy2;
       if (_text_view.get_buffer()->get_selection_bounds(dummy1, dummy2)) {
-	if (_search_backwards) {
-	  iter.set_offset(dummy1.get_offset());
-	}
-	else {
-	  iter.set_offset(dummy2.get_offset());
-	}
-      }
-      else {
-	iter.set_offset(_text_view.get_buffer()->get_iter_at_mark(_text_view.get_buffer()->get_insert()).get_offset());
+        if (_search_backwards) {
+          iter.set_offset(dummy1.get_offset());
+        } else {
+          iter.set_offset(dummy2.get_offset());
+        }
+      } else {
+        iter.set_offset(
+            _text_view.get_buffer()
+                ->get_iter_at_mark(_text_view.get_buffer()->get_insert())
+                .get_offset());
       }
     }
 
     if (_search_backwards) {
-      found = iter.backward_search(s, Gtk::TextSearchFlags(Gtk::TEXT_SEARCH_TEXT_ONLY|Gtk::TEXT_SEARCH_VISIBLE_ONLY), start, end);
-    }
-    else {
-      found = iter.forward_search(s, Gtk::TextSearchFlags(Gtk::TEXT_SEARCH_TEXT_ONLY|Gtk::TEXT_SEARCH_VISIBLE_ONLY), start, end);
+      found = iter.backward_search(
+          s,
+          Gtk::TextSearchFlags(Gtk::TEXT_SEARCH_TEXT_ONLY |
+                               Gtk::TEXT_SEARCH_VISIBLE_ONLY),
+          start, end);
+    } else {
+      found = iter.forward_search(
+          s,
+          Gtk::TextSearchFlags(Gtk::TEXT_SEARCH_TEXT_ONLY |
+                               Gtk::TEXT_SEARCH_VISIBLE_ONLY),
+          start, end);
     }
 
     if (found) {
@@ -966,31 +953,27 @@ bool Document::nongtk_search() {
       highlight(_start, _end);
       _search_from_beginning = false;
       return true;
-    }
-    else if ((found) && (!_search_whole_word)) {
+    } else if ((found) && (!_search_whole_word)) {
       highlight(_start, _end);
       _search_from_beginning = false;
       return true;
-    }
-    else if ((_search_wrap) && (!_search_from_beginning)) {
+    } else if ((_search_wrap) && (!_search_from_beginning)) {
       _search_from_beginning = true;
       return nongtk_search();
-    }
-    else {
+    } else {
       return false;
     }
   }
 }
 
-void Document::highlight(Gtk::TextIter& start, Gtk::TextIter& end) {
+void Document::highlight(Gtk::TextIter &start, Gtk::TextIter &end) {
   _text_view.get_buffer()->place_cursor(start);
-  _text_view.get_buffer()->move_mark(_text_view.get_buffer()->get_insert(), end);
+  _text_view.get_buffer()->move_mark(_text_view.get_buffer()->get_insert(),
+                                     end);
   _text_view.scroll_to(end);
 }
 
-bool Document::search_next() {
-  return search();
-}
+bool Document::search_next() { return search(); }
 
 void Document::replace() {
   Gtk::TextIter _s, _e;
@@ -1005,41 +988,59 @@ void Document::replace() {
   }
 }
 
-bool Document::expose_event_cb(GdkEventExpose *event) {
+bool Document::draw(const Cairo::RefPtr<Cairo::Context> &cairoContext) {
   if (!_line_numbers) {
     return false;
   }
+
   // TODO: Should we connect/disconnect this when needed since the spell
   // is handled by an idle worker ??
 
-  Glib::RefPtr<Gdk::Window> wl = _text_view.get_window(numbers_left);
-  Glib::RefPtr<Gdk::Window> wr = _text_view.get_window(numbers_right);
+  // Glib::RefPtr<Gdk::Window> wl = _text_view.get_window(numbers_left);
+  // Glib::RefPtr<Gdk::Window> wr = _text_view.get_window(numbers_right);
 
-  if ((!wl) && (!wr)) {
-    return false;
+  // if ((!wl) && (!wr)) {
+  //   return false;
+  // }
+
+  // if ((wl) && (wl->gobj() == event->window)) {
+  //   paint_line_numbers(wl, event);
+  // }
+
+  // if ((wr) && (wr->gobj() == event->window)) {
+  //   paint_line_numbers(wr, event);
+  // }
+
+  auto windowLeft = _text_view.get_window(numbers_left);
+  if (Gtk::Widget::should_draw_window(cairoContext, windowLeft)) {
+    cairoContext->save();
+    transform_cairo_context_to_window(cairoContext, windowLeft);
+    paint_line_numbers(windowLeft, cairoContext);
+    cairoContext->restore();
   }
 
-  // left.
-  if ((wl) && (wl->gobj() == event->window)) {
-    paint_line_numbers(wl, event);
+  auto windowRight = _text_view.get_window(numbers_right);
+  if (Gtk::Widget::should_draw_window(cairoContext, windowRight)) {
+    cairoContext->save();
+    transform_cairo_context_to_window(cairoContext, windowRight);
+    paint_line_numbers(windowRight, cairoContext);
+    cairoContext->restore();
   }
 
-  if ((wr) && (wr->gobj() == event->window)) {
-    paint_line_numbers(wr, event);
-  }
   return false;
 }
 
-void Document::paint_line_numbers(Glib::RefPtr<Gdk::Window>& win,
-                                  GdkEventExpose *KATOOB_UNUSED(event))
-{
+void Document::paint_line_numbers(
+    Glib::RefPtr<Gdk::Window> &win,
+    const Cairo::RefPtr<Cairo::Context> &cairoContext) {
   // Let's get the current line number.
-  int current_line = _text_view
-    .get_buffer()
-    ->get_iter_at_mark(_text_view.get_buffer()->get_insert())
-    .get_line() + 1;
+  int current_line =
+      _text_view.get_buffer()
+          ->get_iter_at_mark(_text_view.get_buffer()->get_insert())
+          .get_line() +
+      1;
 
-  win->clear();
+  win->get_toplevel().clear();
 
   // We need to calculate the maximum width possible.
   Gtk::TextIter end = _text_view.get_buffer()->end();
@@ -1048,7 +1049,8 @@ void Document::paint_line_numbers(Glib::RefPtr<Gdk::Window>& win,
 
   std::stringstream width;
   width << (end.get_line() + 1);
-  Glib::RefPtr<Pango::Layout> layout = _text_view.create_pango_layout(width.str().c_str());
+  Glib::RefPtr<Pango::Layout> layout =
+      _text_view.create_pango_layout(width.str().c_str());
   int size = 0, dummy;
   layout->get_pixel_size(size, dummy);
   _text_view.set_border_window_size(w, size + 4);
@@ -1059,8 +1061,8 @@ void Document::paint_line_numbers(Glib::RefPtr<Gdk::Window>& win,
 
   Gtk::TextIter s, e;
   int top1, top2;
-  _text_view.get_line_at_y (s, rect.get_y(), top1);
-  _text_view.get_line_at_y (e, rect.get_y() + rect.get_height(), top2);
+  _text_view.get_line_at_y(s, rect.get_y(), top1);
+  _text_view.get_line_at_y(e, rect.get_y() + rect.get_height(), top2);
 
   int _s = s.get_line();
   int _e = e.get_line();
@@ -1079,24 +1081,30 @@ void Document::paint_line_numbers(Glib::RefPtr<Gdk::Window>& win,
     if (current_line == x + 1) {
       w = Utils::substitute("<b>%i</b>", ++x);
       layout->set_markup(w.c_str());
-    }
-    else {
+    } else {
       w = Utils::substitute("%i", ++x);
       // NOTE: Why set_text() will keep it bold ?
       layout->set_markup(w.c_str());
     }
 
     // TODO: This one is not working !!!
-    //_text_view.get_style()->paint_layout(win, st, false, rect, _text_view, dummy3, 0, top2, layout);
-    gtk_paint_layout (dynamic_cast<Gtk::Widget&>(_text_view).gobj()->style, win->gobj(), (GtkStateType)GTK_WIDGET_STATE (_text_view.gobj()), FALSE, NULL, dynamic_cast<Gtk::Widget&>(_text_view).gobj(), NULL, 2, top2, layout->gobj());
+    //_text_view.get_style()->paint_layout(win, st, false, rect, _text_view,
+    // dummy3, 0, top2, layout);
+    // gtk_paint_layout(dynamic_cast<Gtk::Widget &>(_text_view).gobj()->style,
+    //                  win->gobj(),
+    //                  (GtkStateType)GTK_WIDGET_STATE(_text_view.gobj()),
+    //                  FALSE, NULL, dynamic_cast<Gtk::Widget
+    //                  &>(_text_view).gobj(), NULL, 2, top2, layout->gobj());
+
+    _text_view.get_style_context()->render_layout(cairoContext, 2, top2,
+                                                  layout);
   }
 }
 
-bool Document::set_encoding(int e, bool convert, std::string& err) {
+bool Document::set_encoding(int e, bool convert, std::string &err) {
   if (!convert) {
     _encoding = e;
-  }
-  else {
+  } else {
     std::string ntxt, txt, t = _text_view.get_buffer()->get_text();
     // Let's get it back to its original encoding.
     if (_encodings.convert_from(t, ntxt, _encoding) != -1) {
@@ -1105,20 +1113,18 @@ bool Document::set_encoding(int e, bool convert, std::string& err) {
 
       // If the new encoding is utf8, We'll just insert it.
       if (e == _encodings.utf8()) {
-	  _encoding = e;
-	  _text_view.get_buffer()->set_text(ntxt);
+        _encoding = e;
+        _text_view.get_buffer()->set_text(ntxt);
       }
       // Now let's convert it to the new encoding.
       else if (_encodings.convert_to(ntxt, txt, e) != -1) {
-	_encoding = e;
-	_text_view.get_buffer()->set_text(txt);
+        _encoding = e;
+        _text_view.get_buffer()->set_text(txt);
+      } else {
+        err = txt;
+        return false;
       }
-      else {
-	err = txt;
-	return false;
-      }
-    }
-    else {
+    } else {
       err = ntxt;
       return false;
     }
@@ -1126,22 +1132,24 @@ bool Document::set_encoding(int e, bool convert, std::string& err) {
 
   signal_encoding_changed.emit(e);
 
-  // We are emitting the signal by ourselves because a change in the encoding is not
-  // considered a modification by Gtk::TextBuffer
+  // We are emitting the signal by ourselves because a change in the encoding is
+  // not considered a modification by Gtk::TextBuffer
   _text_view.get_buffer()->set_modified(true);
   signal_modified_set.emit(true);
 
   // TODO: Do we need to be able to undo/redo the change in the encoding ?
   // If yes:
   // we also need to save the previous encoding.
-  // we also need to account for changes such as not having a file then saving so we will now have one, ... etc.
+  // we also need to account for changes such as not having a file then saving
+  // so we will now have one, ... etc.
   //  if (do_undo)
-  //    undo(KATOOB_DO_ENCODING, str, Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())->get_mark_insert_position());
+  //    undo(KATOOB_DO_ENCODING, str,
+  //    Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())->get_mark_insert_position());
 
   return true;
 }
 
-bool Document::revert(std::string& err) {
+bool Document::revert(std::string &err) {
   std::string contents;
   if (!Utils::katoob_read(_file, contents)) {
     err = contents;
@@ -1150,14 +1158,12 @@ bool Document::revert(std::string& err) {
 
   if (_encoding == _encodings.utf8()) {
     _text_view.get_buffer()->set_text(contents);
-  }
-  else {
+  } else {
     std::string c;
     if (_encodings.convert_to(contents, c, _encoding) == -1) {
       err = c;
       return false;
-    }
-    else {
+    } else {
       _text_view.get_buffer()->set_text(c);
     }
   }
@@ -1170,14 +1176,15 @@ bool Document::revert(std::string& err) {
   return true;
 }
 
-void Document::dict_menu_item_activated(std::string& word) {
+void Document::dict_menu_item_activated(std::string &word) {
   signal_dict_lookup_request.emit(word);
 }
 
 void Document::on_populate_popup_cb(Gtk::Menu *menu) {
   Gtk::TextIter start, end;
 
-  start = _text_view.get_buffer()->get_iter_at_mark(_text_view.get_buffer()->get_insert());
+  start = _text_view.get_buffer()->get_iter_at_mark(
+      _text_view.get_buffer()->get_insert());
   end = start;
 
   if (!start.starts_word()) {
@@ -1190,15 +1197,17 @@ void Document::on_populate_popup_cb(Gtk::Menu *menu) {
 
   if (word.size() > 0) {
     // if the word ends in a new line, we'll get rid of it.
-    if (word[word.size()-1] == '\n') {
-      word = word.substr(0, word.size()-1);
+    if (word[word.size() - 1] == '\n') {
+      word = word.substr(0, word.size() - 1);
     }
-    menu->items().push_back(Gtk::Menu_Helpers::SeparatorElem());
-    Gtk::MenuItem *item;
-    std::string str = _("Define ") + word;
-    menu->items().push_back(Gtk::Menu_Helpers::MenuElem(str));
-    item = &menu->items().back();
-    item->signal_activate().connect(sigc::bind<std::string>(sigc::mem_fun(*this, &Document::dict_menu_item_activated), word));
+    // menu->items().push_back(Gtk::Menu_Helpers::SeparatorElem());
+
+    menu->append(*Gtk::make_managed<Gtk::SeparatorMenuItem>());
+
+    auto defineMenuItem = Gtk::make_managed<Gtk::MenuItem>(_("Define ") + word);
+    defineMenuItem->signal_activate().connect(sigc::bind<std::string>(
+        sigc::mem_fun(*this, &Document::dict_menu_item_activated), word));
+    menu->append(*defineMenuItem);
   }
 
   if (get_readonly()) {
@@ -1208,45 +1217,67 @@ void Document::on_populate_popup_cb(Gtk::Menu *menu) {
   if (do_spell) {
     if (start.has_tag(misspelled_tag)) {
       // Misspelled word.
-      menu->items().push_front(Gtk::Menu_Helpers::SeparatorElem());
-      Gtk::Menu *spell_menu = Gtk::manage( new Gtk::Menu());
-      std::string str(_("Spelling Suggestions"));
+      menu->append(*Gtk::make_managed<Gtk::SeparatorMenuItem>());
+      Glib::ustring str(_("Spelling Suggestions"));
 
-      Gtk::Image *image = Gtk::manage(new Gtk::Image(Gtk::StockID(Gtk::Stock::SPELL_CHECK), Gtk::IconSize(Gtk::ICON_SIZE_MENU)));
-      menu->items().push_front(Gtk::Menu_Helpers::ImageMenuElem(str, *image, *spell_menu));
+      Gtk::Image *image =
+          Gtk::make_managed<Gtk::Image>(Gtk::StockID(Gtk::Stock::SPELL_CHECK),
+                                        Gtk::IconSize(Gtk::ICON_SIZE_MENU));
+
+      auto spellcheckMenuItem =
+          Gtk::make_managed<Gtk::ImageMenuItem>(*image, str);
+
       // Let's build the suggestions menu.
+      auto spellMenu = Gtk::make_managed<Gtk::Menu>();
       std::vector<std::string> suggestions;
       spell.suggest(word, suggestions);
 
+      // TODO: Use bold markup
       str += Utils::substitute(_("Add \"%s\" to dictionary"), word);
-      image = Gtk::manage(new Gtk::Image(Gtk::StockID(Gtk::Stock::ADD), Gtk::IconSize(Gtk::ICON_SIZE_MENU)));
-      spell_menu->items().push_back(Gtk::Menu_Helpers::ImageMenuElem(str, *image));
-      Gtk::MenuItem *item = &spell_menu->items().back();
-      item->signal_activate().connect(sigc::bind<std::string, Gtk::TextIter, Gtk::TextIter>(sigc::mem_fun(*this, &Document::spell_menu_add_to_dictionary_cb), word, start, end));
-      spell_menu->items().push_back(Gtk::Menu_Helpers::SeparatorElem());
+      image = Gtk::make_managed<Gtk::Image>(Gtk::StockID(Gtk::Stock::ADD),
+                                            Gtk::IconSize(Gtk::ICON_SIZE_MENU));
+      auto imageMenuItem = Gtk::make_managed<Gtk::ImageMenuItem>(*image, str);
+      spellMenu->append(*imageMenuItem);
+      imageMenuItem->signal_activate().connect(
+          sigc::bind<std::string, Gtk::TextIter, Gtk::TextIter>(
+              sigc::mem_fun(*this, &Document::spell_menu_add_to_dictionary_cb),
+              word, start, end));
+
+      spellMenu->append(*Gtk::make_managed<Gtk::SeparatorMenuItem>());
 
       if (suggestions.size() == 0) {
-	// TODO: Use italics markup.
-	std::string str = _("no suggestions");
-	spell_menu->items().push_back(Gtk::Menu_Helpers::MenuElem(str));
-	item = &spell_menu->items().back();
-	item->set_sensitive(false);
+        // TODO: Use italics markup.
+        Glib::ustring str = _("No suggestions available");
+        auto textMenuItem = Gtk::make_managed<Gtk::MenuItem>(str);
+        textMenuItem->set_sensitive(false);
+        spellMenu->append(*textMenuItem);
+      } else {
+        for (unsigned x = 0; x < suggestions.size(); x++) {
+          // TODO: Make this configurable ?
+          if ((x != 0) && !(x % 10)) {
+            spellMenu->append(*Gtk::make_managed<Gtk::SeparatorMenuItem>());
+
+            auto spellMenuSub = Gtk::make_managed<Gtk::Menu>();
+            Glib::ustring str(_("More..."));
+
+            auto item = Gtk::make_managed<Gtk::MenuItem>(str);
+            item->set_submenu(*spellMenuSub);
+            spellMenu->append(*item);
+            spellMenu = spellMenuSub;
+          }
+
+          auto item = Gtk::make_managed<Gtk::MenuItem>(suggestions[x]);
+          item->signal_activate().connect(
+              sigc::bind<std::string, std::string, Gtk::TextIter,
+                         Gtk::TextIter>(
+                  sigc::mem_fun(*this, &Document::spell_menu_item_activate_cb),
+                  word, suggestions[x], start, end));
+          spellMenu->append(*item);
+        }
       }
-      else {
-	for (unsigned x = 0; x < suggestions.size(); x++) {
-	  // TODO: Make this configurable ?
-	  if ((x != 0) && !(x%10)) {
-	    spell_menu->items().push_back(Gtk::Menu_Helpers::SeparatorElem());
-	    Gtk::Menu *spell_menu_sub = Gtk::manage( new Gtk::Menu());
-	    std::string str(_("More..."));
-	    spell_menu->items().push_back(Gtk::Menu_Helpers::MenuElem(str, *spell_menu_sub));
-	    spell_menu = spell_menu_sub;
-	  }
-	  spell_menu->items().push_back(Gtk::Menu_Helpers::MenuElem(suggestions[x]));
-	  item = &spell_menu->items().back();
-	  item->signal_activate().connect(sigc::bind<std::string, std::string, Gtk::TextIter, Gtk::TextIter>(sigc::mem_fun(*this, &Document::spell_menu_item_activate_cb), word, suggestions[x], start, end));
-	}
-      }
+
+      spellcheckMenuItem->set_submenu(*spellMenu);
+      menu->append(*spellcheckMenuItem);
     }
   }
 }
@@ -1254,10 +1285,11 @@ void Document::on_populate_popup_cb(Gtk::Menu *menu) {
 void Document::spell_checker_connect_worker() {
   if (do_spell) {
     if (!spell_worker_conn.connected()) {
-      spell_worker_conn = Glib::signal_idle().connect(sigc::mem_fun(*this, &Document::spell_checker_worker), G_PRIORITY_LOW);
+      spell_worker_conn = Glib::signal_idle().connect(
+          sigc::mem_fun(*this, &Document::spell_checker_worker),
+          G_PRIORITY_LOW);
     }
-  }
-  else {
+  } else {
     if (spell_worker_conn.connected()) {
       spell_worker_conn.disconnect();
     }
@@ -1291,18 +1323,16 @@ bool Document::spell_checker_has_lines() {
   return false;
 }
 
-void Document::spell_checker_on_insert(const Gtk::TextIter& iter,
-                                       int KATOOB_UNUSED(len))
-{
-  int pos = Glib::RefPtr<TextBuffer>::cast_dynamic
-    (_text_view.get_buffer())->get_mark_insert_line();
+void Document::spell_checker_on_insert(const Gtk::TextIter &iter,
+                                       int KATOOB_UNUSED(len)) {
+  int pos = Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())
+                ->get_mark_insert_line();
   int end = iter.get_line();
   if (pos == end) {
     // TODO: There's a possibility it might be valid if the line contains
     // White spaces for example.
     lines[pos] = true;
-  }
-  else {
+  } else {
     // Let's insert the lines.
     std::vector<bool>::iterator lines_iter = lines.begin();
     lines_iter += pos;
@@ -1312,17 +1342,15 @@ void Document::spell_checker_on_insert(const Gtk::TextIter& iter,
   }
 }
 
-void Document::spell_checker_on_erase(const Gtk::TextIter& KATOOB_UNUSED(start),
-                                      const Gtk::TextIter& end)
-{
+void Document::spell_checker_on_erase(const Gtk::TextIter &KATOOB_UNUSED(start),
+                                      const Gtk::TextIter &end) {
   unsigned s = end.get_line();
-  unsigned e = Glib::RefPtr<TextBuffer>::cast_dynamic
-    (_text_view.get_buffer())->get_erase_line();
+  unsigned e = Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())
+                   ->get_erase_line();
 
   if (s == e) {
     lines[s] = true;
-  }
-  else {
+  } else {
     std::vector<bool>::iterator _s, _e;
     _s = _e = lines.begin();
     _s += s;
@@ -1338,7 +1366,7 @@ void Document::spell_checker_on_erase(const Gtk::TextIter& KATOOB_UNUSED(start),
   // invalidate the word.
 }
 
-void Document::spell_checker_get_line(Gtk::TextIter& iter) {
+void Document::spell_checker_get_line(Gtk::TextIter &iter) {
   for (unsigned x = 0; x < lines.size(); x++) {
     if (lines[x]) {
       iter = _text_view.get_buffer()->get_iter_at_line(x);
@@ -1398,7 +1426,7 @@ void Document::spell_checker_get_line(Gtk::TextIter& iter) {
 #endif
 }
 
-void Document::spell_checker_check(const Gtk::TextIter& iter) {
+void Document::spell_checker_check(const Gtk::TextIter &iter) {
   Gtk::TextIter start = iter, end = iter;
 
   start.set_line_offset(0);
@@ -1407,22 +1435,24 @@ void Document::spell_checker_check(const Gtk::TextIter& iter) {
     end.forward_to_line_end();
   }
 
-  //  std::cout << "ENTERING " << start.get_line() << ":" << start.get_line_offset() << " " << end.get_line() << ":" << end.get_line_offset() << std::endl;
+  //  std::cout << "ENTERING " << start.get_line() << ":" <<
+  //  start.get_line_offset() << " " << end.get_line() << ":" <<
+  //  end.get_line_offset() << std::endl;
   /*
   if (!start.starts_word())
     {
       std::cout << "Doesn't start a word" << std::endl;
       if (start.inside_word() || start.ends_word())
-	{
-	  std::cout << "inside or ends" << std::endl;
-	  start.backward_word_start();
-	}
+        {
+          std::cout << "inside or ends" << std::endl;
+          start.backward_word_start();
+        }
       else // probably a white space.
-	{
-	  std::cout << "White space" << std::endl;
-	  if (start.forward_word_end())
-	    start.backward_word_start();
-	}
+        {
+          std::cout << "White space" << std::endl;
+          if (start.forward_word_end())
+            start.backward_word_start();
+        }
     }
 
   */
@@ -1443,37 +1473,41 @@ void Document::spell_checker_check(const Gtk::TextIter& iter) {
   }
 }
 
-bool Document::spell_dialog_helper_check(std::string& word) {
+bool Document::spell_dialog_helper_check(std::string &word) {
   return spell.check(word);
 }
 
-void Document::spell_dialog_helper_replace(std::string& old_word, std::string& new_word) {
+void Document::spell_dialog_helper_replace(std::string &old_word,
+                                           std::string &new_word) {
   spell.replace(old_word, new_word);
   Gtk::TextIter s, e;
   _text_view.get_buffer()->get_selection_bounds(s, e);
   _text_view.get_buffer()->erase(s, e);
   _text_view.get_buffer()->insert_at_cursor(new_word);
   _spell_end = _text_view.get_buffer()->end();
-  _spell_start = _text_view.get_buffer()->get_iter_at_mark(_text_view.get_buffer()->get_insert());
+  _spell_start = _text_view.get_buffer()->get_iter_at_mark(
+      _text_view.get_buffer()->get_insert());
 }
 
-void Document::spell_dialog_helper_add_to_personal(std::string& old_word) {
+void Document::spell_dialog_helper_add_to_personal(std::string &old_word) {
   spell.to_personal(old_word);
   Gtk::TextIter s, e;
   _text_view.get_buffer()->get_selection_bounds(s, e);
   _text_view.get_buffer()->remove_tag(misspelled_tag, s, e);
 }
 
-void Document::spell_dialog_helper_add_to_session(std::string& old_word) {
+void Document::spell_dialog_helper_add_to_session(std::string &old_word) {
   spell.to_session(old_word);
   Gtk::TextIter s, e;
   _text_view.get_buffer()->get_selection_bounds(s, e);
   _text_view.get_buffer()->remove_tag(misspelled_tag, s, e);
 }
 
-bool Document::spell_dialog_helper_has_misspelled(std::string& word) {
-  while (spell_checker_get_next(_spell_start, _spell_end, word, __spell_start, __spell_end)) {
-    if (!spell_checker_check_word(_spell_start, word, __spell_start, __spell_end, false)) {
+bool Document::spell_dialog_helper_has_misspelled(std::string &word) {
+  while (spell_checker_get_next(_spell_start, _spell_end, word, __spell_start,
+                                __spell_end)) {
+    if (!spell_checker_check_word(_spell_start, word, __spell_start,
+                                  __spell_end, false)) {
       return true;
     }
   }
@@ -1489,7 +1523,8 @@ void Document::spell_dialog_helper_recheck() {
   }
 }
 
-void Document::spell_dialog_helper_get_suggestions(std::string& word, std::vector<std::string>& suggestions) {
+void Document::spell_dialog_helper_get_suggestions(
+    std::string &word, std::vector<std::string> &suggestions) {
   spell.suggest(word, suggestions);
 }
 
@@ -1497,7 +1532,8 @@ void Document::spell_dialog_mode() {
   _text_view.get_buffer()->get_bounds(_spell_start, _spell_end);
 }
 
-bool Document::spell_checker_get_next(Gtk::TextIter& start, Gtk::TextIter& end, std::string& _word, int& s, int& e) {
+bool Document::spell_checker_get_next(Gtk::TextIter &start, Gtk::TextIter &end,
+                                      std::string &_word, int &s, int &e) {
   //  std::cout << "spell_checker_get_next" << std::endl;
   /*
     if (!start.starts_word())
@@ -1506,16 +1542,16 @@ bool Document::spell_checker_get_next(Gtk::TextIter& start, Gtk::TextIter& end, 
     if (start.inside_word() || start.ends_word())
     {
     std::cout << "inside or ends" << std::endl;
-	  if (start.get_offset() == 0)
-	  start.backward_word_start();
-	  }
-	  else // probably a white space.
-	  {
-	  std::cout << "White space" << std::endl;
+          if (start.get_offset() == 0)
+          start.backward_word_start();
+          }
+          else // probably a white space.
+          {
+          std::cout << "White space" << std::endl;
           if (start.forward_word_end())
-	  start.backward_word_start();
-	  }
-	  }
+          start.backward_word_start();
+          }
+          }
 
 
   */
@@ -1530,14 +1566,13 @@ bool Document::spell_checker_get_next(Gtk::TextIter& start, Gtk::TextIter& end, 
       //	  std::cout << "inside or ends" << std::endl;
       //	  if (start.get_offset() == 0)
       if (start.forward_word_end()) {
-	start.backward_word_start();
+        start.backward_word_start();
       }
-    }
-    else {
+    } else {
       // probably a white space.
       //	  std::cout << "White space" << std::endl;
       if (start.forward_word_end()) {
-	start.backward_word_start();
+        start.backward_word_start();
       }
     }
   }
@@ -1562,9 +1597,9 @@ bool Document::spell_checker_get_next(Gtk::TextIter& start, Gtk::TextIter& end, 
   return true;
 }
 
-bool Document::spell_checker_check_word(const Gtk::TextIter& iter,
-                                        std::string& word,
-                                        int& s, int& e, bool mark) {
+bool Document::spell_checker_check_word(const Gtk::TextIter &iter,
+                                        std::string &word, int &s, int &e,
+                                        bool mark) {
   Gtk::TextIter _s = iter, _e = iter;
   _s.set_offset(s);
   _e.set_offset(e);
@@ -1574,12 +1609,10 @@ bool Document::spell_checker_check_word(const Gtk::TextIter& iter,
   if (mark) {
     if (!st) {
       _text_view.get_buffer()->apply_tag(misspelled_tag, _s, _e);
-    }
-    else {
+    } else {
       _text_view.get_buffer()->remove_tag(misspelled_tag, _s, _e);
     }
-  }
-  else {
+  } else {
     if (!st) {
       highlight(_s, _e);
     }
@@ -1596,8 +1629,7 @@ void Document::set_auto_spell(bool st) {
 
   if (do_spell) {
     do_spell = st;
-  }
-  else {
+  } else {
     std::string error;
     if (!spell.set_lang(spell_dict, error)) {
       katoob_error(error);
@@ -1631,9 +1663,8 @@ void Document::set_auto_spell(bool st) {
 
 void Document::spell_menu_item_activate_cb(std::string old_word,
                                            std::string new_word,
-                                           Gtk::TextIter& start,
-                                           Gtk::TextIter& end)
-{
+                                           Gtk::TextIter &start,
+                                           Gtk::TextIter &end) {
   // TODO: This will cause the whole line to be rechecked.
   _text_view.get_buffer()->erase(start, end);
   _text_view.get_buffer()->insert_at_cursor(new_word);
@@ -1641,9 +1672,8 @@ void Document::spell_menu_item_activate_cb(std::string old_word,
 }
 
 void Document::spell_menu_add_to_dictionary_cb(std::string str,
-                                               Gtk::TextIter& start,
-                                               Gtk::TextIter& end)
-{
+                                               Gtk::TextIter &start,
+                                               Gtk::TextIter &end) {
   spell.to_personal(str);
 
   // TODO: We need to remove the tag from the word.
@@ -1655,7 +1685,7 @@ void Document::spell_menu_add_to_dictionary_cb(std::string str,
   spell_checker_connect_worker();
 }
 
-bool Document::set_dictionary(std::string& dict, std::string& error) {
+bool Document::set_dictionary(std::string &dict, std::string &error) {
   if (spell.set_lang(dict, error)) {
     for (unsigned x = 0; x < lines.size(); x++) {
       lines[x] = true;
@@ -1669,16 +1699,19 @@ bool Document::set_dictionary(std::string& dict, std::string& error) {
 
 void Document::reset_gui() {
   line_numbers(_conf.get("linenumbers", false));
+
   std::string df = Utils::katoob_get_default_font();
 
+  // TODO: GtkWidget::override_font() is deprecated. Instead, use a custom CSS
+  // style, through an application-specific GtkStyleProvider and a CSS style
+  // class.
   if (_conf.get("default_font", true)) {
     Pango::FontDescription fd(df);
-    _text_view.modify_font(fd);
-  }
-  else {
+    _text_view.override_font(fd);
+  } else {
     std::string font = _conf.get("font", df);
     Pango::FontDescription fd(font);
-    _text_view.modify_font(fd);
+    _text_view.override_font(fd);
   }
 
   set_wrap_text(_conf.get("textwrap", true));
@@ -1712,7 +1745,7 @@ void Document::reset_gui() {
   set_tab_width();
 }
 
-void Document::set_highlight(const std::string& x) {
+void Document::set_highlight(const std::string &x) {
   if (_highlight == x) {
     return;
   }
@@ -1721,11 +1754,13 @@ void Document::set_highlight(const std::string& x) {
 
   if (_highlight == "") {
     // none
-    Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())->set_highlight(false);
-  }
-  else {
-    Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())->set_language(SourceManager::get_language(_highlight));
-    Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())->set_highlight(true);
+    Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())
+        ->set_highlight(false);
+  } else {
+    Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())
+        ->set_language(SourceManager::get_language(_highlight));
+    Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())
+        ->set_highlight(true);
   }
 }
 
@@ -1756,15 +1791,19 @@ void Document::set_tab_width() {
 
 void Document::autosave() {
   if (ftruncate(_tmp_file_fd, 0) == -1) {
-    std::cerr << "Failed to truncate temp file: " << std::strerror(errno) << std::endl;
+    std::cerr << "Failed to truncate temp file: " << std::strerror(errno)
+              << std::endl;
     return;
   }
 
   if (lseek(_tmp_file_fd, 0, SEEK_SET) != 0) {
-    std::cerr << "Failed to seek in temp file: " << std::strerror(errno) << std::endl;
+    std::cerr << "Failed to seek in temp file: " << std::strerror(errno)
+              << std::endl;
   }
 
-  if (write(_tmp_file_fd, _text_view.get_buffer()->get_text().c_str(), _text_view.get_buffer()->get_text().size()) == -1) {
-    std::cerr << "Failed to write to temp file: " << std::strerror(errno) << std::endl;
+  if (write(_tmp_file_fd, _text_view.get_buffer()->get_text().c_str(),
+            _text_view.get_buffer()->get_text().size()) == -1) {
+    std::cerr << "Failed to write to temp file: " << std::strerror(errno)
+              << std::endl;
   }
 }

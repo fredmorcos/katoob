@@ -23,25 +23,27 @@
 
 #pragma once
 
-#include <string>
-#include <map>
-#include <gtkmm/textview.h>
-#include <gtkmm/scrolledwindow.h>
+#include "cairomm/context.h"
+#include "cairomm/refptr.h"
 #include "conf.hh"
 #include "encodings.hh"
 #include "label.hh"
-#include "undoredo.hh"
-#include "spell.hh"
 #include "sourceview.hh"
+#include "spell.hh"
+#include "undoredo.hh"
+#include <gtkmm/scrolledwindow.h>
+#include <gtkmm/textview.h>
+#include <map>
+#include <string>
 
-class Document: public Gtk::ScrolledWindow {
+class Document : public Gtk::ScrolledWindow {
 public:
-  Document(Conf&, Encodings&, int);
-  Document(Conf&, Encodings&, int, std::string&);
-  Document(Conf&, Encodings&, int, int);
+  Document(Conf &, Encodings &, int);
+  Document(Conf &, Encodings &, int, std::string &);
+  Document(Conf &, Encodings &, int, int);
   ~Document();
 
-  Label& get_label() { return _label; }
+  Label &get_label() { return _label; }
 
   bool ok() { return _ok; }
   bool has_file() { return _file.size() == 0 ? false : true; }
@@ -55,27 +57,33 @@ public:
   bool get_modified() { return _text_view.get_buffer()->get_modified(); }
 
   bool save();
-  bool save(std::string&, int, bool);
+  bool save(std::string &, int, bool);
 
   int get_encoding() { return _encoding; }
-  bool set_encoding(int, bool, std::string&);
+  bool set_encoding(int, bool, std::string &);
 
-  void set_highlight(const std::string&);
+  void set_highlight(const std::string &);
 
   std::string get_title() { return _label.get_text(); }
 
-  void cut() { _text_view.get_buffer()->cut_clipboard(Gtk::Clipboard::get(), !_readonly); }
-  void copy() { _text_view.get_buffer()->copy_clipboard(Gtk::Clipboard::get()); }
-  void paste() { _text_view.get_buffer()->paste_clipboard(Gtk::Clipboard::get(), !_readonly); }
+  void cut() {
+    _text_view.get_buffer()->cut_clipboard(Gtk::Clipboard::get(), !_readonly);
+  }
+  void copy() {
+    _text_view.get_buffer()->copy_clipboard(Gtk::Clipboard::get());
+  }
+  void paste() {
+    _text_view.get_buffer()->paste_clipboard(Gtk::Clipboard::get(), !_readonly);
+  }
   void erase() { _text_view.get_buffer()->erase_selection(true, !_readonly); }
 
-  std::string& get_file() { return _file; }
+  std::string &get_file() { return _file; }
 
   void scroll_to(int);
 
-  void get_lines(std::vector<std::string>&, int = -1, int = -1);
-  void get_lines(std::vector<Glib::ustring>&, int = -1, int = -1);
-  void get_selection(std::vector<std::string>&);
+  void get_lines(std::vector<std::string> &, int = -1, int = -1);
+  void get_lines(std::vector<Glib::ustring> &, int = -1, int = -1);
+  void get_selection(std::vector<std::string> &);
 
   void select_all();
 
@@ -84,12 +92,12 @@ public:
 
   void emit_signals();
 
-  void insert(const std::string&);
+  void insert(const std::string &);
 
   void grab_focus();
   bool has_focus();
 
-  bool revert(std::string&);
+  bool revert(std::string &);
 
   /* Our signal */
   sigc::signal<void, bool> signal_modified_set;
@@ -121,8 +129,8 @@ public:
   bool get_search_backwards() { return _search_backwards; }
   bool get_search_whole_word() { return _search_whole_word; }
   bool get_search_from_beginning() { return _search_from_beginning; }
-  std::string& get_search_text() { return _search_text;}
-  std::string& get_replace_text() { return _replace_text; }
+  std::string &get_search_text() { return _search_text; }
+  std::string &get_replace_text() { return _replace_text; }
 
   void set_search_match_case(bool st) { _search_match_case = st; }
   void set_search_wrap(bool st) { _search_wrap = st; }
@@ -141,27 +149,32 @@ public:
 
   // Interaction with the spell dialog.
   void spell_dialog_mode();
-  bool spell_dialog_helper_has_misspelled(std::string& word);
-  void spell_dialog_helper_get_suggestions(std::string&, std::vector<std::string>&);
-  void spell_dialog_helper_add_to_personal(std::string&);
-  void spell_dialog_helper_add_to_session(std::string&);
-  bool spell_dialog_helper_check(std::string&);
-  void spell_dialog_helper_replace(std::string&, std::string&);
+  bool spell_dialog_helper_has_misspelled(std::string &word);
+  void spell_dialog_helper_get_suggestions(std::string &,
+                                           std::vector<std::string> &);
+  void spell_dialog_helper_add_to_personal(std::string &);
+  void spell_dialog_helper_add_to_session(std::string &);
+  bool spell_dialog_helper_check(std::string &);
+  void spell_dialog_helper_replace(std::string &, std::string &);
   void spell_dialog_helper_recheck();
-  bool set_dictionary(std::string&, std::string&);
+  bool set_dictionary(std::string &, std::string &);
   std::string get_dictionary() { return spell_dict; }
 
-  bool is_empty() { return (_text_view.get_buffer()->begin().get_offset() == _text_view.get_buffer()->end().get_offset()); }
+  bool is_empty() {
+    return (_text_view.get_buffer()->begin().get_offset() ==
+            _text_view.get_buffer()->end().get_offset());
+  }
 
   void reset_gui();
 
   std::string get_text() { return _text_view.get_buffer()->get_text(); }
-  void set_text(std::string&);
+  void set_text(std::string &);
 
 private:
   Label _label;
 
-  friend void _on_move_cursor (GtkTextView *, GtkMovementStep, gint, gboolean, gpointer);
+  friend void _on_move_cursor(GtkTextView *, GtkMovementStep, gint, gboolean,
+                              gpointer);
   friend void _on_toggle_overwrite(GtkTextView *, gpointer user_data);
 
   void signal_text_view_request_file_open_cb(std::string);
@@ -171,13 +184,14 @@ private:
   Gtk::TextWindowType numbers_right;
   Gtk::TextWindowType numbers_left;
 
-  void get_lines(Gtk::TextIter&, Gtk::TextIter&, std::vector<std::string>&);
-  void get_lines(Gtk::TextIter&, Gtk::TextIter&, std::vector<Glib::ustring>&);
+  void get_lines(Gtk::TextIter &, Gtk::TextIter &, std::vector<std::string> &);
+  void get_lines(Gtk::TextIter &, Gtk::TextIter &,
+                 std::vector<Glib::ustring> &);
   void set_readonly(bool);
   void set_modified(bool);
   void create_ui();
-  bool create(const std::string& = "");
-  void set_file(std::string&);
+  bool create(const std::string & = "");
+  void set_file(std::string &);
 
   void set_tab_width();
 
@@ -185,8 +199,8 @@ private:
   int _tmp_file_fd;
 
   std::string _file;
-  Conf& _conf;
-  Encodings& _encodings;
+  Conf &_conf;
+  Encodings &_encodings;
   bool _ok;
   bool _modified;
   int _encoding;
@@ -197,7 +211,7 @@ private:
   bool can_undo() { return _undo.size() == 0 ? false : true; }
   bool can_redo() { return _redo.size() == 0 ? false : true; }
 
-  void undo(KatoobDoType, const std::string&, int);
+  void undo(KatoobDoType, const std::string &, int);
   void redo(KatoobDoElem *);
   void undo(KatoobDoElem *);
 
@@ -205,22 +219,26 @@ private:
 
   void connect_signals();
 
-  int calculate_column(Gtk::TextIter&);
+  int calculate_column(Gtk::TextIter &);
 
   void block_do();
   void unblock_do();
   void clear_do();
-  void clear_do(std::vector<KatoobDoElem *>&);
+  void clear_do(std::vector<KatoobDoElem *> &);
 
   // Our search members and methods.
   bool gtk_search();
   bool nongtk_search();
-  bool is_whole_word(Gtk::TextIter& s, Gtk::TextIter& e) { return (s.starts_word() && e.ends_word()); }
-  void highlight(Gtk::TextIter&, Gtk::TextIter&);
+  bool is_whole_word(Gtk::TextIter &s, Gtk::TextIter &e) {
+    return (s.starts_word() && e.ends_word());
+  }
+  void highlight(Gtk::TextIter &, Gtk::TextIter &);
 
-  bool expose_event_cb(GdkEventExpose *);
-  void paint_line_numbers(Glib::RefPtr<Gdk::Window>&, GdkEventExpose *);
-  //  void get_line_bounds(const Gtk::TextIter&, Gtk::TextIter&, Gtk::TextIter&);
+  bool draw(const Cairo::RefPtr<Cairo::Context> &);
+  void paint_line_numbers(Glib::RefPtr<Gdk::Window> &,
+                          const Cairo::RefPtr<Cairo::Context> &);
+  //  void get_line_bounds(const Gtk::TextIter&, Gtk::TextIter&,
+  //  Gtk::TextIter&);
 
   Spell spell;
   bool do_spell;
@@ -231,21 +249,25 @@ private:
   Glib::RefPtr<Gtk::TextMark> _spell_mark;
   bool spell_checker_worker();
   bool spell_checker_has_lines();
-  void spell_checker_get_line(Gtk::TextIter&);
-  void spell_checker_check(const Gtk::TextIter&);
-  bool spell_checker_check_word(const Gtk::TextIter&, std::string&, int&, int&, bool mark=true);
-  bool spell_checker_get_next(Gtk::TextIter&, Gtk::TextIter&, std::string&, int&, int&);
+  void spell_checker_get_line(Gtk::TextIter &);
+  void spell_checker_check(const Gtk::TextIter &);
+  bool spell_checker_check_word(const Gtk::TextIter &, std::string &, int &,
+                                int &, bool mark = true);
+  bool spell_checker_get_next(Gtk::TextIter &, Gtk::TextIter &, std::string &,
+                              int &, int &);
   void spell_checker_connect_worker();
-  void spell_checker_on_insert(const Gtk::TextIter&, int);
-  void spell_checker_on_erase(const Gtk::TextIter&, const Gtk::TextIter&);
+  void spell_checker_on_insert(const Gtk::TextIter &, int);
+  void spell_checker_on_erase(const Gtk::TextIter &, const Gtk::TextIter &);
   Glib::RefPtr<Gtk::TextTag> misspelled_tag;
   //  Glib::RefPtr<Gtk::TextTag> spelled_tag;
-  void spell_menu_item_activate_cb(std::string, std::string, Gtk::TextIter&, Gtk::TextIter&);
-  void spell_menu_add_to_dictionary_cb(std::string, Gtk::TextIter&, Gtk::TextIter&);
+  void spell_menu_item_activate_cb(std::string, std::string, Gtk::TextIter &,
+                                   Gtk::TextIter &);
+  void spell_menu_add_to_dictionary_cb(std::string, Gtk::TextIter &,
+                                       Gtk::TextIter &);
   std::string get_next_misspelled();
   std::string spell_dict;
 
-  void dict_menu_item_activated(std::string&);
+  void dict_menu_item_activated(std::string &);
 
   bool _search_wrap;
   bool _search_backwards;
@@ -269,11 +291,13 @@ private:
   bool _overwrite;
 
   /* Signal handlers */
-  void on_insert(const Gtk::TextBuffer::iterator&, const Glib::ustring&, int);
-  void on_erase(const Gtk::TextBuffer::iterator&, const Gtk::TextBuffer::iterator&);
+  void on_insert(const Gtk::TextBuffer::iterator &, const Glib::ustring &, int);
+  void on_erase(const Gtk::TextBuffer::iterator &,
+                const Gtk::TextBuffer::iterator &);
   void on_move_cursor();
   void on_toggle_overwrite();
-  void on_mark_set_cb(const Gtk::TextBuffer::iterator&, const Glib::RefPtr<Gtk::TextBuffer::Mark>&);
+  void on_mark_set_cb(const Gtk::TextBuffer::iterator &,
+                      const Glib::RefPtr<Gtk::TextBuffer::Mark> &);
 
   std::string _highlight;
 
