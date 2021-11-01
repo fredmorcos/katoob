@@ -22,28 +22,29 @@
  */
 
 #include "previewdialog.hh"
+#include "gtkmm/adjustment.h"
 #include "macros.h"
 #include "utils.hh"
 #include <gtkmm.h>
 
 PreviewDialog::PreviewDialog(
-    const Glib::RefPtr<Gtk::PrintOperationPreview> &prvw,
+    const Glib::RefPtr<Gtk::PrintOperationPreview> &printOperationPreview,
     const Glib::RefPtr<Gtk::PrintContext> &ctx, Gtk::Window *parent)
-    : preview(prvw), context(ctx), n_pages(0), adj(1, 1, 1), pages(adj),
-      label(""), back(Gtk::Stock::GO_BACK), forward(Gtk::Stock::GO_FORWARD),
+    : preview(printOperationPreview), context(ctx), n_pages(0),
+      adj(Gtk::Adjustment::create(1, 1, 1)), pages(adj), label(""),
+      back(Gtk::Stock::GO_BACK), forward(Gtk::Stock::GO_FORWARD),
       rewind(Gtk::Stock::GOTO_FIRST), ff(Gtk::Stock::GOTO_LAST) {
-
   if (parent) {
     set_transient_for(*parent);
   }
 
   set_title(_("Print preview"));
-  Gtk::VBox *vbox = get_vbox();
+  Gtk::Box *vbox = get_vbox();
 
   vbox->pack_start(hbox, false, false);
-  sw.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-  sw.add(area);
-  vbox->pack_start(sw, true, true);
+  scrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
+  scrolledWindow.add(area);
+  vbox->pack_start(scrolledWindow, true, true);
 
   label.set_text(Utils::substitute(_("of %i"), 1));
 
@@ -79,8 +80,7 @@ PreviewDialog::PreviewDialog(
 
   area.signal_realize().connect(
       sigc::mem_fun(*this, &PreviewDialog::signal_area_realize_cb));
-  area.signal_expose_event().connect(
-      sigc::mem_fun(*this, &PreviewDialog::signal_area_expose_event_cb));
+  area.signal_draw().connect(sigc::mem_fun(*this, &PreviewDialog::draw_area));
 
   preview->signal_ready().connect(
       sigc::mem_fun(*this, &PreviewDialog::signal_preview_ready_cb));
@@ -161,15 +161,19 @@ void PreviewDialog::signal_area_realize_cb() {
   }
 }
 
-bool PreviewDialog::signal_area_expose_event_cb(
-    GdkEventExpose *KATOOB_UNUSED(event)) {
+bool PreviewDialog::draw_area(
+    const Cairo::RefPtr<Cairo::Context> &KATOOB_UNUSED(cairoContext)) {
   if (n_pages == 0) {
     return false;
   }
-  area.get_window()->clear();
+
+  // In Gtk3 the area should already be cleared.
+  // area.get_window()->clear();
+
   if (preview) {
     preview->render_page(pages.get_value_as_int() - 1);
   }
+
   return true;
 }
 
@@ -190,7 +194,7 @@ void PreviewDialog::signal_preview_got_page_size_cb(
                         (int)ceil(paper_size.get_height(Gtk::UNIT_POINTS)));
 
   // Avoid getting an odd allocation.
-  if (area.is_realized()) {
+  if (area.get_realized()) {
     Cairo::RefPtr<Cairo::Context> cairo_ctx =
         area.get_window()->create_cairo_context();
     context->set_cairo_context(cairo_ctx, ctx->get_dpi_x(), ctx->get_dpi_y());

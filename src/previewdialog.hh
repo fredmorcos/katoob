@@ -50,7 +50,7 @@ private:
   void on_hide();
 
   void signal_area_realize_cb();
-  bool signal_area_expose_event_cb(GdkEventExpose *);
+  bool draw_area(const Cairo::RefPtr<Cairo::Context> &);
 
   void signal_preview_ready_cb(const Glib::RefPtr<Gtk::PrintContext> &);
   void signal_preview_got_page_size_cb(const Glib::RefPtr<Gtk::PrintContext> &,
@@ -63,7 +63,7 @@ private:
 
   Gtk::HBox hbox;
 
-  Gtk::Adjustment adj;
+  Glib::RefPtr<Gtk::Adjustment> adj;
   Gtk::SpinButton pages;
 
   Gtk::Label label;
@@ -74,5 +74,5 @@ private:
   Gtk::Button forward;
   Gtk::Button rewind;
   Gtk::Button ff;
-  Gtk::ScrolledWindow sw;
+  Gtk::ScrolledWindow scrolledWindow;
 };
