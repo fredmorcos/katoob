@@ -24,25 +24,22 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#include <gtkmm/stock.h>
 #include "label.hh"
-#include "utils.hh"
 #include "macros.h"
+#include "utils.hh"
+#include <gtkmm.h>
 
-Label::Label(Conf& conf) :
-  _conf(conf),
-  _readonly(false),
-  _modified(false)
-{
-  Gtk::Image *image = Gtk::manage(new Gtk::Image(Gtk::Stock::CLOSE,
-                                                 Gtk::ICON_SIZE_MENU));
+Label::Label(Conf &conf) : _conf(conf), _readonly(false), _modified(false) {
+  Gtk::Image *image =
+      Gtk::manage(new Gtk::Image(Gtk::Stock::CLOSE, Gtk::ICON_SIZE_MENU));
 
   close.set_image(*image);
   close.set_relief(Gtk::RELIEF_NONE);
   close.set_size_request(24, 24);
   close.set_border_width(0);
 
-  close.signal_clicked().connect(sigc::mem_fun(signal_close_clicked, &sigc::signal<void>::emit));
+  close.signal_clicked().connect(
+      sigc::mem_fun(signal_close_clicked, &sigc::signal<void>::emit));
 
   pack_start(label);
   pack_start(close);
@@ -53,22 +50,18 @@ Label::Label(Conf& conf) :
   set_normal();
 }
 
-Label::~Label() {
-}
+Label::~Label() {}
 
 void Label::set_text(int num) {
   label.set_text(Utils::substitute(_("Untitled New %d"), num));
 }
 
-void Label::set_text(const std::string& str) {
-  label.set_text(str);
-}
+void Label::set_text(const std::string &str) { label.set_text(str); }
 
 void Label::reset_gui() {
   if (_conf.get("showclose", true)) {
     close.show();
-  }
-  else {
+  } else {
     close.hide();
   }
 }
@@ -87,8 +80,7 @@ void Label::set_readonly(bool ro, bool force) {
 
   if (ro) {
     katoob_set_color(_conf, label, Utils::KATOOB_COLOR_READONLY);
-  }
-  else {
+  } else {
     set_normal();
   }
   _readonly = ro;
@@ -108,8 +100,7 @@ void Label::set_modified(bool m, bool force) {
 
   if (m) {
     katoob_set_color(_conf, label, Utils::KATOOB_COLOR_MODIFIED);
-  }
-  else {
+  } else {
     set_normal();
   }
   _modified = m;
@@ -119,6 +110,4 @@ void Label::set_normal() {
   katoob_set_color(_conf, label, Utils::KATOOB_COLOR_NORMAL);
 }
 
-std::string Label::get_text() {
-  return label.get_text();
-}
+std::string Label::get_text() { return label.get_text(); }

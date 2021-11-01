@@ -21,17 +21,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <string>
+#include "printdialog.hh"
+#include "dialogs.hh"
+#include "filedialog.hh"
+#include "macros.h"
+#include "previewdialog.hh"
+#include "utils.hh"
 #include <cassert>
 #include <cerrno>
-#include <gtkmm/stock.h>
-#include <gtkmm/scrolledwindow.h>
-#include "printdialog.hh"
-#include "macros.h"
-#include "utils.hh"
-#include "filedialog.hh"
-#include "dialogs.hh"
-#include "previewdialog.hh"
+#include <gtkmm.h>
+#include <string>
 
 struct Paper {
   std::string name;
@@ -43,62 +42,35 @@ struct Paper {
 
 /* from: http://astronomy.swin.edu.au/~pbourke/geomformats/postscript/ */
 Paper Papers[] = {
-  {"Letter", 612 , 792 },
-  {"Legal" , 612 , 1008},
-  {"A0"    , 2384, 3370},
-  {"A1"    , 1684, 2384},
-  {"A2"    , 1191, 1684},
-  {"A3"    , 842 , 1191},
-  {"A4"    , 595 , 842 },
-  {"A5"    , 420 , 595 },
-  {"A6"    , 297 , 420 },
-  {"A7"    , 210 , 297 },
-  {"A8"    , 148 , 210 },
-  {"A9"    , 105 , 148 },
-  {"B0"    , 2920, 4127},
-  {"B1"    , 2064, 2920},
-  {"B2"    , 1460, 2064},
-  {"B3"    , 1032, 1460},
-  {"B4"    , 729 , 1032},
-  {"B5"    , 516 , 729 },
-  {"B6"    , 363 , 516 },
-  {"B7"    , 258 , 363 },
-  {"B8"    , 181 , 258 },
-  {"B9"    , 127 , 181 },
-  {"B10"   , 91  , 127 },
-  {""      , 0x0 , 0x0 }
-};
+    {"Letter", 612, 792}, {"Legal", 612, 1008}, {"A0", 2384, 3370},
+    {"A1", 1684, 2384},   {"A2", 1191, 1684},   {"A3", 842, 1191},
+    {"A4", 595, 842},     {"A5", 420, 595},     {"A6", 297, 420},
+    {"A7", 210, 297},     {"A8", 148, 210},     {"A9", 105, 148},
+    {"B0", 2920, 4127},   {"B1", 2064, 2920},   {"B2", 1460, 2064},
+    {"B3", 1032, 1460},   {"B4", 729, 1032},    {"B5", 516, 729},
+    {"B6", 363, 516},     {"B7", 258, 363},     {"B8", 181, 258},
+    {"B9", 127, 181},     {"B10", 91, 127},     {"", 0x0, 0x0}};
 /* *INDENT-ON* */
 
-PrintDialog::PrintDialog(Conf& conf,
-                         Document *doc,
-                         Glib::RefPtr<PageSetup>& page_setup,
-                         Glib::RefPtr<PrintSettings>& settings):
-  _conf(conf),
-  to_file(_("Print to file.")),
-  all_radio(range_group, _("_All"), true),
-  selection_radio(range_group, _("_Selection"), true),
-  lines_radio(range_group, _("_Lines"), true),
-  printer_frame(_("Printer:")),
-  from_adj(1, 1, 1),
-  to_adj(1, 1, 1),
-  copies_button_adj(_conf.print_get("copies", 1), 1, 100),
-  lines_from(from_adj),
-  lines_to(to_adj),
-  copies_button(copies_button_adj),
-  browse(Gtk::Stock::SAVE_AS),
-  location_label(_("Location:")),
-  copies_label(_("Number of copies")),
-  range_frame(_("Print range")),
-  from_label(_("From:")),
-  to_label(_("To:")),
-  paper_size_label(_("Paper size:")),
-  orientation_label(_("Page orientation:")),
-  backend(Print::create(conf, doc, page_setup, settings))
-{
-  dialog.set_title (_("Print"));
-  dialog.set_position (Gtk::WIN_POS_CENTER);
-  dialog.set_modal (true);
+PrintDialog::PrintDialog(Conf &conf, Document *doc,
+                         Glib::RefPtr<PageSetup> &page_setup,
+                         Glib::RefPtr<PrintSettings> &settings)
+    : _conf(conf), to_file(_("Print to file.")),
+      all_radio(range_group, _("_All"), true),
+      selection_radio(range_group, _("_Selection"), true),
+      lines_radio(range_group, _("_Lines"), true), printer_frame(_("Printer:")),
+      from_adj(1, 1, 1), to_adj(1, 1, 1),
+      copies_button_adj(_conf.print_get("copies", 1), 1, 100),
+      lines_from(from_adj), lines_to(to_adj), copies_button(copies_button_adj),
+      browse(Gtk::Stock::SAVE_AS), location_label(_("Location:")),
+      copies_label(_("Number of copies")), range_frame(_("Print range")),
+      from_label(_("From:")), to_label(_("To:")),
+      paper_size_label(_("Paper size:")),
+      orientation_label(_("Page orientation:")),
+      backend(Print::create(conf, doc, page_setup, settings)) {
+  dialog.set_title(_("Print"));
+  dialog.set_position(Gtk::WIN_POS_CENTER);
+  dialog.set_modal(true);
   /*
   set_resizable (false);
   */
@@ -131,7 +103,7 @@ PrintDialog::PrintDialog(Conf& conf,
   //   row[status] = backend->get_status(i);
   // }
 
-  Gtk::TreeModel::Row row = *(store->append ());
+  Gtk::TreeModel::Row row = *(store->append());
   row[id] = -1;
   row[name] = _("Custom");
 
@@ -168,8 +140,8 @@ PrintDialog::PrintDialog(Conf& conf,
   range_frame.add(vbox);
 
   box4.pack_start(all_radio);
-  box4.pack_start (selection_radio);
-  box4.pack_start (lines_radio);
+  box4.pack_start(selection_radio);
+  box4.pack_start(lines_radio);
 
   box5.pack_start(from_label, false, false);
   box5.pack_start(lines_from, true, false);
@@ -208,13 +180,20 @@ PrintDialog::PrintDialog(Conf& conf,
   t_selection = treeview.get_selection();
 
   /* Signals. */
-  to_file.signal_toggled().connect(sigc::mem_fun(*this, &PrintDialog::to_file_toggled_cb));
-  all_radio.signal_toggled().connect(sigc::mem_fun(*this, &PrintDialog::all_radio_toggled_cb));
-  selection_radio.signal_toggled().connect(sigc::mem_fun(*this, &PrintDialog::selection_radio_toggled_cb));
-  lines_radio.signal_toggled().connect(sigc::mem_fun(*this, &PrintDialog::lines_radio_toggled_cb));
-  browse.signal_clicked().connect(sigc::mem_fun(*this, &PrintDialog::browse_button_clicked_cb));
-  print_menu.signal_changed().connect(sigc::mem_fun(*this, &PrintDialog::print_menu_changed_cb));
-  t_selection->signal_changed().connect(sigc::mem_fun(*this, &PrintDialog::selection_signal_changed_cb));
+  to_file.signal_toggled().connect(
+      sigc::mem_fun(*this, &PrintDialog::to_file_toggled_cb));
+  all_radio.signal_toggled().connect(
+      sigc::mem_fun(*this, &PrintDialog::all_radio_toggled_cb));
+  selection_radio.signal_toggled().connect(
+      sigc::mem_fun(*this, &PrintDialog::selection_radio_toggled_cb));
+  lines_radio.signal_toggled().connect(
+      sigc::mem_fun(*this, &PrintDialog::lines_radio_toggled_cb));
+  browse.signal_clicked().connect(
+      sigc::mem_fun(*this, &PrintDialog::browse_button_clicked_cb));
+  print_menu.signal_changed().connect(
+      sigc::mem_fun(*this, &PrintDialog::print_menu_changed_cb));
+  t_selection->signal_changed().connect(
+      sigc::mem_fun(*this, &PrintDialog::selection_signal_changed_cb));
 
   // TODO: Better way.
   // std::string t = Utils::prepend_home_dir("katoob.ps");
@@ -235,9 +214,7 @@ PrintDialog::PrintDialog(Conf& conf,
   dialog.show_all();
 }
 
-PrintDialog::~PrintDialog() {
-
-}
+PrintDialog::~PrintDialog() {}
 
 bool PrintDialog::run() {
   while (true) {
@@ -246,26 +223,26 @@ bool PrintDialog::run() {
     if ((res == Gtk::RESPONSE_OK) || (res == Gtk::RESPONSE_APPLY)) {
       std::string file = entry.get_text();
       if (to_file.get_active()) {
-	if (file.size() == 0) {
-	  katoob_error(_("Please choose a file to print to."));
-	  continue;
-	}
-	if (Glib::file_test(file, Glib::FILE_TEST_IS_DIR)) {
-	  katoob_error(_("Please choose a file not a directory."));
-	  continue;
-	}
-	if (Glib::file_test(file, Glib::FILE_TEST_EXISTS)) {
-	  if (katoob_simple_question(Utils::substitute(_("Are you sure you want to overwrite the file %s ?"), file))) {
-	    return init_backend();
-	  }
-	  else {
-	    continue;
-	  }
-	}
-	return init_backend();
-      }
-      else {
-	return init_backend();
+        if (file.size() == 0) {
+          katoob_error(_("Please choose a file to print to."));
+          continue;
+        }
+        if (Glib::file_test(file, Glib::FILE_TEST_IS_DIR)) {
+          katoob_error(_("Please choose a file not a directory."));
+          continue;
+        }
+        if (Glib::file_test(file, Glib::FILE_TEST_EXISTS)) {
+          if (katoob_simple_question(Utils::substitute(
+                  _("Are you sure you want to overwrite the file %s ?"),
+                  file))) {
+            return init_backend();
+          } else {
+            continue;
+          }
+        }
+        return init_backend();
+      } else {
+        return init_backend();
       }
     }
     return false;
@@ -286,7 +263,7 @@ void PrintDialog::lines(int num) {
   lines_from.set_sensitive(true);
   lines_to.set_sensitive(true);
   */
-  from_adj.set_upper(num-1);
+  from_adj.set_upper(num - 1);
   to_adj.set_upper(num);
 }
 
@@ -298,9 +275,10 @@ void PrintDialog::reset_paper_size(int x) {
       paper_size.append_text(_Papers->name);
       _Papers++;
     }
-    paper_size.set_active(_conf.print_get("paper_size", 6)); //NOTE: A4 = 6, We need a better way to get the default.
-  }
-  else {
+    paper_size.set_active(_conf.print_get(
+        "paper_size",
+        6)); // NOTE: A4 = 6, We need a better way to get the default.
+  } else {
     // std::vector<std::string> s = backend->sizes(x);
     // for (unsigned i = 0; i < s.size(); i++) {
     //   paper_size.append_text(s[i]);
@@ -317,8 +295,7 @@ void PrintDialog::to_file_toggled_cb() {
   copies_button.set_sensitive(!active);
   if (active) {
     reset_paper_size(-1);
-  }
-  else {
+  } else {
     selection_signal_changed_cb();
   }
 }
@@ -342,7 +319,8 @@ void PrintDialog::lines_radio_toggled_cb() {
 }
 
 void PrintDialog::browse_button_clicked_cb() {
-  std::string file = SimpleFileDialog::get_file(_("Please select a file to print to."), FILE_OPEN, _conf);
+  std::string file = SimpleFileDialog::get_file(
+      _("Please select a file to print to."), FILE_OPEN, _conf);
   if (file.size() > 0) {
     entry.set_text(file);
   }
@@ -350,15 +328,14 @@ void PrintDialog::browse_button_clicked_cb() {
 
 void PrintDialog::print_menu_changed_cb() {
   int x = print_menu.get_active_row_number();
-  assert (x < 2);
+  assert(x < 2);
   std::string str = entry.get_text();
   if (x == 1) { // PostScript.
     if (str.size()) {
       _pdf = str;
     }
     entry.set_text(_ps);
-  }
-  else { // PDF
+  } else { // PDF
     if (str.size()) {
       _ps = str;
     }
@@ -384,7 +361,7 @@ bool PrintDialog::init_backend() {
     // int n = row[id];
     // int a = paper_size.get_active_row_number();
     int p = orientation.get_active_row_number();
-    assert (p < 2);
+    assert(p < 2);
     // int w, h;
 
     // if (n == -1) {
@@ -417,14 +394,13 @@ bool PrintDialog::init_backend() {
     // assert (cp > 0);
     // backend->set_copies(cp);
     return true;
-  }
-  else {
+  } else {
     katoob_error(_("I couldn't get the selected printer."));
     return false;
   }
 }
 
-bool PrintDialog::range(int& x, int& y) {
+bool PrintDialog::range(int &x, int &y) {
   x = lines_from.get_value_as_int();
   y = lines_to.get_value_as_int();
   return lines_radio.get_active();
@@ -440,8 +416,7 @@ void PrintDialog::manipulate() {
     // if (preview.run()) {
     //   process();
     // }
-  }
-  else {
+  } else {
     process();
   }
 }
@@ -450,7 +425,7 @@ void PrintDialog::process() {
   // If it's a file, Then save it otherwise print it.
 
   int x = print_menu.get_active_row_number();
-  assert (x < 2);
+  assert(x < 2);
   std::string str = entry.get_text();
   assert(str.size() > 0);
   // std::string file;
@@ -479,7 +454,7 @@ void PrintDialog::process() {
   // TODO: Save settings.
 }
 
-bool PrintDialog::ok(std::string& KATOOB_UNUSED(er)) {
+bool PrintDialog::ok(std::string &KATOOB_UNUSED(er)) {
   // return backend->ok(er);
   return false;
 }
@@ -488,22 +463,18 @@ void PrintDialog::start_process() {
   // backend->start_process();
 }
 
-bool PrintDialog::end_process(std::string& KATOOB_UNUSED(er)) {
+bool PrintDialog::end_process(std::string &KATOOB_UNUSED(er)) {
   // return backend->end_process(er);
   return false;
 }
 
-void PrintDialog::add_line(std::string& KATOOB_UNUSED(l)) {
+void PrintDialog::add_line(std::string &KATOOB_UNUSED(l)) {
   // backend->add_line(l);
 }
 
-bool PrintDialog::all() {
-  return all_radio.get_active();
-}
+bool PrintDialog::all() { return all_radio.get_active(); }
 
-bool PrintDialog::selection() {
-  return selection_radio.get_active();
-}
+bool PrintDialog::selection() { return selection_radio.get_active(); }
 
 bool PrintDialog::is_preview() {
   return res == Gtk::RESPONSE_APPLY ? true : false;

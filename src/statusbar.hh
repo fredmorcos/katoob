@@ -23,16 +23,12 @@
 
 #pragma once
 
-#include <gtkmm/box.h>
-#include <gtkmm/statusbar.h>
-#include <gtkmm/image.h>
-#include <gtkmm/label.h>
-#include <gtkmm/togglebutton.h>
 #include "conf.hh"
+#include <gtkmm.h>
 
 class Statusbar : public Gtk::HBox {
 public:
-  Statusbar(Conf&);
+  Statusbar(Conf &);
   ~Statusbar();
   void set_encoding(std::string);
   void set_overwrite(bool);
@@ -50,7 +46,7 @@ public:
 private:
   void signal_input_toggled_cb();
 
-  Conf& _conf;
+  Conf &_conf;
 
   Gtk::Statusbar sbar;
   Gtk::Image red, green;

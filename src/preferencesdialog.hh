@@ -23,21 +23,19 @@
 #ifndef __PREFERENCESDIALOGL_HH__
 #define __PREFERENCESDIALOGL_HH__
 
-#include <gtkmm/dialog.h>
-#include <gtkmm/notebook.h>
-#include <gtkmm/paned.h>
-#include "conf.hh"
 #include "applets.hh"
+#include "conf.hh"
+#include <gtkmm.h>
 
 class PreferencesDialog {
 public:
-  PreferencesDialog(Conf&, Encodings&);
+  PreferencesDialog(Conf &, Encodings &);
   ~PreferencesDialog();
   bool run();
   sigc::signal<void> signal_apply_clicked;
 
 private:
-  void add_applet(const std::string&, Applet *);
+  void add_applet(const std::string &, Applet *);
   std::map<std::string, Applet *> applets;
 
   void apply_clicked_cb() {
@@ -49,8 +47,8 @@ private:
 
   void selection_signal_changed_cb();
 
-  Conf& _conf;
-  Encodings& _enc;
+  Conf &_conf;
+  Encodings &_enc;
 
   Gtk::Dialog dialog;
   Gtk::ScrolledWindow sw;

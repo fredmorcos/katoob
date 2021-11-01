@@ -23,30 +23,29 @@
 
 #pragma once
 
-#include <vector>
-#include <string>
-#include <gtkmm/window.h>
-#include <gtkmm/box.h>
-#include "menubar.hh"
-#include "toolbar.hh"
-#include "mdi.hh"
-#include "statusbar.hh"
 #include "conf.hh"
-#include "encodings.hh"
 #include "emulator.hh"
-#include "multipress.hh"
+#include "encodings.hh"
 #include "inputwindow.hh"
+#include "mdi.hh"
+#include "menubar.hh"
+#include "multipress.hh"
+#include "statusbar.hh"
+#include "toolbar.hh"
+#include <gtkmm.h>
+#include <string>
+#include <vector>
 
 class Window : public Gtk::Window {
 public:
-  Window(Conf&, Encodings&, std::vector<std::string>&);
+  Window(Conf &, Encodings &, std::vector<std::string> &);
   ~Window();
 
   // Our signals.
   sigc::signal<void> signal_quit;
 
   // Our methods.
-  void open_files(std::vector<std::string>&);
+  void open_files(std::vector<std::string> &);
 
   void on_document_spell_enabled_cb(bool);
 
@@ -66,11 +65,13 @@ private:
   void signal_input_toggled_cb(bool);
 
   // Signals for various gtk events.
-  void signal_drag_data_received_cb(const Glib::RefPtr<Gdk::DragContext>&, int, int, const Gtk::SelectionData&, guint, guint);
-  bool signal_delete_event_cb (GdkEventAny*);
+  void signal_drag_data_received_cb(const Glib::RefPtr<Gdk::DragContext> &, int,
+                                    int, const Gtk::SelectionData &, guint,
+                                    guint);
+  bool signal_delete_event_cb(GdkEventAny *);
 
   // Signal callbacks for our Multipress.
-  void signal_insert_key_cb(std::string&);
+  void signal_insert_key_cb(std::string &);
   void signal_invalid_key_cb(GdkEventKey *);
 
   // Our methods.
@@ -82,8 +83,12 @@ private:
 
   // Signals for the Document class.
   void signal_document_encoding_changed_cb(int e);
-  void signal_document_overwrite_toggled_cb(bool o) { statusbar.set_overwrite(o); }
-  void signal_document_cursor_moved_cb(int c, int l) { statusbar.set_position(c, l); }
+  void signal_document_overwrite_toggled_cb(bool o) {
+    statusbar.set_overwrite(o);
+  }
+  void signal_document_cursor_moved_cb(int c, int l) {
+    statusbar.set_position(c, l);
+  }
   void signal_document_file_changed_cb(std::string);
   void signal_document_readonly_cb(int, bool);
   void signal_document_can_redo_cb(bool);
@@ -93,7 +98,9 @@ private:
   void signal_document_wrap_text_cb(bool);
   void signal_document_line_numbers_cb(bool);
 
-  void signal_document_dictionary_changed_cb(std::string d) { toolbar.set_dictionary(d); }
+  void signal_document_dictionary_changed_cb(std::string d) {
+    toolbar.set_dictionary(d);
+  }
 
   void signal_input_window_dialog_closed_cb();
 
@@ -107,8 +114,8 @@ private:
   Emulator _emulator;
   Multipress _multipress;
 
-  Conf& _conf;
-  Encodings& _encodings;
+  Conf &_conf;
+  Encodings &_encodings;
 
   MenuBar menubar;
   Toolbar toolbar;

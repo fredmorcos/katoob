@@ -23,16 +23,15 @@
 
 #pragma once
 
+#include <glibmm.h>
+#include <gtkmm.h>
 #include <string>
-#include <glibmm/main.h>
-#include <gtkmm/dialog.h>
-#include <gtkmm/progressbar.h>
 
-bool katoob_simple_question(const std::string&);
-void katoob_error(const std::string&);
-void katoob_info(const std::string&);
-bool katoob_big_info(const std::string&, bool = false);
-int katoob_question(const std::string&);
+bool katoob_simple_question(const std::string &);
+void katoob_error(const std::string &);
+void katoob_info(const std::string &);
+bool katoob_big_info(const std::string &, bool = false);
+int katoob_question(const std::string &);
 int katoob_goto_dialog();
 
 class ActivityMeter : public Glib::Object {
@@ -42,6 +41,7 @@ public:
   void run();
   void quit();
   sigc::signal<void> signal_cancel_clicked;
+
 private:
   void signal_response_cb(int);
 

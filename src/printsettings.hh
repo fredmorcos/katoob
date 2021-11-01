@@ -23,7 +23,7 @@
 
 #pragma once
 
-#include <gtkmm/printsettings.h>
+#include <gtkmm.h>
 
 class PrintSettings : public Gtk::PrintSettings {
 public:
@@ -34,6 +34,6 @@ public:
   void save();
 
 private:
-  void foreach_load(const Glib::ustring&, const Glib::ustring&);
-  void foreach_save(const Glib::ustring&, const Glib::ustring&);
+  void foreach_load(const Glib::ustring &, const Glib::ustring &);
+  void foreach_save(const Glib::ustring &, const Glib::ustring &);
 };

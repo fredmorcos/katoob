@@ -23,23 +23,17 @@
 
 #pragma once
 
-#include <gtkmm/toolbar.h>
-#include <gtkmm/separatortoolitem.h>
-#include <gtkmm/label.h>
-#include <gtkmm/entry.h>
-#include <gtkmm/box.h>
-#include <gtkmm/separator.h>
-#include <gtkmm/comboboxtext.h>
 #include "conf.hh"
 #include "spellmenu.hh"
+#include <gtkmm.h>
 
 class Toolbar {
 public:
-  Toolbar(Conf&);
+  Toolbar(Conf &);
   ~Toolbar();
 
-  Gtk::Toolbar& get_main();
-  Gtk::VBox& get_extended();
+  Gtk::Toolbar &get_main();
+  Gtk::VBox &get_extended();
   void show_main(bool);
   void show_extended(bool);
 
@@ -53,7 +47,7 @@ public:
   void set_both();
   void set_beside();
 
-  void set_dictionary(std::string&);
+  void set_dictionary(std::string &);
   std::string get_dictionary();
 
   void reset_gui();
@@ -90,15 +84,17 @@ private:
   void go_to_activate_cb();
 
   void create_extra_buttons();
-  void create_extra_button(std::string&);
-  void extra_button_clicked(std::string str) { signal_extra_button_clicked.emit(str); }
+  void create_extra_button(std::string &);
+  void extra_button_clicked(std::string str) {
+    signal_extra_button_clicked.emit(str);
+  }
 
   void dictionary_changed_cb() {
     signal_dictionary_changed.emit(_dictionary.get_active_text());
   }
   sigc::connection signal_dictionary_changed_conn;
 
-  Conf& _conf;
+  Conf &_conf;
 
   Gtk::Toolbar _main;
   Gtk::VBox _extended;

@@ -23,14 +23,14 @@
 
 #pragma once
 
-#include <gtkmm/comboboxtext.h>
 #include "isocodes.hh"
+#include <gtkmm.h>
 
 class SpellMenu : public Gtk::ComboBoxText {
 public:
   SpellMenu();
   const Glib::ustring get_active_text();
-  void set_active_text(const Glib::ustring&);
+  void set_active_text(const Glib::ustring &);
   //  void set_sensitive(bool);
   //  void append_text(const Glib::ustring&);
 private:

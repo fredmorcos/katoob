@@ -21,18 +21,11 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "document.hh"
-#include "glibmm/refptr.h"
-#include "gtkmm/menuitem.h"
-#include "gtkmm/object.h"
-#include "gtkmm/stockid.h"
-#include "gtkmm/widget.h"
-#include "sigc++/functors/mem_fun.h"
-#include <gtkmm-2.4/gtkmm/imagemenuitem.h>
-#include <gtkmm-2.4/gtkmm/separatormenuitem.h>
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif
+
+#include "document.hh"
 #include "dialogs.hh"
 #include "macros.h"
 #include "textbuffer.hh"
@@ -40,12 +33,10 @@
 #include <cassert>
 #include <cerrno>
 #include <cstring>
-#include <glibmm/fileutils.h>
-#include <glibmm/miscutils.h>
-#include <gtkmm/enums.h>
-#include <gtkmm/image.h>
-#include <gtkmm/stock.h>
+#include <glibmm.h>
+#include <gtkmm.h>
 #include <iostream>
+#include <sigc++/sigc++.h>
 #include <sstream>
 #include <string>
 

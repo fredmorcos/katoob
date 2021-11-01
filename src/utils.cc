@@ -21,16 +21,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <config.h>
-#include <glibmm.h>
 #include "utils.hh"
-#include <iostream>
-#include <unistd.h>
+#include "macros.h"
 #include <cerrno>
+#include <config.h>
 #include <cstring>
 #include <fcntl.h>
-#include <gtkmm/textview.h>
-#include "macros.h"
+#include <glibmm.h>
+#include <gtkmm.h>
+#include <iostream>
+#include <unistd.h>
 
 #define __KATOOB_CONF_DIR__ ".katoob"
 
@@ -43,26 +43,27 @@ std::string Utils::get_data_path(const char *str) {
   return s;
 }
 
-std::string Utils::get_dir_separator() {
-  return G_DIR_SEPARATOR_S;
-}
+std::string Utils::get_dir_separator() { return G_DIR_SEPARATOR_S; }
 
 std::string Utils::prepend_home_dir(char *str) {
   return Glib::build_filename(Glib::get_home_dir(), str);
 }
 
-bool Utils::is_lam_alef(const Glib::ustring& src, Glib::ustring& res) {
+bool Utils::is_lam_alef(const Glib::ustring &src, Glib::ustring &res) {
   res = src;
   bool ret = false;
   ret = is_lam_alef(res, static_cast<gunichar>(0x000fef7));
-  ret = (is_lam_alef(res, static_cast<gunichar>(0x000fefb)) == false ? ret : true);
-  ret = (is_lam_alef(res, static_cast<gunichar>(0x000fef5)) == false ? ret : true);
-  ret = (is_lam_alef(res, static_cast<gunichar>(0x000fef9)) == false ? ret : true);
+  ret = (is_lam_alef(res, static_cast<gunichar>(0x000fefb)) == false ? ret
+                                                                     : true);
+  ret = (is_lam_alef(res, static_cast<gunichar>(0x000fef5)) == false ? ret
+                                                                     : true);
+  ret = (is_lam_alef(res, static_cast<gunichar>(0x000fef9)) == false ? ret
+                                                                     : true);
 
   return ret;
 }
 
-bool inline Utils::is_lam_alef(Glib::ustring& src, gunichar ch) {
+bool inline Utils::is_lam_alef(Glib::ustring &src, gunichar ch) {
   gunichar repl;
   switch (ch) {
   case 0x000fef7:
@@ -88,23 +89,22 @@ bool inline Utils::is_lam_alef(Glib::ustring& src, gunichar ch) {
 
   while (offset != Glib::ustring::npos) {
     src.replace(offset, 1, 1, static_cast<gunichar>(0x0644));
-    src.insert(offset+1, 1, repl);
+    src.insert(offset + 1, 1, repl);
     offset = src.find(ch, offset);
   }
 
   return ret;
 }
 
-bool Utils::katoob_file_is_writable(std::string& file) {
+bool Utils::katoob_file_is_writable(std::string &file) {
   if (Glib::file_test(file, Glib::FILE_TEST_EXISTS)) {
     return (access(file.c_str(), W_OK) == 0 ? true : false);
-  }
-  else {
+  } else {
     return true;
   }
 }
 
-void Utils::katoob_set_color(Conf& conf, Gtk::Label& label, KatoobColor c) {
+void Utils::katoob_set_color(Conf &conf, Gtk::Label &label, KatoobColor c) {
   int r = 0, g = 0, b = 0;
 
   switch (c) {
@@ -112,20 +112,17 @@ void Utils::katoob_set_color(Conf& conf, Gtk::Label& label, KatoobColor c) {
     r = conf.get("readonly_red", 0);
     g = conf.get("readonly_green", 0);
     b = conf.get("readonly_blue", 65535);
-  }
-    break;
+  } break;
   case KATOOB_COLOR_MODIFIED: {
     r = conf.get("modified_red", 65535);
     g = conf.get("modified_green", 0);
     b = conf.get("modified_blue", 0);
-  }
-    break;
+  } break;
   default: {
     r = conf.get("normal_red", 0);
     g = conf.get("normal_green", 0);
     b = conf.get("normal_blue", 0);
-  }
-    break;
+  } break;
   }
 
   Pango::AttrColor color(Pango::Attribute::create_attr_foreground(r, g, b));
@@ -134,11 +131,12 @@ void Utils::katoob_set_color(Conf& conf, Gtk::Label& label, KatoobColor c) {
   label.set_attributes(attrs);
 }
 
-void Utils::katoob_set_color(Conf& cf, Gtk::Label *l, KatoobColor c) {
+void Utils::katoob_set_color(Conf &cf, Gtk::Label *l, KatoobColor c) {
   katoob_set_color(cf, *l, c);
 }
 
-bool Utils::katoob_write(Conf& conf, std::string& file, std::string& text, std::string& error) {
+bool Utils::katoob_write(Conf &conf, std::string &file, std::string &text,
+                         std::string &error) {
   gchar *f = NULL;
   GError *er = NULL;
 
@@ -170,15 +168,15 @@ bool Utils::katoob_write(Conf& conf, std::string& file, std::string& text, std::
       std::string new_path = f ? f : file.c_str() + conf.get("backup_ext", "~");
       std::string err;
       if (!file_copy(f ? f : file.c_str(), new_path.c_str(), err)) {
-	if (f) {
-	  g_free(f);
-	}
-	error = _("I can't backup the old file.\n");
-	error += err;
-	return false;
+        if (f) {
+          g_free(f);
+        }
+        error = _("I can't backup the old file.\n");
+        error += err;
+        return false;
       }
       if (!stat_error) {
-	katoob_set_perms(new_path.c_str(), buf);
+        katoob_set_perms(new_path.c_str(), buf);
       }
     }
   }
@@ -208,28 +206,32 @@ bool Utils::katoob_write(Conf& conf, std::string& file, std::string& text, std::
 // and then copy it overwriting the target file. This will fail if we
 // don't have write access to that directory although we have write access
 // to the target file.
-bool Utils::katoob_write(const char *file, const char *text, unsigned len, std::string& error) {
-  int fd = open(file, O_CREAT|O_TRUNC|O_WRONLY, 0644);
+bool Utils::katoob_write(const char *file, const char *text, unsigned len,
+                         std::string &error) {
+  int fd = open(file, O_CREAT | O_TRUNC | O_WRONLY, 0644);
   if (fd == -1) {
-    error = Utils::substitute("I can't create the file %s\n", file) + std::strerror(errno);
+    error = Utils::substitute("I can't create the file %s\n", file) +
+            std::strerror(errno);
     return false;
   }
 
   ssize_t sz = write(fd, text, len);
   if (sz == -1) {
-    error = Utils::substitute("I can't write to the file %s\n", file) + std::strerror(errno);
+    error = Utils::substitute("I can't write to the file %s\n", file) +
+            std::strerror(errno);
     close(fd);
     return false;
   }
   int x = close(fd);
   if (x == -1) {
-    error = Utils::substitute("I can't close the file %s\n", file) + std::strerror(errno);
+    error = Utils::substitute("I can't close the file %s\n", file) +
+            std::strerror(errno);
     return false;
   }
   return true;
 }
 
-bool Utils::katoob_read(const std::string& file, std::string& out) {
+bool Utils::katoob_read(const std::string &file, std::string &out) {
   if (Glib::file_test(file, Glib::FILE_TEST_IS_DIR)) {
     out = substitute(_("%s is a directory."), file);
     return false;
@@ -238,18 +240,17 @@ bool Utils::katoob_read(const std::string& file, std::string& out) {
   try {
     out = Glib::file_get_contents(file);
     return true;
-  }
-  catch (Glib::FileError& err) {
+  } catch (Glib::FileError &err) {
     out = err.what();
     return false;
   }
 }
 
-void Utils::katoob_set_perms(const char *file, const struct stat& buff) {
+void Utils::katoob_set_perms(const char *file, const struct stat &buff) {
   chmod(file, buff.st_mode);
 }
 
-bool Utils::file_copy(const char *f1, const char *f2, std::string& error) {
+bool Utils::file_copy(const char *f1, const char *f2, std::string &error) {
   int ifd, ofd;
   ifd = open(f1, O_RDONLY);
   if (ifd == -1) {
@@ -257,7 +258,7 @@ bool Utils::file_copy(const char *f1, const char *f2, std::string& error) {
     return false;
   }
 
-  ofd = open(f2, O_WRONLY|O_CREAT|O_TRUNC, 0644);
+  ofd = open(f2, O_WRONLY | O_CREAT | O_TRUNC, 0644);
   if (ofd == -1) {
     error = std::strerror(errno);
     close(ifd);
@@ -291,50 +292,57 @@ bool Utils::file_copy(const char *f1, const char *f2, std::string& error) {
   return true;
 }
 
-std::string Utils::substitute(const std::string& orig, const int n) {
+std::string Utils::substitute(const std::string &orig, const int n) {
   gchar *tmp_str = g_strdup_printf(orig.c_str(), n);
   std::string final_str(tmp_str);
   g_free(tmp_str);
   return final_str;
 }
 
-std::string Utils::substitute(const std::string& orig, const std::string& arg) {
+std::string Utils::substitute(const std::string &orig, const std::string &arg) {
   gchar *tmp_str = g_strdup_printf(orig.c_str(), arg.c_str());
   std::string final_str(tmp_str);
   g_free(tmp_str);
   return final_str;
 }
 
-std::string Utils::substitute(const std::string& orig, const std::string& a, const std::string& b) {
+std::string Utils::substitute(const std::string &orig, const std::string &a,
+                              const std::string &b) {
   gchar *tmp_str = g_strdup_printf(orig.c_str(), a.c_str(), b.c_str());
   std::string final_str(tmp_str);
   g_free(tmp_str);
   return final_str;
 }
 
-std::string Utils::substitute(const std::string& orig, const int a, const int b) {
+std::string Utils::substitute(const std::string &orig, const int a,
+                              const int b) {
   gchar *tmp_str = g_strdup_printf(orig.c_str(), a, b);
   std::string final_str(tmp_str);
   g_free(tmp_str);
   return final_str;
 }
 
-std::string Utils::substitute(const std::string& orig, const int a, const int b, const std::string& c) {
+std::string Utils::substitute(const std::string &orig, const int a, const int b,
+                              const std::string &c) {
   gchar *tmp_str = g_strdup_printf(orig.c_str(), a, b, c.c_str());
   std::string final_str(tmp_str);
   g_free(tmp_str);
   return final_str;
 }
 
-std::string Utils::substitute(const std::string& orig, const std::string& a, const int b) {
+std::string Utils::substitute(const std::string &orig, const std::string &a,
+                              const int b) {
   gchar *tmp_str = g_strdup_printf(orig.c_str(), a.c_str(), b);
   std::string final_str(tmp_str);
   g_free(tmp_str);
   return final_str;
 }
 
-std::string Utils::substitute(const std::string& orig, const std::string& a, const int b, const std::string& c, const std::string& d) {
-  gchar *tmp_str = g_strdup_printf(orig.c_str(), a.c_str(), b, c.c_str(), d.c_str());
+std::string Utils::substitute(const std::string &orig, const std::string &a,
+                              const int b, const std::string &c,
+                              const std::string &d) {
+  gchar *tmp_str =
+      g_strdup_printf(orig.c_str(), a.c_str(), b, c.c_str(), d.c_str());
   std::string final_str(tmp_str);
   g_free(tmp_str);
   return final_str;
@@ -350,7 +358,7 @@ std::string Utils::katoob_get_default_font() {
   return _font;
 }
 
-std::vector<std::string> Utils::split(const std::string& src, const char n) {
+std::vector<std::string> Utils::split(const std::string &src, const char n) {
   std::vector<std::string> result;
   std::string str;
 
@@ -358,8 +366,7 @@ std::vector<std::string> Utils::split(const std::string& src, const char n) {
     if ((src[x] == n) && (str.size() > 0)) {
       result.push_back(str);
       str.clear();
-    }
-    else if (src[x] != n) {
+    } else if (src[x] != n) {
       str += src[x];
     }
   }
@@ -369,7 +376,7 @@ std::vector<std::string> Utils::split(const std::string& src, const char n) {
   return result;
 }
 
-bool Utils::lock_file(int fd, std::string& error) {
+bool Utils::lock_file(int fd, std::string &error) {
   struct flock lock;
   lock.l_type = F_WRLCK;
   lock.l_whence = SEEK_SET;
@@ -383,7 +390,7 @@ bool Utils::lock_file(int fd, std::string& error) {
   return true;
 }
 
-bool Utils::unlock_file(int fd, std::string& error) {
+bool Utils::unlock_file(int fd, std::string &error) {
   struct flock lock;
   lock.l_type = F_UNLCK;
   lock.l_whence = SEEK_SET;
@@ -397,16 +404,18 @@ bool Utils::unlock_file(int fd, std::string& error) {
   return true;
 }
 
-bool Utils::file_is_locked(const std::string& file) {
+bool Utils::file_is_locked(const std::string &file) {
   int fd = ::open(file.c_str(), O_RDONLY);
   if (fd == -1) {
-    std::cerr << "Failed to open " << file.c_str() << " " << std::strerror(errno) << std::endl;
+    std::cerr << "Failed to open " << file.c_str() << " "
+              << std::strerror(errno) << std::endl;
     return true;
   }
   bool locked = file_is_locked(fd);
 
   if (::close(fd) == -1) {
-    std::cerr << "Failed to close " << file.c_str() << " " << std::strerror(errno) << std::endl;
+    std::cerr << "Failed to close " << file.c_str() << " "
+              << std::strerror(errno) << std::endl;
     return true;
   }
   return locked;
@@ -421,7 +430,8 @@ bool Utils::file_is_locked(int fd) {
   lock.l_pid = 0;
 
   if (fcntl(fd, F_GETLK, &lock) == -1) {
-    std::cerr << "Failed to check for locking: " << std::strerror(errno) << std::endl;
+    std::cerr << "Failed to check for locking: " << std::strerror(errno)
+              << std::endl;
     return false;
   }
   return lock.l_pid != 0;
@@ -443,52 +453,52 @@ std::string Utils::get_recovery_dir() {
   return _dir;
 }
 
-bool Utils::create_recovery_file(std::string& file, int& fd) {
+bool Utils::create_recovery_file(std::string &file, int &fd) {
   file = Glib::build_filename(get_recovery_dir(), get_recovery_template());
   fd = Glib::mkstemp(file);
   return fd != -1;
 }
 
 std::string Utils::get_recovery_template(std::string suffix) {
-  return "katoob_autosave_"+suffix;
+  return "katoob_autosave_" + suffix;
 }
 
-bool Utils::get_recovery_files(std::map<std::string, std::string>& files, std::string& error) {
+bool Utils::get_recovery_files(std::map<std::string, std::string> &files,
+                               std::string &error) {
   try {
     Glib::Dir dir(get_recovery_dir());
     std::vector<std::string> entries(dir.begin(), dir.end());
     dir.close();
     for (unsigned x = 0; x < entries.size(); x++) {
       if (entries[x].find(get_recovery_template("")) == std::string::npos) {
-	std::cerr << "Skipping " << entries[x] << std::endl;
-	continue;
+        std::cerr << "Skipping " << entries[x] << std::endl;
+        continue;
       }
 
       std::string file = Glib::build_filename(get_recovery_dir(), entries[x]);
       // is it free ?
       if (file_is_locked(file)) {
-	std::cerr << "Skipping locked file " << file << std::endl;
-	continue;
+        std::cerr << "Skipping locked file " << file << std::endl;
+        continue;
       }
 
       // Try to read it:
       try {
-	std::string str = Glib::file_get_contents(file);
-	if (str.size() == 0) {
-	  std::cerr << "Erasing zero sized file " << file << std::endl;
-	  unlink(file.c_str());
-	  continue;
-	}
-	files[file] = str;
-      }
-      catch (Glib::FileError& err) {
-	std::cerr << "Failed to read " << file << ": " << err.what() << std::endl;
-	continue;
+        std::string str = Glib::file_get_contents(file);
+        if (str.size() == 0) {
+          std::cerr << "Erasing zero sized file " << file << std::endl;
+          unlink(file.c_str());
+          continue;
+        }
+        files[file] = str;
+      } catch (Glib::FileError &err) {
+        std::cerr << "Failed to read " << file << ": " << err.what()
+                  << std::endl;
+        continue;
       }
     }
     return true;
-  }
-  catch (Glib::FileError& err) {
+  } catch (Glib::FileError &err) {
     error = err.what();
     return false;
   }

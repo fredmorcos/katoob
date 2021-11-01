@@ -21,23 +21,19 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtkmm/menu.h>
-#include <gtkmm/stock.h>
-#include <gdkmm/types.h>
-#include <gdk/gdkkeysyms.h>
 #include "menubar.hh"
 #include "macros.h"
-#include "utils.hh"
 #include "sourcemanager.hh"
+#include "utils.hh"
 #include <cassert>
+#include <gdk/gdkkeysyms.h>
+#include <gtkmm.h>
 #include <libgen.h>
 
 // TODO: Integrate with the gtk recent files thing.
-MenuBar::MenuBar(Conf& config, Encodings& encodings,
-                 std::vector<std::string>& em,
-                 std::vector<std::string>& mp):
-  _conf(config)
-{
+MenuBar::MenuBar(Conf &config, Encodings &encodings,
+                 std::vector<std::string> &em, std::vector<std::string> &mp)
+    : _conf(config) {
   file(config);
   edit(config);
   search(config);
@@ -52,28 +48,27 @@ MenuBar::MenuBar(Conf& config, Encodings& encodings,
   recent_menu_item->hide();
 }
 
-MenuBar::~MenuBar() {
-
-}
+MenuBar::~MenuBar() {}
 
 Gtk::Menu *MenuBar::menu(const char *str, Gtk::Menu *menu) {
   Gtk::Menu *m = Gtk::manage(new Gtk::Menu());
   if (menu) {
     menu->items().push_back(Gtk::Menu_Helpers::MenuElem(str, *m));
-  }
-  else {
+  } else {
     items().push_back(Gtk::Menu_Helpers::MenuElem(str, *m));
   }
   return m;
 }
 
-Gtk::MenuItem *MenuBar::radio_item(Gtk::Menu *menu, Gtk::RadioButtonGroup& group, const std::string& str) {
+Gtk::MenuItem *MenuBar::radio_item(Gtk::Menu *menu,
+                                   Gtk::RadioButtonGroup &group,
+                                   const std::string &str) {
   // I'm doing this by hand to disable the mnemonic
 
-  Gtk::RadioMenuItem *item = manage(new Gtk::RadioMenuItem (group, str));
+  Gtk::RadioMenuItem *item = manage(new Gtk::RadioMenuItem(group, str));
 
   menu->items().push_back(*item);
-  //Gtk::Menu_Helpers::RadioMenuElem(group, str));
+  // Gtk::Menu_Helpers::RadioMenuElem(group, str));
 
   //  return &menu->items().back();
   //  delete item;
@@ -82,28 +77,30 @@ Gtk::MenuItem *MenuBar::radio_item(Gtk::Menu *menu, Gtk::RadioButtonGroup& group
   //  return item;
 }
 
-Gtk::MenuItem *MenuBar::check_item(Gtk::Menu *menu, const std::string& str) {
+Gtk::MenuItem *MenuBar::check_item(Gtk::Menu *menu, const std::string &str) {
   menu->items().push_back(Gtk::Menu_Helpers::CheckMenuElem(str));
   return &menu->items().back();
 }
 
-Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const Gtk::StockID& stock_id) {
+Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const Gtk::StockID &stock_id) {
   menu->items().push_back(Gtk::Menu_Helpers::StockMenuElem(stock_id));
   return &menu->items().back();
 }
 
-Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const std::string& str) {
+Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const std::string &str) {
   menu->items().push_back(Gtk::Menu_Helpers::MenuElem(str));
   return &menu->items().back();
 }
 
-Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const Gtk::StockID& stock_id, guint key, Gdk::ModifierType mod) {
+Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const Gtk::StockID &stock_id,
+                             guint key, Gdk::ModifierType mod) {
   Gtk::AccelKey _key(key, mod);
   menu->items().push_back(Gtk::Menu_Helpers::StockMenuElem(stock_id, _key));
   return &menu->items().back();
 }
 
-Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const std::string& str, guint key, Gdk::ModifierType mod) {
+Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const std::string &str, guint key,
+                             Gdk::ModifierType mod) {
   Gtk::AccelKey _key(key, mod);
   menu->items().push_back(Gtk::Menu_Helpers::MenuElem(str, _key));
   return &menu->items().back();
@@ -113,17 +110,20 @@ void MenuBar::separator(Gtk::Menu *menu) {
   menu->items().push_back(Gtk::Menu_Helpers::SeparatorElem());
 }
 
-void MenuBar::file(Conf& KATOOB_UNUSED(config)) {
+void MenuBar::file(Conf &KATOOB_UNUSED(config)) {
   file_menu = menu(_("_File"));
 
   _create = item(file_menu, Gtk::Stock::NEW);
-  _create->signal_activate().connect(sigc::mem_fun(signal_create_activate, &sigc::signal<void>::emit));
+  _create->signal_activate().connect(
+      sigc::mem_fun(signal_create_activate, &sigc::signal<void>::emit));
 
   _open = item(file_menu, Gtk::Stock::OPEN);
-  _open->signal_activate().connect(sigc::mem_fun(signal_open_activate, &sigc::signal<void>::emit));
+  _open->signal_activate().connect(
+      sigc::mem_fun(signal_open_activate, &sigc::signal<void>::emit));
 
   _open_location = item(file_menu, _("Open _Location..."));
-  _open_location->signal_activate().connect(sigc::mem_fun(signal_open_location_activate, &sigc::signal<void>::emit));
+  _open_location->signal_activate().connect(
+      sigc::mem_fun(signal_open_location_activate, &sigc::signal<void>::emit));
 
   /* Recent */
   recent_menu = menu(_("Recent"), file_menu);
@@ -131,16 +131,21 @@ void MenuBar::file(Conf& KATOOB_UNUSED(config)) {
 
   separator(file_menu);
   _save = item(file_menu, Gtk::Stock::SAVE);
-  _save->signal_activate().connect(sigc::mem_fun(signal_save_activate, &sigc::signal<void>::emit));
+  _save->signal_activate().connect(
+      sigc::mem_fun(signal_save_activate, &sigc::signal<void>::emit));
 
-  _save_as = item(file_menu, Gtk::Stock::SAVE_AS, GDK_s, Gdk::ModifierType(GDK_CONTROL_MASK|GDK_SHIFT_MASK));
-  _save_as->signal_activate().connect(sigc::mem_fun(signal_save_as_activate, &sigc::signal<void>::emit));
+  _save_as = item(file_menu, Gtk::Stock::SAVE_AS, GDK_s,
+                  Gdk::ModifierType(GDK_CONTROL_MASK | GDK_SHIFT_MASK));
+  _save_as->signal_activate().connect(
+      sigc::mem_fun(signal_save_as_activate, &sigc::signal<void>::emit));
 
   _save_copy = item(file_menu, _("Sa_ve Copy..."));
-  _save_copy->signal_activate().connect(sigc::mem_fun(signal_save_copy_activate, &sigc::signal<void>::emit));
+  _save_copy->signal_activate().connect(
+      sigc::mem_fun(signal_save_copy_activate, &sigc::signal<void>::emit));
 
   _revert = item(file_menu, Gtk::Stock::REVERT_TO_SAVED);
-  _revert->signal_activate().connect(sigc::mem_fun(signal_revert_activate, &sigc::signal<void>::emit));
+  _revert->signal_activate().connect(
+      sigc::mem_fun(signal_revert_activate, &sigc::signal<void>::emit));
 
   separator(file_menu);
   _import_menu = menu(_("_Import"), file_menu);
@@ -148,32 +153,47 @@ void MenuBar::file(Conf& KATOOB_UNUSED(config)) {
   std::vector<Import> imports;
   import_init(imports);
   for (unsigned x = 0; x < imports.size(); x++) {
-    item(_import_menu, imports[x].name)->signal_activate().connect(sigc::bind<Import>(sigc::mem_fun(this, &MenuBar::signal_import_activate_cb), imports[x]));
+    item(_import_menu, imports[x].name)
+        ->signal_activate()
+        .connect(sigc::bind<Import>(
+            sigc::mem_fun(this, &MenuBar::signal_import_activate_cb),
+            imports[x]));
   }
 
   _export_menu = menu(_("_Export"), file_menu);
   std::vector<Export> exports;
   export_init(exports);
   for (unsigned x = 0; x < exports.size(); x++) {
-    item(_export_menu, exports[x].name)->signal_activate().connect(sigc::bind<Export>(sigc::mem_fun(this, &MenuBar::signal_export_activate_cb), exports[x]));
+    item(_export_menu, exports[x].name)
+        ->signal_activate()
+        .connect(sigc::bind<Export>(
+            sigc::mem_fun(this, &MenuBar::signal_export_activate_cb),
+            exports[x]));
   }
 
   separator(file_menu);
   _page_setup = item(file_menu, _("Page Set_up..."));
-  _page_setup->signal_activate().connect(sigc::mem_fun(signal_page_setup_activate, &sigc::signal<void>::emit));
+  _page_setup->signal_activate().connect(
+      sigc::mem_fun(signal_page_setup_activate, &sigc::signal<void>::emit));
 
-  _print_preview = item(file_menu, _("Print Previe_w"), GDK_p, Gdk::ModifierType(GDK_CONTROL_MASK|GDK_SHIFT_MASK));
-  _print_preview->signal_activate().connect(sigc::mem_fun(signal_print_preview_activate, &sigc::signal<void>::emit));
+  _print_preview = item(file_menu, _("Print Previe_w"), GDK_p,
+                        Gdk::ModifierType(GDK_CONTROL_MASK | GDK_SHIFT_MASK));
+  _print_preview->signal_activate().connect(
+      sigc::mem_fun(signal_print_preview_activate, &sigc::signal<void>::emit));
 
-  _print = item(file_menu, Gtk::Stock::PRINT, GDK_p, Gdk::ModifierType(GDK_CONTROL_MASK));
-  _print->signal_activate().connect(sigc::mem_fun(signal_print_activate, &sigc::signal<void>::emit));
+  _print = item(file_menu, Gtk::Stock::PRINT, GDK_p,
+                Gdk::ModifierType(GDK_CONTROL_MASK));
+  _print->signal_activate().connect(
+      sigc::mem_fun(signal_print_activate, &sigc::signal<void>::emit));
 
   separator(file_menu);
   _close = item(file_menu, Gtk::Stock::CLOSE);
-  _close->signal_activate().connect(sigc::mem_fun(signal_close_activate, &sigc::signal<void>::emit));
+  _close->signal_activate().connect(
+      sigc::mem_fun(signal_close_activate, &sigc::signal<void>::emit));
 
   _quit = item(file_menu, Gtk::Stock::QUIT);
-  _quit->signal_activate().connect(sigc::mem_fun(signal_quit_activate, &sigc::signal<void>::emit));
+  _quit->signal_activate().connect(
+      sigc::mem_fun(signal_quit_activate, &sigc::signal<void>::emit));
 
   // We are not calling this because our reset_gui() will be called
   // And it'll call this.
@@ -187,158 +207,191 @@ void MenuBar::create_recent() {
 
   recent_menu->items().clear();
   unsigned recentno = _conf.get("recentno", 10);
-  recentno = recentno > _conf.get_recent().size() ? _conf.get_recent().size() : recentno;
+  recentno = recentno > _conf.get_recent().size() ? _conf.get_recent().size()
+                                                  : recentno;
   std::string base;
 
   for (unsigned x = 0; x < recentno; x++) {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try {
-      base = Glib::filename_to_utf8(Glib::path_get_basename(_conf.get_recent()[x]));
-    }
-    catch (...) {
+      base = Glib::filename_to_utf8(
+          Glib::path_get_basename(_conf.get_recent()[x]));
+    } catch (...) {
       base = Glib::filename_display_basename(_conf.get_recent()[x]);
     }
 #else
     // Note: We will skip non valid files for now.
     std::unique_ptr<Glib::Error> error;
-    base = Glib::filename_to_utf8(Glib::path_get_basename(_conf.get_recent()[x]), error);
+    base = Glib::filename_to_utf8(
+        Glib::path_get_basename(_conf.get_recent()[x]), error);
     if (error.get()) {
       base = Glib::filename_display_basename(_conf.get_recent()[x]);
     }
 #endif
     Gtk::MenuItem *_item = item(recent_menu, base);
-    _item->signal_activate().connect(sigc::bind<std::string>(sigc::mem_fun(*this, &MenuBar::signal_recent_activate_cb), _conf.get_recent()[x]));
+    _item->signal_activate().connect(sigc::bind<std::string>(
+        sigc::mem_fun(*this, &MenuBar::signal_recent_activate_cb),
+        _conf.get_recent()[x]));
   }
 }
 
-void MenuBar::edit(Conf& KATOOB_UNUSED(config)) {
+void MenuBar::edit(Conf &KATOOB_UNUSED(config)) {
   edit_menu = menu(_("_Edit"));
-  _undo = item(edit_menu, Gtk::Stock::UNDO, GDK_z, Gdk::ModifierType(GDK_CONTROL_MASK));
-  _undo->signal_activate().connect(sigc::mem_fun(signal_undo_activate, &sigc::signal<void>::emit));
+  _undo = item(edit_menu, Gtk::Stock::UNDO, GDK_z,
+               Gdk::ModifierType(GDK_CONTROL_MASK));
+  _undo->signal_activate().connect(
+      sigc::mem_fun(signal_undo_activate, &sigc::signal<void>::emit));
 
-  _redo = item(edit_menu, Gtk::Stock::REDO, GDK_z, Gdk::ModifierType(GDK_CONTROL_MASK|GDK_SHIFT_MASK));
-  _redo->signal_activate().connect(sigc::mem_fun(signal_redo_activate, &sigc::signal<void>::emit));
+  _redo = item(edit_menu, Gtk::Stock::REDO, GDK_z,
+               Gdk::ModifierType(GDK_CONTROL_MASK | GDK_SHIFT_MASK));
+  _redo->signal_activate().connect(
+      sigc::mem_fun(signal_redo_activate, &sigc::signal<void>::emit));
 
   separator(edit_menu);
   _cut = item(edit_menu, Gtk::Stock::CUT);
-  _cut->signal_activate().connect(sigc::mem_fun(signal_cut_activate, &sigc::signal<void>::emit));
+  _cut->signal_activate().connect(
+      sigc::mem_fun(signal_cut_activate, &sigc::signal<void>::emit));
 
   _copy = item(edit_menu, Gtk::Stock::COPY);
-  _copy->signal_activate().connect(sigc::mem_fun(signal_copy_activate, &sigc::signal<void>::emit));
+  _copy->signal_activate().connect(
+      sigc::mem_fun(signal_copy_activate, &sigc::signal<void>::emit));
 
   _paste = item(edit_menu, Gtk::Stock::PASTE);
-  _paste->signal_activate().connect(sigc::mem_fun(signal_paste_activate, &sigc::signal<void>::emit));
+  _paste->signal_activate().connect(
+      sigc::mem_fun(signal_paste_activate, &sigc::signal<void>::emit));
 
-  _erase = item(edit_menu, Gtk::Stock::DELETE, GDK_d, Gdk::ModifierType(GDK_CONTROL_MASK));
-  _erase->signal_activate().connect(sigc::mem_fun(signal_erase_activate, &sigc::signal<void>::emit));
+  _erase = item(edit_menu, Gtk::Stock::DELETE, GDK_d,
+                Gdk::ModifierType(GDK_CONTROL_MASK));
+  _erase->signal_activate().connect(
+      sigc::mem_fun(signal_erase_activate, &sigc::signal<void>::emit));
 
   separator(edit_menu);
-  _select_all = item(edit_menu, _("_Select All"), GDK_a, Gdk::ModifierType(GDK_CONTROL_MASK));
-  _select_all->signal_activate().connect(sigc::mem_fun(signal_select_all_activate, &sigc::signal<void>::emit));
+  _select_all = item(edit_menu, _("_Select All"), GDK_a,
+                     Gdk::ModifierType(GDK_CONTROL_MASK));
+  _select_all->signal_activate().connect(
+      sigc::mem_fun(signal_select_all_activate, &sigc::signal<void>::emit));
 
   separator(edit_menu);
   _insert_file = item(edit_menu, _("_Insert File"));
-  _insert_file->signal_activate().connect(sigc::mem_fun(signal_insert_file_activate, &sigc::signal<void>::emit));
+  _insert_file->signal_activate().connect(
+      sigc::mem_fun(signal_insert_file_activate, &sigc::signal<void>::emit));
 
   separator(edit_menu);
   _preferences = item(edit_menu, Gtk::Stock::PREFERENCES);
-  _preferences->signal_activate().connect(sigc::mem_fun(signal_preferences_activate, &sigc::signal<void>::emit));
+  _preferences->signal_activate().connect(
+      sigc::mem_fun(signal_preferences_activate, &sigc::signal<void>::emit));
 }
 
-void MenuBar::search(Conf& KATOOB_UNUSED(config)) {
+void MenuBar::search(Conf &KATOOB_UNUSED(config)) {
   search_menu = menu(_("_Search"));
 
   _find = item(search_menu, Gtk::Stock::FIND);
-  _find->signal_activate().connect(sigc::mem_fun(signal_find_activate, &sigc::signal<void>::emit));
+  _find->signal_activate().connect(
+      sigc::mem_fun(signal_find_activate, &sigc::signal<void>::emit));
 
-  _find_next = item(search_menu, _("Find Ne_xt"), GDK_g, Gdk::ModifierType(GDK_CONTROL_MASK));
-  _find_next->signal_activate().connect(sigc::mem_fun(signal_find_next_activate, &sigc::signal<void>::emit));
+  _find_next = item(search_menu, _("Find Ne_xt"), GDK_g,
+                    Gdk::ModifierType(GDK_CONTROL_MASK));
+  _find_next->signal_activate().connect(
+      sigc::mem_fun(signal_find_next_activate, &sigc::signal<void>::emit));
 
   _replace = item(search_menu, Gtk::Stock::FIND_AND_REPLACE);
-  _replace->signal_activate().connect(sigc::mem_fun(signal_replace_activate, &sigc::signal<void>::emit));
+  _replace->signal_activate().connect(
+      sigc::mem_fun(signal_replace_activate, &sigc::signal<void>::emit));
 
   separator(search_menu);
   _goto_line = item(search_menu, Gtk::Stock::JUMP_TO);
-  _goto_line->signal_activate().connect(sigc::mem_fun(signal_goto_line_activate, &sigc::signal<void>::emit));
+  _goto_line->signal_activate().connect(
+      sigc::mem_fun(signal_goto_line_activate, &sigc::signal<void>::emit));
 }
 
-void MenuBar::view(Conf& KATOOB_UNUSED(config), Encodings& encodings) {
+void MenuBar::view(Conf &KATOOB_UNUSED(config), Encodings &encodings) {
   Gtk::RadioButtonGroup toolbars, encoding;
   view_menu = menu(_("_View"));
 
   _statusbar = check_item(view_menu, _("_Statusbar"));
-  _statusbar->signal_activate().connect(sigc::mem_fun(*this, &MenuBar::signal_statusbar_activate_cb));
+  _statusbar->signal_activate().connect(
+      sigc::mem_fun(*this, &MenuBar::signal_statusbar_activate_cb));
 
   _line_numbers = check_item(view_menu, _("_Line Numbers"));
-  _line_numbers->signal_activate().connect(sigc::mem_fun(*this, &MenuBar::signal_line_numbers_activate_cb));
+  _line_numbers->signal_activate().connect(
+      sigc::mem_fun(*this, &MenuBar::signal_line_numbers_activate_cb));
 
   _wrap_text = check_item(view_menu, _("_Wrap Text"));
-  _wrap_text->signal_activate().connect(sigc::mem_fun(*this, &MenuBar::signal_wrap_text_activate_cb));
+  _wrap_text->signal_activate().connect(
+      sigc::mem_fun(*this, &MenuBar::signal_wrap_text_activate_cb));
 
   separator(view_menu);
 
   toolbars_menu = menu(_("Toolbars"), view_menu);
 
   _toolbar = check_item(toolbars_menu, _("_Main Toolbar"));
-  _toolbar->signal_activate().connect(sigc::mem_fun(*this, &MenuBar::signal_toolbar_activate_cb));
+  _toolbar->signal_activate().connect(
+      sigc::mem_fun(*this, &MenuBar::signal_toolbar_activate_cb));
 
   _extended_toolbar = check_item(toolbars_menu, _("_Extended Toolbar"));
-  _extended_toolbar->signal_activate().connect(sigc::mem_fun(*this, &MenuBar::signal_extended_toolbar_activate_cb));
+  _extended_toolbar->signal_activate().connect(
+      sigc::mem_fun(*this, &MenuBar::signal_extended_toolbar_activate_cb));
 
   separator(toolbars_menu);
   // TODO: Disable these when the main toolbar is not shown.
   _icons = radio_item(toolbars_menu, toolbars, _("Icons only"));
-  _icons->signal_activate().connect(sigc::mem_fun(*this, &MenuBar::signal_icons_activate_cb));
+  _icons->signal_activate().connect(
+      sigc::mem_fun(*this, &MenuBar::signal_icons_activate_cb));
 
   _text = radio_item(toolbars_menu, toolbars, _("Text only"));
-  _text->signal_activate().connect(sigc::mem_fun(*this, &MenuBar::signal_text_activate_cb));
+  _text->signal_activate().connect(
+      sigc::mem_fun(*this, &MenuBar::signal_text_activate_cb));
 
   _both = radio_item(toolbars_menu, toolbars, _("Both"));
-  _both->signal_activate().connect(sigc::mem_fun(*this, &MenuBar::signal_both_activate_cb));
+  _both->signal_activate().connect(
+      sigc::mem_fun(*this, &MenuBar::signal_both_activate_cb));
 
   _beside = radio_item(toolbars_menu, toolbars, _("Text beside icons"));
-  _beside->signal_activate().connect(sigc::mem_fun(*this, &MenuBar::signal_beside_activate_cb));
+  _beside->signal_activate().connect(
+      sigc::mem_fun(*this, &MenuBar::signal_beside_activate_cb));
 
   _encoding_menu = menu(_("_Encoding"), view_menu);
   _encoding_menu->items().push_back(Gtk::Menu_Helpers::TearoffMenuElem());
 
   Gtk::Menu *item;
   int e = 0;
-  for (int x = 0; x < encodings.languages(); x++)
-    {
-      item = menu(const_cast<char *>(encodings.language(x).c_str()), _encoding_menu);
-      for (int y = 0; y < encodings.languages(x); y++)
-	{
-	Gtk::MenuItem *_item = radio_item(item, encoding, encodings.name(x, y));
-	_item->signal_activate().connect(sigc::bind<int>(sigc::mem_fun(*this, &MenuBar::signal_encoding_activate_cb), e++));
-	encoding_menu_items.push_back(_item);
-	}
+  for (int x = 0; x < encodings.languages(); x++) {
+    item =
+        menu(const_cast<char *>(encodings.language(x).c_str()), _encoding_menu);
+    for (int y = 0; y < encodings.languages(x); y++) {
+      Gtk::MenuItem *_item = radio_item(item, encoding, encodings.name(x, y));
+      _item->signal_activate().connect(sigc::bind<int>(
+          sigc::mem_fun(*this, &MenuBar::signal_encoding_activate_cb), e++));
+      encoding_menu_items.push_back(_item);
     }
+  }
 }
 
-void MenuBar::tools(Conf& KATOOB_UNUSED(config),
-                    std::vector<std::string>& em,
-                    std::vector<std::string>& mp)
-{
+void MenuBar::tools(Conf &KATOOB_UNUSED(config), std::vector<std::string> &em,
+                    std::vector<std::string> &mp) {
   tools_menu = menu(_("_Tools"));
-  _execute = item(tools_menu, _("_Execute Command On Buffer..."),
-                  GDK_e, Gdk::ModifierType(GDK_CONTROL_MASK));
-  _execute->signal_activate().connect
-    (sigc::mem_fun(signal_execute_activate, &sigc::signal<void>::emit));
+  _execute = item(tools_menu, _("_Execute Command On Buffer..."), GDK_e,
+                  Gdk::ModifierType(GDK_CONTROL_MASK));
+  _execute->signal_activate().connect(
+      sigc::mem_fun(signal_execute_activate, &sigc::signal<void>::emit));
 
   separator(tools_menu);
 
-  _spell = item(tools_menu, Gtk::Stock::SPELL_CHECK, GDK_F7, Gdk::ModifierType(GDK_CONTROL_MASK));
-  _spell->signal_activate().connect(sigc::mem_fun(signal_spell_activate, &sigc::signal<void>::emit));
+  _spell = item(tools_menu, Gtk::Stock::SPELL_CHECK, GDK_F7,
+                Gdk::ModifierType(GDK_CONTROL_MASK));
+  _spell->signal_activate().connect(
+      sigc::mem_fun(signal_spell_activate, &sigc::signal<void>::emit));
 
   _auto_spell = check_item(tools_menu, _("_Autocheck Spelling"));
-  _auto_spell->signal_activate().connect(sigc::mem_fun(*this, &MenuBar::signal_auto_spell_activate_cb));
+  _auto_spell->signal_activate().connect(
+      sigc::mem_fun(*this, &MenuBar::signal_auto_spell_activate_cb));
 
   Gtk::RadioButtonGroup input_group;
   _input_menu = menu(_("Input"), tools_menu);
   Gtk::MenuItem *__item = radio_item(_input_menu, input_group, _("Default"));
   dynamic_cast<Gtk::RadioMenuItem *>(__item)->set_active(true);
-  __item->signal_activate().connect(sigc::bind<int, int>(sigc::mem_fun(*this, &MenuBar::signal_layout_activate_cb), -1, -1));
+  __item->signal_activate().connect(sigc::bind<int, int>(
+      sigc::mem_fun(*this, &MenuBar::signal_layout_activate_cb), -1, -1));
 
   _emulator_menu = menu(_("Keyboard emulator"), _input_menu);
   build_submenu(_emulator_menu, em, input_group, 0);
@@ -347,21 +400,25 @@ void MenuBar::tools(Conf& KATOOB_UNUSED(config),
   build_submenu(_multipress_menu, mp, input_group, 1);
 }
 
-void MenuBar::build_submenu(Gtk::Menu *menu, std::vector<std::string>& items, Gtk::RadioButtonGroup& group, int num) {
+void MenuBar::build_submenu(Gtk::Menu *menu, std::vector<std::string> &items,
+                            Gtk::RadioButtonGroup &group, int num) {
   for (unsigned x = 0; x < items.size(); x++) {
     Gtk::MenuItem *_item = radio_item(menu, group, items[x]);
-    _item->signal_activate().connect
-      (sigc::bind<int, int>(sigc::mem_fun(*this, &MenuBar::signal_layout_activate_cb), num, x));
+    _item->signal_activate().connect(sigc::bind<int, int>(
+        sigc::mem_fun(*this, &MenuBar::signal_layout_activate_cb), num, x));
   }
 }
 
-void MenuBar::documents(Conf& KATOOB_UNUSED(config)) {
+void MenuBar::documents(Conf &KATOOB_UNUSED(config)) {
   documents_menu = menu(_("_Documents"));
   _save_all = item(documents_menu, _("Save _All"));
-  _save_all->signal_activate().connect(mem_fun(signal_save_all_activate, &sigc::signal<void>::emit));
+  _save_all->signal_activate().connect(
+      mem_fun(signal_save_all_activate, &sigc::signal<void>::emit));
 
-  _close_all = item(documents_menu, _("Clos_e All"), GDK_w, Gdk::ModifierType(GDK_CONTROL_MASK|GDK_SHIFT_MASK));
-  _close_all->signal_activate().connect(mem_fun(signal_close_all_activate, &sigc::signal<void>::emit));
+  _close_all = item(documents_menu, _("Clos_e All"), GDK_w,
+                    Gdk::ModifierType(GDK_CONTROL_MASK | GDK_SHIFT_MASK));
+  _close_all->signal_activate().connect(
+      mem_fun(signal_close_all_activate, &sigc::signal<void>::emit));
 
   separator(documents_menu);
 
@@ -370,10 +427,12 @@ void MenuBar::documents(Conf& KATOOB_UNUSED(config)) {
   documents_menu->show_all();
 }
 
-void MenuBar::help(Conf& KATOOB_UNUSED(config)) {
+void MenuBar::help(Conf &KATOOB_UNUSED(config)) {
   help_menu = menu(_("_Help"));
-  _about = item(help_menu, Gtk::Stock::ABOUT, GDK_t, Gdk::ModifierType(GDK_CONTROL_MASK));
-  _about->signal_activate().connect(mem_fun(signal_about_activate, &sigc::signal<void>::emit));
+  _about = item(help_menu, Gtk::Stock::ABOUT, GDK_t,
+                Gdk::ModifierType(GDK_CONTROL_MASK));
+  _about->signal_activate().connect(
+      mem_fun(signal_about_activate, &sigc::signal<void>::emit));
 }
 
 void MenuBar::signal_layout_activate_cb(int x, int y) {
@@ -381,7 +440,7 @@ void MenuBar::signal_layout_activate_cb(int x, int y) {
 }
 
 void MenuBar::set_encoding(unsigned e) {
-  assert (e <= encoding_menu_items.size());
+  assert(e <= encoding_menu_items.size());
 
   _ignore_encoding_changed_signal_hack = true;
 
@@ -391,7 +450,7 @@ void MenuBar::set_encoding(unsigned e) {
 }
 
 void MenuBar::signal_encoding_activate_cb(unsigned e) {
-  assert (e <= encoding_menu_items.size());
+  assert(e <= encoding_menu_items.size());
 
   if (_ignore_encoding_changed_signal_hack) {
     return;
@@ -408,26 +467,26 @@ void MenuBar::signal_document_activate_cb(int x) {
     return;
   }
 
-  if (static_cast<Gtk::RadioMenuItem&>(opened_menu->items()[x]).get_active()) {
+  if (static_cast<Gtk::RadioMenuItem &>(opened_menu->items()[x]).get_active()) {
     signal_document_activate.emit(x);
   }
 }
 
-void MenuBar::document_add(std::string& label, bool ro, bool m) {
+void MenuBar::document_add(std::string &label, bool ro, bool m) {
   DocItem item(label, ro, m);
   _documents.push_back(item);
 
   documents_menu_clear();
   documents_menu_build();
 
-  MenuList& ml = opened_menu->items();
+  MenuList &ml = opened_menu->items();
   MenuList::iterator iter = ml.end();
   iter--;
 
   _ignore_document_clicked_signal_hack = true;
 
-  Gtk::MenuItem& itm = *iter;
-  static_cast<Gtk::RadioMenuItem&>(itm).set_active(true);
+  Gtk::MenuItem &itm = *iter;
+  static_cast<Gtk::RadioMenuItem &>(itm).set_active(true);
 
   _ignore_document_clicked_signal_hack = false;
 }
@@ -440,8 +499,8 @@ void MenuBar::document_set_active(size_t x) {
 
   _ignore_document_clicked_signal_hack = true;
 
-  Gtk::MenuItem& item = opened_menu->items()[x];
-  static_cast<Gtk::RadioMenuItem&>(item).set_active(true);
+  Gtk::MenuItem &item = opened_menu->items()[x];
+  static_cast<Gtk::RadioMenuItem &>(item).set_active(true);
   // For some strange reason, We lose the colors when we switch tabs.
   // I'm setting them here.
   document_set_modified(x, _documents[x].get_modified());
@@ -459,15 +518,14 @@ void MenuBar::document_remove(int x) {
   documents_menu_build();
 }
 
-void MenuBar::document_set_label(int x, std::string& str)
-{
+void MenuBar::document_set_label(int x, std::string &str) {
   _documents[x].set_label(str);
-  dynamic_cast<Gtk::Label *>(opened_menu->items()[x].get_child())->set_text(str);
+  dynamic_cast<Gtk::Label *>(opened_menu->items()[x].get_child())
+      ->set_text(str);
 }
 
-void MenuBar::document_set_modified(size_t x, bool m)
-{
-  assert (x < _documents.size());
+void MenuBar::document_set_modified(size_t x, bool m) {
+  assert(x < _documents.size());
 
   // A read only document can't be modified.
   if (_documents[x].get_readonly())
@@ -477,9 +535,8 @@ void MenuBar::document_set_modified(size_t x, bool m)
   document_set_modified(opened_menu->items()[x], m);
 }
 
-void MenuBar::document_set_readonly(size_t x, bool ro)
-{
-  assert (x < _documents.size());
+void MenuBar::document_set_readonly(size_t x, bool ro) {
+  assert(x < _documents.size());
 
   // A modified document can't be read only.
   if (_documents[x].get_modified())
@@ -490,85 +547,79 @@ void MenuBar::document_set_readonly(size_t x, bool ro)
   document_set_readonly(opened_menu->items()[x], ro);
 }
 
-void MenuBar::document_set_readonly(Gtk::MenuItem& item, bool ro)
-{
+void MenuBar::document_set_readonly(Gtk::MenuItem &item, bool ro) {
   if (ro)
-    katoob_set_color(_conf, dynamic_cast<Gtk::Label *>(item.get_child()), Utils::KATOOB_COLOR_READONLY);
+    katoob_set_color(_conf, dynamic_cast<Gtk::Label *>(item.get_child()),
+                     Utils::KATOOB_COLOR_READONLY);
   else
     document_set_normal(item);
 }
 
-void MenuBar::document_set_modified(Gtk::MenuItem& item, bool m)
-{
+void MenuBar::document_set_modified(Gtk::MenuItem &item, bool m) {
   if (m)
-    katoob_set_color(_conf, dynamic_cast<Gtk::Label *>(item.get_child()), Utils::KATOOB_COLOR_MODIFIED);
+    katoob_set_color(_conf, dynamic_cast<Gtk::Label *>(item.get_child()),
+                     Utils::KATOOB_COLOR_MODIFIED);
   else
     document_set_normal(item);
 }
 
-void MenuBar::document_set_normal(Gtk::MenuItem& item)
-{
-  katoob_set_color(_conf, dynamic_cast<Gtk::Label *>(item.get_child()), Utils::KATOOB_COLOR_NORMAL);
+void MenuBar::document_set_normal(Gtk::MenuItem &item) {
+  katoob_set_color(_conf, dynamic_cast<Gtk::Label *>(item.get_child()),
+                   Utils::KATOOB_COLOR_NORMAL);
 }
 
-void MenuBar::documents_menu_clear()
-{
-  opened_menu->items().clear();
-}
+void MenuBar::documents_menu_clear() { opened_menu->items().clear(); }
 
-void MenuBar::documents_menu_build()
-{
+void MenuBar::documents_menu_build() {
   Gtk::RadioButtonGroup documents_radio;
 
-  for (unsigned i = 0; i < _documents.size(); i++)
-    {
-      Gtk::MenuItem *_item = radio_item(opened_menu, documents_radio, _documents[i].get_label());
-      _item->signal_activate().connect(sigc::bind<int>(sigc::mem_fun(*this, &MenuBar::signal_document_activate_cb), i));
+  for (unsigned i = 0; i < _documents.size(); i++) {
+    Gtk::MenuItem *_item =
+        radio_item(opened_menu, documents_radio, _documents[i].get_label());
+    _item->signal_activate().connect(sigc::bind<int>(
+        sigc::mem_fun(*this, &MenuBar::signal_document_activate_cb), i));
 
-      Gtk::MenuItem& itm = *_item;
+    Gtk::MenuItem &itm = *_item;
 
-      bool r = _documents[i].get_readonly();
-      bool m = _documents[i].get_modified();
-      if (r)
-	document_set_readonly(itm, true);
-      if (m)
-	document_set_modified(itm, true);
-      if ((!r) && (!m))
-	document_set_normal(itm);
-      _item->show();
-    }
+    bool r = _documents[i].get_readonly();
+    bool m = _documents[i].get_modified();
+    if (r)
+      document_set_readonly(itm, true);
+    if (m)
+      document_set_modified(itm, true);
+    if ((!r) && (!m))
+      document_set_normal(itm);
+    _item->show();
+  }
 }
 
-void MenuBar::signal_closed_document_erased_cb()
-{
+void MenuBar::signal_closed_document_erased_cb() {
   // This is called when we remove an item from the beginning.
   _closed_documents.erase(_closed_documents.begin());
   closed_documents_rebuild();
 }
 
-void MenuBar::signal_closed_document_added(std::string title)
-{
+void MenuBar::signal_closed_document_added(std::string title) {
   // We will add an item to the end.
   ClosedDocItem doc;
   doc.title = title;
-  doc.n = _closed_documents.size() +1;
+  doc.n = _closed_documents.size() + 1;
   _closed_documents.push_back(doc);
   closed_documents_rebuild();
 }
 
-void MenuBar::closed_documents_rebuild()
-{
+void MenuBar::closed_documents_rebuild() {
   closed_menu->items().clear();
 
   Gtk::MenuItem *_item;
   for (unsigned i = 0; i < _closed_documents.size(); i++) {
     _item = item(closed_menu, _closed_documents[i].title);
-    _item->signal_activate().connect(sigc::bind<int>(sigc::mem_fun(*this, &MenuBar::signal_closed_document_activate_cb), i));
+    _item->signal_activate().connect(sigc::bind<int>(
+        sigc::mem_fun(*this, &MenuBar::signal_closed_document_activate_cb), i));
   }
 }
 
-void MenuBar::signal_closed_document_activate_cb(int n)
-{
+void MenuBar::signal_closed_document_activate_cb(int n) {
   std::vector<ClosedDocItem>::iterator iter = _closed_documents.begin();
   iter += n;
   _closed_documents.erase(iter);
@@ -585,34 +636,36 @@ void MenuBar::signal_export_activate_cb(Export exp) {
 }
 
 void MenuBar::reset_gui() {
-  dynamic_cast<Gtk::CheckMenuItem *>(_line_numbers)->set_active(_conf.get("linenumbers", true));
+  dynamic_cast<Gtk::CheckMenuItem *>(_line_numbers)
+      ->set_active(_conf.get("linenumbers", true));
 
-  dynamic_cast<Gtk::CheckMenuItem *>(_statusbar)->set_active(_conf.get("statusbar", true));
-  dynamic_cast<Gtk::CheckMenuItem *>(_wrap_text)->set_active(_conf.get("textwrap", true));
+  dynamic_cast<Gtk::CheckMenuItem *>(_statusbar)
+      ->set_active(_conf.get("statusbar", true));
+  dynamic_cast<Gtk::CheckMenuItem *>(_wrap_text)
+      ->set_active(_conf.get("textwrap", true));
 
-  dynamic_cast<Gtk::CheckMenuItem *>(_toolbar)->set_active(_conf.get("toolbar", true));
-  dynamic_cast<Gtk::CheckMenuItem *>(_extended_toolbar)->set_active(_conf.get("extended_toolbar", true));
+  dynamic_cast<Gtk::CheckMenuItem *>(_toolbar)->set_active(
+      _conf.get("toolbar", true));
+  dynamic_cast<Gtk::CheckMenuItem *>(_extended_toolbar)
+      ->set_active(_conf.get("extended_toolbar", true));
 
-  dynamic_cast<Gtk::CheckMenuItem *>(_auto_spell)->set_active(_conf.get("spell_check", true));
+  dynamic_cast<Gtk::CheckMenuItem *>(_auto_spell)
+      ->set_active(_conf.get("spell_check", true));
 
-  const std::string& toolbartype = _conf.get("toolbartype", "both");
+  const std::string &toolbartype = _conf.get("toolbartype", "both");
   if (toolbartype == "text") {
     dynamic_cast<Gtk::RadioMenuItem *>(_text)->set_active();
-  }
-  else if (toolbartype == "icons") {
+  } else if (toolbartype == "icons") {
     dynamic_cast<Gtk::RadioMenuItem *>(_icons)->set_active();
-  }
-  else if (toolbartype == "both_horiz") {
+  } else if (toolbartype == "both_horiz") {
     dynamic_cast<Gtk::RadioMenuItem *>(_beside)->set_active();
-  }
-  else {
+  } else {
     dynamic_cast<Gtk::RadioMenuItem *>(_both)->set_active();
   }
 
   if (_conf.get("recent", true)) {
     recent_menu_item->show();
-  }
-  else {
+  } else {
     recent_menu_item->hide();
   }
 
@@ -624,27 +677,33 @@ void MenuBar::reset_gui() {
 }
 
 void MenuBar::signal_auto_spell_activate_cb() {
-  signal_auto_spell_activate.emit(dynamic_cast<Gtk::CheckMenuItem *>(_auto_spell)->get_active());
+  signal_auto_spell_activate.emit(
+      dynamic_cast<Gtk::CheckMenuItem *>(_auto_spell)->get_active());
 }
 
 void MenuBar::signal_toolbar_activate_cb() {
-  signal_toolbar_activate.emit(dynamic_cast<Gtk::CheckMenuItem *>(_toolbar)->get_active());
+  signal_toolbar_activate.emit(
+      dynamic_cast<Gtk::CheckMenuItem *>(_toolbar)->get_active());
 }
 
 void MenuBar::signal_extended_toolbar_activate_cb() {
-  signal_extended_toolbar_activate.emit(dynamic_cast<Gtk::CheckMenuItem *>(_extended_toolbar)->get_active());
+  signal_extended_toolbar_activate.emit(
+      dynamic_cast<Gtk::CheckMenuItem *>(_extended_toolbar)->get_active());
 }
 
 void MenuBar::signal_statusbar_activate_cb() {
-  signal_statusbar_activate.emit(dynamic_cast<Gtk::CheckMenuItem *>(_statusbar)->get_active());
+  signal_statusbar_activate.emit(
+      dynamic_cast<Gtk::CheckMenuItem *>(_statusbar)->get_active());
 }
 
 void MenuBar::signal_line_numbers_activate_cb() {
-  signal_line_numbers_activate.emit(dynamic_cast<Gtk::CheckMenuItem *>(_line_numbers)->get_active());
+  signal_line_numbers_activate.emit(
+      dynamic_cast<Gtk::CheckMenuItem *>(_line_numbers)->get_active());
 }
 
 void MenuBar::signal_wrap_text_activate_cb() {
-  signal_wrap_text_activate.emit(dynamic_cast<Gtk::CheckMenuItem *>(_wrap_text)->get_active());
+  signal_wrap_text_activate.emit(
+      dynamic_cast<Gtk::CheckMenuItem *>(_wrap_text)->get_active());
 }
 
 void MenuBar::signal_icons_activate_cb() {
@@ -671,13 +730,9 @@ void MenuBar::signal_both_activate_cb() {
   }
 }
 
-void MenuBar::enable_undo(bool s) {
-  _undo->set_sensitive(s);
-}
+void MenuBar::enable_undo(bool s) { _undo->set_sensitive(s); }
 
-void MenuBar::enable_redo(bool s) {
-  _redo->set_sensitive(s);
-}
+void MenuBar::enable_redo(bool s) { _redo->set_sensitive(s); }
 
 void MenuBar::enable_wrap_text(bool s) {
   dynamic_cast<Gtk::CheckMenuItem *>(_wrap_text)->set_active(s);
@@ -734,7 +789,7 @@ void MenuBar::set_read_only(int x, bool r) {
   document_set_readonly(x, r);
 }
 
-void MenuBar::signal_recent_activate_cb(std::string& str) {
+void MenuBar::signal_recent_activate_cb(std::string &str) {
   signal_recent_activate.emit(str);
 }
 
@@ -742,18 +797,20 @@ void MenuBar::create_highlighters() {
   highlight = menu(_("_Highlight"), view_menu);
 
   Gtk::RadioButtonGroup highlighters_radio;
-  Gtk::MenuItem* _item = radio_item(highlight, highlighters_radio, _("None"));
-  _item->signal_activate().connect(sigc::bind<std::string>(sigc::mem_fun(*this, &MenuBar::signal_highlighter_activate_cb), ""));
+  Gtk::MenuItem *_item = radio_item(highlight, highlighters_radio, _("None"));
+  _item->signal_activate().connect(sigc::bind<std::string>(
+      sigc::mem_fun(*this, &MenuBar::signal_highlighter_activate_cb), ""));
 
-  SourceCategory& cats = SourceManager::get_categories();
+  SourceCategory &cats = SourceManager::get_categories();
 
   for (SourceCategoryIter iter = cats.begin(); iter != cats.end(); iter++) {
-    Gtk::Menu* item = menu(const_cast<char *>(iter->first.c_str()), highlight);
+    Gtk::Menu *item = menu(const_cast<char *>(iter->first.c_str()), highlight);
 
     for (auto i = iter->second.begin(); i != iter->second.end(); i++) {
       _item = radio_item(item, highlighters_radio, SourceManager::get_name(*i));
       _item->property_user_data().set_value(const_cast<char *>(i->c_str()));
-      _item->signal_activate().connect(sigc::bind<std::string>(sigc::mem_fun(*this, &MenuBar::signal_highlighter_activate_cb), *i));
+      _item->signal_activate().connect(sigc::bind<std::string>(
+          sigc::mem_fun(*this, &MenuBar::signal_highlighter_activate_cb), *i));
     }
   }
 }
@@ -763,29 +820,32 @@ void MenuBar::signal_highlighter_activate_cb(std::string id) {
     return;
   }
 
-  Gtk::Menu_Helpers::MenuList& items = highlight->items();
+  Gtk::Menu_Helpers::MenuList &items = highlight->items();
   // Iterate over the items.
-  for (Gtk::Menu_Helpers::MenuList::iterator iter = items.begin(); iter != items.end(); iter++) {
+  for (Gtk::Menu_Helpers::MenuList::iterator iter = items.begin();
+       iter != items.end(); iter++) {
     Gtk::Menu *m = iter->get_submenu();
     if (m) {
-      Gtk::Menu_Helpers::MenuList& items2 = m->items();
+      Gtk::Menu_Helpers::MenuList &items2 = m->items();
       // Iterate over the items.
-      for (Gtk::Menu_Helpers::MenuList::iterator iter2 = items2.begin(); iter != items2.end(); iter++) {
-	if (id == static_cast<char *>(iter2->property_user_data().get_value())) {
-	  Gtk::CheckMenuItem *it = dynamic_cast<Gtk::CheckMenuItem *>(&(*iter2));
-	  if (it && it->get_active()) {
-	    signal_highlighter_activate.emit(id);
-	    return;
-	  }
-	}
+      for (Gtk::Menu_Helpers::MenuList::iterator iter2 = items2.begin();
+           iter != items2.end(); iter++) {
+        if (id ==
+            static_cast<char *>(iter2->property_user_data().get_value())) {
+          Gtk::CheckMenuItem *it =
+              dynamic_cast<Gtk::CheckMenuItem *>(&(*iter2));
+          if (it && it->get_active()) {
+            signal_highlighter_activate.emit(id);
+            return;
+          }
+        }
       }
-    }
-    else {
+    } else {
       // Probably this is the None item.
       Gtk::CheckMenuItem *it = dynamic_cast<Gtk::CheckMenuItem *>(&(*iter));
       if (it && it->get_active()) {
-	signal_highlighter_activate.emit("");
-	return;
+        signal_highlighter_activate.emit("");
+        return;
       }
     }
   }
@@ -794,34 +854,38 @@ void MenuBar::signal_highlighter_activate_cb(std::string id) {
 void MenuBar::set_highlight(std::string id) {
   _ignore_highlighting_changed_signal_hack = true;
 
-  Gtk::Menu_Helpers::MenuList& items = highlight->items();
+  Gtk::Menu_Helpers::MenuList &items = highlight->items();
   if (id == "") {
-    Gtk::CheckMenuItem *item = dynamic_cast<Gtk::CheckMenuItem *>(&(*items.begin()));
+    Gtk::CheckMenuItem *item =
+        dynamic_cast<Gtk::CheckMenuItem *>(&(*items.begin()));
     if (item) {
       item->set_active(true);
       _ignore_highlighting_changed_signal_hack = false;
       return;
     }
-  }
-  else {
+  } else {
     // Iterate over the items.
-    for (Gtk::Menu_Helpers::MenuList::iterator iter = items.begin(); iter != items.end(); iter++) {
+    for (Gtk::Menu_Helpers::MenuList::iterator iter = items.begin();
+         iter != items.end(); iter++) {
       // We know they are all Gtk::Menu objects
       Gtk::Menu *m = iter->get_submenu();
       if (!m) {
-	continue;
+        continue;
       }
-      Gtk::Menu_Helpers::MenuList& items2 = m->items();
+      Gtk::Menu_Helpers::MenuList &items2 = m->items();
 
-      for (Gtk::Menu_Helpers::MenuList::iterator iter2 = items2.begin(); iter2 != items2.end(); iter2++) {
-	if (id == static_cast<char *>(iter2->property_user_data().get_value())) {
-	  Gtk::CheckMenuItem *it = dynamic_cast<Gtk::CheckMenuItem *>(&(*iter2));
-	  if (it) {
-	    it->set_active(true);
-	    _ignore_highlighting_changed_signal_hack = false;
-	    return;
-	  }
-	}
+      for (Gtk::Menu_Helpers::MenuList::iterator iter2 = items2.begin();
+           iter2 != items2.end(); iter2++) {
+        if (id ==
+            static_cast<char *>(iter2->property_user_data().get_value())) {
+          Gtk::CheckMenuItem *it =
+              dynamic_cast<Gtk::CheckMenuItem *>(&(*iter2));
+          if (it) {
+            it->set_active(true);
+            _ignore_highlighting_changed_signal_hack = false;
+            return;
+          }
+        }
       }
     }
   }

@@ -23,21 +23,21 @@
 
 #pragma once
 
-#include <gtkmm/pagesetup.h>
 #include "conf.hh"
+#include <gtkmm.h>
 
 class PageSetup : public Glib::Object {
 public:
-  static Glib::RefPtr<PageSetup> create(Conf&);
-  void reset(const Glib::RefPtr<Gtk::PageSetup>&);
+  static Glib::RefPtr<PageSetup> create(Conf &);
+  void reset(const Glib::RefPtr<Gtk::PageSetup> &);
   void save();
   Glib::RefPtr<Gtk::PageSetup> get_page_setup();
 
 protected:
-  PageSetup(Conf&);
+  PageSetup(Conf &);
   ~PageSetup();
 
 private:
   Glib::RefPtr<Gtk::PageSetup> _page_setup;
-  Conf& _conf;
+  Conf &_conf;
 };

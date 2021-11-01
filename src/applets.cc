@@ -23,10 +23,10 @@
 
 #include "applets.hh"
 #include "dict.hh"
-#include "gtkmm/adjustment.h"
 #include "macros.h"
 #include "network.hh"
 #include "utils.hh"
+#include <gtkmm.h>
 
 Applet::Applet(Conf &conf) : _conf(conf) {
   box.set_spacing(5);

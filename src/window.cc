@@ -21,25 +21,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <config.h>
+#include "window.hh"
+#include "aboutdialog.hh"
+#include "dialogs.hh"
+#include "macros.h"
+#include "preferencesdialog.hh"
+#include "utils.hh"
 #include <cassert>
+#include <config.h>
 #include <iostream>
 #include <sstream>
-#include "aboutdialog.hh"
-#include "window.hh"
-#include "utils.hh"
-#include "macros.h"
-#include "dialogs.hh"
-#include "preferencesdialog.hh"
 
-Window::Window(Conf& conf, Encodings& encodings, std::vector<std::string>& files) :
-  _conf(conf),
-  _encodings(encodings),
-  menubar(conf, encodings, Emulator::list_layouts(), Multipress::list_layouts()),
-  toolbar(conf),
-  mdi(conf, encodings),
-  statusbar(conf),
-  box(false, 0) {
+Window::Window(Conf &conf, Encodings &encodings,
+               std::vector<std::string> &files)
+    : _conf(conf), _encodings(encodings),
+      menubar(conf, encodings, Emulator::list_layouts(),
+              Multipress::list_layouts()),
+      toolbar(conf), mdi(conf, encodings), statusbar(conf), box(false, 0) {
   box.pack_start(menubar, Gtk::PACK_SHRINK, 0);
   box.pack_start(toolbar.get_main(), false, false, 0);
   //  box.pack_start(toolbar.get_extended(), Gtk::PACK_SHRINK, 0);
@@ -65,8 +63,7 @@ Window::Window(Conf& conf, Encodings& encodings, std::vector<std::string>& files
   // And in that case, we won't create a new document.
   if ((files.size() == 0) && (!mdi.get_active())) {
     mdi.create_document();
-  }
-  else {
+  } else {
     for (unsigned int x = 0; x < files.size(); x++) {
       mdi.create_document(files[x]);
     }
@@ -82,12 +79,12 @@ Window::Window(Conf& conf, Encodings& encodings, std::vector<std::string>& files
   }
 
   move(conf.get("x", 50), conf.get("y", 50));
-  resize (conf.get("w", 500), conf.get("h", 400));
+  resize(conf.get("w", 500), conf.get("h", 400));
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try {
     set_icon_from_file(Utils::get_data_path("katoob.svg"));
-  } catch (Glib::Error& er) {
+  } catch (Glib::Error &er) {
     std::cout << er.what() << std::endl;
   }
 #else /* ! GLIBMM_EXCEPTIONS_ENABLED */
@@ -99,7 +96,8 @@ Window::Window(Conf& conf, Encodings& encodings, std::vector<std::string>& files
 #endif
 
   //  set_title();
-  signal_delete_event().connect(sigc::mem_fun(*this, &Window::signal_delete_event_cb));
+  signal_delete_event().connect(
+      sigc::mem_fun(*this, &Window::signal_delete_event_cb));
 
   // We don't call show_all(); here as our statusbar needs to hide a few things!
   box.show();
@@ -125,39 +123,39 @@ Window::Window(Conf& conf, Encodings& encodings, std::vector<std::string>& files
 
   std::string ver = conf.get_version();
   if ((ver.size() == 0) && conf.ok()) {
-    katoob_info(_("A lot of the configuration options have been changed in this version.\nPlease adjust the configuration first."));
+    katoob_info(_("A lot of the configuration options have been changed in "
+                  "this version.\nPlease adjust the configuration first."));
     signal_preferences_activate_cb();
   }
 
   // DnD
   std::list<Gtk::TargetEntry> targets;
-  targets.push_back(Gtk::TargetEntry("text/uri-list") );
+  targets.push_back(Gtk::TargetEntry("text/uri-list"));
   drag_dest_set(targets, Gtk::DEST_DEFAULT_ALL,
-                Gdk::ACTION_DEFAULT |
-                Gdk::ACTION_COPY |
-                Gdk::ACTION_MOVE |
-                Gdk::ACTION_LINK |
-                Gdk::ACTION_PRIVATE |
-                Gdk::ACTION_ASK
-                );
+                Gdk::ACTION_DEFAULT | Gdk::ACTION_COPY | Gdk::ACTION_MOVE |
+                    Gdk::ACTION_LINK | Gdk::ACTION_PRIVATE | Gdk::ACTION_ASK);
 
-  signal_drag_data_received().connect(sigc::mem_fun(*this, &Window::signal_drag_data_received_cb));
+  signal_drag_data_received().connect(
+      sigc::mem_fun(*this, &Window::signal_drag_data_received_cb));
 
   // Multipress.
 
-  _multipress.signal_invalid_key.connect(sigc::mem_fun(*this, &Window::signal_invalid_key_cb));
-  _multipress.signal_insert_key.connect(sigc::mem_fun(*this, &Window::signal_insert_key_cb));
+  _multipress.signal_invalid_key.connect(
+      sigc::mem_fun(*this, &Window::signal_invalid_key_cb));
+  _multipress.signal_insert_key.connect(
+      sigc::mem_fun(*this, &Window::signal_insert_key_cb));
 
   // Statusbar input button.
-  statusbar.signal_input_toggled.connect(mem_fun(*this, &Window::signal_input_toggled_cb));
+  statusbar.signal_input_toggled.connect(
+      mem_fun(*this, &Window::signal_input_toggled_cb));
   // The input window signals.
-  input_window.signal_button_clicked.connect(sigc::mem_fun(*this, &Window::signal_insert_key_cb));
-  input_window.signal_dialog_closed.connect(sigc::mem_fun(*this, &Window::signal_input_window_dialog_closed_cb));
+  input_window.signal_button_clicked.connect(
+      sigc::mem_fun(*this, &Window::signal_insert_key_cb));
+  input_window.signal_dialog_closed.connect(
+      sigc::mem_fun(*this, &Window::signal_input_window_dialog_closed_cb));
 }
 
-Window::~Window() {
-
-}
+Window::~Window() {}
 
 void Window::connect_toolbar_signals() {
   toolbar.signal_create_clicked.connect(sigc::mem_fun(mdi, &MDI::create_cb));
@@ -175,30 +173,39 @@ void Window::connect_toolbar_signals() {
   toolbar.signal_erase_clicked.connect(sigc::mem_fun(mdi, &MDI::erase_cb));
 
   // The rest of the extended toolbar signals.
-  toolbar.signal_dictionary_changed.connect(sigc::mem_fun(*this, &Window::signal_dictionary_changed_cb));
+  toolbar.signal_dictionary_changed.connect(
+      sigc::mem_fun(*this, &Window::signal_dictionary_changed_cb));
   toolbar.signal_spell_clicked.connect(sigc::mem_fun(mdi, &MDI::do_spell));
 
-  toolbar.signal_search_activated.connect(sigc::mem_fun(*this, &Window::signal_search_activated_cb));
-  toolbar.signal_go_to_activated.connect(sigc::mem_fun(mdi, &MDI::goto_line_cb2));
+  toolbar.signal_search_activated.connect(
+      sigc::mem_fun(*this, &Window::signal_search_activated_cb));
+  toolbar.signal_go_to_activated.connect(
+      sigc::mem_fun(mdi, &MDI::goto_line_cb2));
 
-  toolbar.signal_extra_button_clicked.connect(sigc::mem_fun(mdi, &MDI::signal_extra_button_clicked_cb));
+  toolbar.signal_extra_button_clicked.connect(
+      sigc::mem_fun(mdi, &MDI::signal_extra_button_clicked_cb));
 }
 
 void Window::connect_menubar_signals() {
   menubar.signal_create_activate.connect(sigc::mem_fun(mdi, &MDI::create_cb));
   menubar.signal_open_activate.connect(sigc::mem_fun(mdi, &MDI::open_cb));
-  menubar.signal_open_location_activate.connect(sigc::mem_fun(mdi, &MDI::open_location_cb));
+  menubar.signal_open_location_activate.connect(
+      sigc::mem_fun(mdi, &MDI::open_location_cb));
   menubar.signal_save_activate.connect(sigc::mem_fun(mdi, &MDI::save_cb));
   menubar.signal_save_as_activate.connect(sigc::mem_fun(mdi, &MDI::save_as_cb));
-  menubar.signal_save_copy_activate.connect(sigc::mem_fun(mdi, &MDI::save_copy_cb));
+  menubar.signal_save_copy_activate.connect(
+      sigc::mem_fun(mdi, &MDI::save_copy_cb));
   menubar.signal_revert_activate.connect(sigc::mem_fun(mdi, &MDI::revert_cb));
 
   menubar.signal_print_activate.connect(sigc::mem_fun(mdi, &MDI::print_cb));
-  menubar.signal_print_preview_activate.connect(sigc::mem_fun(mdi, &MDI::print_preview_cb));
-  menubar.signal_page_setup_activate.connect(sigc::mem_fun(mdi, &MDI::page_setup_cb));
+  menubar.signal_print_preview_activate.connect(
+      sigc::mem_fun(mdi, &MDI::print_preview_cb));
+  menubar.signal_page_setup_activate.connect(
+      sigc::mem_fun(mdi, &MDI::page_setup_cb));
 
   menubar.signal_close_activate.connect(sigc::mem_fun(mdi, &MDI::close_cb));
-  menubar.signal_quit_activate.connect(sigc::mem_fun(*this, &Window::signal_quit_activate_cb));
+  menubar.signal_quit_activate.connect(
+      sigc::mem_fun(*this, &Window::signal_quit_activate_cb));
 
   menubar.signal_undo_activate.connect(sigc::mem_fun(mdi, &MDI::undo_cb));
   menubar.signal_redo_activate.connect(sigc::mem_fun(mdi, &MDI::redo_cb));
@@ -206,47 +213,69 @@ void Window::connect_menubar_signals() {
   menubar.signal_copy_activate.connect(sigc::mem_fun(mdi, &MDI::copy_cb));
   menubar.signal_paste_activate.connect(sigc::mem_fun(mdi, &MDI::paste_cb));
   menubar.signal_erase_activate.connect(sigc::mem_fun(mdi, &MDI::erase_cb));
-  menubar.signal_select_all_activate.connect(sigc::mem_fun(mdi, &MDI::select_all_cb));
-  menubar.signal_preferences_activate.connect(sigc::mem_fun(*this, &Window::signal_preferences_activate_cb));
-  menubar.signal_insert_file_activate.connect(sigc::mem_fun(mdi, &MDI::insert_file_cb));
+  menubar.signal_select_all_activate.connect(
+      sigc::mem_fun(mdi, &MDI::select_all_cb));
+  menubar.signal_preferences_activate.connect(
+      sigc::mem_fun(*this, &Window::signal_preferences_activate_cb));
+  menubar.signal_insert_file_activate.connect(
+      sigc::mem_fun(mdi, &MDI::insert_file_cb));
 
   menubar.signal_find_activate.connect(sigc::mem_fun(mdi, &MDI::find_cb));
-  menubar.signal_find_next_activate.connect(sigc::mem_fun(mdi, &MDI::find_next_cb));
+  menubar.signal_find_next_activate.connect(
+      sigc::mem_fun(mdi, &MDI::find_next_cb));
   menubar.signal_replace_activate.connect(sigc::mem_fun(mdi, &MDI::replace_cb));
-  menubar.signal_goto_line_activate.connect(sigc::mem_fun(mdi, &MDI::goto_line_cb));
+  menubar.signal_goto_line_activate.connect(
+      sigc::mem_fun(mdi, &MDI::goto_line_cb));
 
-  signal_wrap_text_activate_conn = menubar.signal_wrap_text_activate.connect(sigc::mem_fun(*this, &Window::signal_wrap_text_activate_cb));
-  signal_line_numbers_activate_conn = menubar.signal_line_numbers_activate.connect(sigc::mem_fun(*this, &Window::signal_line_numbers_activate_cb));
-  menubar.signal_statusbar_activate.connect(sigc::mem_fun(statusbar, &Statusbar::show));
-  menubar.signal_toolbar_activate.connect(sigc::mem_fun(toolbar, &Toolbar::show_main));
-  menubar.signal_extended_toolbar_activate.connect(sigc::mem_fun(toolbar, &Toolbar::show_extended));
+  signal_wrap_text_activate_conn = menubar.signal_wrap_text_activate.connect(
+      sigc::mem_fun(*this, &Window::signal_wrap_text_activate_cb));
+  signal_line_numbers_activate_conn =
+      menubar.signal_line_numbers_activate.connect(
+          sigc::mem_fun(*this, &Window::signal_line_numbers_activate_cb));
+  menubar.signal_statusbar_activate.connect(
+      sigc::mem_fun(statusbar, &Statusbar::show));
+  menubar.signal_toolbar_activate.connect(
+      sigc::mem_fun(toolbar, &Toolbar::show_main));
+  menubar.signal_extended_toolbar_activate.connect(
+      sigc::mem_fun(toolbar, &Toolbar::show_extended));
 
   // Toolbar type
-  menubar.signal_text_activate.connect(sigc::mem_fun(toolbar, &Toolbar::set_text));
-  menubar.signal_icons_activate.connect(sigc::mem_fun(toolbar, &Toolbar::set_icons));
-  menubar.signal_both_activate.connect(sigc::mem_fun(toolbar, &Toolbar::set_both));
-  menubar.signal_beside_activate.connect(sigc::mem_fun(toolbar, &Toolbar::set_beside));
+  menubar.signal_text_activate.connect(
+      sigc::mem_fun(toolbar, &Toolbar::set_text));
+  menubar.signal_icons_activate.connect(
+      sigc::mem_fun(toolbar, &Toolbar::set_icons));
+  menubar.signal_both_activate.connect(
+      sigc::mem_fun(toolbar, &Toolbar::set_both));
+  menubar.signal_beside_activate.connect(
+      sigc::mem_fun(toolbar, &Toolbar::set_beside));
 
   menubar.signal_execute_activate.connect(sigc::mem_fun(mdi, &MDI::execute_cb));
 
   menubar.signal_spell_activate.connect(sigc::mem_fun(mdi, &MDI::do_spell));
-  signal_auto_spell_activate_conn = menubar.signal_auto_spell_activate.connect(sigc::mem_fun(mdi, &MDI::set_auto_spell));
+  signal_auto_spell_activate_conn = menubar.signal_auto_spell_activate.connect(
+      sigc::mem_fun(mdi, &MDI::set_auto_spell));
 
-  menubar.signal_save_all_activate.connect(sigc::mem_fun(mdi, &MDI::save_all_cb));
-  menubar.signal_close_all_activate.connect(sigc::mem_fun(mdi, &MDI::close_all_cb));
+  menubar.signal_save_all_activate.connect(
+      sigc::mem_fun(mdi, &MDI::save_all_cb));
+  menubar.signal_close_all_activate.connect(
+      sigc::mem_fun(mdi, &MDI::close_all_cb));
 
   menubar.signal_about_activate.connect(sigc::ptr_fun(&AboutDialog::run));
 
   menubar.signal_recent_activate.connect(sigc::mem_fun(mdi, &MDI::recent_cb));
 
-  menubar.signal_layout_activate.connect(sigc::mem_fun(*this, &Window::signal_layout_activate_cb));
+  menubar.signal_layout_activate.connect(
+      sigc::mem_fun(*this, &Window::signal_layout_activate_cb));
 
-  menubar.signal_encoding_activate.connect(sigc::mem_fun(*this, &Window::signal_encoding_activate_cb));
+  menubar.signal_encoding_activate.connect(
+      sigc::mem_fun(*this, &Window::signal_encoding_activate_cb));
   menubar.signal_document_activate.connect(sigc::mem_fun(mdi, &MDI::activate));
 
-  menubar.signal_highlighter_activate.connect(sigc::mem_fun(mdi, &MDI::set_highlight));
+  menubar.signal_highlighter_activate.connect(
+      sigc::mem_fun(mdi, &MDI::set_highlight));
 
-  menubar.signal_closed_document_activate.connect(sigc::mem_fun(mdi, &MDI::closed_document_activated_cb));
+  menubar.signal_closed_document_activate.connect(
+      sigc::mem_fun(mdi, &MDI::closed_document_activated_cb));
 
   // Import
   menubar.signal_import_activate.connect(sigc::mem_fun(mdi, &MDI::import_cb));
@@ -255,43 +284,62 @@ void Window::connect_menubar_signals() {
 }
 
 void Window::connect_mdi_signals() {
-  mdi.signal_document_spell_enabled.connect(sigc::mem_fun(*this, &Window::on_document_spell_enabled_cb));
-  mdi.signal_document_wrap_text.connect(sigc::mem_fun(*this, &Window::signal_document_wrap_text_cb));
-  mdi.signal_document_line_numbers.connect(sigc::mem_fun(*this, &Window::signal_document_line_numbers_cb));
+  mdi.signal_document_spell_enabled.connect(
+      sigc::mem_fun(*this, &Window::on_document_spell_enabled_cb));
+  mdi.signal_document_wrap_text.connect(
+      sigc::mem_fun(*this, &Window::signal_document_wrap_text_cb));
+  mdi.signal_document_line_numbers.connect(
+      sigc::mem_fun(*this, &Window::signal_document_line_numbers_cb));
 
-  mdi.signal_recent_regenerate.connect(sigc::mem_fun(menubar, &MenuBar::create_recent));
+  mdi.signal_recent_regenerate.connect(
+      sigc::mem_fun(menubar, &MenuBar::create_recent));
 
-  mdi.signal_document_highlight.connect(sigc::mem_fun(menubar, &MenuBar::set_highlight));
+  mdi.signal_document_highlight.connect(
+      sigc::mem_fun(menubar, &MenuBar::set_highlight));
 
   // Document status signals.
-  mdi.signal_document_encoding_changed.connect(sigc::mem_fun(*this, &Window::signal_document_encoding_changed_cb));
-  mdi.signal_document_overwrite_toggled.connect(sigc::mem_fun(*this, &Window::signal_document_overwrite_toggled_cb));
-  mdi.signal_document_cursor_moved.connect(sigc::mem_fun(*this, &Window::signal_document_cursor_moved_cb));
-  mdi.signal_document_file_changed.connect(sigc::mem_fun(*this, &Window::signal_document_file_changed_cb));
-  mdi.signal_document_readonly.connect(sigc::mem_fun(*this, &Window::signal_document_readonly_cb));
-  mdi.signal_document_can_redo.connect(sigc::mem_fun(*this, &Window::signal_document_can_redo_cb));
-  mdi.signal_document_can_undo.connect(sigc::mem_fun(*this, &Window::signal_document_can_undo_cb));
-  mdi.signal_document_modified.connect(sigc::mem_fun(*this, &Window::signal_document_modified_cb));
-  mdi.signal_document_title_changed.connect(sigc::mem_fun(*this, &Window::signal_document_title_changed_cb));
+  mdi.signal_document_encoding_changed.connect(
+      sigc::mem_fun(*this, &Window::signal_document_encoding_changed_cb));
+  mdi.signal_document_overwrite_toggled.connect(
+      sigc::mem_fun(*this, &Window::signal_document_overwrite_toggled_cb));
+  mdi.signal_document_cursor_moved.connect(
+      sigc::mem_fun(*this, &Window::signal_document_cursor_moved_cb));
+  mdi.signal_document_file_changed.connect(
+      sigc::mem_fun(*this, &Window::signal_document_file_changed_cb));
+  mdi.signal_document_readonly.connect(
+      sigc::mem_fun(*this, &Window::signal_document_readonly_cb));
+  mdi.signal_document_can_redo.connect(
+      sigc::mem_fun(*this, &Window::signal_document_can_redo_cb));
+  mdi.signal_document_can_undo.connect(
+      sigc::mem_fun(*this, &Window::signal_document_can_undo_cb));
+  mdi.signal_document_modified.connect(
+      sigc::mem_fun(*this, &Window::signal_document_modified_cb));
+  mdi.signal_document_title_changed.connect(
+      sigc::mem_fun(*this, &Window::signal_document_title_changed_cb));
 
-  mdi.signal_document_dictionary_changed.connect(sigc::mem_fun(*this, &Window::signal_document_dictionary_changed_cb));
+  mdi.signal_document_dictionary_changed.connect(
+      sigc::mem_fun(*this, &Window::signal_document_dictionary_changed_cb));
 
-  mdi.signal_doc_activated.connect(sigc::mem_fun(*this, &Window::on_doc_activated));
+  mdi.signal_doc_activated.connect(
+      sigc::mem_fun(*this, &Window::on_doc_activated));
   mdi.signal_reset_gui.connect(sigc::mem_fun(*this, &Window::on_reset_gui));
-  mdi.signal_document_added.connect(sigc::mem_fun(*this, &Window::on_document_added_cb));
-  mdi.signal_document_removed.connect(sigc::mem_fun(*this, &Window::on_document_removed_cb));
+  mdi.signal_document_added.connect(
+      sigc::mem_fun(*this, &Window::on_document_added_cb));
+  mdi.signal_document_removed.connect(
+      sigc::mem_fun(*this, &Window::on_document_removed_cb));
 
   // undo closed documents signals.
-  mdi.signal_closed_document_erased.connect(sigc::mem_fun(menubar, &MenuBar::signal_closed_document_erased_cb));
-  mdi.signal_closed_document_added.connect(sigc::mem_fun(menubar, &MenuBar::signal_closed_document_added));
+  mdi.signal_closed_document_erased.connect(
+      sigc::mem_fun(menubar, &MenuBar::signal_closed_document_erased_cb));
+  mdi.signal_closed_document_added.connect(
+      sigc::mem_fun(menubar, &MenuBar::signal_closed_document_added));
 }
 
-void Window::signal_drag_data_received_cb
-(const Glib::RefPtr<Gdk::DragContext>& KATOOB_UNUSED(context),
- int KATOOB_UNUSED(x), int KATOOB_UNUSED(y),
- const Gtk::SelectionData& selection,
- guint KATOOB_UNUSED(info), guint KATOOB_UNUSED(time))
-{
+void Window::signal_drag_data_received_cb(
+    const Glib::RefPtr<Gdk::DragContext> &KATOOB_UNUSED(context),
+    int KATOOB_UNUSED(x), int KATOOB_UNUSED(y),
+    const Gtk::SelectionData &selection, guint KATOOB_UNUSED(info),
+    guint KATOOB_UNUSED(time)) {
   std::vector<std::string> files = selection.get_uris();
   std::string filename;
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
@@ -303,8 +351,7 @@ void Window::signal_drag_data_received_cb
     try {
       filename = Glib::filename_from_uri(files[x]);
       mdi.create_document(filename);
-    }
-    catch(Glib::ConvertError& e) {
+    } catch (Glib::ConvertError &e) {
       katoob_error(e.what());
     }
 #else
@@ -346,8 +393,7 @@ bool Window::signal_delete_event_cb(GdkEventAny *KATOOB_UNUSED(event)) {
   if (mdi.close_all()) {
     signal_quit.emit();
     return false;
-  }
-  else {
+  } else {
     return true;
   }
 }
@@ -371,30 +417,28 @@ void Window::signal_layout_activate_cb(int which, int x) {
       signal_input_toggled_cb(true);
     }
 
-  }
-  else
-    if (which == 1) {
-      _multipress.activate(x);
+  } else if (which == 1) {
+    _multipress.activate(x);
 
-      _emulator.activate(-1);
+    _emulator.activate(-1);
 
-      statusbar.activate_input(true);
-      if (input_window.is_visible()) {
-        signal_input_toggled_cb(true);
-      }
-    } else {
-      // x is -1 here but I'll set it manually just in case.
-      _emulator.activate(-1);
-
-      _multipress.activate(-1);
-      statusbar.activate_input(false);
-      statusbar.set_input_status(false);
+    statusbar.activate_input(true);
+    if (input_window.is_visible()) {
+      signal_input_toggled_cb(true);
     }
+  } else {
+    // x is -1 here but I'll set it manually just in case.
+    _emulator.activate(-1);
+
+    _multipress.activate(-1);
+    statusbar.activate_input(false);
+    statusbar.set_input_status(false);
+  }
 }
 
 void Window::signal_encoding_activate_cb(int e) {
   int x;
-  if(!mdi.set_encoding(e, x)) {
+  if (!mdi.set_encoding(e, x)) {
     menubar.set_encoding(x);
   }
 }
@@ -449,13 +493,9 @@ void Window::on_document_added_cb(bool ro, bool m, std::string t) {
   menubar.document_add(t, ro, m);
 }
 
-void Window::on_document_removed_cb(int x) {
-  menubar.document_remove(x);
-}
+void Window::on_document_removed_cb(int x) { menubar.document_remove(x); }
 
-void Window::on_doc_activated(int x) {
-  menubar.document_set_active(x);
-}
+void Window::on_doc_activated(int x) { menubar.document_set_active(x); }
 
 void Window::signal_document_wrap_text_cb(bool w) {
   signal_wrap_text_activate_conn.block();
@@ -469,9 +509,7 @@ void Window::signal_document_line_numbers_cb(bool ln) {
   signal_line_numbers_activate_conn.unblock();
 }
 
-void Window::signal_search_activated_cb(std::string s) {
-  mdi.find(s);
-}
+void Window::signal_search_activated_cb(std::string s) { mdi.find(s); }
 
 void Window::reset_gui() {
   toolbar.reset_gui();
@@ -493,7 +531,7 @@ void Window::signal_dictionary_changed_cb(std::string d) {
   }
 }
 
-void Window::open_files(std::vector<std::string>& f) {
+void Window::open_files(std::vector<std::string> &f) {
   for (unsigned int x = 0; x < f.size(); x++) {
     mdi.create_document(f[x]);
   }
@@ -503,15 +541,13 @@ void Window::open_files(std::vector<std::string>& f) {
   present();
 }
 
-void Window::signal_wrap_text_activate_cb(bool s) {
-  mdi.set_wrap_text(s);
-}
+void Window::signal_wrap_text_activate_cb(bool s) { mdi.set_wrap_text(s); }
 
 void Window::signal_line_numbers_activate_cb(bool s) {
   mdi.set_line_numbers(s);
 }
 
-void Window::signal_insert_key_cb(std::string& str) {
+void Window::signal_insert_key_cb(std::string &str) {
   Document *doc = mdi.get_active();
   assert(doc != NULL);
   if ((!doc) || (doc->get_readonly())) {
@@ -548,11 +584,9 @@ void Window::signal_input_toggled_cb(bool active) {
 
   if (_emulator.get_active()) {
     input_window.set_layout(_emulator.get_layout());
+  } else if (_multipress.get_active()) {
+    input_window.set_layout(_multipress.get_layout());
   }
-  else
-    if (_multipress.get_active()) {
-      input_window.set_layout(_multipress.get_layout());
-    }
 
   input_window.show();
 }
@@ -561,6 +595,4 @@ void Window::signal_input_window_dialog_closed_cb() {
   statusbar.set_input_status(false);
 }
 
-void Window::autosave() {
-  mdi.autosave();
-}
+void Window::autosave() { mdi.autosave(); }

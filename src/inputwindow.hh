@@ -23,9 +23,7 @@
 
 #pragma once
 
-#include <gtkmm/dialog.h>
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/table.h>
+#include <gtkmm.h>
 
 class InputWindow : public Gtk::Dialog {
 public:
@@ -34,10 +32,10 @@ public:
 
   void show();
   void hide();
-  void set_layout(std::map<std::string, std::string>&);
-  void set_layout(std::map<std::string, std::vector<std::string>>&);
+  void set_layout(std::map<std::string, std::string> &);
+  void set_layout(std::map<std::string, std::vector<std::string>> &);
 
-  sigc::signal<void, std::string&> signal_button_clicked;
+  sigc::signal<void, std::string &> signal_button_clicked;
   sigc::signal<void> signal_dialog_closed;
 
 private:

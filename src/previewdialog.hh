@@ -23,25 +23,20 @@
 
 #pragma once
 
-#include <gtkmm/dialog.h>
-#include <gtkmm/label.h>
-#include <gtkmm/spinbutton.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/printoperationpreview.h>
+#include <gtkmm.h>
 
 class PreviewDialog : public Gtk::Dialog {
 public:
-  static PreviewDialog *create(const Glib::RefPtr<Gtk::PrintOperationPreview>&,
-                               const Glib::RefPtr<Gtk::PrintContext>&, Gtk::Window*);
+  static PreviewDialog *create(const Glib::RefPtr<Gtk::PrintOperationPreview> &,
+                               const Glib::RefPtr<Gtk::PrintContext> &,
+                               Gtk::Window *);
   void run();
   sigc::signal<int> signal_get_n_pages;
   sigc::signal<Glib::RefPtr<Pango::Layout>> signal_get_layout;
+
 private:
-  PreviewDialog(const Glib::RefPtr<Gtk::PrintOperationPreview>&,
-                const Glib::RefPtr<Gtk::PrintContext>&, Gtk::Window *);
+  PreviewDialog(const Glib::RefPtr<Gtk::PrintOperationPreview> &,
+                const Glib::RefPtr<Gtk::PrintContext> &, Gtk::Window *);
   //  ~PreviewDialog();
 
   void recalculate_gui();
@@ -57,9 +52,9 @@ private:
   void signal_area_realize_cb();
   bool signal_area_expose_event_cb(GdkEventExpose *);
 
-  void signal_preview_ready_cb(const Glib::RefPtr<Gtk::PrintContext>&);
-  void signal_preview_got_page_size_cb(const Glib::RefPtr<Gtk::PrintContext>&,
-                                       const Glib::RefPtr<Gtk::PageSetup>&);
+  void signal_preview_ready_cb(const Glib::RefPtr<Gtk::PrintContext> &);
+  void signal_preview_got_page_size_cb(const Glib::RefPtr<Gtk::PrintContext> &,
+                                       const Glib::RefPtr<Gtk::PageSetup> &);
 
   Glib::RefPtr<Gtk::PrintOperationPreview> preview;
   Glib::RefPtr<Gtk::PrintContext> context;

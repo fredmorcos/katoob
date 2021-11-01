@@ -21,36 +21,32 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <cassert>
-#include <gtkmm/stock.h>
-#include <gtkmm/label.h>
 #include "inputwindow.hh"
 #include "macros.h"
 #include "utils.hh"
+#include <cassert>
+#include <gtkmm.h>
 
-InputWindow::InputWindow() : Gtk::Dialog(_("Input Window"), false, true),
-			     _type(INPUT_DISPLAY_NONE) {
+InputWindow::InputWindow()
+    : Gtk::Dialog(_("Input Window"), false, true), _type(INPUT_DISPLAY_NONE) {
   add_button(Gtk::Stock::CLOSE, Gtk::RESPONSE_OK);
   get_vbox()->pack_start(sw, true, true);
   sw.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   sw.add(tb);
-  signal_response().connect(sigc::mem_fun(*this, &InputWindow::signal_response_cb));
+  signal_response().connect(
+      sigc::mem_fun(*this, &InputWindow::signal_response_cb));
 }
 
-InputWindow::~InputWindow() {
-  clear();
-}
+InputWindow::~InputWindow() { clear(); }
 
-void InputWindow::hide() {
-  Gtk::Dialog::hide();
-}
+void InputWindow::hide() { Gtk::Dialog::hide(); }
 
 void InputWindow::show() {
   assert(_type != INPUT_DISPLAY_NONE);
   Gtk::Dialog::show_all();
 }
 
-void InputWindow::set_layout(std::map<std::string, std::string>& em) {
+void InputWindow::set_layout(std::map<std::string, std::string> &em) {
   if (em == _em) {
     return;
   }
@@ -59,7 +55,8 @@ void InputWindow::set_layout(std::map<std::string, std::string>& em) {
   rebuild();
 }
 
-void InputWindow::set_layout(std::map<std::string, std::vector<std::string>>& mp) {
+void InputWindow::set_layout(
+    std::map<std::string, std::vector<std::string>> &mp) {
   if (mp == _mp) {
     return;
   }
@@ -94,10 +91,11 @@ void InputWindow::emulator_rebuild() {
     Gtk::Label *label = new Gtk::Label(iter->first);
     labels.push_back(label);
     Gtk::Button *button = new Gtk::Button(iter->second);
-    button->signal_clicked().connect(sigc::bind<unsigned>(sigc::mem_fun(*this, &InputWindow::button_clicked_cb), x));
+    button->signal_clicked().connect(sigc::bind<unsigned>(
+        sigc::mem_fun(*this, &InputWindow::button_clicked_cb), x));
     buttons.push_back(button);
-    tb.attach(*label, 0, 1, x, x+1);
-    tb.attach(*button, 1, 2, x, x+1);
+    tb.attach(*label, 0, 1, x, x + 1);
+    tb.attach(*button, 1, 2, x, x + 1);
     ++x;
   }
 }
@@ -115,20 +113,21 @@ void InputWindow::multipress_rebuild() {
     w > iter->second.size() ? w : iter->second.size();
   }
 
-  tb.resize(_mp.size(), w+1);
+  tb.resize(_mp.size(), w + 1);
 
   unsigned x = 0;
   unsigned p = 0;
   for (iter = _mp.begin(); iter != _mp.end(); iter++) {
     Gtk::Label *label = new Gtk::Label(iter->first);
     labels.push_back(label);
-    tb.attach(*label, 0, 1, x, x+1);
+    tb.attach(*label, 0, 1, x, x + 1);
 
     for (unsigned y = 0; y < iter->second.size(); y++) {
       Gtk::Button *button = new Gtk::Button(iter->second[y]);
-      button->signal_clicked().connect(sigc::bind<unsigned>(sigc::mem_fun(*this, &InputWindow::button_clicked_cb), p));
+      button->signal_clicked().connect(sigc::bind<unsigned>(
+          sigc::mem_fun(*this, &InputWindow::button_clicked_cb), p));
       buttons.push_back(button);
-      tb.attach(*button, y+1, y+2, x, x+1);
+      tb.attach(*button, y + 1, y + 2, x, x + 1);
     }
     ++x;
   }
@@ -141,7 +140,7 @@ void InputWindow::clear() {
     labels.erase(labels.begin());
   }
 
-  while(buttons.size() > 0) {
+  while (buttons.size() > 0) {
     Gtk::Button *button = buttons.front();
     delete button;
     buttons.erase(buttons.begin());

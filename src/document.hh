@@ -23,16 +23,14 @@
 
 #pragma once
 
-#include "cairomm/context.h"
-#include "cairomm/refptr.h"
 #include "conf.hh"
 #include "encodings.hh"
 #include "label.hh"
 #include "sourceview.hh"
 #include "spell.hh"
 #include "undoredo.hh"
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/textview.h>
+#include <cairomm/cairomm.h>
+#include <gtkmm.h>
 #include <map>
 #include <string>
 

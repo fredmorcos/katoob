@@ -23,10 +23,10 @@
 
 #pragma once
 
+#include <gtkmm.h>
 #include <optional>
-#include <gtkmm/aboutdialog.h>
 
-class AboutDialog: private Gtk::AboutDialog {
+class AboutDialog : private Gtk::AboutDialog {
 private:
   AboutDialog();
   ~AboutDialog();

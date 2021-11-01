@@ -23,18 +23,16 @@
 #ifndef __LABEL_HH__
 #define __LABEL_HH__
 
-#include <string>
-#include <gtkmm/box.h>
-#include <gtkmm/label.h>
-#include <gtkmm/button.h>
 #include "conf.hh"
+#include <gtkmm.h>
+#include <string>
 
 class Label : public Gtk::HBox {
 public:
-  Label(Conf&);
+  Label(Conf &);
   ~Label();
   void set_text(int);
-  void set_text(const std::string&);
+  void set_text(const std::string &);
   std::string get_text();
   void set_readonly(bool, bool = false);
   void set_modified(bool, bool = false);
@@ -46,7 +44,7 @@ public:
 
 private:
   Gtk::Label label;
-  Conf& _conf;
+  Conf &_conf;
   Gtk::Button close;
   bool _readonly, _modified;
 };

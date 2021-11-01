@@ -23,37 +23,38 @@
 
 #pragma once
 
-#include <gtkmm/filechooserdialog.h>
-#include <gtkmm/comboboxtext.h>
-#include <gtkmm/label.h>
-#include "encodings.hh"
 #include "conf.hh"
+#include "encodings.hh"
+#include <gtkmm.h>
 
 #define FILE_OPEN Gtk::FILE_CHOOSER_ACTION_OPEN
 #define FILE_SAVE Gtk::FILE_CHOOSER_ACTION_SAVE
 
-class SimpleFileDialog: protected Gtk::FileChooserDialog {
+class SimpleFileDialog : protected Gtk::FileChooserDialog {
 protected:
-  SimpleFileDialog(const std::string&, Gtk::FileChooserAction, Conf&);
+  SimpleFileDialog(const std::string &, Gtk::FileChooserAction, Conf &);
   ~SimpleFileDialog();
   bool run();
   std::string get();
 
 public:
-  static std::string get_file(const std::string&, Gtk::FileChooserAction, Conf&);
+  static std::string get_file(const std::string &, Gtk::FileChooserAction,
+                              Conf &);
 };
 
 class FileDialog : private SimpleFileDialog {
 public:
-  FileDialog(const std::string&, Gtk::FileChooserAction, int, Conf&, Encodings&);
+  FileDialog(const std::string &, Gtk::FileChooserAction, int, Conf &,
+             Encodings &);
   ~FileDialog();
   int encoding();
   bool run();
   std::vector<std::string> get();
+
 private:
   Gtk::Label label;
   Gtk::HBox box;
   Gtk::ComboBoxText cbox;
-  Encodings& _encodings;
+  Encodings &_encodings;
   //  std::string file;
 };

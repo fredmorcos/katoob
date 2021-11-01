@@ -21,27 +21,23 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtkmm/stock.h>
 #include "spelldialog.hh"
 #include "dialogs.hh"
 #include "macros.h"
+#include <gtkmm.h>
 
 // TODO: Add replace all
 // Start checking from the insert mark not from the beginning of the document.
 
-SpellDialog::SpellDialog(Document *doc) :
-  close(Gtk::Stock::CLOSE),
-  ignore(_("_Ignore"), true),
-  ignore_all(_("Ignore _All"), true),
-  change(_("C_hange"), true),
-  //  change_all(_("Change A_ll"), true),
-  check(Gtk::Stock::SPELL_CHECK),
-  add(_("_Add to user dictionary"), true),
-  misspelled(_("Misspelled:")),
-  change_to(_("Change to:")),
-  yes(Gtk::StockID(Gtk::Stock::YES), Gtk::IconSize(Gtk::ICON_SIZE_BUTTON)),
-  no(Gtk::StockID(Gtk::Stock::NO), Gtk::IconSize(Gtk::ICON_SIZE_BUTTON)),
-  _doc(doc) {
+SpellDialog::SpellDialog(Document *doc)
+    : close(Gtk::Stock::CLOSE), ignore(_("_Ignore"), true),
+      ignore_all(_("Ignore _All"), true), change(_("C_hange"), true),
+      //  change_all(_("Change A_ll"), true),
+      check(Gtk::Stock::SPELL_CHECK), add(_("_Add to user dictionary"), true),
+      misspelled(_("Misspelled:")), change_to(_("Change to:")),
+      yes(Gtk::StockID(Gtk::Stock::YES), Gtk::IconSize(Gtk::ICON_SIZE_BUTTON)),
+      no(Gtk::StockID(Gtk::Stock::NO), Gtk::IconSize(Gtk::ICON_SIZE_BUTTON)),
+      _doc(doc) {
   set_title(_("Check Spelling"));
   set_modal(true);
   set_position(Gtk::WIN_POS_CENTER);
@@ -62,7 +58,8 @@ SpellDialog::SpellDialog(Document *doc) :
 
   sw.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
-  Gtk::Image *image = Gtk::manage(new Gtk::Image(Gtk::StockID(Gtk::Stock::ADD), Gtk::IconSize(Gtk::ICON_SIZE_BUTTON)));
+  Gtk::Image *image = Gtk::manage(new Gtk::Image(
+      Gtk::StockID(Gtk::Stock::ADD), Gtk::IconSize(Gtk::ICON_SIZE_BUTTON)));
   add.set_image(*image);
   vbox2.pack_start(change, false, false, 5);
   //  vbox2.pack_start(change_all, false, false, 5);
@@ -70,11 +67,15 @@ SpellDialog::SpellDialog(Document *doc) :
   vbox2.pack_start(ignore_all, false, false, 5);
   vbox2.pack_start(add, false, false, 5);
 
-  table.attach(misspelled, 0, 1, 0, 1, Gtk::FILL|Gtk::EXPAND, Gtk::FILL|Gtk::EXPAND, 5);
-  table.attach(change_to, 0, 1, 1, 2, Gtk::FILL|Gtk::EXPAND, Gtk::FILL|Gtk::EXPAND, 5);
+  table.attach(misspelled, 0, 1, 0, 1, Gtk::FILL | Gtk::EXPAND,
+               Gtk::FILL | Gtk::EXPAND, 5);
+  table.attach(change_to, 0, 1, 1, 2, Gtk::FILL | Gtk::EXPAND,
+               Gtk::FILL | Gtk::EXPAND, 5);
   table.attach(hbox2, 2, 3, 0, 1);
-  table.attach(misspelled_word, 1, 2, 0, 1, Gtk::FILL|Gtk::EXPAND, Gtk::FILL|Gtk::EXPAND, 5);
-  table.attach(entry, 1, 2, 1, 2, Gtk::FILL|Gtk::EXPAND, Gtk::FILL|Gtk::EXPAND, 5);
+  table.attach(misspelled_word, 1, 2, 0, 1, Gtk::FILL | Gtk::EXPAND,
+               Gtk::FILL | Gtk::EXPAND, 5);
+  table.attach(entry, 1, 2, 1, 2, Gtk::FILL | Gtk::EXPAND,
+               Gtk::FILL | Gtk::EXPAND, 5);
   table.attach(check, 2, 3, 1, 2);
 
   table.set_spacings(5);
@@ -91,19 +92,28 @@ SpellDialog::SpellDialog(Document *doc) :
   sw.add(suggestions);
 
   selection = suggestions.get_selection();
-  selection->signal_changed().connect(sigc::mem_fun(*this, &SpellDialog::selection_signal_changed_cb));
+  selection->signal_changed().connect(
+      sigc::mem_fun(*this, &SpellDialog::selection_signal_changed_cb));
 
   no.set_no_show_all();
 
   // our signals.
-  close.signal_clicked().connect(sigc::mem_fun(*this, &SpellDialog::close_clicked_cb));
-  ignore.signal_clicked().connect(sigc::mem_fun(*this, &SpellDialog::ignore_clicked_cb));
-  ignore_all.signal_clicked().connect(sigc::mem_fun(*this, &SpellDialog::ignore_all_clicked_cb));
-  change.signal_clicked().connect(sigc::mem_fun(*this, &SpellDialog::change_clicked_cb));
-  //  change_all.signal_clicked().connect(sigc::mem_fun(*this, &SpellDialog::change_all_clicked_cb));
-  check.signal_clicked().connect(sigc::mem_fun(*this, &SpellDialog::check_clicked_cb));
-  add.signal_clicked().connect(sigc::mem_fun(*this, &SpellDialog::add_clicked_cb));
-  signal_key_press_event().connect(sigc::mem_fun(this, &SpellDialog::signal_key_press_event_cb));
+  close.signal_clicked().connect(
+      sigc::mem_fun(*this, &SpellDialog::close_clicked_cb));
+  ignore.signal_clicked().connect(
+      sigc::mem_fun(*this, &SpellDialog::ignore_clicked_cb));
+  ignore_all.signal_clicked().connect(
+      sigc::mem_fun(*this, &SpellDialog::ignore_all_clicked_cb));
+  change.signal_clicked().connect(
+      sigc::mem_fun(*this, &SpellDialog::change_clicked_cb));
+  //  change_all.signal_clicked().connect(sigc::mem_fun(*this,
+  //  &SpellDialog::change_all_clicked_cb));
+  check.signal_clicked().connect(
+      sigc::mem_fun(*this, &SpellDialog::check_clicked_cb));
+  add.signal_clicked().connect(
+      sigc::mem_fun(*this, &SpellDialog::add_clicked_cb));
+  signal_key_press_event().connect(
+      sigc::mem_fun(this, &SpellDialog::signal_key_press_event_cb));
 }
 
 SpellDialog::~SpellDialog() {
@@ -112,9 +122,7 @@ SpellDialog::~SpellDialog() {
   _doc->spell_dialog_helper_recheck();
 }
 
-void SpellDialog::close_clicked_cb() {
-  loop->quit();
-}
+void SpellDialog::close_clicked_cb() { loop->quit(); }
 
 void SpellDialog::run() {
   std::string word;
@@ -123,7 +131,7 @@ void SpellDialog::run() {
 
   if (!_doc->spell_dialog_helper_has_misspelled(word)) {
     std::string message = _("No misspelled words.");
-    katoob_info (message);
+    katoob_info(message);
     return;
   }
 
@@ -142,23 +150,24 @@ void SpellDialog::run() {
   loop->run();
 }
 
-void SpellDialog::got_misspelled(std::string& word, std::vector<std::string>& suggestions) {
+void SpellDialog::got_misspelled(std::string &word,
+                                 std::vector<std::string> &suggestions) {
   misspelled_word.set_text(word);
 
   populate_suggestions(suggestions);
 }
 
-void SpellDialog::populate_suggestions(std::vector<std::string>& suggestions) {
+void SpellDialog::populate_suggestions(std::vector<std::string> &suggestions) {
   store->clear();
   Gtk::TreeModel::Row _row;
   for (unsigned x = 0; x < suggestions.size(); x++) {
-    Gtk::TreeModel::Row row = *(store->append ());
+    Gtk::TreeModel::Row row = *(store->append());
     if (x == 0)
       _row = row;
     row[suggestions_col] = suggestions[x];
   }
   if (suggestions.size() > 0) {
-    selection->select (_row);
+    selection->select(_row);
   }
 }
 
@@ -184,9 +193,7 @@ void SpellDialog::next() {
   got_misspelled(word, suggestions);
 }
 
-void SpellDialog::ignore_clicked_cb() {
-  next();
-}
+void SpellDialog::ignore_clicked_cb() { next(); }
 
 void SpellDialog::ignore_all_clicked_cb() {
   std::string old_word = misspelled_word.get_text();
@@ -217,8 +224,7 @@ void SpellDialog::check_clicked_cb() {
       yes.show();
       no.hide();
       store->clear();
-    }
-    else {
+    } else {
       no.show();
       yes.hide();
       std::vector<std::string> suggestions;
@@ -229,7 +235,8 @@ void SpellDialog::check_clicked_cb() {
 }
 
 bool SpellDialog::signal_key_press_event_cb(GdkEventKey *key) {
-  if ((key) && (key->type == GDK_KEY_PRESS) && (key->state == 0) && (key->keyval == GDK_Escape)) {
+  if ((key) && (key->type == GDK_KEY_PRESS) && (key->state == 0) &&
+      (key->keyval == GDK_Escape)) {
     close_clicked_cb();
     return true;
   }

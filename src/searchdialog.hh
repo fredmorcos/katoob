@@ -20,13 +20,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __SEARCHDIALOG_HH__
-#define __SEARCHDIALOG_HH__
+#pragma once
 
-#include <gtkmm/dialog.h>
-#include <gtkmm/entry.h>
-#include <gtkmm/checkbutton.h>
-#include <gtkmm/box.h>
+#include <gtkmm.h>
 
 class SearchDialog {
 public:
@@ -46,7 +42,8 @@ public:
   void wrap(bool);
   void backwards(bool);
   void beginning(bool);
-  void set_text(std::string&);
+  void set_text(std::string &);
+
 private:
   //  void insert_at_cursor_cb(const Glib::ustring&);
 
@@ -66,5 +63,3 @@ private:
   Gtk::VBox vbox;
   Gtk::Button *find;
 };
-
-#endif /* __SEARCHDIALOG_HH__ */

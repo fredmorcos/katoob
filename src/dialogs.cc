@@ -22,16 +22,10 @@
  */
 
 #include "dialogs.hh"
-#include "glibmm/refptr.h"
 #include "macros.h"
 #include "utils.hh"
-#include <gtkmm/adjustment.h>
-#include <gtkmm/label.h>
-#include <gtkmm/messagedialog.h>
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/spinbutton.h>
-#include <gtkmm/stock.h>
-#include <gtkmm/textview.h>
+#include <glibmm.h>
+#include <gtkmm.h>
 
 bool katoob_simple_question(const std::string &message) {
   Gtk::MessageDialog dlg(message, false, Gtk::MESSAGE_QUESTION,

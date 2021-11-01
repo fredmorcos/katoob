@@ -23,44 +23,35 @@
 
 #pragma once
 
-#include <gtkmm/dialog.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/checkbutton.h>
-#include <gtkmm/spinbutton.h>
-#include <gtkmm/comboboxtext.h>
-#include <gtkmm/radiobutton.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/liststore.h>
-#include "print.hh"
 #include "conf.hh"
+#include "print.hh"
+#include <gtkmm.h>
 
 class PrintDialog {
 public:
-  PrintDialog(Conf&,
-              Document*,
-              Glib::RefPtr<PageSetup>&,
-              Glib::RefPtr<PrintSettings>&);
+  PrintDialog(Conf &, Document *, Glib::RefPtr<PageSetup> &,
+              Glib::RefPtr<PrintSettings> &);
 
   ~PrintDialog();
-  bool ok(std::string&);
+  bool ok(std::string &);
   bool run();
 
   void has_selection(bool);
   void lines(int);
 
   void start_process();
-  bool end_process(std::string&);
+  bool end_process(std::string &);
 
-  void add_line(std::string&);
+  void add_line(std::string &);
 
   bool all();
   bool selection();
-  bool range(int&, int&);
+  bool range(int &, int &);
 
   void manipulate();
 
 private:
-  Conf& _conf;
+  Conf &_conf;
 
   void reset_paper_size(int);
   bool init_backend();

@@ -23,8 +23,8 @@
 
 #pragma once
 
-#include <gtkmm/textview.h>
-#include <gtk/gtktextview.h>
+#include <gtk/gtk.h>
+#include <gtkmm.h>
 
 class TextView : public Gtk::TextView {
 public:
@@ -34,8 +34,9 @@ public:
   virtual ~TextView();
   sigc::signal<void, std::string> signal_text_view_request_file_open;
 
-  // They are not protected because we need to call them from our SourceView and I don't
-  // want to include sourceview.hh and declare them as friends.
-  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>&,
-                                     int, int, const Gtk::SelectionData&, guint, guint);
+  // They are not protected because we need to call them from our SourceView and
+  // I don't want to include sourceview.hh and declare them as friends.
+  virtual void on_drag_data_received(const Glib::RefPtr<Gdk::DragContext> &,
+                                     int, int, const Gtk::SelectionData &,
+                                     guint, guint);
 };

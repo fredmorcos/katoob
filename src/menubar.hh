@@ -23,21 +23,21 @@
 
 #pragma once
 
-#include <gtkmm/menubar.h>
 #include "conf.hh"
 #include "encodings.hh"
-#include "import.hh"
 #include "export.hh"
+#include "import.hh"
+#include <gtkmm.h>
 
 class DocItem {
 public:
-  DocItem(std::string& str, bool ro, bool m) : _label(str), _ro(ro), _m(m) {}
+  DocItem(std::string &str, bool ro, bool m) : _label(str), _ro(ro), _m(m) {}
   void set_readonly(bool ro) { _ro = ro; }
   bool get_readonly() { return _ro; }
   void set_modified(bool m) { _m = m; }
   bool get_modified() { return _m; }
-  void set_label(std::string& str) { _label = str; }
-  const std::string& get_label() { return _label; }
+  void set_label(std::string &str) { _label = str; }
+  const std::string &get_label() { return _label; }
 
 private:
   std::string _label;
@@ -49,9 +49,10 @@ struct ClosedDocItem {
   std::string title;
 };
 
-class MenuBar: public Gtk::MenuBar {
+class MenuBar : public Gtk::MenuBar {
 public:
-  MenuBar(Conf&, Encodings&, std::vector<std::string>&, std::vector<std::string>&);
+  MenuBar(Conf &, Encodings &, std::vector<std::string> &,
+          std::vector<std::string> &);
   ~MenuBar();
 
   void create_recent();
@@ -118,7 +119,7 @@ public:
 
   sigc::signal<void> signal_about_activate;
 
-  sigc::signal<void, std::string&> signal_recent_activate;
+  sigc::signal<void, std::string &> signal_recent_activate;
 
   sigc::signal<void, Import> signal_import_activate;
   sigc::signal<void, Export> signal_export_activate;
@@ -132,13 +133,12 @@ public:
 
   sigc::signal<void, int, int> signal_layout_activate;
 
-  void document_add(std::string&, bool, bool);
+  void document_add(std::string &, bool, bool);
   void document_remove(int);
   void document_set_active(size_t);
   void document_set_modified(size_t, bool);
-  void document_set_readonly(size_t , bool);
-  void document_set_label(int, std::string&);
-
+  void document_set_readonly(size_t, bool);
+  void document_set_label(int, std::string &);
 
   void signal_closed_document_erased_cb();
   void signal_closed_document_added(std::string);
@@ -148,17 +148,18 @@ public:
   Gtk::Menu get_menu();
 
 private:
-  void file(Conf&);
-  void edit(Conf&);
-  void search(Conf&);
-  void view(Conf&, Encodings&);
-  void tools(Conf&, std::vector<std::string>&, std::vector<std::string>&);
-  void documents(Conf&);
-  void help(Conf&);
-  void recent(Conf&);
-  void encodings(Conf&);
+  void file(Conf &);
+  void edit(Conf &);
+  void search(Conf &);
+  void view(Conf &, Encodings &);
+  void tools(Conf &, std::vector<std::string> &, std::vector<std::string> &);
+  void documents(Conf &);
+  void help(Conf &);
+  void recent(Conf &);
+  void encodings(Conf &);
 
-  void build_submenu(Gtk::Menu *, std::vector<std::string>&, Gtk::RadioButtonGroup&, int);
+  void build_submenu(Gtk::Menu *, std::vector<std::string> &,
+                     Gtk::RadioButtonGroup &, int);
 
   void signal_auto_spell_activate_cb();
 
@@ -172,7 +173,7 @@ private:
   void signal_beside_activate_cb();
   void signal_both_activate_cb();
 
-  void signal_recent_activate_cb(std::string&);
+  void signal_recent_activate_cb(std::string &);
 
   void signal_layout_activate_cb(int, int);
 
@@ -180,9 +181,9 @@ private:
   void signal_document_activate_cb(int);
   void signal_closed_document_activate_cb(int);
 
-  void document_set_modified(Gtk::MenuItem&, bool);
-  void document_set_readonly(Gtk::MenuItem&, bool);
-  void document_set_normal(Gtk::MenuItem&);
+  void document_set_modified(Gtk::MenuItem &, bool);
+  void document_set_readonly(Gtk::MenuItem &, bool);
+  void document_set_normal(Gtk::MenuItem &);
 
   void documents_menu_clear();
   void documents_menu_build();
@@ -196,20 +197,24 @@ private:
   void signal_highlighter_activate_cb(std::string);
 
   Gtk::Menu *menu(const char *, Gtk::Menu * = NULL);
-  Gtk::MenuItem *item(Gtk::Menu *, const Gtk::StockID&, guint, Gdk::ModifierType);
-  Gtk::MenuItem *item(Gtk::Menu *, const Gtk::StockID&);
-  Gtk::MenuItem *item(Gtk::Menu *, const std::string&);
-  Gtk::MenuItem *item(Gtk::Menu *, const std::string&, guint, Gdk::ModifierType);
-  Gtk::MenuItem *check_item(Gtk::Menu *, const std::string&);
-  Gtk::MenuItem *radio_item(Gtk::Menu *, Gtk::RadioButtonGroup&, const std::string&);
+  Gtk::MenuItem *item(Gtk::Menu *, const Gtk::StockID &, guint,
+                      Gdk::ModifierType);
+  Gtk::MenuItem *item(Gtk::Menu *, const Gtk::StockID &);
+  Gtk::MenuItem *item(Gtk::Menu *, const std::string &);
+  Gtk::MenuItem *item(Gtk::Menu *, const std::string &, guint,
+                      Gdk::ModifierType);
+  Gtk::MenuItem *check_item(Gtk::Menu *, const std::string &);
+  Gtk::MenuItem *radio_item(Gtk::Menu *, Gtk::RadioButtonGroup &,
+                            const std::string &);
 
   void separator(Gtk::Menu *);
 
-  Gtk::Menu *file_menu, *edit_menu, *search_menu,
-    *view_menu, *tools_menu, *documents_menu, *help_menu, *opened_menu, *closed_menu;
+  Gtk::Menu *file_menu, *edit_menu, *search_menu, *view_menu, *tools_menu,
+      *documents_menu, *help_menu, *opened_menu, *closed_menu;
 
   /* File */
-  Gtk::Menu *recent_menu, *_import_menu, *_export_menu, *toolbars_menu, *_encoding_menu;
+  Gtk::Menu *recent_menu, *_import_menu, *_export_menu, *toolbars_menu,
+      *_encoding_menu;
 
   Gtk::Menu *_emulator_menu;
   Gtk::Menu *_input_menu;
@@ -276,7 +281,7 @@ private:
   bool _ignore_highlighting_changed_signal_hack;
   std::vector<Gtk::MenuItem *> encoding_menu_items;
 
-  Conf& _conf;
+  Conf &_conf;
   std::vector<DocItem> _documents;
   std::vector<ClosedDocItem> _closed_documents;
   size_t _active;

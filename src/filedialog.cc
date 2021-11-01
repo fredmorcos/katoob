@@ -21,12 +21,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtkmm/stock.h>
 #include "filedialog.hh"
-#include "macros.h"
 #include "dialogs.hh"
+#include "macros.h"
+#include <gtkmm.h>
 
-FileDialog::FileDialog(const std::string& title, Gtk::FileChooserAction action, int enc, Conf& _conf, Encodings& _enc) : SimpleFileDialog(title, action, _conf), _encodings(_enc) {
+FileDialog::FileDialog(const std::string &title, Gtk::FileChooserAction action,
+                       int enc, Conf &_conf, Encodings &_enc)
+    : SimpleFileDialog(title, action, _conf), _encodings(_enc) {
 
   if (action == FILE_OPEN) {
     set_select_multiple(true);
@@ -34,38 +36,35 @@ FileDialog::FileDialog(const std::string& title, Gtk::FileChooserAction action, 
 
   label.set_text(_("Encoding"));
   box.pack_start(label);
-  label.set_padding (20, 0);
+  label.set_padding(20, 0);
 
   for (int x = 0; x < _enc.size(); x++) {
     if (((action == FILE_OPEN) && x != _enc.utf8()) || (action == FILE_SAVE)) {
-      cbox.append_text(_enc.at(x));
+      cbox.append(_enc.at(x));
     }
   }
 
-  box.pack_start (cbox);
+  box.pack_start(cbox);
 
   set_extra_widget(box);
   box.show_all();
 
   if ((action == FILE_OPEN) && (enc == -1)) {
     enc = _enc.default_open();
-  }
-  else if ((action == FILE_SAVE) && (enc == -1)) {
+  } else if ((action == FILE_SAVE) && (enc == -1)) {
     enc = _enc.default_save();
   }
 
   if (action == FILE_OPEN) {
     set_current_folder(_conf.open_dir());
-  }
-  else {
+  } else {
     set_current_folder(_conf.save_dir());
   }
 
   cbox.set_active(enc);
 }
 
-FileDialog::~FileDialog() {
-}
+FileDialog::~FileDialog() {}
 
 int FileDialog::encoding() {
   //  return cbox.get_active();
@@ -79,15 +78,11 @@ bool FileDialog::run() {
   return st;
 }
 
-std::vector<std::string> FileDialog::get() {
-  return get_filenames();
-}
+std::vector<std::string> FileDialog::get() { return get_filenames(); }
 
-SimpleFileDialog::SimpleFileDialog(const std::string& title,
-                                   Gtk::FileChooserAction action,
-                                   Conf& _conf):
-  Gtk::FileChooserDialog(title, action)
-{
+SimpleFileDialog::SimpleFileDialog(const std::string &title,
+                                   Gtk::FileChooserAction action, Conf &_conf)
+    : Gtk::FileChooserDialog(title, action) {
   // TODO: We want to handle non-local only oneday.
   set_local_only(true);
 
@@ -108,8 +103,7 @@ SimpleFileDialog::SimpleFileDialog(const std::string& title,
   show_all();
 }
 
-SimpleFileDialog::~SimpleFileDialog() {
-}
+SimpleFileDialog::~SimpleFileDialog() {}
 
 bool SimpleFileDialog::run() {
   bool st = Gtk::FileChooserDialog::run() == Gtk::RESPONSE_OK;
@@ -117,7 +111,7 @@ bool SimpleFileDialog::run() {
   hide();
   if (st) {
     std::string f = get();
-    if (Glib::file_test (f, Glib::FILE_TEST_IS_DIR)) {
+    if (Glib::file_test(f, Glib::FILE_TEST_IS_DIR)) {
       katoob_error(_("This is a directory."));
       return false;
     }
@@ -126,14 +120,11 @@ bool SimpleFileDialog::run() {
   return st;
 }
 
-std::string SimpleFileDialog::get() {
-  return get_filename();
-}
+std::string SimpleFileDialog::get() { return get_filename(); }
 
-std::string SimpleFileDialog::get_file(const std::string& title,
+std::string SimpleFileDialog::get_file(const std::string &title,
                                        Gtk::FileChooserAction action,
-                                       Conf& _conf)
-{
+                                       Conf &_conf) {
   std::string file;
   SimpleFileDialog dialog(title, action, _conf);
 

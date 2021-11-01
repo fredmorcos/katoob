@@ -20,13 +20,9 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __REPLACEDIALOG_H__
-#define __REPLACEDIALOG_H__
+#pragma once
 
-#include <gtkmm/dialog.h>
-#include <gtkmm/entry.h>
-#include <gtkmm/checkbutton.h>
-#include <gtkmm/box.h>
+#include <gtkmm.h>
 
 class ReplaceDialog {
 public:
@@ -47,8 +43,8 @@ public:
   void wrap(bool st) { _wrap.set_active(st); }
   void backwards(bool st) { _backwards.set_active(st); }
   void beginning(bool st) { _beginning.set_active(st); }
-  void set_text(std::string& text) { what.set_text(text); }
-  void set_replace(std::string& text) { with.set_text(text); }
+  void set_text(std::string &text) { what.set_text(text); }
+  void set_replace(std::string &text) { with.set_text(text); }
   void close() { _close.clicked(); }
 
   sigc::signal<bool> signal_find;
@@ -56,7 +52,11 @@ public:
   sigc::signal<void> signal_replace_all;
 
 private:
-  void on_find_clicked() { if (!signal_find.emit()) { close(); } }
+  void on_find_clicked() {
+    if (!signal_find.emit()) {
+      close();
+    }
+  }
   void on_replace_clicked() { signal_replace.emit(); }
   /*
   void on_find_replace_clicked() {
@@ -66,7 +66,10 @@ private:
       close();
   }
   */
-  void on_replace_all_clicked() { signal_replace_all.emit(); close(); }
+  void on_replace_all_clicked() {
+    signal_replace_all.emit();
+    close();
+  }
   void on_close_clicked() { dialog.response(0); }
 
   Gtk::Dialog dialog;
@@ -84,5 +87,3 @@ private:
   Gtk::VBox vbox;
   Gtk::Button find, replace, /* find_replace, */ replace_all, _close;
 };
-
-#endif /* __REPLACEDIALOG_H__ */

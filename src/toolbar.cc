@@ -21,45 +21,30 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtkmm/stock.h>
-#include <fstream>
-#include <iostream>
 #include "toolbar.hh"
 #include "macros.h"
 #include "utils.hh"
+#include <fstream>
+#include <gtkmm.h>
+#include <iostream>
 
-Toolbar::Toolbar(Conf& conf) :
-  _conf(conf),
-  _create(Gtk::Stock::NEW),
-  _open(Gtk::Stock::OPEN),
-  _save(Gtk::Stock::SAVE),
-  _print(Gtk::Stock::PRINT),
-  _close(Gtk::Stock::CLOSE),
-  _undo(Gtk::Stock::UNDO),
-  _redo(Gtk::Stock::REDO),
-  _cut(Gtk::Stock::CUT),
-  _copy(Gtk::Stock::COPY),
-  _paste(Gtk::Stock::PASTE),
-  _erase(Gtk::Stock::DELETE),
-  _go_to_l(_("Goto Line")),
-  _search_l(_("Search")),
-  _dictionary_l(_("Spelling Dictionary"))
-{
+Toolbar::Toolbar(Conf &conf)
+    : _conf(conf), _create(Gtk::Stock::NEW), _open(Gtk::Stock::OPEN),
+      _save(Gtk::Stock::SAVE), _print(Gtk::Stock::PRINT),
+      _close(Gtk::Stock::CLOSE), _undo(Gtk::Stock::UNDO),
+      _redo(Gtk::Stock::REDO), _cut(Gtk::Stock::CUT), _copy(Gtk::Stock::COPY),
+      _paste(Gtk::Stock::PASTE), _erase(Gtk::Stock::DELETE),
+      _go_to_l(_("Goto Line")), _search_l(_("Search")),
+      _dictionary_l(_("Spelling Dictionary")) {
   create_main();
   create_extended();
 }
 
-Toolbar::~Toolbar() {
+Toolbar::~Toolbar() {}
 
-}
+Gtk::Toolbar &Toolbar::get_main() { return _main; };
 
-Gtk::Toolbar& Toolbar::get_main() {
-  return _main;
-};
-
-Gtk::VBox& Toolbar::get_extended() {
-  return _extended;
-}
+Gtk::VBox &Toolbar::get_extended() { return _extended; }
 
 void Toolbar::create_main() {
   _main.append(_create);
@@ -111,19 +96,30 @@ void Toolbar::create_main() {
   _main.show_all();
 
   // Signals.
-  _create.signal_clicked().connect(sigc::mem_fun(signal_create_clicked, &sigc::signal<void>::emit));
-  _open.signal_clicked().connect(sigc::mem_fun(signal_open_clicked, &sigc::signal<void>::emit));
-  _save.signal_clicked().connect(sigc::mem_fun(signal_save_clicked, &sigc::signal<void>::emit));
+  _create.signal_clicked().connect(
+      sigc::mem_fun(signal_create_clicked, &sigc::signal<void>::emit));
+  _open.signal_clicked().connect(
+      sigc::mem_fun(signal_open_clicked, &sigc::signal<void>::emit));
+  _save.signal_clicked().connect(
+      sigc::mem_fun(signal_save_clicked, &sigc::signal<void>::emit));
 
-  _print.signal_clicked().connect(sigc::mem_fun(signal_print_clicked, &sigc::signal<void>::emit));
+  _print.signal_clicked().connect(
+      sigc::mem_fun(signal_print_clicked, &sigc::signal<void>::emit));
 
-  _close.signal_clicked().connect(sigc::mem_fun(signal_close_clicked, &sigc::signal<void>::emit));
-  _undo.signal_clicked().connect(sigc::mem_fun(signal_undo_clicked, &sigc::signal<void>::emit));
-  _redo.signal_clicked().connect(sigc::mem_fun(signal_redo_clicked, &sigc::signal<void>::emit));
-  _cut.signal_clicked().connect(sigc::mem_fun(signal_cut_clicked, &sigc::signal<void>::emit));
-  _copy.signal_clicked().connect(sigc::mem_fun(signal_copy_clicked, &sigc::signal<void>::emit));
-  _paste.signal_clicked().connect(sigc::mem_fun(signal_paste_clicked, &sigc::signal<void>::emit));
-  _erase.signal_clicked().connect(sigc::mem_fun(signal_erase_clicked, &sigc::signal<void>::emit));
+  _close.signal_clicked().connect(
+      sigc::mem_fun(signal_close_clicked, &sigc::signal<void>::emit));
+  _undo.signal_clicked().connect(
+      sigc::mem_fun(signal_undo_clicked, &sigc::signal<void>::emit));
+  _redo.signal_clicked().connect(
+      sigc::mem_fun(signal_redo_clicked, &sigc::signal<void>::emit));
+  _cut.signal_clicked().connect(
+      sigc::mem_fun(signal_cut_clicked, &sigc::signal<void>::emit));
+  _copy.signal_clicked().connect(
+      sigc::mem_fun(signal_copy_clicked, &sigc::signal<void>::emit));
+  _paste.signal_clicked().connect(
+      sigc::mem_fun(signal_paste_clicked, &sigc::signal<void>::emit));
+  _erase.signal_clicked().connect(
+      sigc::mem_fun(signal_erase_clicked, &sigc::signal<void>::emit));
 }
 
 void Toolbar::create_extended() {
@@ -136,19 +132,26 @@ void Toolbar::create_extended() {
   box.pack_start(_dictionary_l, false, false, 10);
   box.pack_start(_dictionary, false, false);
 
-  Gtk::Image *image = Gtk::manage(new Gtk::Image(Gtk::Stock::SPELL_CHECK, Gtk::IconSize(Gtk::ICON_SIZE_MENU)));
+  Gtk::Image *image = Gtk::manage(new Gtk::Image(
+      Gtk::Stock::SPELL_CHECK, Gtk::IconSize(Gtk::ICON_SIZE_MENU)));
   _spell.set_image(*image);
   box.pack_start(_spell, false, false, 10);
   _spell.set_relief(Gtk::RELIEF_NONE);
-  _spell.signal_clicked().connect(sigc::mem_fun(signal_spell_clicked, &sigc::signal<void>::emit));
+  _spell.signal_clicked().connect(
+      sigc::mem_fun(signal_spell_clicked, &sigc::signal<void>::emit));
 
   _dictionary.set_active_text(_conf.get("default_dict", "en"));
   // TODO: I want to connect without the callback step.
-  signal_dictionary_changed_conn = _dictionary.signal_changed().connect(sigc::mem_fun(*this, &Toolbar::dictionary_changed_cb));
-  //  signal_dictionary_changed_conn = _dictionary.signal_changed().connect(sigc::bind<std::string>(sigc::mem_fun(signal_dictionary_changed, &sigc::signal<void, std::string>::emit), _dictionary.get_active_text()));
+  signal_dictionary_changed_conn = _dictionary.signal_changed().connect(
+      sigc::mem_fun(*this, &Toolbar::dictionary_changed_cb));
+  //  signal_dictionary_changed_conn =
+  //  _dictionary.signal_changed().connect(sigc::bind<std::string>(sigc::mem_fun(signal_dictionary_changed,
+  //  &sigc::signal<void, std::string>::emit), _dictionary.get_active_text()));
 
-  _search.signal_activate().connect(sigc::mem_fun(*this, &Toolbar::search_activate_cb));
-  _go_to.signal_activate().connect(sigc::mem_fun(*this, &Toolbar::go_to_activate_cb));
+  _search.signal_activate().connect(
+      sigc::mem_fun(*this, &Toolbar::search_activate_cb));
+  _go_to.signal_activate().connect(
+      sigc::mem_fun(*this, &Toolbar::go_to_activate_cb));
 
   _extended.pack_start(sep);
 
@@ -161,51 +164,48 @@ void Toolbar::create_extended() {
 
 void Toolbar::set_text() {
   _main.set_toolbar_style(Gtk::ToolbarStyle(Gtk::TOOLBAR_TEXT));
-  _conf.set("toolbartype","text");
+  _conf.set("toolbartype", "text");
 }
 
 void Toolbar::set_icons() {
   _main.set_toolbar_style(Gtk::ToolbarStyle(Gtk::TOOLBAR_ICONS));
-  _conf.set("toolbartype","icons");
+  _conf.set("toolbartype", "icons");
 }
 
 void Toolbar::set_both() {
   _main.set_toolbar_style(Gtk::ToolbarStyle(Gtk::TOOLBAR_BOTH));
-  _conf.set("toolbartype","both");
+  _conf.set("toolbartype", "both");
 }
 
 void Toolbar::set_beside() {
   _main.set_toolbar_style(Gtk::ToolbarStyle(Gtk::TOOLBAR_BOTH_HORIZ));
-  _conf.set("toolbartype","both_horiz");
+  _conf.set("toolbartype", "both_horiz");
 }
 
-void Toolbar::set_dictionary(std::string& d) {
+void Toolbar::set_dictionary(std::string &d) {
   signal_dictionary_changed_conn.block();
   _dictionary.set_active_text(d);
   signal_dictionary_changed_conn.unblock();
 }
 
-std::string Toolbar::get_dictionary() {
-  return _dictionary.get_active_text();
-}
+std::string Toolbar::get_dictionary() { return _dictionary.get_active_text(); }
 
 void Toolbar::reset_gui() {
   _conf.get("toolbar", true) == true ? _main.show() : _main.hide();
-  _conf.get("extended_toolbar", true) == true ? _extended.show() : _extended.hide();
-  _conf.get("extra_buttons", true) == true ? _extra_buttons.show_all() : _extra_buttons.hide();
+  _conf.get("extended_toolbar", true) == true ? _extended.show()
+                                              : _extended.hide();
+  _conf.get("extra_buttons", true) == true ? _extra_buttons.show_all()
+                                           : _extra_buttons.hide();
 
-  const std::string& toolbartype = _conf.get("toolbartype", "both");
+  const std::string &toolbartype = _conf.get("toolbartype", "both");
 
   if (toolbartype == "text") {
     set_text();
-  }
-  else if (toolbartype == "icons") {
+  } else if (toolbartype == "icons") {
     set_icons();
-  }
-  else if (toolbartype == "both_horiz") {
+  } else if (toolbartype == "both_horiz") {
     set_beside();
-  }
-  else {
+  } else {
     set_both();
   }
 }
@@ -255,25 +255,20 @@ void Toolbar::create_extra_buttons() {
   }
 }
 
-void Toolbar::create_extra_button(std::string& label) {
+void Toolbar::create_extra_button(std::string &label) {
   Gtk::ToolButton *button = Gtk::manage(new Gtk::ToolButton);
   button->set_label(label);
   button->show_all();
   _extra_buttons.append(*button);
-  button->signal_clicked().connect(sigc::bind<std::string>(sigc::mem_fun(*this, &Toolbar::extra_button_clicked), label));
+  button->signal_clicked().connect(sigc::bind<std::string>(
+      sigc::mem_fun(*this, &Toolbar::extra_button_clicked), label));
 }
 
-void Toolbar::enable_undo(bool s) {
-  _undo.set_sensitive(s);
-}
+void Toolbar::enable_undo(bool s) { _undo.set_sensitive(s); }
 
-void Toolbar::enable_redo(bool s) {
-  _redo.set_sensitive(s);
-}
+void Toolbar::enable_redo(bool s) { _redo.set_sensitive(s); }
 
-void Toolbar::enable_dictionary(bool s) {
-  _dictionary.set_sensitive(s);
-}
+void Toolbar::enable_dictionary(bool s) { _dictionary.set_sensitive(s); }
 
 void Toolbar::set_read_only(bool r) {
   _save.set_sensitive(!r);

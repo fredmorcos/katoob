@@ -21,18 +21,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtkmm/button.h>
-#include <gtkmm/window.h>
-#include <gtkmm/separator.h>
-#include <gtkmm/label.h>
-#include <gtkmm/box.h>
-#include <gtkmm/table.h>
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/entry.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/image.h>
 #include "document.hh"
+#include <gtkmm.h>
 
 class SpellDialog : public Gtk::Window {
 public:
@@ -49,9 +39,9 @@ private:
   void check_clicked_cb();
   void close_clicked_cb();
 
-  void got_misspelled(std::string&, std::vector<std::string>&);
+  void got_misspelled(std::string &, std::vector<std::string> &);
   void selection_signal_changed_cb();
-  void populate_suggestions(std::vector<std::string>&);
+  void populate_suggestions(std::vector<std::string> &);
 
   void next();
 

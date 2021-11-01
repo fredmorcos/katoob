@@ -23,33 +23,37 @@
 
 #pragma once
 
-#include <gtkmm/printoperation.h>
+#include "applets.hh"
 #include "conf.hh"
+#include "document.hh"
+#include "pagesetup.hh"
 #include "previewdialog.hh"
 #include "printsettings.hh"
-#include "pagesetup.hh"
-#include "document.hh"
-#include "applets.hh"
+#include <gtkmm.h>
 
 class Print : public Gtk::PrintOperation {
 public:
-  static Glib::RefPtr<Print> create(Conf&, Document *, Glib::RefPtr<PageSetup>&, Glib::RefPtr<PrintSettings>&);
+  static Glib::RefPtr<Print> create(Conf &, Document *,
+                                    Glib::RefPtr<PageSetup> &,
+                                    Glib::RefPtr<PrintSettings> &);
   virtual ~Print();
-  bool run(std::string&, Gtk::PrintOperationAction);
+  bool run(std::string &, Gtk::PrintOperationAction);
 
 protected:
-  Print(Conf&, Document *, Glib::RefPtr<PageSetup>&, Glib::RefPtr<PrintSettings>&);
+  Print(Conf &, Document *, Glib::RefPtr<PageSetup> &,
+        Glib::RefPtr<PrintSettings> &);
 
   // Printing part.
-  void on_begin_print(const Glib::RefPtr<Gtk::PrintContext>&);
-  void on_draw_page(const Glib::RefPtr<Gtk::PrintContext>&, int);
+  void on_begin_print(const Glib::RefPtr<Gtk::PrintContext> &);
+  void on_draw_page(const Glib::RefPtr<Gtk::PrintContext> &, int);
 
   // Custom widget.
-  Gtk::Widget* on_create_custom_widget();
+  Gtk::Widget *on_create_custom_widget();
   void on_custom_widget_apply(Gtk::Widget *);
 
   // Preview part.
-  bool on_preview(const Glib::RefPtr<Gtk::PrintOperationPreview>&, const Glib::RefPtr<Gtk::PrintContext>&, Gtk::Window*);
+  bool on_preview(const Glib::RefPtr<Gtk::PrintOperationPreview> &,
+                  const Glib::RefPtr<Gtk::PrintContext> &, Gtk::Window *);
   void on_preview_window_hide();
 
   void on_done(Gtk::PrintOperationResult);
@@ -58,14 +62,14 @@ private:
   int get_n_pages();
   Glib::RefPtr<Pango::Layout> get_layout();
 
-  Conf& _conf;
+  Conf &_conf;
   Glib::RefPtr<Pango::Layout> layout;
   Document *_doc;
 
   PrintApplet applet;
 
   PreviewDialog *_preview;
-  Glib::RefPtr<PageSetup>& _page_setup;
-  Glib::RefPtr<PrintSettings>& _settings;
+  Glib::RefPtr<PageSetup> &_page_setup;
+  Glib::RefPtr<PrintSettings> &_settings;
   std::vector<std::vector<int>> pages;
 };

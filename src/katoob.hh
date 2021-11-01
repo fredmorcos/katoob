@@ -23,12 +23,12 @@
 
 #pragma once
 
-#include <vector>
-#include <gtkmm/main.h>
-#include "window.hh"
 #include "conf.hh"
-#include "encodings.hh"
 #include "dbus.hh"
+#include "encodings.hh"
+#include "window.hh"
+#include <gtkmm.h>
+#include <vector>
 
 /**
  * \brief This is our application entry point.
@@ -64,6 +64,7 @@ private:
   /** \brief our Windows are stored here */
   static std::vector<Window *> children;
 
-  /** \brief the files we are passed are stored here by our Katoob::parse function. */
+  /** \brief the files we are passed are stored here by our Katoob::parse
+   * function. */
   std::vector<std::string> files;
 };

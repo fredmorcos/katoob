@@ -24,20 +24,17 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#include "searchdialog.hh"
-#include <gtkmm/stock.h>
 #include "macros.h"
+#include "searchdialog.hh"
+#include <gtkmm.h>
 
-SearchDialog::SearchDialog() :
-  dialog(_("Find"), true, true),
-  label(_("Search for:")),
-  _whole_word(_("Match entire word only")),
-  _match_case(_("Match case")),
-  //  regex(_("Regular expression")),
-  _wrap(_("Wrap search")),
-  _cursor(_("Search from the cursor position")),
-  _backwards(_("Search backwards")),
-  _beginning(_("Search from the beginnig of the document")) {
+SearchDialog::SearchDialog()
+    : dialog(_("Find"), true, true), label(_("Search for:")),
+      _whole_word(_("Match entire word only")), _match_case(_("Match case")),
+      //  regex(_("Regular expression")),
+      _wrap(_("Wrap search")), _cursor(_("Search from the cursor position")),
+      _backwards(_("Search backwards")),
+      _beginning(_("Search from the beginnig of the document")) {
   dialog.set_border_width(10);
 
   dialog.set_position(Gtk::WIN_POS_CENTER);
@@ -59,13 +56,12 @@ SearchDialog::SearchDialog() :
 
   what.signal_activate().connect(sigc::mem_fun(find, &Gtk::Button::clicked));
   // find->set_sensitive(false);
-  //  what.signal_insert_at_cursor().connect(sigc::mem_fun(*this, &SearchDialog::insert_at_cursor_cb));
+  //  what.signal_insert_at_cursor().connect(sigc::mem_fun(*this,
+  //  &SearchDialog::insert_at_cursor_cb));
   // signal_activate ()
 }
 
-SearchDialog::~SearchDialog() {
-
-}
+SearchDialog::~SearchDialog() {}
 
 /*
   void SearchDialog::insert_at_cursor_cb(const Glib::ustring& str) {
@@ -82,50 +78,26 @@ bool SearchDialog::run() {
   return false;
 }
 
-bool SearchDialog::whole_word() {
-  return _whole_word.get_active();
-}
+bool SearchDialog::whole_word() { return _whole_word.get_active(); }
 
-bool SearchDialog::match_case() {
-  return _match_case.get_active();
-}
+bool SearchDialog::match_case() { return _match_case.get_active(); }
 
-bool SearchDialog::wrap() {
-  return _wrap.get_active();
-}
+bool SearchDialog::wrap() { return _wrap.get_active(); }
 
-bool SearchDialog::backwards() {
-  return _backwards.get_active();
-}
+bool SearchDialog::backwards() { return _backwards.get_active(); }
 
-bool SearchDialog::beginning() {
-  return _beginning.get_active();
-}
+bool SearchDialog::beginning() { return _beginning.get_active(); }
 
-std::string SearchDialog::get_text() {
-  return what.get_text();
-}
+std::string SearchDialog::get_text() { return what.get_text(); }
 
-void SearchDialog::whole_word(bool st) {
-  _whole_word.set_active(st);
-}
+void SearchDialog::whole_word(bool st) { _whole_word.set_active(st); }
 
-void SearchDialog::match_case(bool st) {
-  _match_case.set_active(st);
-}
+void SearchDialog::match_case(bool st) { _match_case.set_active(st); }
 
-void SearchDialog::wrap(bool st) {
-  _wrap.set_active(st);
-}
+void SearchDialog::wrap(bool st) { _wrap.set_active(st); }
 
-void SearchDialog::backwards(bool st) {
-  _backwards.set_active(st);
-}
+void SearchDialog::backwards(bool st) { _backwards.set_active(st); }
 
-void SearchDialog::beginning(bool st) {
-  _beginning.set_active(st);
-}
+void SearchDialog::beginning(bool st) { _beginning.set_active(st); }
 
-void SearchDialog::set_text(std::string& text) {
-  what.set_text(text);
-}
+void SearchDialog::set_text(std::string &text) { what.set_text(text); }

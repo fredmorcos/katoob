@@ -23,30 +23,29 @@
 
 #pragma once
 
-#include <gtkmm/window.h>
-#include <glibmm/main.h>
-#include <string>
+#include <glibmm.h>
+#include <gtkmm.h>
 #include <map>
+#include <string>
 #include <vector>
-#include <glibmm/main.h>
 
 class MultipressWindow : public Gtk::Window {
 public:
   MultipressWindow();
   ~MultipressWindow();
-  void set_values(const std::vector<std::string>&);
+  void set_values(const std::vector<std::string> &);
   void set_timeout(int);
-  void set_key(const std::string&);
-  sigc::signal<bool, std::string&> signal_change_key;
-  sigc::signal<void, std::string&> signal_insert_key;
-  sigc::signal<void, GdkEventKey*> signal_invalid_key;
+  void set_key(const std::string &);
+  sigc::signal<bool, std::string &> signal_change_key;
+  sigc::signal<void, std::string &> signal_insert_key;
+  sigc::signal<void, GdkEventKey *> signal_invalid_key;
 
   void get();
 
 private:
   // Virtual methods to override gtkmm default handlers.
-  bool on_key_press_event(GdkEventKey*);
-  bool on_expose_event(GdkEventExpose*);
+  bool on_key_press_event(GdkEventKey *);
+  bool on_expose_event(GdkEventExpose *);
 
   void clear(bool);
   void show_next();

@@ -25,23 +25,22 @@
 #include <config.h>
 #endif /* HAVE_CONFIG_H */
 
-#include "textview.hh"
 #include "dialogs.hh"
+#include "textview.hh"
 // TODO: We can't drop if the document is set to readonly.
 
-TextView::TextView() {
-}
+TextView::TextView() {}
 
-TextView::~TextView() {
-}
+TextView::~TextView() {}
 
-TextView::TextView(GtkTextView *tv) : Gtk::TextView(tv) {
-}
+TextView::TextView(GtkTextView *tv) : Gtk::TextView(tv) {}
 
 // TODO: Need to check this under maemo but how ?
-void TextView::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& context, int x, int y, const Gtk::SelectionData& selection_data, guint info, guint time) {
+void TextView::on_drag_data_received(
+    const Glib::RefPtr<Gdk::DragContext> &context, int x, int y,
+    const Gtk::SelectionData &selection_data, guint info, guint time) {
   bool handle = false;
-  std::vector<std::string> targets = context->get_targets();
+  std::vector<std::string> targets = context->list_targets();
   for (unsigned i = 0; i < targets.size(); i++) {
     if (targets[i] == "text/uri-list") {
       handle = true;
@@ -52,27 +51,27 @@ void TextView::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext>& conte
   if (handle) {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try {
-      std::string filename = Glib::filename_from_uri(selection_data.get_data_as_string());
+      std::string filename =
+          Glib::filename_from_uri(selection_data.get_data_as_string());
       signal_text_view_request_file_open.emit(filename);
-    }
-    catch(Glib::ConvertError& e) {
+    } catch (Glib::ConvertError &e) {
       katoob_error(e.what());
     }
 #else
     std::unique_ptr<Glib::Error> error;
-    std::string filename = Glib::filename_from_uri(selection_data.get_data_as_string(), error);
+    std::string filename =
+        Glib::filename_from_uri(selection_data.get_data_as_string(), error);
     if (error.get()) {
       katoob_error(error->what());
-    }
-    else {
+    } else {
       signal_text_view_request_file_open.emit(filename);
     }
 #endif
-  }
-  else {
+  } else {
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
     // FIXME: maemo
-    Gtk::TextView::on_drag_data_received(context, x, y, selection_data, info, time);
+    Gtk::TextView::on_drag_data_received(context, x, y, selection_data, info,
+                                         time);
 #endif
   }
 }

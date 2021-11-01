@@ -21,20 +21,16 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <gtkmm/stock.h>
-#include <gtkmm/enums.h>
 #include "preferencesdialog.hh"
+#include "dialogs.hh"
+#include "dict.hh"
 #include "macros.h"
 #include "mdi.hh"
 #include "utils.hh"
-#include "dict.hh"
-#include "dialogs.hh"
+#include <gtkmm.h>
 
-PreferencesDialog::PreferencesDialog(Conf& conf, Encodings& enc) :
-  _conf(conf),
-  _enc(enc),
-  apply(Gtk::Stock::APPLY)
-{
+PreferencesDialog::PreferencesDialog(Conf &conf, Encodings &enc)
+    : _conf(conf), _enc(enc), apply(Gtk::Stock::APPLY) {
   dialog.set_title(_("Preferences"));
   dialog.set_modal(true);
 
@@ -55,7 +51,8 @@ PreferencesDialog::PreferencesDialog(Conf& conf, Encodings& enc) :
   sw.add(treeview);
   sw.set_size_request(150, 300);
   selection = treeview.get_selection();
-  selection->signal_changed().connect(sigc::mem_fun(*this, &PreferencesDialog::selection_signal_changed_cb));
+  selection->signal_changed().connect(
+      sigc::mem_fun(*this, &PreferencesDialog::selection_signal_changed_cb));
 
   add_applet(_("General"), new GeneralApplet(_conf));
   add_applet(_("Interface"), new InterfaceApplet(_conf));
@@ -72,26 +69,26 @@ PreferencesDialog::PreferencesDialog(Conf& conf, Encodings& enc) :
 
   add_applet(_("Multipress"), new MultipressApplet(_conf));
 
-  add_applet(_("Remote Documents"),new RemoteDocumentsApplet(_conf));
+  add_applet(_("Remote Documents"), new RemoteDocumentsApplet(_conf));
   add_applet(_("Advanced"), new AdvancedApplet(_conf));
   add_applet(_("Network"), new NetworkApplet(_conf));
 
   paned.pack2(notebook, true, true);
   notebook.set_show_tabs(false);
 
-
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  Gtk::ButtonBox* box = dialog.get_action_area();
+  Gtk::ButtonBox *box = dialog.get_action_area();
   box->pack_start(apply);
   //  dialog.add_button(Gtk::Stock::APPLY, Gtk::RESPONSE_APPLY);
   dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
-  apply.signal_clicked().connect(sigc::mem_fun(*this, &PreferencesDialog::apply_clicked_cb));
+  apply.signal_clicked().connect(
+      sigc::mem_fun(*this, &PreferencesDialog::apply_clicked_cb));
 }
 
-void PreferencesDialog::add_applet(const std::string& name, Applet *applet) {
+void PreferencesDialog::add_applet(const std::string &name, Applet *applet) {
   applets[name] = applet;
-  Gtk::TreeModel::Row row = *(store->append ());
+  Gtk::TreeModel::Row row = *(store->append());
   row[section] = name;
   notebook.append_page(applet->get_box());
 }

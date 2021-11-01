@@ -27,18 +27,7 @@
 #include "dialogs.hh"
 #include "glibmm/refptr.h"
 #include "spellmenu.hh"
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-#include <gtkmm/checkbutton.h>
-#include <gtkmm/colorbutton.h>
-#include <gtkmm/comboboxtext.h>
-#include <gtkmm/fontbutton.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/label.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/spinbutton.h>
-#include <gtkmm/table.h>
+#include <gtkmm.h>
 
 class Applet {
 public:

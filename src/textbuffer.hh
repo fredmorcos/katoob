@@ -23,35 +23,39 @@
 
 #pragma once
 
-#include <gtkmm/textbuffer.h>
-#include <gtksourceview/gtksource.h>
-#include "sourcemanager.hh"
 #include "conf.hh"
+#include "sourcemanager.hh"
+#include <gtkmm.h>
+#include <gtksourceview/gtksource.h>
 
 class TextBuffer : public Gtk::TextBuffer {
 public:
-  TextBuffer(Conf&);
+  TextBuffer(Conf &);
   ~TextBuffer();
-  static Glib::RefPtr<TextBuffer> create(Conf& conf) { return Glib::RefPtr<TextBuffer>( new TextBuffer(conf) ); }
+  static Glib::RefPtr<TextBuffer> create(Conf &conf) {
+    return Glib::RefPtr<TextBuffer>(new TextBuffer(conf));
+  }
 
   int get_mark_insert_position() { return _insert->get_iter().get_offset(); }
   int get_mark_insert_line() { return _insert->get_iter().get_line(); }
   int get_erase_line() { return _erase; }
-  std::string& get_deleted() { return _deleted; }
+  std::string &get_deleted() { return _deleted; }
   void clear_deleted() { _deleted.clear(); }
 
   void set_highlight(bool);
   void set_language(GtkSourceLanguage *);
 
 protected:
-  void on_insert (const Gtk::TextBuffer::iterator&, const Glib::ustring&, int);
+  void on_insert(const Gtk::TextBuffer::iterator &, const Glib::ustring &, int);
   Glib::RefPtr<Mark> _insert;
-  void on_erase(const Gtk::TextBuffer::iterator&, const Gtk::TextBuffer::iterator&);
+  void on_erase(const Gtk::TextBuffer::iterator &,
+                const Gtk::TextBuffer::iterator &);
+
 private:
 #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   sigc::connection on_insert_conn;
 #endif
   std::string _deleted;
   int _erase;
-  Conf& _conf;
+  Conf &_conf;
 };
