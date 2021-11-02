@@ -23,6 +23,7 @@
 
 #include "applets.hh"
 #include "dict.hh"
+#include "gdkmm/display.h"
 #include "macros.h"
 #include "network.hh"
 #include "utils.hh"
@@ -241,23 +242,23 @@ TabsApplet::TabsApplet(Conf &_conf) : Applet::Applet(_conf) {
   modified_label.set_text(_("Color for modified tabs"));
   normal_label.set_text(_("Color for normal tabs"));
 
-  Gdk::Color readonly_color, modified_color, normal_color;
+  Gdk::RGBA readonly_color, modified_color, normal_color;
 
-  readonly_color.set_red(_conf.get("readonly_red", 0));
-  readonly_color.set_green(_conf.get("readonly_green", 0));
-  readonly_color.set_blue(_conf.get("readonly_blue", 65535));
+  readonly_color.set_rgba(_conf.get("readonly_red", 0),
+                          _conf.get("readonly_green", 0),
+                          _conf.get("readonly_blue", 65535));
 
-  modified_color.set_red(_conf.get("modified_red", 65535));
-  modified_color.set_green(_conf.get("modified_green", 0));
-  modified_color.set_blue(_conf.get("modified_blue", 0));
+  modified_color.set_rgba(_conf.get("modified_red", 65535),
+                          _conf.get("modified_green", 0),
+                          _conf.get("modified_blue", 0));
 
-  normal_color.set_red(_conf.get("normal_red", 0));
-  normal_color.set_green(_conf.get("normal_green", 0));
-  normal_color.set_blue(_conf.get("normal_blue", 0));
+  normal_color.set_rgba(_conf.get("normal_red", 0),
+                        _conf.get("normal_green", 0),
+                        _conf.get("normal_blue", 0));
 
-  readonly.set_color(readonly_color);
-  modified.set_color(modified_color);
-  normal.set_color(normal_color);
+  readonly.property_rgba().set_value(readonly_color);
+  modified.property_rgba().set_value(modified_color);
+  normal.property_rgba().set_value(normal_color);
 
   box.pack_start(showtabs, false, false);
   box.pack_start(tabsmenu, false, false);
@@ -333,15 +334,15 @@ void TabsApplet::apply() {
     break;
   }
   _conf.set("tabspos", i);
-  Gdk::Color color = readonly.get_color();
+  Gdk::RGBA color = readonly.get_rgba();
   _conf.set("readonly_red", color.get_red());
   _conf.set("readonly_green", color.get_green());
   _conf.set("readonly_blue", color.get_blue());
-  color = modified.get_color();
+  color = modified.get_rgba();
   _conf.set("modified_red", color.get_red());
   _conf.set("modified_green", color.get_green());
   _conf.set("modified_blue", color.get_blue());
-  color = normal.get_color();
+  color = normal.get_rgba();
   _conf.set("normal_red", color.get_red());
   _conf.set("normal_green", color.get_green());
   _conf.set("normal_blue", color.get_blue());
@@ -907,11 +908,14 @@ AdvancedApplet::AdvancedApplet(Conf &_conf)
   size_table.attach(h_label, 0, 1, 1, 2);
   size_table.attach(h, 1, 2, 1, 2);
 
-  Glib::RefPtr<Gdk::Screen> screen = Gdk::Screen::get_default();
-  x_adj->set_upper(screen->get_width() - 10);
-  y_adj->set_upper(screen->get_height() - 10);
-  h_adj->set_upper(screen->get_height());
-  w_adj->set_upper(screen->get_width());
+  auto monitor = Gdk::Display::get_default()->get_primary_monitor();
+  Gdk::Rectangle workArea;
+  monitor->get_workarea(workArea);
+
+  x_adj->set_upper(workArea.get_width() - 10);
+  y_adj->set_upper(workArea.get_height() - 10);
+  h_adj->set_upper(workArea.get_height());
+  w_adj->set_upper(workArea.get_width());
   w_adj->set_lower(400);
   h_adj->set_lower(400);
 
