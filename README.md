@@ -126,6 +126,9 @@ meson setup build --prefix /installation/prefix --buildtype debug|debugoptimized
 
 ## TODO
 
+- [ ] Use modern config and cache directories (e.g. `~/.config/katoob` and
+      `~/.cache/katoob`).
+
 - [ ] Replace hardcoded paper sizes in print dialog with something from Gtk.
 
 - [ ] Replace usages of `Gtk::manage(new ...)` with `Gtk::make_managed<W>(...)`.
