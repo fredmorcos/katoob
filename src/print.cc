@@ -25,12 +25,10 @@
 #include "macros.h"
 #include "utils.hh"
 
-Print::Print(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Glib::RefPtr<PrintSettings>& settings) :
-  _conf(conf),
-  _doc(doc),
-  applet(conf),
-  _page_setup(page_setup),
-  _settings(settings) {
+Print::Print(Conf &conf, Document *doc, Glib::RefPtr<PageSetup> &page_setup,
+             Glib::RefPtr<PrintSettings> &settings)
+    : _conf(conf), _doc(doc), applet(conf), _page_setup(page_setup),
+      _settings(settings) {
 
   set_allow_async(false);
   set_show_progress(true);
@@ -45,27 +43,29 @@ Print::Print(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Gli
   signal_draw_page().connect(sigc::mem_fun(this, &Print::on_draw_page));
   signal_preview().connect(sigc::mem_fun(this, &Print::on_preview), false);
 
-  signal_create_custom_widget().connect(sigc::mem_fun(this, &Print::on_create_custom_widget));
-  signal_custom_widget_apply().connect(sigc::mem_fun(this, &Print::on_custom_widget_apply));
+  signal_create_custom_widget().connect(
+      sigc::mem_fun(this, &Print::on_create_custom_widget));
+  signal_custom_widget_apply().connect(
+      sigc::mem_fun(this, &Print::on_custom_widget_apply));
 
   signal_done().connect(sigc::mem_fun(this, &Print::on_done));
 #endif
 }
 
-Print::~Print() {
-}
+Print::~Print() {}
 
-Glib::RefPtr<Print> Print::create(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Glib::RefPtr<PrintSettings>& settings) {
+Glib::RefPtr<Print> Print::create(Conf &conf, Document *doc,
+                                  Glib::RefPtr<PageSetup> &page_setup,
+                                  Glib::RefPtr<PrintSettings> &settings) {
   return Glib::RefPtr<Print>(new Print(conf, doc, page_setup, settings));
 }
 
-bool Print::run(std::string& error, Gtk::PrintOperationAction print_action) {
+bool Print::run(std::string &error, Gtk::PrintOperationAction print_action) {
   Gtk::PrintOperationResult res;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try {
     res = Gtk::PrintOperation::run(print_action);
-  }
-  catch (Glib::Error& err) {
+  } catch (Glib::Error &err) {
     error = err.what();
     return false;
   }
@@ -95,13 +95,14 @@ bool Print::run(std::string& error, Gtk::PrintOperationAction print_action) {
   }
 }
 
-void Print::on_begin_print(const Glib::RefPtr<Gtk::PrintContext>& context) {
+void Print::on_begin_print(const Glib::RefPtr<Gtk::PrintContext> &context) {
   // You must handle this signal, because this is where you create and set up
   // a Pango::Layout using the provided Gtk::PrintContext, and break up your
   // printing output into pages.
 
   layout = context->create_pango_layout();
-  Pango::FontDescription font = Pango::FontDescription(_conf.print_get("print_font", "Sans Regular 12"));
+  Pango::FontDescription font =
+      Pango::FontDescription(_conf.print_get("print_font", "Sans Regular 12"));
   layout->set_font_description(font);
 
   const double width = context->get_width();
@@ -126,14 +127,12 @@ void Print::on_begin_print(const Glib::RefPtr<Gtk::PrintContext>& context) {
       _nr.clear();
       _nr.push_back(line);
       page_height = 0;
-    }
-    else if (page_height + line_height == height) {
+    } else if (page_height + line_height == height) {
       _nr.push_back(line);
       pages.push_back(_nr);
       _nr.clear();
       page_height += line_height;
-    }
-    else {
+    } else {
       _nr.push_back(line);
       page_height += line_height;
     }
@@ -146,11 +145,12 @@ void Print::on_begin_print(const Glib::RefPtr<Gtk::PrintContext>& context) {
   set_n_pages(pages.size());
 }
 
-void Print::on_draw_page(const Glib::RefPtr<Gtk::PrintContext>& context, int nr) {
-  // You must handle this signal, which provides a PrintContext and a page number.
-  // The PrintContext should be used to create a Cairo::Context into which the provided
-  // page should be drawn. To render text, iterate over the Pango::Layout you created
-  // in the begin_print handler.
+void Print::on_draw_page(const Glib::RefPtr<Gtk::PrintContext> &context,
+                         int nr) {
+  // You must handle this signal, which provides a PrintContext and a page
+  // number. The PrintContext should be used to create a Cairo::Context into
+  // which the provided page should be drawn. To render text, iterate over the
+  // Pango::Layout you created in the begin_print handler.
 
   if ((!context) || (!layout)) {
     return;
@@ -161,7 +161,7 @@ void Print::on_draw_page(const Glib::RefPtr<Gtk::PrintContext>& context, int nr)
     return;
   }
 
-  std::vector<int>& lines = pages[nr];
+  std::vector<int> &lines = pages[nr];
   // TODO: Is this correct ??
   if (lines.size() == 0) {
     return;
@@ -187,11 +187,15 @@ void Print::on_draw_page(const Glib::RefPtr<Gtk::PrintContext>& context, int nr)
   }
 }
 
-bool Print::on_preview(const Glib::RefPtr<Gtk::PrintOperationPreview>& preview, const Glib::RefPtr<Gtk::PrintContext>& context, Gtk::Window *parent) {
+bool Print::on_preview(const Glib::RefPtr<Gtk::PrintOperationPreview> &preview,
+                       const Glib::RefPtr<Gtk::PrintContext> &context,
+                       Gtk::Window *parent) {
   _preview = PreviewDialog::create(preview, context, parent);
-  _preview->signal_get_n_pages.connect(sigc::mem_fun(this, &Print::get_n_pages));
+  _preview->signal_get_n_pages.connect(
+      sigc::mem_fun(this, &Print::get_n_pages));
   _preview->signal_get_layout.connect(sigc::mem_fun(this, &Print::get_layout));
-  _preview->signal_hide().connect(sigc::mem_fun(this, &Print::on_preview_window_hide));
+  _preview->signal_hide().connect(
+      sigc::mem_fun(this, &Print::on_preview_window_hide));
   _preview->run();
   return true;
 }
@@ -203,15 +207,16 @@ void Print::on_preview_window_hide() {
   }
 }
 
-Gtk::Widget* Print::on_create_custom_widget() {
+Gtk::Widget *Print::on_create_custom_widget() {
   set_custom_tab_label(_("Other"));
   applet.get_box().show_all();
   return &applet.get_box();
 }
 
 void Print::on_custom_widget_apply(Gtk::Widget *) {
-  // Note: the returned widget is the VBox we created in on_create_custom_widget().
-  // We don't need to use it, because we can access the applet directly.
+  // Note: the returned widget is the VBox we created in
+  // on_create_custom_widget(). We don't need to use it, because we can access
+  // the applet directly.
   applet.apply();
   _settings->reset();
 }
@@ -221,10 +226,6 @@ void Print::on_done(Gtk::PrintOperationResult KATOOB_UNUSED(result)) {
   //  _preview.clear();
 }
 
-int Print::get_n_pages() {
-  return pages.size();
-}
+int Print::get_n_pages() { return pages.size(); }
 
-Glib::RefPtr<Pango::Layout> Print::get_layout() {
-  return layout;
-}
+Glib::RefPtr<Pango::Layout> Print::get_layout() { return layout; }
