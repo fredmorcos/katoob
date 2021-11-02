@@ -118,7 +118,7 @@ private:
 
   /* Extended */
   Gtk::HBox box;
-  Gtk::HSeparator sep;
+  Gtk::Separator sep;
   Gtk::Label _go_to_l, _search_l;
 
   Gtk::Label _dictionary_l;

@@ -1031,7 +1031,7 @@ void Document::paint_line_numbers(
           .get_line() +
       1;
 
-  win->get_toplevel().clear();
+  win->get_toplevel().reset();
 
   // We need to calculate the maximum width possible.
   Gtk::TextIter end = _text_view.get_buffer()->end();

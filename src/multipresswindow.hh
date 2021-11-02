@@ -45,7 +45,7 @@ public:
 private:
   // Virtual methods to override gtkmm default handlers.
   bool on_key_press_event(GdkEventKey *);
-  bool on_expose_event(GdkEventExpose *);
+  bool draw(const Cairo::RefPtr<Cairo::Context> &);
 
   void clear(bool);
   void show_next();

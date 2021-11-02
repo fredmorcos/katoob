@@ -21,26 +21,28 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include "multipresswindow.hh"
+#include "gdkmm/drawingcontext.h"
+#include "utils.hh"
 #include <cassert>
 #include <gdk/gdkkeysyms.h>
-#include "multipresswindow.hh"
-#include "utils.hh"
 
-MultipressWindow::MultipressWindow() : Gtk::Window(), loop(Glib::MainLoop::create()) {
+MultipressWindow::MultipressWindow()
+    : Gtk::Window(), loop(Glib::MainLoop::create()) {
   set_position(Gtk::WIN_POS_CENTER);
   set_decorated(false);
   set_modal(true);
 #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-  signal_key_press_event().connect(sigc::mem_fun(this, &MultipressWindow::on_key_press_event), false);
-  signal_expose_event().connect(sigc::mem_fun(this, &MultipressWindow::on_expose_event), false);
+  signal_key_press_event().connect(
+      sigc::mem_fun(this, &MultipressWindow::on_key_press_event), false);
+  signal_expose_event().connect(
+      sigc::mem_fun(this, &MultipressWindow::on_expose_event), false);
 #endif
 }
 
-MultipressWindow::~MultipressWindow() {
+MultipressWindow::~MultipressWindow() {}
 
-}
-
-void MultipressWindow::set_values(const std::vector<std::string>& values) {
+void MultipressWindow::set_values(const std::vector<std::string> &values) {
   assert(values.size() > 0);
   _values = values;
 }
@@ -60,7 +62,8 @@ void MultipressWindow::get() {
   grab_focus();
 
   // Add the timer.
-  timeout_conn = Glib::signal_timeout().connect(sigc::mem_fun(*this, &MultipressWindow::timeout_cb), _timeout);
+  timeout_conn = Glib::signal_timeout().connect(
+      sigc::mem_fun(*this, &MultipressWindow::timeout_cb), _timeout);
   // enter the main loop.
   loop->run();
 
@@ -72,7 +75,8 @@ void MultipressWindow::get() {
 void MultipressWindow::clear(bool reset) {
   Glib::RefPtr<Gdk::Window> w = get_window();
   if (w) {
-    w->clear();
+    // Stuff does not need to be cleared in Gtk3 anymore.
+    // w->clear();
   }
   if (reset) {
     _pos = 0;
@@ -80,9 +84,7 @@ void MultipressWindow::clear(bool reset) {
   }
 }
 
-void MultipressWindow::set_key(const std::string& key) {
-  _key = key;
-}
+void MultipressWindow::set_key(const std::string &key) { _key = key; }
 
 bool MultipressWindow::timeout_cb() {
   // If we reach this, then the user needs this key.
@@ -114,7 +116,7 @@ bool MultipressWindow::on_key_press_event(GdkEventKey *event) {
 #endif
   }
 
-  if (ch == GDK_Return) {
+  if (ch == GDK_KEY_Return) {
     // force an accept.
     loop->quit();
     signal_insert_key(_to_draw);
@@ -123,7 +125,7 @@ bool MultipressWindow::on_key_press_event(GdkEventKey *event) {
 #else
     return false;
 #endif
-  } else if (ch == GDK_Escape) {
+  } else if (ch == GDK_KEY_Escape) {
     // force a reject.
     loop->quit();
     // TODO: Bad.
@@ -164,7 +166,8 @@ bool MultipressWindow::on_key_press_event(GdkEventKey *event) {
 
   // reset the timer.
   timeout_conn.disconnect();
-  timeout_conn = Glib::signal_timeout().connect(sigc::mem_fun(*this, &MultipressWindow::timeout_cb), _timeout);
+  timeout_conn = Glib::signal_timeout().connect(
+      sigc::mem_fun(*this, &MultipressWindow::timeout_cb), _timeout);
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   return Window::on_key_press_event(event);
 #else
@@ -173,7 +176,7 @@ bool MultipressWindow::on_key_press_event(GdkEventKey *event) {
 }
 
 void MultipressWindow::show_next() {
-  if (_pos+1 < _values.size()) {
+  if (_pos + 1 < _values.size()) {
     _pos++;
   } else {
     _pos = 0;
@@ -183,20 +186,33 @@ void MultipressWindow::show_next() {
   // force a redraw.
   clear(false);
   // NOTE: UGLY
-  on_expose_event(NULL);
+  // on_expose_event(NULL);
+  queue_draw();
   // int x, y, w, h, depth;
   // get_window()->get_geometry(x, y, w, h, depth);
   // get_window()->invalidate_rect(Gdk::Rectangle(x, y, w, h), false);
 }
 
-bool MultipressWindow::on_expose_event(GdkEventExpose *KATOOB_UNUSED(event)) {
-  Glib::RefPtr<Gdk::GC> gc = Gdk::GC::create(get_window());
-  Glib::RefPtr<Pango::Layout> layout = create_pango_layout(_to_draw);
+bool MultipressWindow::draw(const Cairo::RefPtr<Cairo::Context> &cairoContext) {
+  Glib::RefPtr<Pango::Layout> layout =
+      this->Gtk::Widget::create_pango_layout(_to_draw);
 
-  layout->set_markup(std::string("<span size=\"xx-large\">"+_to_draw+"</span>"));
-  int x, y, w, h, depth, lw, lh;
-  get_window()->get_geometry(x, y, w, h, depth);
-  layout->get_pixel_size(lw, lh);
-  get_window()->draw_layout(gc, ((w/2)-(lw/2)), ((h/2)-(lh/2)), layout);
+  layout->set_markup(
+      std::string("<span size=\"xx-large\">" + _to_draw + "</span>"));
+
+  // get_window()->get_geometry(x, y, w, h, depth);
+  // auto window = get_window();
+  // int x, y;
+  // window->get_position(x, y);
+  // int w = window->get_width();
+  // int h = window->get_height();
+
+  // int lw, lh;
+  // layout->get_pixel_size(lw, lh);
+
+  // window->draw_layout(gc, ((w / 2) - (lw / 2)), ((h / 2) - (lh / 2)),
+  // layout);
+  layout->add_to_cairo_context(cairoContext);
+
   return true;
 }

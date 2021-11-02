@@ -27,7 +27,7 @@
 
 ExecDialog::ExecDialog(Conf &conf) {
   set_modal();
-  Gtk::Box *vbox = this->Gtk::Dialog::get_vbox();
+  Gtk::Box *vbox = get_content_area();
   vbox->pack_start(box);
   vbox->pack_start(tips);
   vbox->pack_start(new_buffer);
@@ -44,8 +44,8 @@ ExecDialog::ExecDialog(Conf &conf) {
   new_buffer.set_use_underline();
   new_buffer.set_label(_("_Show the results in a new tab"));
 
-  add_button(Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE);
-  add_button(Gtk::Stock::OK, Gtk::RESPONSE_ACCEPT);
+  add_button(_("Close"), Gtk::RESPONSE_CLOSE);
+  add_button(_("OK"), Gtk::RESPONSE_ACCEPT);
 
   std::vector<std::string> cmds(conf.get_exec_cmd());
 

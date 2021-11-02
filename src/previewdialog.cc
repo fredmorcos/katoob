@@ -103,8 +103,8 @@ PreviewDialog::~PreviewDialog() {
 
 void PreviewDialog::on_hide() {
   preview->end_preview();
-  preview.clear();
-  context.clear();
+  preview.reset();
+  context.reset();
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   Gtk::Window::on_hide();
 #endif
