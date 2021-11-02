@@ -9,7 +9,12 @@ project('katoob', ['cpp', 'c'],
 extra_args  = ['-DGTK_DISABLE_SINGLE_INCLUDES',
                '-DGDK_DISABLE_DEPRECATED',
                '-DGTK_DISABLE_DEPRECATED',
-               '-DGSEAL_ENABLE']
+               '-DGSEAL_ENABLE',
+               '-DGTKMM_DISABLE_DEPRECATED',
+               '-DGDKMM_DISABLE_DEPRECATED',
+               '-DGLIBMM_DISABLE_DEPRECATED',
+               '-DGIOMM_DISABLE_DEPRECATED']
+
 extra_args_clang = ['-ferror-limit=0', '-Db_lundef=false']
 
 add_global_arguments(extra_args, language: 'cpp')
