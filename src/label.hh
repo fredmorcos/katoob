@@ -20,8 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __LABEL_HH__
-#define __LABEL_HH__
+#pragma once
 
 #include "conf.hh"
 #include <gtkmm.h>
@@ -48,5 +47,3 @@ private:
   Gtk::Button close;
   bool _readonly, _modified;
 };
-
-#endif /* __LABEL_HH__ */

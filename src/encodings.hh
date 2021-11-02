@@ -23,10 +23,9 @@
 
 #pragma once
 
-#include <vector>
+#include <glibmm.h>
 #include <string>
-#include <glibmm/ustring.h>
-#include <glibmm/convert.h>
+#include <vector>
 
 /**
  * \brief This structure represents an Encoding.
@@ -52,8 +51,8 @@ struct Language {
  * \brief This class contains all of the encoding and languages we know and
  *        methods to convert between them.
  *
- * Each Encoding has a friendly Encoding::name to be shown to the user and another
- * Encoding::encoding that is known by the encoding conversion methods.
+ * Each Encoding has a friendly Encoding::name to be shown to the user and
+ * another Encoding::encoding that is known by the encoding conversion methods.
  * Each Language has a also a "friendly" Encoding::name and all the encodings
  * (Language::children) this Language can be encoded in.
  */
@@ -63,23 +62,25 @@ public:
   ~Encodings();
   int languages();
   int languages(int);
-  std::string& language(int);
-  std::string& name(unsigned, unsigned);
+  std::string &language(int);
+  std::string &name(unsigned, unsigned);
 
-  int get_by_charset(const std::string&);
-  int get(const std::string&);
-  const std::string& get_charset(unsigned);
-  const std::string& name(unsigned);
+  int get_by_charset(const std::string &);
+  int get(const std::string &);
+  const std::string &get_charset(unsigned);
+  const std::string &name(unsigned);
   int default_save();
   int default_open();
   int size();
-  const std::string& at(unsigned);
-  bool utf8(const Glib::ustring&);
+  const std::string &at(unsigned);
+  bool utf8(const Glib::ustring &);
   int utf8();
-  int convert_from(const Glib::ustring&, std::string&, int);
-  int convert_to(const Glib::ustring&, std::string&, int);
+  int convert_from(const Glib::ustring &, std::string &, int);
+  int convert_to(const Glib::ustring &, std::string &, int);
+
 private:
-  bool convert(const Glib::ustring&, std::string&, unsigned int, unsigned int, std::string&);
+  bool convert(const Glib::ustring &, std::string &, unsigned int, unsigned int,
+               std::string &);
   /** \brief a vector holding all the encodings (Encoding) we know.  */
   std::vector<Encoding *> _encodings;
   /** \brief a vector holding all the languages (Language) we know. */
@@ -88,6 +89,7 @@ private:
   int _default_save;
   /** \brief our default open encoding. */
   int _default_open;
+
 protected:
   friend class Conf;
   void default_save(unsigned);

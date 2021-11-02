@@ -22,12 +22,12 @@
  */
 
 #include "aboutdialog.hh"
-#include "glibmm/ustring.h"
 #include "macros.h"
 #include "utils.hh"
 #include <config.h>
 #include <gdkmm/pixbuf.h>
 #include <glibmm/exception.h>
+#include <glibmm/ustring.h>
 #include <iostream>
 #include <sstream>
 

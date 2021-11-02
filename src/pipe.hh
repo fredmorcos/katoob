@@ -20,8 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __PIPE_HH__
-#define __PIPE_HH__
+#pragma once
 
 #include <string>
 
@@ -30,18 +29,18 @@
  */
 class Pipe {
 public:
-  static bool exec(const std::string&, const std::string&, std::string&, std::string&);
+  static bool exec(const std::string &, const std::string &, std::string &,
+                   std::string &);
+
 private:
-  Pipe(const std::string&);
+  Pipe(const std::string &);
   ~Pipe();
-  bool exec(const std::string&, std::string&, std::string&);
-  bool ok(std::string&);
+  bool exec(const std::string &, std::string &, std::string &);
+  bool ok(std::string &);
 
   Pipe();
-  Pipe(const Pipe&);
-  Pipe& operator=(const Pipe&);
+  Pipe(const Pipe &);
+  Pipe &operator=(const Pipe &);
   bool _ok;
   std::string _err;
 };
-
-#endif /* __PIPE_HH__ */

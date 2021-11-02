@@ -20,8 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __PREFERENCESDIALOGL_HH__
-#define __PREFERENCESDIALOGL_HH__
+#pragma once
 
 #include "applets.hh"
 #include "conf.hh"
@@ -62,5 +61,3 @@ private:
   Gtk::Notebook notebook;
   Gtk::Button apply;
 };
-
-#endif /* __PREFERENCESDIALOGL_HH__ */

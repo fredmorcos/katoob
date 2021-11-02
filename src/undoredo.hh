@@ -20,8 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __UNDOREDO_HH__
-#define __UNDOREDO_HH__
+#pragma once
 
 #include <string>
 
@@ -33,16 +32,15 @@ typedef enum {
 
 class KatoobDoElem {
 public:
-  KatoobDoElem(KatoobDoType, const std::string&, int);
+  KatoobDoElem(KatoobDoType, const std::string &, int);
   ~KatoobDoElem();
-  std::string& text();
+  std::string &text();
   int pos();
-  KatoobDoType& action();
+  KatoobDoType &action();
   void toggle();
+
 private:
   std::string _text;
   int _pos;
   KatoobDoType _action;
 };
-
-#endif /* __UNDOREDO_HH__ */

@@ -20,8 +20,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __TEMPFILE_HH__
-#define __TEMPFILE_HH__
+#pragma once
 
 #include <string>
 
@@ -29,15 +28,14 @@ class TempFile {
 public:
   TempFile();
   ~TempFile();
-  bool ok(std::string&);
-  std::string& get_name();
-  bool write(const std::string&, std::string&);
-  bool read(std::string&, std::string&);
+  bool ok(std::string &);
+  std::string &get_name();
+  bool write(const std::string &, std::string &);
+  bool read(std::string &, std::string &);
+
 private:
   int fd;
   bool _ok;
   std::string name;
   std::string err;
 };
-
-#endif /* __TEMPFILE_HH__ */
