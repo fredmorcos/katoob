@@ -22,6 +22,8 @@
  */
 
 #include "previewdialog.hh"
+#include "cairo.h"
+#include "cairomm/region.h"
 #include "gtkmm/adjustment.h"
 #include "macros.h"
 #include "utils.hh"
@@ -63,7 +65,12 @@ PreviewDialog::PreviewDialog(
 
   Glib::RefPtr<Gdk::Screen> sc = Gdk::Screen::get_default();
 
-  set_size_request(sc->get_width() / 2, sc->get_height() / 2);
+  auto monitor =
+      Gdk::Display::get_default()->get_monitor_at_window(get_window());
+  Gdk::Rectangle workArea;
+  monitor->get_workarea(workArea);
+  set_default_size(workArea.get_width() / 2, workArea.get_height() / 2);
+
   area.set_double_buffered(false);
 
   pages.signal_value_changed().connect(
@@ -150,15 +157,21 @@ PreviewDialog::create(const Glib::RefPtr<Gtk::PrintOperationPreview> &preview,
 
 void PreviewDialog::signal_area_realize_cb() {
   Glib::RefPtr<Gdk::Window> win = area.get_window();
+  auto allocation = area.get_allocation();
+  cairo_rectangle_int_t cairoRect{allocation.get_x(), allocation.get_y(),
+                                  allocation.get_width(),
+                                  allocation.get_height()};
+  auto drawingContext = win->begin_draw_frame(Cairo::Region::create(cairoRect));
+  auto cairoContext = drawingContext->get_cairo_context();
+
   if (win) {
-    Cairo::RefPtr<Cairo::Context> ctx = win->create_cairo_context();
-    if (ctx) {
-      if (context) {
-        // We will change the DPI later anyway.
-        context->set_cairo_context(ctx, 72, 72);
-      }
+    if (context) {
+      // We will change the DPI later anyway.
+      context->set_cairo_context(cairoContext, 72, 72);
     }
   }
+
+  win->end_draw_frame(drawingContext);
 }
 
 bool PreviewDialog::draw_area(
@@ -195,12 +208,24 @@ void PreviewDialog::signal_preview_got_page_size_cb(
 
   // Avoid getting an odd allocation.
   if (area.get_realized()) {
-    Cairo::RefPtr<Cairo::Context> cairo_ctx =
-        area.get_window()->create_cairo_context();
-    context->set_cairo_context(cairo_ctx, ctx->get_dpi_x(), ctx->get_dpi_y());
+    Glib::RefPtr<Gdk::Window> win = area.get_window();
+    auto allocation = area.get_allocation();
+    cairo_rectangle_int_t cairoRect{allocation.get_x(), allocation.get_y(),
+                                    allocation.get_width(),
+                                    allocation.get_height()};
+    auto drawingContext =
+        win->begin_draw_frame(Cairo::Region::create(cairoRect));
+    auto cairoContext = drawingContext->get_cairo_context();
+
+    // Cairo::RefPtr<Cairo::Context> cairo_ctx =
+    //     area.get_window()->create_cairo_context();
+    context->set_cairo_context(cairoContext, ctx->get_dpi_x(),
+                               ctx->get_dpi_y());
     Glib::RefPtr<Pango::Layout> layout = signal_get_layout.emit();
     if (layout) {
-      layout->update_from_cairo_context(cairo_ctx);
+      layout->update_from_cairo_context(cairoContext);
     }
+
+    win->end_draw_frame(drawingContext);
   }
 }
