@@ -16,7 +16,7 @@
 .\" .sp <n>    insert n+1 empty lines
 .\" for manpage-specific macros, see man(7)
 .SH NAME
-katoob \- Ein leichtgewichtiger Gtk2 Mehrsprachen BiDi-fähiger Texteditor.
+katoob \- Ein leichtgewichtiger Gtk3 Mehrsprachen BiDi-fähiger Texteditor.
 .sp
 katoob ist ein Texteditor für X. Sie können ihn zum erstellen und bearbeiten
 von Textdateien verwenden. Katoob unterstützt das Lesen und Speichern von
@@ -32,11 +32,11 @@ Diese Manualseite beschreibt kurz die
 Befehle.
 .PP
 .\" TeX users may be more comfortable with the \fB<whatever>\fP and
-.\" \fI<whatever>\fP escape sequences to invode bold face and italics, 
+.\" \fI<whatever>\fP escape sequences to invode bold face and italics,
 .\" respectively.
 \fBkatoob\fP ist ein leichtgewichtiger, mehrsprachen, BiDi-fähiger Texteditor.
 Er unterstützt das Öffnen und Speichern von Dateien in mehrsprachigen
-Encodings. Die Hauptunterstützung war für die arabische Sprache, aber es 
+Encodings. Die Hauptunterstützung war für die arabische Sprache, aber es
 sind mehr Sprachen unterstützt.
 .SH OPTIONS
 Dieses Programm verwendet die gebräuchliche GNU Kommandozeilen Syntax
@@ -96,12 +96,20 @@ Katoob wird für jeden angegebenen Bindestrich die Standardeingabe erneut
 öffnen und von ihr lesen.
 .SH BUGS
 Etwas wie
-.B cat foo | katoob - - 
+.B cat foo | katoob - -
 "soll die Ausgabe von cat lesen, dann auf eine Benutzereingabe warten
 und jedes in einem seperaten Dokument öffnen" ist nicht unterstützt.
 .SH AUTHOR
 .B katoob
-wurde von Mohammed Sameer geschrieben.
+wurde von Mohammed Sameer und Frederic-Gerald Morcos <fm+Katoob@fredmorcos.com>
+geschrieben.
 .SH BUGS
-Fehler sollen an http://bugzilla.arabeyes.org/ oder die Arabeyes.org 
+Fehler sollen an http://bugzilla.arabeyes.org/ oder die Arabeyes.org
 Entwickler Mailinglists developer@arabeyes.org gemeldet werden.
+.SH COPYRIGHT
+.B katoob
+ist freie Software, die unter der GPLv2-Lizenz oder sp\344ter veröffentlicht.
+.sp
+Copyright (c) 2002-2007 Mohammed Sameer <msameer@foolab.org>
+.sp
+Copyright (c) 2008-2021 Frederic-Gerald Morcos <fm+Katoob@fredmorcos.com>

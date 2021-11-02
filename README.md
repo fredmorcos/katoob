@@ -94,7 +94,7 @@ After downloading Katoob:
 
 ```sh
 cd katoob-VERSION
-meson build
+meson setup build --prefix /installation/prefix
 cd build
 ninja
 ```
@@ -103,6 +103,12 @@ and to install:
 
 ```sh
 ninja install
+```
+
+To change the build type, change the `meson setup build` line to the following:
+
+```sh
+meson setup build --prefix /installation/prefix --buildtype debug|debugoptimized|release|minsize
 ```
 
 ## News
