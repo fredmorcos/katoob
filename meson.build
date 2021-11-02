@@ -66,7 +66,7 @@ conf.set('datadir_full', datadir_full)
 conf.set('xdg_prefix', shared_mime_info_prefix)
 conf.set('isocodes_prefix', isocodes_prefix)
 conf.set('package_locale_dir', localedir)
-conf.set('ENABLE_NLS', get_option('enable-nls'))
+conf.set('ENABLE_NLS', get_option('nls'))
 
 configure_file(input: 'config.h.in',
                output: 'config.h',

@@ -1,1 +1,1 @@
-option('enable-nls', type: 'boolean', value: false, description: 'Enable NLS')
+option('nls', type: 'boolean', value: false, description: 'Enable/Disable NLS')
