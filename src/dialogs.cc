@@ -22,6 +22,8 @@
  */
 
 #include "dialogs.hh"
+#include "gdkmm/display.h"
+#include "gdkmm/rectangle.h"
 #include "macros.h"
 #include "utils.hh"
 #include <glibmm.h>
@@ -60,8 +62,12 @@ bool katoob_big_info(const std::string &message, bool enable_insert) {
   tv.get_buffer()->set_text(message);
   sw.add(tv);
   dlg.get_vbox()->pack_start(sw, true, true);
-  dlg.set_size_request(Gdk::Screen::get_default()->get_width() / 2,
-                       Gdk::Screen::get_default()->get_height() / 2);
+
+  auto monitor =
+      Gdk::Display::get_default()->get_monitor_at_window(dlg.get_window());
+  Gdk::Rectangle workArea;
+  monitor->get_workarea(workArea);
+  dlg.set_default_size(workArea.get_width() / 2, workArea.get_height() / 2);
 
   if (enable_insert) {
     dlg.add_button(_("Insert to document"), Gtk::RESPONSE_YES);
