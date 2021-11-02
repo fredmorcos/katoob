@@ -3,7 +3,7 @@
  * This file is part of katoob
  *
  * Copyright (C) 2002-2007 Mohammed Sameer
- * Copyright (C) 2008-2018 Frederic-Gerald Morcos
+ * Copyright (C) 2008-2021 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

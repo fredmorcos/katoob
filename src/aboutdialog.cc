@@ -3,7 +3,7 @@
  * This file is part of katoob
  *
  * Copyright (C) 2002-2007 Mohammed Sameer
- * Copyright (C) 2008-2018 Frederic-Gerald Morcos
+ * Copyright (C) 2008-2021 Frederic-Gerald Morcos
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -73,7 +73,7 @@ AboutDialog::AboutDialog() {
   set_license(license.str());
   set_wrap_license(true);
   set_copyright(_("Copyright \xc2\xa9 2002, 2007 Mohammed Sameer.\n"
-                  "Copyright \xc2\xa9 2008, 2018 Frederic-Gerald Morcos.\n"));
+                  "Copyright \xc2\xa9 2008, 2021 Frederic-Gerald Morcos.\n"));
 
   std::vector<Glib::ustring> authors;
   authors.push_back(_("Frederic-Gerald Morcos"));
