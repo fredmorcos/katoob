@@ -21,15 +21,14 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <iostream>
-#include <system_error>
-#include <cstring>
-#include <errno.h>
-#include <config.h>
-#include <glibmm/thread.h>
 #include "katoob.hh"
 #include "macros.h"
-//#include <csignal>
+#include <config.h>
+#include <cstring>
+#include <errno.h>
+#include <glibmm.h>
+#include <iostream>
+#include <system_error>
 
 /**
  * \brief Our entry point.
@@ -39,11 +38,9 @@
  * to run its main loop.
  */
 int main(int argc, char *argv[]) {
-  (void) bindtextdomain(PACKAGE, PACKAGE_LOCALE_DIR);
-  (void) bind_textdomain_codeset(PACKAGE, "UTF-8");
-  (void) textdomain(PACKAGE);
-
-  //  signal(SIGPIPE, SIG_IGN);
+  (void)bindtextdomain(PACKAGE, PACKAGE_LOCALE_DIR);
+  (void)bind_textdomain_codeset(PACKAGE, "UTF-8");
+  (void)textdomain(PACKAGE);
 
   Katoob katoob(argc, argv);
   katoob.window();
