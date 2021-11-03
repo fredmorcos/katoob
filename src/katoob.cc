@@ -143,14 +143,14 @@ void Katoob::parse(int argc, char *argv[]) {
   }
 }
 
-/**
- * \brief run the main loop (We call Gtk::Main::run()).
- * \return always 0
- */
-int Katoob::run() {
-  this->Gtk::Application::run();
-  return 0;
-}
+// /**
+//  * \brief run the main loop (We call Gtk::Main::run()).
+//  * \return always 0
+//  */
+// int Katoob::run() {
+//   this->Gtk::Application::run();
+//   return 0;
+// }
 
 /**
  * \brief create a new Window

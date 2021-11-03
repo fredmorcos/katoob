@@ -38,7 +38,7 @@ public:
   Katoob(int argc, char *argv[]);
   ~Katoob();
 
-  int run();
+  // int run();
   void window();
 
   void quit_cb();
