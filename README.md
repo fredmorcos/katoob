@@ -126,6 +126,8 @@ meson setup build --prefix /installation/prefix --buildtype debug|debugoptimized
 
 ## TODO
 
+- [ ] Use gresources for application icons.
+
 - [ ] Get translations working again.
 
 - [ ] Consistent code formatting with clang-format.
