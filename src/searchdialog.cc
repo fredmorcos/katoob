@@ -39,7 +39,7 @@ SearchDialog::SearchDialog()
 
   dialog.set_position(Gtk::WIN_POS_CENTER);
 
-  Gtk::Box *box = dialog.get_vbox();
+  Gtk::Box *box = dialog.get_content_area();
 
   box->pack_start(hbox);
   hbox.pack_start(label, false, false, 10);
@@ -51,8 +51,8 @@ SearchDialog::SearchDialog()
   box->pack_start(_wrap, true, true);
   box->pack_start(_backwards, true, true);
 
-  dialog.add_button(Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE);
-  find = dialog.add_button(Gtk::Stock::FIND, Gtk::RESPONSE_OK);
+  dialog.add_button(_("Close"), Gtk::RESPONSE_CLOSE);
+  find = dialog.add_button(_("Find"), Gtk::RESPONSE_OK);
 
   what.signal_activate().connect(sigc::mem_fun(find, &Gtk::Button::clicked));
   // find->set_sensitive(false);

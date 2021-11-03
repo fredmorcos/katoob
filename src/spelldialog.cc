@@ -24,6 +24,10 @@
 #include "spelldialog.hh"
 #include "dialogs.hh"
 #include "gdk/gdkkeysyms.h"
+#include "gtkmm/enums.h"
+#include "gtkmm/image.h"
+#include "gtkmm/object.h"
+#include "gtkmm/window.h"
 #include "macros.h"
 #include <gtkmm.h>
 
@@ -31,18 +35,18 @@
 // Start checking from the insert mark not from the beginning of the document.
 
 SpellDialog::SpellDialog(Document *doc)
-    : close(Gtk::Stock::CLOSE), ignore(_("_Ignore"), true),
+    : close(_("Close")), ignore(_("_Ignore"), true),
       ignore_all(_("Ignore _All"), true), change(_("C_hange"), true),
       //  change_all(_("Change A_ll"), true),
-      check(Gtk::Stock::SPELL_CHECK), add(_("_Add to user dictionary"), true),
+      check(_("Spellcheck")), add(_("_Add to user dictionary"), true),
       misspelled(_("Misspelled:")), change_to(_("Change to:")),
-      yes(Gtk::StockID(Gtk::Stock::YES), Gtk::IconSize(Gtk::ICON_SIZE_BUTTON)),
-      no(Gtk::StockID(Gtk::Stock::NO), Gtk::IconSize(Gtk::ICON_SIZE_BUTTON)),
-      _doc(doc) {
+      yes(_("Yes"), Gtk::IconSize(Gtk::ICON_SIZE_BUTTON)),
+      no(_("No"), Gtk::IconSize(Gtk::ICON_SIZE_BUTTON)), _doc(doc) {
   set_title(_("Check Spelling"));
   set_modal(true);
   set_position(Gtk::WIN_POS_CENTER);
-  Gtk::Window::add(vbox1);
+
+  this->Gtk::Window::add(vbox1);
 
   vbox1.pack_start(table, false, false, 10);
   vbox1.pack_start(hbox1);
@@ -59,8 +63,8 @@ SpellDialog::SpellDialog(Document *doc)
 
   sw.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
-  Gtk::Image *image = Gtk::manage(new Gtk::Image(
-      Gtk::StockID(Gtk::Stock::ADD), Gtk::IconSize(Gtk::ICON_SIZE_BUTTON)));
+  auto image = Gtk::make_managed<Gtk::Image>(
+      "list-add-symbolic", Gtk::IconSize(Gtk::ICON_SIZE_BUTTON));
   add.set_image(*image);
   vbox2.pack_start(change, false, false, 5);
   //  vbox2.pack_start(change_all, false, false, 5);
@@ -68,18 +72,15 @@ SpellDialog::SpellDialog(Document *doc)
   vbox2.pack_start(ignore_all, false, false, 5);
   vbox2.pack_start(add, false, false, 5);
 
-  table.attach(misspelled, 0, 1, 0, 1, Gtk::FILL | Gtk::EXPAND,
-               Gtk::FILL | Gtk::EXPAND, 5);
-  table.attach(change_to, 0, 1, 1, 2, Gtk::FILL | Gtk::EXPAND,
-               Gtk::FILL | Gtk::EXPAND, 5);
+  table.attach(misspelled, 0, 1, 0, 1);
+  table.attach(change_to, 0, 1, 1, 2);
   table.attach(hbox2, 2, 3, 0, 1);
-  table.attach(misspelled_word, 1, 2, 0, 1, Gtk::FILL | Gtk::EXPAND,
-               Gtk::FILL | Gtk::EXPAND, 5);
-  table.attach(entry, 1, 2, 1, 2, Gtk::FILL | Gtk::EXPAND,
-               Gtk::FILL | Gtk::EXPAND, 5);
+  table.attach(misspelled_word, 1, 2, 0, 1);
+  table.attach(entry, 1, 2, 1, 2);
   table.attach(check, 2, 3, 1, 2);
 
-  table.set_spacings(5);
+  table.set_row_spacing(5);
+  table.set_column_spacing(5);
 
   hbox2.pack_start(yes, false, false);
   hbox2.pack_start(no, false, false);

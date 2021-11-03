@@ -30,7 +30,7 @@ OpenLocationDialog::OpenLocationDialog(Conf &conf, Encodings &enc)
     : _conf(conf) {
   set_modal();
   set_position(Gtk::WIN_POS_CENTER);
-  Gtk::Box *vbox = this->Gtk::Dialog::get_vbox();
+  Gtk::Box *vbox = this->Gtk::Dialog::get_content_area();
 
   label1.set_text(_("Location"));
   label2.set_text(_("Encoding"));
@@ -63,8 +63,8 @@ OpenLocationDialog::OpenLocationDialog(Conf &conf, Encodings &enc)
   box1.set_border_width(5);
   box2.set_border_width(5);
 
-  add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
+  add_button(_("Cancel"), Gtk::RESPONSE_CANCEL);
+  add_button(_("Open"), Gtk::RESPONSE_ACCEPT);
 
   // TODO: Any idea why do I need to set this explicitly ?
   locationsComboBox.set_size_request(500, -1);

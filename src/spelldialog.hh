@@ -53,9 +53,9 @@ private:
   Gtk::Image yes, no, image;
   Gtk::VBox vbox1, vbox2;
   Gtk::HBox hbox1, hbox2, hbox3;
-  Gtk::Table table;
+  Gtk::Grid table;
   Gtk::ScrolledWindow sw;
-  Gtk::HSeparator separator;
+  Gtk::Separator separator;
   Gtk::Entry entry;
   Gtk::TreeView suggestions;
   Glib::RefPtr<Gtk::TreeSelection> selection;

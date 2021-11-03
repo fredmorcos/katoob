@@ -36,7 +36,10 @@ FileDialog::FileDialog(const std::string &title, Gtk::FileChooserAction action,
 
   label.set_text(_("Encoding"));
   box.pack_start(label);
-  label.set_padding(20, 0);
+  label.set_margin_start(20);
+  label.set_margin_end(20);
+  label.set_margin_top(0);
+  label.set_margin_bottom(0);
 
   for (int x = 0; x < _enc.size(); x++) {
     if (((action == FILE_OPEN) && x != _enc.utf8()) || (action == FILE_SAVE)) {
@@ -92,12 +95,12 @@ SimpleFileDialog::SimpleFileDialog(const std::string &title,
     set_current_folder(_conf.save_dir());
   }
 
-  add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  add_button(_("Cancel"), Gtk::RESPONSE_CANCEL);
 
   if (action == FILE_OPEN) {
-    add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+    add_button(_("Open"), Gtk::RESPONSE_OK);
   } else {
-    add_button(Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
+    add_button(_("Save"), Gtk::RESPONSE_OK);
   }
 
   show_all();
