@@ -51,7 +51,7 @@ private:
   void undo_closed_toggled_cb();
 
   Gtk::CheckButton undo, undo_closed;
-  Gtk::Table general_table1, general_table2;
+  Gtk::Grid general_table1, general_table2;
   Gtk::Label undo_label, exec_label, undo_closed_label;
   Glib::RefPtr<Gtk::Adjustment> undono_adj, exec_adj, undo_closed_adj;
   Gtk::SpinButton undono, exec_cmd_size, undo_closedno;
@@ -71,7 +71,7 @@ private:
   Glib::RefPtr<Gtk::Adjustment> recentno_adj;
   Gtk::SpinButton recentno;
   Gtk::Label recentno_label, toolbartype_label;
-  Gtk::Table interface_table;
+  Gtk::Grid interface_table;
   Gtk::ComboBoxText toolbartype;
 };
 
@@ -86,7 +86,7 @@ private:
   Gtk::CheckButton showtabs, tabsmenu, scrolltabs;
   Gtk::Label tabspos_label, readonly_label, modified_label, normal_label;
   Gtk::ComboBoxText tabspos;
-  Gtk::Table tabs_table;
+  Gtk::Grid tabs_table;
   Gtk::ColorButton readonly, modified, normal;
 };
 
@@ -193,7 +193,7 @@ private:
   Gtk::SpinButton dict_port;
   Glib::RefPtr<Gtk::Adjustment> dict_port_adj;
   Gtk::Button list_dicts;
-  Gtk::Table dictionary_table;
+  Gtk::Grid dictionary_table;
   // The tree view.
   Glib::RefPtr<Gtk::TreeSelection> dict_selection;
   Gtk::TreeView dicts;
@@ -241,7 +241,7 @@ private:
   Gtk::Frame pos, size;
   Gtk::Label x_label, y_label, w_label, h_label;
   Glib::RefPtr<Gtk::Adjustment> x_adj, y_adj, w_adj, h_adj;
-  Gtk::Table pos_table, size_table;
+  Gtk::Grid pos_table, size_table;
   Gtk::SpinButton x, y, w, h;
 };
 
@@ -257,7 +257,7 @@ private:
   Gtk::Entry proxyhost, proxyuser, proxypass;
   Gtk::Label proxyhost_l, proxyport_l, timeout_l, proxytype_l, proxyuser_l,
       proxypass_l;
-  Gtk::Table table;
-  Gtk::Table table2;
+  Gtk::Grid table;
+  Gtk::Grid table2;
   Gtk::CheckButton proxytunnel, proxyauth;
 };

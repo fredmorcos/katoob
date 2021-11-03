@@ -66,25 +66,17 @@ GeneralApplet::GeneralApplet(Conf &_conf)
   box.pack_start(undo_closed, false, false);
   box.pack_start(general_table2, false, false);
 
-  general_table1.set_col_spacing(0, 5);
-  general_table1.attach(undo_label, 0, 1, 0, 1, Gtk::AttachOptions(Gtk::SHRINK),
-                        Gtk::AttachOptions(Gtk::SHRINK));
-  general_table1.attach(undono, 1, 2, 0, 1,
-                        Gtk::AttachOptions(Gtk::EXPAND | Gtk::FILL),
-                        Gtk::AttachOptions(Gtk::SHRINK));
-  general_table1.attach(exec_label, 0, 1, 1, 2, Gtk::AttachOptions(Gtk::SHRINK),
-                        Gtk::AttachOptions(Gtk::SHRINK));
-  general_table1.attach(exec_cmd_size, 1, 2, 1, 2,
-                        Gtk::AttachOptions(Gtk::EXPAND | Gtk::FILL),
-                        Gtk::AttachOptions(Gtk::SHRINK));
+  undo_label.set_margin_start(5);
+  undo_label.set_margin_end(5);
+  general_table1.attach(undo_label, 0, 1, 0, 1);
+  general_table1.attach(undono, 1, 2, 0, 1);
+  general_table1.attach(exec_label, 0, 1, 1, 2);
+  general_table1.attach(exec_cmd_size, 1, 2, 1, 2);
 
-  general_table2.set_col_spacing(0, 5);
-  general_table2.attach(undo_closed_label, 0, 1, 2, 3,
-                        Gtk::AttachOptions(Gtk::SHRINK),
-                        Gtk::AttachOptions(Gtk::SHRINK));
-  general_table2.attach(undo_closedno, 1, 2, 2, 3,
-                        Gtk::AttachOptions(Gtk::EXPAND | Gtk::FILL),
-                        Gtk::AttachOptions(Gtk::SHRINK));
+  undo_closed_label.set_margin_start(5);
+  undo_closed_label.set_margin_end(5);
+  general_table2.attach(undo_closed_label, 0, 1, 2, 3);
+  general_table2.attach(undo_closedno, 1, 2, 2, 3);
 
   undono_adj->set_value(_conf.get("undono", 0));
   exec_adj->set_value(_conf.get("exec_cmd_size", 10));
@@ -146,19 +138,12 @@ InterfaceApplet::InterfaceApplet(Conf &_conf)
   box.pack_start(recent, false, false);
   box.pack_start(interface_table, false, false);
 
-  interface_table.set_col_spacing(0, 5);
-  interface_table.attach(recentno_label, 0, 1, 0, 1,
-                         Gtk::AttachOptions(Gtk::SHRINK),
-                         Gtk::AttachOptions(Gtk::SHRINK));
-  interface_table.attach(recentno, 1, 2, 0, 1,
-                         Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
-                         Gtk::AttachOptions(Gtk::SHRINK));
-  interface_table.attach(toolbartype_label, 0, 1, 1, 2,
-                         Gtk::AttachOptions(Gtk::SHRINK),
-                         Gtk::AttachOptions(Gtk::SHRINK));
-  interface_table.attach(toolbartype, 1, 2, 1, 2,
-                         Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
-                         Gtk::AttachOptions(Gtk::SHRINK));
+  recentno_label.set_margin_start(5);
+  recentno_label.set_margin_end(5);
+  interface_table.attach(recentno_label, 0, 1, 0, 1);
+  interface_table.attach(recentno, 1, 2, 0, 1);
+  interface_table.attach(toolbartype_label, 0, 1, 1, 2);
+  interface_table.attach(toolbartype, 1, 2, 1, 2);
   box.pack_start(showclose, false, false);
   box.pack_start(extra_buttons, false, false);
 
@@ -265,30 +250,14 @@ TabsApplet::TabsApplet(Conf &_conf) : Applet::Applet(_conf) {
   box.pack_start(scrolltabs, false, false);
   box.pack_start(tabs_table, true, true);
 
-  tabs_table.attach(tabspos_label, 0, 1, 0, 1,
-                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
-                    Gtk::AttachOptions(Gtk::SHRINK));
-  tabs_table.attach(tabspos, 1, 2, 0, 1,
-                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
-                    Gtk::AttachOptions(Gtk::SHRINK));
-  tabs_table.attach(readonly_label, 0, 1, 1, 2,
-                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
-                    Gtk::AttachOptions(Gtk::SHRINK));
-  tabs_table.attach(readonly, 1, 2, 1, 2,
-                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
-                    Gtk::AttachOptions(Gtk::SHRINK));
-  tabs_table.attach(modified_label, 0, 1, 3, 4,
-                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
-                    Gtk::AttachOptions(Gtk::SHRINK));
-  tabs_table.attach(modified, 1, 2, 3, 4,
-                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
-                    Gtk::AttachOptions(Gtk::SHRINK));
-  tabs_table.attach(normal_label, 0, 1, 5, 6,
-                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
-                    Gtk::AttachOptions(Gtk::SHRINK));
-  tabs_table.attach(normal, 1, 2, 5, 6,
-                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
-                    Gtk::AttachOptions(Gtk::SHRINK));
+  tabs_table.attach(tabspos_label, 0, 1, 0, 1);
+  tabs_table.attach(tabspos, 1, 2, 0, 1);
+  tabs_table.attach(readonly_label, 0, 1, 1, 2);
+  tabs_table.attach(readonly, 1, 2, 1, 2);
+  tabs_table.attach(modified_label, 0, 1, 3, 4);
+  tabs_table.attach(modified, 1, 2, 3, 4);
+  tabs_table.attach(normal_label, 0, 1, 5, 6);
+  tabs_table.attach(normal, 1, 2, 5, 6);
 
   showtabs.set_active(_conf.get("showtabs", true));
   tabsmenu.set_active(_conf.get("tabsmenu", true));
@@ -705,19 +674,15 @@ DictionaryApplet::DictionaryApplet(Conf &_conf)
 
   box.pack_start(dict, false, false);
   box.pack_start(dictionary_table);
-  dictionary_table.set_col_spacing(0, 5);
 
-  dictionary_table.attach(dict_host_label, 0, 1, 0, 1,
-                          Gtk::AttachOptions(Gtk::SHRINK));
+  dict_host_label.set_margin_start(5);
+  dict_host_label.set_margin_end(5);
+  dictionary_table.attach(dict_host_label, 0, 1, 0, 1);
   dictionary_table.attach(dict_host, 1, 2, 0, 1);
-  dictionary_table.attach(list_dicts, 2, 3, 0, 1,
-                          Gtk::AttachOptions(Gtk::SHRINK),
-                          Gtk::AttachOptions(Gtk::SHRINK));
-  dictionary_table.attach(dict_port_label, 0, 1, 1, 2,
-                          Gtk::AttachOptions(Gtk::SHRINK));
+  dictionary_table.attach(list_dicts, 2, 3, 0, 1);
+  dictionary_table.attach(dict_port_label, 0, 1, 1, 2);
   dictionary_table.attach(dict_port, 1, 2, 1, 2);
-  dictionary_table.attach(dict_name_label, 0, 1, 2, 3,
-                          Gtk::AttachOptions(Gtk::SHRINK));
+  dictionary_table.attach(dict_name_label, 0, 1, 2, 3);
   dictionary_table.attach(dict_sw, 1, 2, 2, 3);
 
   dict.signal_toggled().connect(
