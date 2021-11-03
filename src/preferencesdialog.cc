@@ -24,17 +24,18 @@
 #include "preferencesdialog.hh"
 #include "dialogs.hh"
 #include "dict.hh"
+#include "gtkmm/dialog.h"
 #include "macros.h"
 #include "mdi.hh"
 #include "utils.hh"
 #include <gtkmm.h>
 
 PreferencesDialog::PreferencesDialog(Conf &conf, Encodings &enc)
-    : _conf(conf), _enc(enc), apply(Gtk::Stock::APPLY) {
+    : _conf(conf), _enc(enc) {
   dialog.set_title(_("Preferences"));
   dialog.set_modal(true);
 
-  Gtk::Box *vbox = dialog.get_vbox();
+  Gtk::Box *vbox = dialog.get_content_area();
   vbox->pack_start(paned);
 
   sw.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -76,14 +77,23 @@ PreferencesDialog::PreferencesDialog(Conf &conf, Encodings &enc)
   paned.pack2(notebook, true, true);
   notebook.set_show_tabs(false);
 
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  Gtk::ButtonBox *box = dialog.get_action_area();
-  box->pack_start(apply);
-  //  dialog.add_button(Gtk::Stock::APPLY, Gtk::RESPONSE_APPLY);
-  dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
+  dialog.add_button(_("Cancel"), Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("Apply"), Gtk::RESPONSE_APPLY);
+  dialog.add_button(_("Ok"), Gtk::RESPONSE_OK);
 
-  apply.signal_clicked().connect(
-      sigc::mem_fun(*this, &PreferencesDialog::apply_clicked_cb));
+  dialog.signal_response().connect(
+      sigc::mem_fun(*this, &PreferencesDialog::response));
+}
+
+void PreferencesDialog::response(const gint response) {
+  switch (response) {
+  case Gtk::RESPONSE_APPLY:
+    repopulate_conf();
+    signal_apply_clicked.emit();
+    break;
+  }
+
+  this->dialog.Gtk::Dialog::response(response);
 }
 
 void PreferencesDialog::add_applet(const std::string &name, Applet *applet) {

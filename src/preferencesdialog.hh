@@ -34,13 +34,15 @@ public:
   sigc::signal<void> signal_apply_clicked;
 
 private:
+  void response(const gint response);
+
   void add_applet(const std::string &, Applet *);
   std::map<std::string, Applet *> applets;
 
-  void apply_clicked_cb() {
-    repopulate_conf();
-    signal_apply_clicked.emit();
-  }
+  // void apply_clicked_cb() {
+  //   repopulate_conf();
+  //   signal_apply_clicked.emit();
+  // }
 
   void repopulate_conf();
 
