@@ -38,6 +38,7 @@ typedef enum {
   KATOOB_COLOR_NORMAL
 } KatoobColor;
 
+Glib::ustring cssFromPangoFontDescription(const Pango::FontDescription &fd);
 Gtk::MenuItem *makeGtkImageMenuItem(const Glib::ustring &iconName,
                                     const Glib::ustring &label,
                                     const bool mnemonic = false);

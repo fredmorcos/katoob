@@ -23,6 +23,14 @@
 
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
+#include "glibmm/ustring.h"
+#include "gtk/gtkcssprovider.h"
+#include "gtkmm/cssprovider.h"
+#include "gtkmm/object.h"
+#include "gtkmm/styleprovider.h"
+#include "gtkmm/widget.h"
+#include "pangomm/font.h"
+#include "pangomm/fontdescription.h"
 #endif
 
 #include "dialogs.hh"
@@ -1688,17 +1696,19 @@ void Document::reset_gui() {
 
   std::string df = Utils::katoob_get_default_font();
 
-  // TODO: GtkWidget::override_font() is deprecated. Instead, use a custom CSS
-  // style, through an application-specific GtkStyleProvider and a CSS style
-  // class.
+  auto cssProvider = Gtk::CssProvider::create();
+  Pango::FontDescription fd;
   if (_conf.get("default_font", true)) {
-    Pango::FontDescription fd(df);
-    _text_view.override_font(fd);
+    fd = Pango::FontDescription(df);
   } else {
     std::string font = _conf.get("font", df);
-    Pango::FontDescription fd(font);
-    _text_view.override_font(fd);
+    fd = Pango::FontDescription(font);
   }
+  auto css = Utils::cssFromPangoFontDescription(fd);
+  css = "textview { " + css + " }";
+  cssProvider->load_from_data(css);
+  _text_view.get_style_context()->add_provider(
+      cssProvider, GTK_STYLE_PROVIDER_PRIORITY_USER);
 
   set_wrap_text(_conf.get("textwrap", true));
   do_undo = _conf.get("undo", true);

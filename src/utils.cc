@@ -42,6 +42,116 @@
 
 #define __KATOOB_CONF_DIR__ ".katoob"
 
+// Ported from GEdit's gedit-pango.c:gedit_pango_font_description_to_css().
+Glib::ustring
+Utils::cssFromPangoFontDescription(const Pango::FontDescription &fd) {
+  Glib::ustring css;
+  Pango::FontMask set = fd.get_set_fields();
+
+  if (set & Pango::FontMask::FONT_MASK_FAMILY) {
+    css += "font-family: \"" + fd.get_family() + "\"; ";
+  }
+
+  if (set & Pango::FontMask::FONT_MASK_STYLE) {
+    switch (fd.get_style()) {
+    case Pango::Style::STYLE_NORMAL:
+      css += "font-style: normal; ";
+      break;
+    case Pango::Style::STYLE_ITALIC:
+      css += "font-style: italic; ";
+      break;
+    case Pango::Style::STYLE_OBLIQUE:
+      css += "font-style: oblique; ";
+      break;
+    }
+  }
+
+  if (set & Pango::FontMask::FONT_MASK_VARIANT) {
+    switch (fd.get_variant()) {
+    case Pango::Variant::VARIANT_NORMAL:
+      css += "font-variant: normal; ";
+      break;
+    case Pango::Variant::VARIANT_SMALL_CAPS:
+      css += "font-variant: small-caps; ";
+      break;
+    }
+  }
+
+  if (set & Pango::FontMask::FONT_MASK_WEIGHT) {
+    switch (fd.get_weight()) {
+    case Pango::Weight::WEIGHT_THIN:
+      css += "font-weight: 100; ";
+      break;
+    case Pango::Weight::WEIGHT_ULTRALIGHT:
+      css += "font-weight: 200; ";
+      break;
+    case Pango::Weight::WEIGHT_LIGHT:
+    case Pango::Weight::WEIGHT_SEMILIGHT:
+      css += "font-weight: 300; ";
+      break;
+    case Pango::Weight::WEIGHT_BOOK:
+    case Pango::Weight::WEIGHT_NORMAL:
+      css += "font-weight: 400; ";
+      break;
+    case Pango::Weight::WEIGHT_MEDIUM:
+      css += "font-weight: 500; ";
+      break;
+    case Pango::Weight::WEIGHT_SEMIBOLD:
+      css += "font-weight: 600; ";
+      break;
+    case Pango::Weight::WEIGHT_BOLD:
+      css += "font-weight: 700; ";
+      break;
+    case Pango::Weight::WEIGHT_ULTRABOLD:
+      css += "font-weight: 800; ";
+      break;
+    case Pango::Weight::WEIGHT_HEAVY:
+    case Pango::Weight::WEIGHT_ULTRAHEAVY:
+      css += "font-weight: 900; ";
+      break;
+    }
+  }
+
+  if (set & Pango::FontMask::FONT_MASK_STRETCH) {
+    switch (fd.get_stretch()) {
+    case Pango::Stretch::STRETCH_ULTRA_CONDENSED:
+      css += "font-stretch: ultra-condensed; ";
+      break;
+    case Pango::Stretch::STRETCH_EXTRA_CONDENSED:
+      css += "font-stretch: extra-condensed; ";
+      break;
+    case Pango::Stretch::STRETCH_CONDENSED:
+      css += "font-stretch: condensed; ";
+      break;
+    case Pango::Stretch::STRETCH_SEMI_CONDENSED:
+      css += "font-stretch: semi-condensed; ";
+      break;
+    case Pango::Stretch::STRETCH_NORMAL:
+      css += "font-stretch: normal; ";
+      break;
+    case Pango::Stretch::STRETCH_SEMI_EXPANDED:
+      css += "font-stretch: semi-expanded; ";
+      break;
+    case Pango::Stretch::STRETCH_EXPANDED:
+      css += "font-stretch: expanded; ";
+      break;
+    case Pango::Stretch::STRETCH_EXTRA_EXPANDED:
+      // TODO: Nothing available in CSS for this?
+      break;
+    case Pango::Stretch::STRETCH_ULTRA_EXPANDED:
+      css += "font-stretch: ultra-expanded; ";
+      break;
+    }
+  }
+
+  if (set & Pango::FontMask::FONT_MASK_SIZE) {
+    const int size = fd.get_size() / Pango::SCALE;
+    css += "font-size: " + std::to_string(size) + "pt; ";
+  }
+
+  return css;
+}
+
 Gtk::MenuItem *Utils::makeGtkImageMenuItem(const Glib::ustring &iconName,
                                            const Glib::ustring &text,
                                            const bool mnemonic) {
