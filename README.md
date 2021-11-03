@@ -126,6 +126,8 @@ meson setup build --prefix /installation/prefix --buildtype debug|debugoptimized
 
 ## TODO
 
+- [ ] Get translations working again.
+
 - [ ] Consistent code formatting with clang-format.
 
 - [ ] Use modern config and cache directories (e.g. `~/.config/katoob` and
