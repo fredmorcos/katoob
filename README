@@ -1,6 +1,7 @@
 Katoob README
 ~~~~~~~~~~~~~
- Katoob Copyright (c) 2002-2006 Mohammed Sameer.
+ Katoob Copyright (c) 2007-2021 Fred Morcos <fm+Katoob@fredmorcos.com>.
+ Katoob Copyright (c) 2002-2006 Mohammed Sameer <msameer@foolab.org>.
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -79,7 +80,7 @@ Features:
 * GNOME menu entry.
 * An infrastructure to allow easy addition of emulator files.
 * All the configured keyboard layouts are available from the layout switcher.
-* An emulator to be able to write in your language even if you don't configure 
+* An emulator to be able to write in your language even if you don't configure
   a keyboard layout.
 * Syntax highlighting.
 * Spell checking on the fly or when required.
