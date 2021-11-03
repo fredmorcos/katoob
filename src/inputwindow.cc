@@ -81,7 +81,8 @@ void InputWindow::rebuild() {
 void InputWindow::emulator_rebuild() {
   assert(_type == INPUT_DISPLAY_EMULATOR);
 
-  tb.resize(_em.size(), 2);
+  // TODO: Deprecated, Gtk::Grid resizes automatically.
+  // tb.resize(_em.size(), 2);
 
   // clear.
   clear();
@@ -113,7 +114,8 @@ void InputWindow::multipress_rebuild() {
     w > iter->second.size() ? w : iter->second.size();
   }
 
-  tb.resize(_mp.size(), w + 1);
+  // TODO: Deprecated, Gtk::Grid resizes automatically.
+  // tb.resize(_mp.size(), w + 1);
 
   unsigned x = 0;
   unsigned p = 0;

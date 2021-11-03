@@ -34,14 +34,14 @@ PreviewDialog::PreviewDialog(
     const Glib::RefPtr<Gtk::PrintContext> &ctx, Gtk::Window *parent)
     : preview(printOperationPreview), context(ctx), n_pages(0),
       adj(Gtk::Adjustment::create(1, 1, 1)), pages(adj), label(""),
-      back(Gtk::Stock::GO_BACK), forward(Gtk::Stock::GO_FORWARD),
-      rewind(Gtk::Stock::GOTO_FIRST), ff(Gtk::Stock::GOTO_LAST) {
+      back(_("Back")), forward(_("Forward")), rewind(_("First")),
+      ff(_("Last")) {
   if (parent) {
     set_transient_for(*parent);
   }
 
   set_title(_("Print preview"));
-  Gtk::Box *vbox = get_vbox();
+  Gtk::Box *vbox = get_content_area();
 
   vbox->pack_start(hbox, false, false);
   scrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -71,7 +71,8 @@ PreviewDialog::PreviewDialog(
   monitor->get_workarea(workArea);
   set_default_size(workArea.get_width() / 2, workArea.get_height() / 2);
 
-  area.set_double_buffered(false);
+  // This does not work under non-X11 backends and should not be used.
+  // area.set_double_buffered(false);
 
   pages.signal_value_changed().connect(
       sigc::mem_fun(*this, &PreviewDialog::on_signal_value_changed));
@@ -93,7 +94,7 @@ PreviewDialog::PreviewDialog(
       sigc::mem_fun(*this, &PreviewDialog::signal_preview_ready_cb));
   preview->signal_got_page_size().connect(
       sigc::mem_fun(*this, &PreviewDialog::signal_preview_got_page_size_cb));
-  add_button(Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE)
+  add_button(_("Close"), Gtk::RESPONSE_CLOSE)
       ->signal_clicked()
       .connect(sigc::mem_fun(this, &PreviewDialog::hide));
   recalculate_gui();

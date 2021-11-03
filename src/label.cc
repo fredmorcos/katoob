@@ -31,7 +31,7 @@
 
 Label::Label(Conf &conf) : _conf(conf), _readonly(false), _modified(false) {
   Gtk::Image *image =
-      Gtk::manage(new Gtk::Image(Gtk::Stock::CLOSE, Gtk::ICON_SIZE_MENU));
+      Gtk::manage(new Gtk::Image(_("Close"), Gtk::ICON_SIZE_MENU));
 
   close.set_image(*image);
   close.set_relief(Gtk::RELIEF_NONE);

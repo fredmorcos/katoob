@@ -57,7 +57,6 @@ private:
   Gtk::TreeModelColumn<Glib::ustring> section;
   Gtk::TreeModelColumnRecord record;
   Glib::RefPtr<Gtk::ListStore> store;
-  Gtk::HPaned paned;
+  Gtk::Paned paned;
   Gtk::Notebook notebook;
-  Gtk::Button apply;
 };

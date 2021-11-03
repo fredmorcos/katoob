@@ -61,7 +61,7 @@ private:
 
   // Our Widgets.
   Gtk::ScrolledWindow sw;
-  Gtk::Table tb;
+  Gtk::Grid tb;
   std::vector<Gtk::Button *> buttons;
   std::vector<Gtk::Label *> labels;
 };
