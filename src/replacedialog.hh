@@ -45,32 +45,34 @@ public:
   void beginning(bool st) { _beginning.set_active(st); }
   void set_text(std::string &text) { what.set_text(text); }
   void set_replace(std::string &text) { with.set_text(text); }
-  void close() { _close.clicked(); }
+  // void close() { _close.clicked(); }
 
   sigc::signal<bool> signal_find;
   sigc::signal<void> signal_replace;
   sigc::signal<void> signal_replace_all;
 
 private:
-  void on_find_clicked() {
-    if (!signal_find.emit()) {
-      close();
-    }
-  }
-  void on_replace_clicked() { signal_replace.emit(); }
-  /*
-  void on_find_replace_clicked() {
-    if (signal_find.emit())
-      signal_replace.emit();
-    else
-      close();
-  }
-  */
-  void on_replace_all_clicked() {
-    signal_replace_all.emit();
-    close();
-  }
-  void on_close_clicked() { dialog.response(0); }
+  // void on_find_clicked() {
+  //   if (!signal_find.emit()) {
+  //     close();
+  //   }
+  // }
+  // void on_replace_clicked() { signal_replace.emit(); }
+  // /*
+  // void on_find_replace_clicked() {
+  //   if (signal_find.emit())
+  //     signal_replace.emit();
+  //   else
+  //     close();
+  // }
+  // */
+  // void on_replace_all_clicked() {
+  //   signal_replace_all.emit();
+  //   close();
+  // }
+  // void on_close_clicked() { dialog.response(0); }
+
+  void response(const gint response);
 
   Gtk::Dialog dialog;
   // TODO: Use a drop down combo or something.
@@ -85,5 +87,5 @@ private:
   Gtk::CheckButton _beginning;
   Gtk::HBox hbox, hbox2;
   Gtk::VBox vbox;
-  Gtk::Button find, replace, /* find_replace, */ replace_all, _close;
+  // Gtk::Button find, replace, /* find_replace, */ replace_all, _close;
 };
