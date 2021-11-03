@@ -21,28 +21,26 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include <config.h>
-#include <iostream>
-#include <csignal>
 #include "katoob.hh"
-#include "network.hh"
 #include "dialogs.hh"
 #include "macros.h"
+#include "network.hh"
+#include <config.h>
+#include <csignal>
+#include <iostream>
 //#include "utils.hh"
 
 /**
  * \brief constructor.
  *
- * The constructor will initialize Gtk::Main, call Katoob::parse to parse the command
- * line arguments we get.
- * If compiled with DBus sypport, it will try to check if there's a running instance
- * of katoob. If it finds one, we will message it to open Katoob::files.
- * If we can send the message, we will exit. Otherwise we
- * will start DBus::start
+ * The constructor will initialize Gtk::Main, call Katoob::parse to parse the
+ * command line arguments we get. If compiled with DBus sypport, it will try to
+ * check if there's a running instance of katoob. If it finds one, we will
+ * message it to open Katoob::files. If we can send the message, we will exit.
+ * Otherwise we will start DBus::start
  */
-Katoob::Katoob(int argc, char *argv[]):
-  Gtk::Main(argc, argv), conf(encodings)
-{
+Katoob::Katoob(int argc, char *argv[])
+    : Gtk::Application("com.fredmorcos.Katoob"), conf(encodings) {
   Network net(conf);
 
   parse(argc, argv);
@@ -50,12 +48,10 @@ Katoob::Katoob(int argc, char *argv[]):
   if (dbus.ping()) {
     if (dbus.open_files(files)) {
       exit(0);
-    }
-    else {
+    } else {
       dbus.start();
     }
-  }
-  else {
+  } else {
     dbus.start();
   }
 
@@ -65,16 +61,15 @@ Katoob::Katoob(int argc, char *argv[]):
   // Let's connect our signals.
 
   int signals[] = {SIGILL,  // Illegal instruction.
-		   SIGABRT, // Abort signal from abort()
-		   SIGFPE, // Floating point exception
-		   SIGTERM, // Termination signal
-		   SIGSEGV, // Invalid memory reference (Segmentation violation)
-		   SIGINT, // Interrupt from keyboard
-		   SIGBUS, // Bus error (bad memory access)
-		   SIGXCPU, // CPU time limit exceeded
-		   SIGXFSZ, // File size limit exceeded
-		   0x0
-  };
+                   SIGABRT, // Abort signal from abort()
+                   SIGFPE,  // Floating point exception
+                   SIGTERM, // Termination signal
+                   SIGSEGV, // Invalid memory reference (Segmentation violation)
+                   SIGINT,  // Interrupt from keyboard
+                   SIGBUS,  // Bus error (bad memory access)
+                   SIGXCPU, // CPU time limit exceeded
+                   SIGXFSZ, // File size limit exceeded
+                   0x0};
 
   int *sig = signals;
   while (*sig) {
@@ -83,7 +78,8 @@ Katoob::Katoob(int argc, char *argv[]):
   }
 
   signal(SIGPIPE, SIG_IGN); // Broken pipe: write to pipe with no readers
-  signal(SIGHUP, SIG_IGN); //  Hangup detected on controlling terminal or death of controlling process
+  signal(SIGHUP, SIG_IGN);  //  Hangup detected on controlling terminal or death
+                            //  of controlling process
 }
 
 /**
@@ -110,11 +106,14 @@ void Katoob::signal_cb(int signum) {
   }
   ++s;
 
-  std::cerr << "We received a signal (" << signum << "): " << strsignal(signum) << std::endl;
+  std::cerr << "We received a signal (" << signum << "): " << strsignal(signum)
+            << std::endl;
   for (unsigned x = 0; x < children.size(); x++) {
     children[x]->autosave();
   }
-  //  katoob_error(Utils::substitute(_("Katoob crashed (%s). Katoob tried to save all the open documents. They will be recovered the next time you run Katoob."), strsignal(signum)));
+  //  katoob_error(Utils::substitute(_("Katoob crashed (%s). Katoob tried to
+  //  save all the open documents. They will be recovered the next time you run
+  //  Katoob."), strsignal(signum)));
   exit(255);
 }
 
@@ -149,7 +148,7 @@ void Katoob::parse(int argc, char *argv[]) {
  * \return always 0
  */
 int Katoob::run() {
-  Gtk::Main::run();
+  this->Gtk::Application::run();
   return 0;
 }
 
@@ -168,31 +167,29 @@ void Katoob::window() {
  * \brief print usage (--usage).
  */
 void Katoob::usage() {
-  std::cout << "usage: katoob [--help] [--version] [--usage] [file1 file2 file3... ]" << std::endl;
+  std::cout
+      << "usage: katoob [--help] [--version] [--usage] [file1 file2 file3... ]"
+      << std::endl;
 }
 
 /**
  * \brief print our version (--version).
  */
-void Katoob::version() {
-  std::cout << PACKAGE << " " << VERSION << std::endl;
-}
+void Katoob::version() { std::cout << PACKAGE << " " << VERSION << std::endl; }
 
 /**
  * \brief print the help (--help).
  */
 void Katoob::help() {
   std::cout << "usage: katoob  [OPTIONS] [FILES_TO_OPEN]" << std::endl
-	    << "  -h, --help       Show this help message" << std::endl
-	    << "  -v, --version    Display version information" << std::endl
-	    << "  -u, --usage      Display brief usage message" << std::endl;
+            << "  -h, --help       Show this help message" << std::endl
+            << "  -v, --version    Display version information" << std::endl
+            << "  -u, --usage      Display brief usage message" << std::endl;
 }
 
 /**
  * \brief quit the Gtk::Main loop by calling Gtk::Main::quit()
  */
-void Katoob::quit_cb() {
-  Gtk::Main::quit();
-}
+void Katoob::quit_cb() { this->Gtk::Application::quit(); }
 
 std::vector<Window *> Katoob::children;

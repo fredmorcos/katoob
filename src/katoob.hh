@@ -33,7 +33,7 @@
 /**
  * \brief This is our application entry point.
  */
-class Katoob : public Gtk::Main {
+class Katoob : public Gtk::Application {
 public:
   Katoob(int argc, char *argv[]);
   ~Katoob();
