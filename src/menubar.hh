@@ -199,6 +199,13 @@ private:
   Gtk::Menu *menu(const char *, Gtk::Menu * = NULL);
   Gtk::MenuItem *item(Gtk::Menu *, const Gtk::StockID &, guint,
                       Gdk::ModifierType);
+
+  Gtk::MenuItem *item(Gtk::Menu *menu, const Glib::ustring &iconName,
+                      const Glib::ustring &text);
+  Gtk::MenuItem *item(Gtk::Menu *menu, const Glib::ustring &iconName,
+                      const Glib::ustring &text, guint key,
+                      Gdk::ModifierType mod);
+
   Gtk::MenuItem *item(Gtk::Menu *, const Gtk::StockID &);
   Gtk::MenuItem *item(Gtk::Menu *, const std::string &);
   Gtk::MenuItem *item(Gtk::Menu *, const std::string &, guint,

@@ -29,12 +29,10 @@
 #include <iostream>
 
 Toolbar::Toolbar(Conf &conf)
-    : _conf(conf), _create(Gtk::Stock::NEW), _open(Gtk::Stock::OPEN),
-      _save(Gtk::Stock::SAVE), _print(Gtk::Stock::PRINT),
-      _close(Gtk::Stock::CLOSE), _undo(Gtk::Stock::UNDO),
-      _redo(Gtk::Stock::REDO), _cut(Gtk::Stock::CUT), _copy(Gtk::Stock::COPY),
-      _paste(Gtk::Stock::PASTE), _erase(Gtk::Stock::DELETE),
-      _go_to_l(_("Goto Line")), _search_l(_("Search")),
+    : _conf(conf), _create(_("Create")), _open(_("Open")), _save(_("Save")),
+      _print(_("Print")), _close(_("Close")), _undo(_("Undo")),
+      _redo(_("Redo")), _cut(_("Cut")), _copy(_("Copy")), _paste(_("Paste")),
+      _erase(_("Delete")), _go_to_l(_("Goto Line")), _search_l(_("Search")),
       _dictionary_l(_("Spelling Dictionary")) {
   create_main();
   create_extended();
@@ -133,7 +131,7 @@ void Toolbar::create_extended() {
   box.pack_start(_dictionary, false, false);
 
   Gtk::Image *image = Gtk::manage(new Gtk::Image(
-      Gtk::Stock::SPELL_CHECK, Gtk::IconSize(Gtk::ICON_SIZE_MENU)));
+      _("Check spelling..."), Gtk::IconSize(Gtk::ICON_SIZE_MENU)));
   _spell.set_image(*image);
   box.pack_start(_spell, false, false, 10);
   _spell.set_relief(Gtk::RELIEF_NONE);

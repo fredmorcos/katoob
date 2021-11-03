@@ -29,8 +29,8 @@
 
 InputWindow::InputWindow()
     : Gtk::Dialog(_("Input Window"), false), _type(INPUT_DISPLAY_NONE) {
-  add_button(Gtk::Stock::CLOSE, Gtk::RESPONSE_OK);
-  get_vbox()->pack_start(sw, true, true);
+  add_button(_("Close"), Gtk::RESPONSE_OK);
+  get_content_area()->pack_start(sw, true, true);
   sw.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
   sw.add(tb);
   signal_response().connect(

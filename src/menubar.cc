@@ -94,8 +94,9 @@ Gtk::MenuItem *MenuBar::check_item(Gtk::Menu *menu, const std::string &str) {
   return item;
 }
 
-Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const Gtk::StockID &stockID) {
-  auto item = Gtk::make_managed<Gtk::ImageMenuItem>(stockID);
+Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const Glib::ustring &iconName,
+                             const Glib::ustring &text) {
+  auto item = Utils::makeGtkImageMenuItem(iconName, text);
   menu->append(*item);
   return item;
 }
@@ -106,10 +107,11 @@ Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const std::string &str) {
   return item;
 }
 
-Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const Gtk::StockID &stockID,
-                             guint key, Gdk::ModifierType mod) {
-  auto item = Gtk::make_managed<Gtk::ImageMenuItem>(stockID);
-  // TODO: Clean up the accelarator mess.
+Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const Glib::ustring &iconName,
+                             const Glib::ustring &text, guint key,
+                             Gdk::ModifierType mod) {
+  auto item = Utils::makeGtkImageMenuItem(iconName, text);
+  // TODO: Clean up the accelerator mess.
   item->set_accel_path(Gtk::AccelKey(key, mod).get_path());
   menu->append(*item);
   return item;
@@ -131,11 +133,11 @@ void MenuBar::separator(Gtk::Menu *menu) {
 void MenuBar::file(Conf &KATOOB_UNUSED(config)) {
   file_menu = menu(_("_File"));
 
-  _create = item(file_menu, Gtk::Stock::NEW);
+  _create = item(file_menu, _("New"));
   _create->signal_activate().connect(
       sigc::mem_fun(signal_create_activate, &sigc::signal<void>::emit));
 
-  _open = item(file_menu, Gtk::Stock::OPEN);
+  _open = item(file_menu, _("Open"));
   _open->signal_activate().connect(
       sigc::mem_fun(signal_open_activate, &sigc::signal<void>::emit));
 
@@ -149,11 +151,11 @@ void MenuBar::file(Conf &KATOOB_UNUSED(config)) {
       dynamic_cast<Gtk::MenuItem *>(file_menu->get_children().back());
 
   separator(file_menu);
-  _save = item(file_menu, Gtk::Stock::SAVE);
+  _save = item(file_menu, _("Save"));
   _save->signal_activate().connect(
       sigc::mem_fun(signal_save_activate, &sigc::signal<void>::emit));
 
-  _save_as = item(file_menu, Gtk::Stock::SAVE_AS, GDK_KEY_s,
+  _save_as = item(file_menu, _("Save As..."), GDK_KEY_s,
                   Gdk::ModifierType(GDK_CONTROL_MASK | GDK_SHIFT_MASK));
   _save_as->signal_activate().connect(
       sigc::mem_fun(signal_save_as_activate, &sigc::signal<void>::emit));
@@ -162,7 +164,7 @@ void MenuBar::file(Conf &KATOOB_UNUSED(config)) {
   _save_copy->signal_activate().connect(
       sigc::mem_fun(signal_save_copy_activate, &sigc::signal<void>::emit));
 
-  _revert = item(file_menu, Gtk::Stock::REVERT_TO_SAVED);
+  _revert = item(file_menu, _("Revert"), "document-revert-symbolic");
   _revert->signal_activate().connect(
       sigc::mem_fun(signal_revert_activate, &sigc::signal<void>::emit));
 
@@ -200,17 +202,17 @@ void MenuBar::file(Conf &KATOOB_UNUSED(config)) {
   _print_preview->signal_activate().connect(
       sigc::mem_fun(signal_print_preview_activate, &sigc::signal<void>::emit));
 
-  _print = item(file_menu, Gtk::Stock::PRINT, GDK_KEY_p,
+  _print = item(file_menu, _("Print"), GDK_KEY_p,
                 Gdk::ModifierType(GDK_CONTROL_MASK));
   _print->signal_activate().connect(
       sigc::mem_fun(signal_print_activate, &sigc::signal<void>::emit));
 
   separator(file_menu);
-  _close = item(file_menu, Gtk::Stock::CLOSE);
+  _close = item(file_menu, _("Close"));
   _close->signal_activate().connect(
       sigc::mem_fun(signal_close_activate, &sigc::signal<void>::emit));
 
-  _quit = item(file_menu, Gtk::Stock::QUIT);
+  _quit = item(file_menu, _("_Quit"));
   _quit->signal_activate().connect(
       sigc::mem_fun(signal_quit_activate, &sigc::signal<void>::emit));
 
@@ -256,30 +258,30 @@ void MenuBar::create_recent() {
 
 void MenuBar::edit(Conf &KATOOB_UNUSED(config)) {
   edit_menu = menu(_("_Edit"));
-  _undo = item(edit_menu, Gtk::Stock::UNDO, GDK_KEY_z,
+  _undo = item(edit_menu, _("Undo"), GDK_KEY_z,
                Gdk::ModifierType(GDK_CONTROL_MASK));
   _undo->signal_activate().connect(
       sigc::mem_fun(signal_undo_activate, &sigc::signal<void>::emit));
 
-  _redo = item(edit_menu, Gtk::Stock::REDO, GDK_KEY_z,
+  _redo = item(edit_menu, _("Redo"), GDK_KEY_z,
                Gdk::ModifierType(GDK_CONTROL_MASK | GDK_SHIFT_MASK));
   _redo->signal_activate().connect(
       sigc::mem_fun(signal_redo_activate, &sigc::signal<void>::emit));
 
   separator(edit_menu);
-  _cut = item(edit_menu, Gtk::Stock::CUT);
+  _cut = item(edit_menu, _("Cut"));
   _cut->signal_activate().connect(
       sigc::mem_fun(signal_cut_activate, &sigc::signal<void>::emit));
 
-  _copy = item(edit_menu, Gtk::Stock::COPY);
+  _copy = item(edit_menu, _("Copy"));
   _copy->signal_activate().connect(
       sigc::mem_fun(signal_copy_activate, &sigc::signal<void>::emit));
 
-  _paste = item(edit_menu, Gtk::Stock::PASTE);
+  _paste = item(edit_menu, _("Paste"));
   _paste->signal_activate().connect(
       sigc::mem_fun(signal_paste_activate, &sigc::signal<void>::emit));
 
-  _erase = item(edit_menu, Gtk::Stock::DELETE, GDK_KEY_d,
+  _erase = item(edit_menu, _("Delete"), GDK_KEY_d,
                 Gdk::ModifierType(GDK_CONTROL_MASK));
   _erase->signal_activate().connect(
       sigc::mem_fun(signal_erase_activate, &sigc::signal<void>::emit));
@@ -296,7 +298,7 @@ void MenuBar::edit(Conf &KATOOB_UNUSED(config)) {
       sigc::mem_fun(signal_insert_file_activate, &sigc::signal<void>::emit));
 
   separator(edit_menu);
-  _preferences = item(edit_menu, Gtk::Stock::PREFERENCES);
+  _preferences = item(edit_menu, _("Preferences"));
   _preferences->signal_activate().connect(
       sigc::mem_fun(signal_preferences_activate, &sigc::signal<void>::emit));
 }
@@ -304,7 +306,7 @@ void MenuBar::edit(Conf &KATOOB_UNUSED(config)) {
 void MenuBar::search(Conf &KATOOB_UNUSED(config)) {
   search_menu = menu(_("_Search"));
 
-  _find = item(search_menu, Gtk::Stock::FIND);
+  _find = item(search_menu, _("Find"));
   _find->signal_activate().connect(
       sigc::mem_fun(signal_find_activate, &sigc::signal<void>::emit));
 
@@ -313,12 +315,12 @@ void MenuBar::search(Conf &KATOOB_UNUSED(config)) {
   _find_next->signal_activate().connect(
       sigc::mem_fun(signal_find_next_activate, &sigc::signal<void>::emit));
 
-  _replace = item(search_menu, Gtk::Stock::FIND_AND_REPLACE);
+  _replace = item(search_menu, _("Find and replace..."));
   _replace->signal_activate().connect(
       sigc::mem_fun(signal_replace_activate, &sigc::signal<void>::emit));
 
   separator(search_menu);
-  _goto_line = item(search_menu, Gtk::Stock::JUMP_TO);
+  _goto_line = item(search_menu, _("Jump to..."));
   _goto_line->signal_activate().connect(
       sigc::mem_fun(signal_goto_line_activate, &sigc::signal<void>::emit));
 }
@@ -370,7 +372,7 @@ void MenuBar::view(Conf &KATOOB_UNUSED(config), Encodings &encodings) {
       sigc::mem_fun(*this, &MenuBar::signal_beside_activate_cb));
 
   _encoding_menu = menu(_("_Encoding"), view_menu);
-  _encoding_menu->append(*Gtk::make_managed<Gtk::TearoffMenuItem>());
+  _encoding_menu->append(*Gtk::make_managed<Gtk::MenuItem>());
 
   Gtk::Menu *item;
   int e = 0;
@@ -396,8 +398,9 @@ void MenuBar::tools(Conf &KATOOB_UNUSED(config), std::vector<std::string> &em,
 
   separator(tools_menu);
 
-  _spell = item(tools_menu, Gtk::Stock::SPELL_CHECK, GDK_KEY_F7,
-                Gdk::ModifierType(GDK_CONTROL_MASK));
+  _spell =
+      item(tools_menu, _("Check spelling..."), "tools-check-spelling-symbolic",
+           GDK_KEY_F7, Gdk::ModifierType(GDK_CONTROL_MASK));
   _spell->signal_activate().connect(
       sigc::mem_fun(signal_spell_activate, &sigc::signal<void>::emit));
 
@@ -448,7 +451,7 @@ void MenuBar::documents(Conf &KATOOB_UNUSED(config)) {
 
 void MenuBar::help(Conf &KATOOB_UNUSED(config)) {
   help_menu = menu(_("_Help"));
-  _about = item(help_menu, Gtk::Stock::ABOUT, GDK_KEY_t,
+  _about = item(help_menu, _("About"), GDK_KEY_t,
                 Gdk::ModifierType(GDK_CONTROL_MASK));
   _about->signal_activate().connect(
       mem_fun(signal_about_activate, &sigc::signal<void>::emit));
