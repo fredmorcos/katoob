@@ -25,8 +25,8 @@
 #define _GNU_SOURCE
 #endif
 
-#include "document.hh"
 #include "dialogs.hh"
+#include "document.hh"
 #include "macros.h"
 #include "textbuffer.hh"
 #include "utils.hh"
@@ -1211,12 +1211,8 @@ void Document::on_populate_popup_cb(Gtk::Menu *menu) {
       menu->append(*Gtk::make_managed<Gtk::SeparatorMenuItem>());
       Glib::ustring str(_("Spelling Suggestions"));
 
-      Gtk::Image *image =
-          Gtk::make_managed<Gtk::Image>(Gtk::StockID(Gtk::Stock::SPELL_CHECK),
-                                        Gtk::IconSize(Gtk::ICON_SIZE_MENU));
-
       auto spellcheckMenuItem =
-          Gtk::make_managed<Gtk::ImageMenuItem>(*image, str);
+          Utils::makeGtkImageMenuItem("tools-check-spelling-symbolic", str);
 
       // Let's build the suggestions menu.
       auto spellMenu = Gtk::make_managed<Gtk::Menu>();
@@ -1225,9 +1221,8 @@ void Document::on_populate_popup_cb(Gtk::Menu *menu) {
 
       // TODO: Use bold markup
       str += Utils::substitute(_("Add \"%s\" to dictionary"), word);
-      image = Gtk::make_managed<Gtk::Image>(Gtk::StockID(Gtk::Stock::ADD),
-                                            Gtk::IconSize(Gtk::ICON_SIZE_MENU));
-      auto imageMenuItem = Gtk::make_managed<Gtk::ImageMenuItem>(*image, str);
+      auto imageMenuItem =
+          Utils::makeGtkImageMenuItem("list-add-symbolic", str);
       spellMenu->append(*imageMenuItem);
       imageMenuItem->signal_activate().connect(
           sigc::bind<std::string, Gtk::TextIter, Gtk::TextIter>(

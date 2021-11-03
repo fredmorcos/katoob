@@ -38,6 +38,10 @@ typedef enum {
   KATOOB_COLOR_NORMAL
 } KatoobColor;
 
+Gtk::MenuItem *makeGtkImageMenuItem(const Glib::ustring &iconName,
+                                    const Glib::ustring &label,
+                                    const bool mnemonic = false);
+
 std::string get_data_dir();
 std::string get_dir_separator();
 std::string get_data_path(const char *);

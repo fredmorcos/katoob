@@ -22,6 +22,12 @@
  */
 
 #include "utils.hh"
+#include "glibmm/refptr.h"
+#include "gtkmm/box.h"
+#include "gtkmm/enums.h"
+#include "gtkmm/image.h"
+#include "gtkmm/menuitem.h"
+#include "gtkmm/object.h"
 #include "gtkmm/stylecontext.h"
 #include "macros.h"
 #include "src/textview.hh"
@@ -35,6 +41,26 @@
 #include <unistd.h>
 
 #define __KATOOB_CONF_DIR__ ".katoob"
+
+Gtk::MenuItem *Utils::makeGtkImageMenuItem(const Glib::ustring &iconName,
+                                           const Glib::ustring &text,
+                                           const bool mnemonic) {
+  auto icon = Gtk::make_managed<Gtk::Image>(
+      iconName, Gtk::BuiltinIconSize::ICON_SIZE_MENU);
+  auto label = Gtk::make_managed<Gtk::Label>(text, mnemonic);
+
+  auto box =
+      Gtk::make_managed<Gtk::Box>(Gtk::Orientation::ORIENTATION_HORIZONTAL, 6);
+
+  box->pack_start(*icon);
+  box->pack_start(*label);
+
+  auto menuItem = Gtk::make_managed<Gtk::MenuItem>();
+  menuItem->add(*box);
+  menuItem->show_all();
+
+  return menuItem;
+}
 
 std::string Utils::get_data_dir() {
   return std::string(DATADIR_FULL + Utils::get_dir_separator());
