@@ -1299,8 +1299,12 @@ bool Document::spell_checker_worker() {
     //      std::cout << "Got Line " << iter.get_line() << std::endl;
     spell_checker_check(iter);
     lines[iter.get_line()] = false;
-  } else {
-    spell_worker_conn.disconnect();
+  } else if (spell_worker_conn.connected()) {
+    // TODO this was disabled because of: (katoob:127034): GLib-GObject-WARNING
+    // **: 17:18:32.756: ../glib/gobject/gsignal.c:2732: instance
+    // '0x563524e3b420' has no handler with id '2301'
+
+    // spell_worker_conn.disconnect();
   }
 
   // We will always return true.
