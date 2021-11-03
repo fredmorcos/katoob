@@ -65,7 +65,7 @@ PrintDialog::PrintDialog(Conf &conf, Document *doc,
       copies_button_adj(
           Gtk::Adjustment::create(_conf.print_get("copies", 1), 1, 100)),
       lines_from(from_adj), lines_to(to_adj), copies_button(copies_button_adj),
-      browse(Gtk::Stock::SAVE_AS), location_label(_("Location:")),
+      browse(_("Save as...")), location_label(_("Location:")),
       copies_label(_("Number of copies")), range_frame(_("Print range")),
       from_label(_("From:")), to_label(_("To:")),
       paper_size_label(_("Paper size:")),
@@ -77,7 +77,7 @@ PrintDialog::PrintDialog(Conf &conf, Document *doc,
   /*
   set_resizable (false);
   */
-  Gtk::Box *box = dialog.get_vbox();
+  Gtk::Box *box = dialog.get_content_area();
   box->set_spacing(5);
 
   record.add(id);
@@ -176,9 +176,9 @@ PrintDialog::PrintDialog(Conf &conf, Document *doc,
   Gtk::SpinButton width(adjustment1), height(adjustment1);
 #endif
 
-  dialog.add_button(Gtk::Stock::PRINT, Gtk::RESPONSE_OK);
-  dialog.add_button(Gtk::Stock::PRINT_PREVIEW, Gtk::RESPONSE_APPLY);
-  dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dialog.add_button(_("Print"), Gtk::RESPONSE_OK);
+  dialog.add_button(_("Print preview"), Gtk::RESPONSE_APPLY);
+  dialog.add_button(_("Cancel"), Gtk::RESPONSE_CANCEL);
 
   t_selection = treeview.get_selection();
 
