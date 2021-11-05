@@ -39,20 +39,9 @@
 #define __KATOOB_CONF_DIR__ ".katoob"
 #endif
 
-std::string Utils::get_data_dir()
-{
-#ifndef _WIN32
-  return std::string(PREFIX + Utils::get_dir_separator() + "share" + Utils::get_dir_separator() +
-                     PACKAGE + Utils::get_dir_separator());
-#else
-  // FIXME:
-  return "./";
-#endif
-}
-
 std::string Utils::get_data_path(const char *str)
 {
-  std::string s(get_data_dir() + get_dir_separator() + str);
+  std::string s(APP_DATADIR + get_dir_separator() + str);
   return s;
 }
 

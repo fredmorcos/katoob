@@ -36,7 +36,6 @@ namespace Utils {
     KATOOB_COLOR_NORMAL
   } KatoobColor;
 
-  std::string get_data_dir();
   std::string get_dir_separator();
   std::string get_data_path(const char *);
   std::string prepend_home_dir(char *);
