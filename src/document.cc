@@ -1246,7 +1246,7 @@ bool Document::revert(std::string &err)
     _text_view.get_buffer()->set_text(contents);
   } else {
     std::string c;
-    if (!_encodings.convert_to(contents, c, _encoding) == -1) {
+    if (_encodings.convert_to(contents, c, _encoding) == -1) {
       err = c;
       return false;
     } else {
