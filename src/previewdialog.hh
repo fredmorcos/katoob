@@ -1,45 +1,41 @@
 /*
  * previewdialog.hh
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifndef __PREVIEWDIALOG_HH__
-#define __PREVIEWDIALOG_HH__
+#pragma once
 
-#include <gtkmm/dialog.h>
-#include <gtkmm/label.h>
-#include <gtkmm/spinbutton.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/box.h>
-#include <gtkmm/drawingarea.h>
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/printoperationpreview.h>
+#include <gtkmm.h>
 
-class PreviewDialog : public Gtk::Dialog {
-public:
-  static PreviewDialog *create(const Glib::RefPtr<Gtk::PrintOperationPreview>&, const Glib::RefPtr<Gtk::PrintContext>&, Gtk::Window*);
+class PreviewDialog: public Gtk::Dialog {
+ public:
+  static PreviewDialog *create(const Glib::RefPtr<Gtk::PrintOperationPreview> &,
+                               const Glib::RefPtr<Gtk::PrintContext> &,
+                               Gtk::Window *);
   void run();
   sigc::signal<int> signal_get_n_pages;
   sigc::signal<Glib::RefPtr<Pango::Layout> > signal_get_layout;
-private:
-  PreviewDialog(const Glib::RefPtr<Gtk::PrintOperationPreview>&, const Glib::RefPtr<Gtk::PrintContext>&, Gtk::Window *);
+
+ private:
+  PreviewDialog(const Glib::RefPtr<Gtk::PrintOperationPreview> &,
+                const Glib::RefPtr<Gtk::PrintContext> &,
+                Gtk::Window *);
   //  ~PreviewDialog();
 
   void recalculate_gui();
@@ -55,8 +51,9 @@ private:
   void signal_area_realize_cb();
   bool signal_area_expose_event_cb(GdkEventExpose *);
 
-  void signal_preview_ready_cb(const Glib::RefPtr<Gtk::PrintContext>&);
-  void signal_preview_got_page_size_cb(const Glib::RefPtr<Gtk::PrintContext>&, const Glib::RefPtr<Gtk::PageSetup>&);
+  void signal_preview_ready_cb(const Glib::RefPtr<Gtk::PrintContext> &);
+  void signal_preview_got_page_size_cb(const Glib::RefPtr<Gtk::PrintContext> &,
+                                       const Glib::RefPtr<Gtk::PageSetup> &);
 
   Glib::RefPtr<Gtk::PrintOperationPreview> preview;
   Glib::RefPtr<Gtk::PrintContext> context;
@@ -78,5 +75,3 @@ private:
   Gtk::Button ff;
   Gtk::ScrolledWindow sw;
 };
-
-#endif /* __PREVIEWDIALOG_HH__ */

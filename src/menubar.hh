@@ -1,48 +1,63 @@
 /*
  * menubar.hh
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifndef __MENUBAR_HH__
-#define __MENUBAR_HH__
+#pragma once
 
-#ifdef ENABLE_MAEMO
-#include <gtkmm/menu.h>
-#else
-#include <gtkmm/menubar.h>
-#endif
 #include "conf.hh"
 #include "encodings.hh"
-#include "import.hh"
 #include "export.hh"
+#include "import.hh"
+#include <gtkmm.h>
 
 class DocItem {
-public:
-  DocItem(std::string& str, bool ro, bool m) : _label(str), _ro(ro), _m(m) {}
-  void set_readonly(bool ro) { _ro = ro; }
-  bool get_readonly() { return _ro; }
-  void set_modified(bool m) { _m = m; }
-  bool get_modified() { return _m; }
-  void set_label(std::string& str) { _label = str; }
-  const std::string& get_label() { return _label; }
-private:
+ public:
+  DocItem(std::string &str, bool ro, bool m): _label(str), _ro(ro), _m(m)
+  {
+  }
+  void set_readonly(bool ro)
+  {
+    _ro = ro;
+  }
+  bool get_readonly()
+  {
+    return _ro;
+  }
+  void set_modified(bool m)
+  {
+    _m = m;
+  }
+  bool get_modified()
+  {
+    return _m;
+  }
+  void set_label(std::string &str)
+  {
+    _label = str;
+  }
+  const std::string &get_label()
+  {
+    return _label;
+  }
+
+ private:
   std::string _label;
   bool _ro, _m;
 };
@@ -53,19 +68,23 @@ struct ClosedDocItem {
 };
 
 #ifdef ENABLE_MAEMO
-class MenuBar : public Gtk::Menu {
+class MenuBar: public Gtk::Menu {
 #else
-class MenuBar : public Gtk::MenuBar {
+class MenuBar: public Gtk::MenuBar {
 #endif
-public:
-  MenuBar(Conf&, Encodings&
+
+ public:
+  MenuBar(Conf &,
+          Encodings &
 #ifdef ENABLE_EMULATOR
-, std::vector<std::string>&
+          ,
+          std::vector<std::string> &
 #endif
 #ifdef ENABLE_MULTIPRESS
-, std::vector<std::string>&
+          ,
+          std::vector<std::string> &
 #endif
-);
+  );
   ~MenuBar();
 
   void create_recent();
@@ -134,7 +153,7 @@ public:
 
   sigc::signal<void> signal_about_activate;
 
-  sigc::signal<void, std::string&> signal_recent_activate;
+  sigc::signal<void, std::string &> signal_recent_activate;
 
   sigc::signal<void, Import> signal_import_activate;
   sigc::signal<void, Export> signal_export_activate;
@@ -149,13 +168,12 @@ public:
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   sigc::signal<void, int, int> signal_layout_activate;
 #endif
-  void document_add(std::string&, bool, bool);
+  void document_add(std::string &, bool, bool);
   void document_remove(int);
   void document_set_active(int);
   void document_set_modified(int, bool);
   void document_set_readonly(int, bool);
-  void document_set_label(int, std::string&);
-
+  void document_set_label(int, std::string &);
 
   void signal_closed_document_erased_cb();
   void signal_closed_document_added(std::string);
@@ -164,25 +182,27 @@ public:
 
   Gtk::Menu get_menu();
 
-private:
-  void file(Conf&);
-  void edit(Conf&);
-  void search(Conf&);
-  void view(Conf&, Encodings&);
-  void tools(Conf&
+ private:
+  void file(Conf &);
+  void edit(Conf &);
+  void search(Conf &);
+  void view(Conf &, Encodings &);
+  void tools(Conf &
 #ifdef ENABLE_EMULATOR
-	     , std::vector<std::string>&
+             ,
+             std::vector<std::string> &
 #endif
 #ifdef ENABLE_MULTIPRESS
-	     , std::vector<std::string>&
+             ,
+             std::vector<std::string> &
 #endif
-	     );
-  void documents(Conf&);
-  void help(Conf&);
-  void recent(Conf&);
-  void encodings(Conf&);
+  );
+  void documents(Conf &);
+  void help(Conf &);
+  void recent(Conf &);
+  void encodings(Conf &);
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
-  void build_submenu(Gtk::Menu *, std::vector<std::string>&, Gtk::RadioButtonGroup&, int);
+  void build_submenu(Gtk::Menu *, std::vector<std::string> &, Gtk::RadioButtonGroup &, int);
 #endif
 #ifdef ENABLE_SPELL
   void signal_auto_spell_activate_cb();
@@ -197,7 +217,7 @@ private:
   void signal_beside_activate_cb();
   void signal_both_activate_cb();
 
-  void signal_recent_activate_cb(std::string&);
+  void signal_recent_activate_cb(std::string &);
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   void signal_layout_activate_cb(int, int);
 #endif
@@ -205,9 +225,9 @@ private:
   void signal_document_activate_cb(int);
   void signal_closed_document_activate_cb(int);
 
-  void document_set_modified(Gtk::MenuItem&, bool);
-  void document_set_readonly(Gtk::MenuItem&, bool);
-  void document_set_normal(Gtk::MenuItem&);
+  void document_set_modified(Gtk::MenuItem &, bool);
+  void document_set_readonly(Gtk::MenuItem &, bool);
+  void document_set_normal(Gtk::MenuItem &);
 
   void documents_menu_clear();
   void documents_menu_build();
@@ -223,17 +243,17 @@ private:
 #endif /* ENABLE_HIGHLIGHT */
 
   Gtk::Menu *menu(char *, Gtk::Menu * = NULL);
-  Gtk::MenuItem *item(Gtk::Menu *, const Gtk::StockID&, guint, Gdk::ModifierType);
-  Gtk::MenuItem *item(Gtk::Menu *, const Gtk::StockID&);
-  Gtk::MenuItem *item(Gtk::Menu *, const std::string&);
-  Gtk::MenuItem *item(Gtk::Menu *, const std::string&, guint, Gdk::ModifierType);
-  Gtk::MenuItem *check_item(Gtk::Menu *, const std::string&);
-  Gtk::MenuItem *radio_item(Gtk::Menu *, Gtk::RadioButtonGroup&, const std::string&);
+  Gtk::MenuItem *item(Gtk::Menu *, const Gtk::StockID &, guint, Gdk::ModifierType);
+  Gtk::MenuItem *item(Gtk::Menu *, const Gtk::StockID &);
+  Gtk::MenuItem *item(Gtk::Menu *, const std::string &);
+  Gtk::MenuItem *item(Gtk::Menu *, const std::string &, guint, Gdk::ModifierType);
+  Gtk::MenuItem *check_item(Gtk::Menu *, const std::string &);
+  Gtk::MenuItem *radio_item(Gtk::Menu *, Gtk::RadioButtonGroup &, const std::string &);
 
   void separator(Gtk::Menu *);
 
-  Gtk::Menu *file_menu, *edit_menu, *search_menu,
-    *view_menu, *tools_menu, *documents_menu, *help_menu, *opened_menu, *closed_menu;
+  Gtk::Menu *file_menu, *edit_menu, *search_menu, *view_menu, *tools_menu, *documents_menu,
+      *help_menu, *opened_menu, *closed_menu;
 
   /* File */
   Gtk::Menu *recent_menu, *_import_menu, *_export_menu, *toolbars_menu, *_encoding_menu;
@@ -309,10 +329,8 @@ private:
   bool _ignore_highlighting_changed_signal_hack;
   std::vector<Gtk::MenuItem *> encoding_menu_items;
 
-  Conf& _conf;
+  Conf &_conf;
   std::vector<DocItem> _documents;
   std::vector<ClosedDocItem> _closed_documents;
   int _active;
 };
-
-#endif /* __MENUBAR_HH__ */

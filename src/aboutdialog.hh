@@ -1,39 +1,36 @@
 /*
- * dialogs.hh
- * This file is part of katoob
+ * aboutdialog.hh
  *
- * Copyright (C) 2006 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifndef __ABOUTDIALOG_HH__
-#define __ABOUTDIALOG_HH__
+#pragma once
 
-#include <gtkmm/aboutdialog.h>
+#include <gtkmm.h>
 
 /**
  * \brief our about dialog class.
  */
-class AboutDialog : private Gtk::AboutDialog {
-private:
+class AboutDialog: private Gtk::AboutDialog {
+ private:
   AboutDialog();
   ~AboutDialog();
-public:
+
+ public:
   static void run();
 };
-
-#endif /* __ABOUTDIALOG_HH__ */

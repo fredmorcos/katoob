@@ -1,48 +1,36 @@
 /*
  * spelldialog.hh
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifndef __SPELLDIALOG_HH__
-#define __SPELLDIALOG_HH__
+#pragma once
 
-#include <gtkmm/button.h>
-#include <gtkmm/window.h>
-#include <gtkmm/separator.h>
-#include <gtkmm/label.h>
-#include <gtkmm/box.h>
-#include <gtkmm/table.h>
-#include <gtkmm/scrolledwindow.h>
-#include <gtkmm/entry.h>
-#include <gtkmm/treeview.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/image.h>
 #include "document.hh"
+#include <gtkmm.h>
 
-class SpellDialog : public Gtk::Window {
-public:
+class SpellDialog: public Gtk::Window {
+ public:
   SpellDialog(Document *);
   ~SpellDialog();
   void run();
 
-private:
+ private:
   void ignore_clicked_cb();
   void ignore_all_clicked_cb();
   void add_clicked_cb();
@@ -51,9 +39,9 @@ private:
   void check_clicked_cb();
   void close_clicked_cb();
 
-  void got_misspelled(std::string&, std::vector<std::string>&);
+  void got_misspelled(std::string &, std::vector<std::string> &);
   void selection_signal_changed_cb();
-  void populate_suggestions(std::vector<std::string>&);
+  void populate_suggestions(std::vector<std::string> &);
 
   void next();
 
@@ -79,5 +67,3 @@ private:
   Glib::RefPtr<Glib::MainLoop> loop;
   //  std::map<std::string, std::string> replacements;
 };
-
-#endif /* __SPELLDIALOG_HH__ */

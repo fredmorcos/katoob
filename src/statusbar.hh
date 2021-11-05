@@ -1,40 +1,32 @@
 /*
  * statusbar.hh
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifndef __STATUSBAR_HH__
-#define __STATUSBAR_HH__
+#pragma once
 
-#include <gtkmm/box.h>
-#include <gtkmm/statusbar.h>
-#include <gtkmm/image.h>
-#include <gtkmm/label.h>
-#if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
-#include <gtkmm/togglebutton.h>
-#endif
+#include <gtkmm.h>
 #include "conf.hh"
 
-class Statusbar : public Gtk::HBox {
-public:
-  Statusbar(Conf&);
+class Statusbar: public Gtk::HBox {
+ public:
+  Statusbar(Conf &);
   ~Statusbar();
   void set_encoding(std::string);
   void set_overwrite(bool);
@@ -49,11 +41,12 @@ public:
 
   sigc::signal<void, bool> signal_input_toggled;
 #endif
-private:
+
+ private:
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   void signal_input_toggled_cb();
 #endif
-  Conf& _conf;
+  Conf &_conf;
 
   Gtk::Statusbar sbar;
   Gtk::Image red, green;
@@ -62,5 +55,3 @@ private:
   Gtk::ToggleButton input;
 #endif
 };
-
-#endif /* __STATUSBAR_HH__ */

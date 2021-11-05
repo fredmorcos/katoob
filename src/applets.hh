@@ -1,66 +1,56 @@
 /*
  * applets.hh
- * This file is part of katoob
  *
- * Copyright (C) 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifndef __APPLETS_HH__
-#define __APPLETS_HH__
+#pragma once
 
-#include <gtkmm/box.h>
-#include <gtkmm/checkbutton.h>
-#include <gtkmm/table.h>
-#include <gtkmm/label.h>
-#include <gtkmm/adjustment.h>
-#include <gtkmm/spinbutton.h>
-#include <gtkmm/colorbutton.h>
+#include "conf.hh"
+#include <dialogs.hh>
+#include <gtkmm.h>
+
 #ifdef ENABLE_MAEMO
 #include <hildonmm/color-button.h>
 #endif
-#include <gtkmm/fontbutton.h>
-#include <gtkmm/comboboxtext.h>
-#include <gtkmm/frame.h>
-#include <gtkmm/liststore.h>
-#include <gtkmm/scrolledwindow.h>
-#include "conf.hh"
+
 #ifdef ENABLE_SPELL
 #include "spellmenu.hh"
 #endif
-#include <dialogs.hh>
 
 class Applet {
-public:
-  Applet(Conf&);
+ public:
+  Applet(Conf &);
   virtual ~Applet();
-  virtual Gtk::Widget& get_box();
-  virtual void apply()=0;
-protected:
+  virtual Gtk::Widget &get_box();
+  virtual void apply() = 0;
+
+ protected:
   Gtk::VBox box;
-  Conf& _conf;
+  Conf &_conf;
 };
 
-class GeneralApplet : public Applet {
-public:
-  GeneralApplet(Conf&);
+class GeneralApplet: public Applet {
+ public:
+  GeneralApplet(Conf &);
   virtual void apply();
 
-private:
+ private:
   void undo_toggled_cb();
   void undo_closed_toggled_cb();
 
@@ -71,12 +61,12 @@ private:
   Gtk::SpinButton undono, exec_cmd_size, undo_closedno;
 };
 
-class InterfaceApplet : public Applet {
-public:
-  InterfaceApplet(Conf&);
+class InterfaceApplet: public Applet {
+ public:
+  InterfaceApplet(Conf &);
   virtual void apply();
 
-private:
+ private:
   void recent_toggled_cb();
   void toolbar_toggled_cb();
 
@@ -88,12 +78,12 @@ private:
   Gtk::ComboBoxText toolbartype;
 };
 
-class TabsApplet : public Applet {
-public:
-  TabsApplet(Conf&);
+class TabsApplet: public Applet {
+ public:
+  TabsApplet(Conf &);
   virtual void apply();
 
-private:
+ private:
   void showtabs_toggled_cb();
 
   Gtk::CheckButton showtabs, tabsmenu, scrolltabs;
@@ -107,12 +97,12 @@ private:
 #endif
 };
 
-class EditorApplet : public Applet {
-public:
-  EditorApplet(Conf&);
+class EditorApplet: public Applet {
+ public:
+  EditorApplet(Conf &);
   virtual void apply();
 
-private:
+ private:
   void linenumbers_toggled_cb();
   void default_font_toggled_cb();
 
@@ -132,15 +122,15 @@ private:
 #endif
 };
 
-class EncodingsApplet : public Applet {
-public:
-  EncodingsApplet(Conf&, Encodings&);
+class EncodingsApplet: public Applet {
+ public:
+  EncodingsApplet(Conf &, Encodings &);
   virtual void apply();
 
-private:
+ private:
   void locale_enc_toggled_cb();
 
-  Encodings& _enc;
+  Encodings &_enc;
 
   Gtk::ComboBoxText save_enc, saved_enc;
   Gtk::CheckButton locale_enc;
@@ -150,12 +140,12 @@ private:
   Gtk::Frame save_frame, saved_frame;
 };
 
-class FileSaveApplet : public Applet {
-public:
-  FileSaveApplet(Conf&);
+class FileSaveApplet: public Applet {
+ public:
+  FileSaveApplet(Conf &);
   virtual void apply();
 
-private:
+ private:
   void backup_toggled_cb();
 
   Gtk::CheckButton backup;
@@ -165,42 +155,42 @@ private:
 };
 
 #ifdef ENABLE_SPELL
-class SpellCheckerApplet : public Applet {
-public:
-  SpellCheckerApplet(Conf&);
+class SpellCheckerApplet: public Applet {
+ public:
+  SpellCheckerApplet(Conf &);
   virtual void apply();
 
-private:
+ private:
   Gtk::CheckButton spell_check;
   SpellMenu default_dict;
-  Gtk::Label default_dict_label;//, misspelled_label;
+  Gtk::Label default_dict_label;   //, misspelled_label;
   Gtk::HBox /*sc_box1,*/ sc_box2;
   //  Gtk::ColorButton misspelled;
 };
 #endif
 
 #ifdef ENABLE_PRINT
-class PrintApplet : public Applet {
-public:
-  PrintApplet(Conf&);
+class PrintApplet: public Applet {
+ public:
+  PrintApplet(Conf &);
   virtual void apply();
 
-private:
+ private:
   Gtk::Label print_label;
   Gtk::FontButton print_font;
   Gtk::HBox p_box2;
 };
 #endif
 
-class DictionaryApplet : public Applet {
-public:
-  DictionaryApplet(Conf&);
+class DictionaryApplet: public Applet {
+ public:
+  DictionaryApplet(Conf &);
   virtual void apply();
 
-private:
+ private:
   void dict_toggled_cb();
   void list_dicts_clicked_cb();
-  void signal_dict_transfer_complete_cb(bool, const std::string&);
+  void signal_dict_transfer_complete_cb(bool, const std::string &);
   void signal_cancel_clicked_cb();
 
   sigc::connection conn;
@@ -228,12 +218,12 @@ private:
 };
 
 #ifdef ENABLE_MULTIPRESS
-class MultipressApplet : public Applet {
-public:
-  MultipressApplet(Conf&);
+class MultipressApplet: public Applet {
+ public:
+  MultipressApplet(Conf &);
   virtual void apply();
 
-private:
+ private:
   Gtk::Adjustment multipress_timeout_adj;
   Gtk::SpinButton multipress_timeout;
   Gtk::HBox m_box1;
@@ -241,12 +231,12 @@ private:
 };
 #endif
 
-class RemoteDocumentsApplet : public Applet {
-public:
-  RemoteDocumentsApplet(Conf&);
+class RemoteDocumentsApplet: public Applet {
+ public:
+  RemoteDocumentsApplet(Conf &);
   virtual void apply();
 
-private:
+ private:
   Gtk::CheckButton open_location_to_active;
   Gtk::SpinButton locations_size;
   Gtk::Adjustment locations_size_adj;
@@ -254,12 +244,12 @@ private:
   Gtk::HBox r_box1, r_box2;
 };
 
-class AdvancedApplet : public Applet {
-public:
-  AdvancedApplet(Conf&);
+class AdvancedApplet: public Applet {
+ public:
+  AdvancedApplet(Conf &);
   virtual void apply();
 
-private:
+ private:
   void savewinpos_toggled_cb();
 
   Gtk::CheckButton saveonexit, savewinpos;
@@ -270,11 +260,12 @@ private:
   Gtk::SpinButton x, y, w, h;
 };
 
-class NetworkApplet : public Applet {
-public:
-  NetworkApplet(Conf&);
+class NetworkApplet: public Applet {
+ public:
+  NetworkApplet(Conf &);
   virtual void apply();
-private:
+
+ private:
   Gtk::Adjustment timeout_adj, proxyport_adj;
   Gtk::SpinButton timeout, proxyport;
   Gtk::ComboBoxText proxytype;
@@ -284,5 +275,3 @@ private:
   Gtk::Table table2;
   Gtk::CheckButton proxytunnel, proxyauth;
 };
-
-#endif /* __APPLETS_HH__ */

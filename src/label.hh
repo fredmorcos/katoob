@@ -1,40 +1,36 @@
 /*
  * label.hh
- * This file is part of katoob
  *
- * Copyright (C) 2006 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifndef __LABEL_HH__
-#define __LABEL_HH__
+#pragma once
 
-#include <string>
-#include <gtkmm/box.h>
-#include <gtkmm/label.h>
-#include <gtkmm/button.h>
 #include "conf.hh"
+#include <gtkmm.h>
+#include <string>
 
-class Label : public Gtk::HBox {
-public:
-  Label(Conf&);
+class Label: public Gtk::HBox {
+ public:
+  Label(Conf &);
   ~Label();
   void set_text(int);
-  void set_text(const std::string&);
+  void set_text(const std::string &);
   std::string get_text();
   void set_readonly(bool, bool = false);
   void set_modified(bool, bool = false);
@@ -44,11 +40,9 @@ public:
 
   sigc::signal<void> signal_close_clicked;
 
-private:
+ private:
   Gtk::Label label;
-  Conf& _conf;
+  Conf &_conf;
   Gtk::Button close;
   bool _readonly, _modified;
 };
-
-#endif /* __LABEL_HH__ */

@@ -1,32 +1,30 @@
 /*
  * encodings.hh
- * This file is part of katoob
  *
- * Copyright (C) 2006 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifndef __ENCODINGS_HH__
-#define __ENCODINGS_HH__
+#pragma once
 
-#include <vector>
-#include <string>
-#include <glibmm/ustring.h>
 #include <glibmm/convert.h>
+#include <glibmm/ustring.h>
+#include <string>
+#include <vector>
 
 /**
  * \brief This structure represents an Encoding.
@@ -58,28 +56,29 @@ struct Language {
  * (Language::children) this Language can be encoded in.
  */
 class Encodings {
-public:
+ public:
   Encodings();
   ~Encodings();
   int languages();
   int languages(int);
-  std::string& language(int);
-  std::string& name(unsigned, unsigned);
+  std::string &language(int);
+  std::string &name(unsigned, unsigned);
 
-  int get_by_charset(const std::string&);
-  int get(const std::string&);
-  const std::string& get_charset(unsigned);
-  const std::string& name(unsigned);
+  int get_by_charset(const std::string &);
+  int get(const std::string &);
+  const std::string &get_charset(unsigned);
+  const std::string &name(unsigned);
   int default_save();
   int default_open();
   int size();
-  const std::string& at(unsigned);
-  bool utf8(const Glib::ustring&);
+  const std::string &at(unsigned);
+  bool utf8(const Glib::ustring &);
   int utf8();
-  int convert_from(const Glib::ustring&, std::string&, int);
-  int convert_to(const Glib::ustring&, std::string&, int);
-private:
-  bool convert(const Glib::ustring&, std::string&, unsigned int, unsigned int, std::string&);
+  int convert_from(const Glib::ustring &, std::string &, int);
+  int convert_to(const Glib::ustring &, std::string &, int);
+
+ private:
+  bool convert(const Glib::ustring &, std::string &, unsigned int, unsigned int, std::string &);
   /** \brief a vector holding all the encodings (Encoding) we know.  */
   std::vector<Encoding *> _encodings;
   /** \brief a vector holding all the languages (Language) we know. */
@@ -88,10 +87,9 @@ private:
   int _default_save;
   /** \brief our default open encoding. */
   int _default_open;
-protected:
+
+ protected:
   friend class Conf;
   void default_save(unsigned);
   void default_open(unsigned);
 };
-
-#endif /* __ENCODINGS_HH__ */

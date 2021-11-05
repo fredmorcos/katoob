@@ -1,36 +1,36 @@
 /*
  * katoob.hh
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifndef __KATOOB_HH__
-#define __KATOOB_HH__
+#pragma once
 
-#include <vector>
-#include <gtkmm/main.h>
-#include "window.hh"
 #include "conf.hh"
 #include "encodings.hh"
+#include "window.hh"
+#include <gtkmm.h>
+#include <vector>
+
 #ifdef ENABLE_DBUS
 #include "dbus.hh"
 #endif
+
 #ifdef ENABLE_MAEMO
 #include <libosso.h>
 #endif
@@ -38,8 +38,8 @@
 /**
  * \brief This is our application entry point.
  */
-class Katoob : public Gtk::Main {
-public:
+class Katoob: public Gtk::Main {
+ public:
   Katoob(int argc, char *argv[]);
   ~Katoob();
 
@@ -51,7 +51,8 @@ public:
   int get_error();
   bool ok();
 #endif
-private:
+
+ private:
 #ifdef ENABLE_MAEMO
   static void hw_event_handler(osso_hw_state_t *, gpointer);
   //  static void exit_event_handler(gboolean, gpointer);
@@ -83,8 +84,6 @@ private:
 
 #ifdef ENABLE_MAEMO
   /** \brief the osso_context returned by osso_initialize() (Only if maemo support is enabled). */
-  osso_context_t* osso_context;
+  osso_context_t *osso_context;
 #endif
 };
-
-#endif /* __KATOOB_HH__ */

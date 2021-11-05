@@ -1,68 +1,71 @@
 /*
  * mdi.hh
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifndef __MDI_HH__
-#define __MDI_HH__
+#pragma once
 
-#include <vector>
-#include <gtkmm/notebook.h>
-#include "replacedialog.hh"
 #include "document.hh"
 #include "encodings.hh"
-#include "import.hh"
 #include "export.hh"
+#include "import.hh"
+#include "replacedialog.hh"
+#include <gtkmm.h>
+#include <vector>
 #ifdef ENABLE_PRINT
 #include "pagesetup.hh"
 #include "printsettings.hh"
 #endif
 
-class MDI : public Gtk::Notebook {
-public:
-  MDI(Conf&, Encodings&);
+class MDI: public Gtk::Notebook {
+ public:
+  MDI(Conf &, Encodings &);
   ~MDI();
 
   // Our methods.
-  Document *create_document(std::string&, int = -1);
+  Document *create_document(std::string &, int = -1);
   Document *create_document();
   Document *get_active();
   bool close_all();
-  bool close(int n=-1);
+  bool close(int n = -1);
 
   /* Signal callbacks. */
-  void create_cb() { create_document(); }
+  void create_cb()
+  {
+    create_document();
+  }
   void open_cb();
   void open_location_cb();
   void save_cb();
   void save_as_cb();
   void save_copy_cb();
   void revert_cb();
+
 #ifdef ENABLE_PRINT
   void print_cb();
   void page_setup_cb();
   void print_preview_cb();
 #endif
+
   void close_cb();
 
-  void recent_cb(std::string&);
+  void recent_cb(std::string &);
 
   void undo_cb();
   void redo_cb();
@@ -82,21 +85,21 @@ public:
 #ifdef ENABLE_SPELL
   void set_auto_spell(bool);
   void do_spell();
-  bool set_dictionary(std::string&, std::string&);
+  bool set_dictionary(std::string &, std::string &);
 #endif
 
   void goto_line_cb();
   void goto_line_cb2(int);
-  void find(std::string&);
+  void find(std::string &);
   void find_cb();
   void find_next_cb();
   void replace_cb();
 
   void execute_cb();
 
-  void signal_switch_page_cb(GtkNotebookPage*, guint);
+  void signal_switch_page_cb(GtkNotebookPage *, guint);
 
-  bool set_encoding(int, int&);
+  bool set_encoding(int, int &);
 
   void activate(int);
 
@@ -112,19 +115,22 @@ public:
   sigc::signal<void, bool> signal_document_can_undo;
   sigc::signal<void, bool> signal_document_can_redo;
   sigc::signal<void, int, bool> signal_document_readonly;
-  sigc::signal<void, std::string&> signal_document_file_changed;
+  sigc::signal<void, std::string &> signal_document_file_changed;
   sigc::signal<void, int, int> signal_document_cursor_moved;
   sigc::signal<void, int> signal_document_encoding_changed;
   sigc::signal<void, bool> signal_document_overwrite_toggled;
   sigc::signal<void, std::string, int> signal_document_title_changed;
   sigc::signal<void, bool> signal_document_wrap_text;
   sigc::signal<void, bool> signal_document_line_numbers;
+
 #ifdef ENABLE_SPELL
   sigc::signal<void, std::string> signal_document_dictionary_changed;
 #endif
+
 #ifdef ENABLE_HIGHLIGHT
   sigc::signal<void, std::string> signal_document_highlight;
 #endif
+
   sigc::signal<void, int> signal_doc_activated;
   sigc::signal<void, bool, bool, std::string> signal_document_added;
   sigc::signal<void, int> signal_document_removed;
@@ -134,7 +140,7 @@ public:
 #endif
 
   sigc::signal<void> signal_closed_document_erased;
-  sigc::signal<void, std::string>signal_closed_document_added;
+  sigc::signal<void, std::string> signal_closed_document_added;
   void closed_document_activated_cb(int);
 
   void reset_gui();
@@ -144,10 +150,11 @@ public:
 #ifdef ENABLE_HIGHLIGHT
   void set_highlight(std::string);
 #endif
+
   void scan_temp();
   bool autosave();
 
-private:
+ private:
   void connect_signals(Document *);
   bool replace_dialog_signal_find_cb(ReplaceDialog *);
   void replace_dialog_signal_replace_cb(ReplaceDialog *);
@@ -155,27 +162,62 @@ private:
 
   // Signal handlers.
   void signal_document_modified_cb(bool);
-  void signal_document_can_undo_cb(bool b) { signal_document_can_undo.emit(b); }
-  void signal_document_can_redo_cb(bool b) { signal_document_can_redo.emit(b); }
+  void signal_document_can_undo_cb(bool b)
+  {
+    signal_document_can_undo.emit(b);
+  }
+  void signal_document_can_redo_cb(bool b)
+  {
+    signal_document_can_redo.emit(b);
+  }
   void signal_document_readonly_cb(bool);
-  void signal_document_file_changed_cb(std::string s) { signal_document_file_changed.emit(s); }
-  void signal_document_cursor_moved_cb(int c, int l) { signal_document_cursor_moved.emit(c, l); }
-  void signal_document_encoding_changed_cb(int e) { signal_document_encoding_changed.emit(e); }
-  void signal_document_overwrite_toggled_cb(bool b) { signal_document_overwrite_toggled.emit(b); }
+  void signal_document_file_changed_cb(std::string s)
+  {
+    signal_document_file_changed.emit(s);
+  }
+  void signal_document_cursor_moved_cb(int c, int l)
+  {
+    signal_document_cursor_moved.emit(c, l);
+  }
+  void signal_document_encoding_changed_cb(int e)
+  {
+    signal_document_encoding_changed.emit(e);
+  }
+  void signal_document_overwrite_toggled_cb(bool b)
+  {
+    signal_document_overwrite_toggled.emit(b);
+  }
   void signal_document_title_changed_cb(std::string);
 
-  void signal_transfer_complete_cb(bool, const std::string&, const std::string, int, bool);
-  void signal_dict_transfer_complete_cb(bool, const std::string&, std::string);
+  void signal_transfer_complete_cb(bool, const std::string &, const std::string, int, bool);
+  void signal_dict_transfer_complete_cb(bool, const std::string &, std::string);
 
 #ifdef ENABLE_HIGHLIGHT
-  void signal_document_highlight_cb(std::string x) { signal_document_highlight.emit(x); }
+  void signal_document_highlight_cb(std::string x)
+  {
+    signal_document_highlight.emit(x);
+  }
 #endif
+
 #ifdef ENABLE_SPELL
-  void signal_document_spell_enabled_cb(bool s) { signal_document_spell_enabled.emit(s); }
-  void signal_dictionary_changed_cb(std::string d) { signal_document_dictionary_changed.emit(d); }
+  void signal_document_spell_enabled_cb(bool s)
+  {
+    signal_document_spell_enabled.emit(s);
+  }
+  void signal_dictionary_changed_cb(std::string d)
+  {
+    signal_document_dictionary_changed.emit(d);
+  }
 #endif
-  void signal_document_wrap_text_cb(bool w) { signal_document_wrap_text.emit(w); }
-  void signal_document_line_numbers_cb(bool ln) { signal_document_line_numbers.emit(ln); }
+
+  void signal_document_wrap_text_cb(bool w)
+  {
+    signal_document_wrap_text.emit(w);
+  }
+  void signal_document_line_numbers_cb(bool ln)
+  {
+    signal_document_line_numbers.emit(ln);
+  }
 
   void signal_document_label_close_clicked_cb(Document *);
 
@@ -191,12 +233,11 @@ private:
   std::vector<Document *> children;
   std::vector<Document *> closed_children;
 
-  Conf& _conf;
-  Encodings& _encodings;
+  Conf &_conf;
+  Encodings &_encodings;
+
 #ifdef ENABLE_PRINT
   Glib::RefPtr<PageSetup> page_setup;
   Glib::RefPtr<PrintSettings> settings;
 #endif
 };
-
-#endif /* __MDI_HH__ */
