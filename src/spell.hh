@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <enchant/enchant.h>
+#include <enchant-2/enchant.h>
 #include <string>
 #include <vector>
 
