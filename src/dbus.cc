@@ -25,9 +25,6 @@
 //#include <cassert>
 #include "dbus.hh"
 
-#define BUS_NAME "org.foolab.katoob"
-#define BUS_PATH "/org/foolab/katoob"
-
 #define OPEN_FILES "OpenFiles"
 #define PING       "Ping"
 
@@ -57,7 +54,7 @@ void DBus::start()
 
   DBusObjectPathVTable katoob_dbus_vtable = {NULL, katoob_dbus_message_handler, NULL};
 
-  if (!dbus_connection_register_object_path(server, BUS_PATH, &katoob_dbus_vtable, this)) {
+  if (!dbus_connection_register_object_path(server, APP_PATH, &katoob_dbus_vtable, this)) {
     std::cerr << "Not enough memory to register dbus object path." << std::endl;
     return;
   }
@@ -76,7 +73,7 @@ bool DBus::connect(DBusConnection **conn)
 
   dbus_connection_set_exit_on_disconnect(*conn, false);
   dbus_connection_setup_with_g_main(*conn, NULL);
-  dbus_bus_request_name(*conn, BUS_NAME, 0, &error);
+  dbus_bus_request_name(*conn, APP_ID, 0, &error);
   if (dbus_error_is_set(&error)) {
     // TODO: handle the last call properly ??
     std::cerr << error.message << std::endl;
@@ -184,7 +181,7 @@ bool DBus::ping()
     dbus_error_free(&error);
     return false;
   }
-  msg = dbus_message_new_method_call(BUS_NAME, BUS_PATH, BUS_NAME, PING);
+  msg = dbus_message_new_method_call(APP_ID, APP_PATH, APP_ID, PING);
   dbus_message_set_auto_start(msg, FALSE);
 
   dbus_message_append_args(msg, DBUS_TYPE_STRING, &_ping, DBUS_TYPE_INVALID);
@@ -238,7 +235,7 @@ bool DBus::open_files(std::vector<std::string> &_files)
     g_strfreev(files);
     return false;
   }
-  msg = dbus_message_new_method_call(BUS_NAME, BUS_PATH, BUS_NAME, OPEN_FILES);
+  msg = dbus_message_new_method_call(APP_ID, APP_PATH, APP_ID, OPEN_FILES);
   dbus_message_set_auto_start(msg, FALSE);
 
   dbus_message_append_args(msg,
