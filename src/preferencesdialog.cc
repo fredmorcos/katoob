@@ -81,7 +81,7 @@ PreferencesDialog::PreferencesDialog(Conf &conf, Encodings &enc):
   notebook.set_show_tabs(false);
 
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  Gtk::HButtonBox *box = dialog.get_action_area();
+  Gtk::ButtonBox *box = dialog.get_action_area();
   box->pack_start(apply);
   //  dialog.add_button(Gtk::Stock::APPLY, Gtk::RESPONSE_APPLY);
   dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
