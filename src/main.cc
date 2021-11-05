@@ -36,7 +36,7 @@
 int main(int argc, char *argv[])
 {
 #ifdef ENABLE_NLS
-  bindtextdomain(PACKAGE, PACKAGE_LOCALE_DIR);
+  bindtextdomain(PACKAGE, LOCALEDIR);
   bind_textdomain_codeset(PACKAGE, "UTF-8");
   textdomain(PACKAGE);
 #endif

@@ -31,13 +31,10 @@
 
 Emulator::Emulator()
 {
-  std::string dir(Utils::get_data_dir() + Utils::get_dir_separator() + "emulator" +
-                  Utils::get_dir_separator());
-
-  std::auto_ptr<Glib::Dir> d;
+  std::unique_ptr<Glib::Dir> d;
 
   try {
-    d = std::auto_ptr<Glib::Dir>(new Glib::Dir(dir));
+    d = std::unique_ptr<Glib::Dir>(new Glib::Dir(EMULATOR_DIR));
   } catch (Glib::FileError &e) {
     _err = e.what();
     return;
@@ -50,7 +47,7 @@ Emulator::Emulator()
 #endif
   while (start != end) {
     std::map<std::string, std::string> map;
-    std::string file = dir + *start;
+    std::string file = EMULATOR_DIR + *start;
     if (parse_file(file, map)) {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try {
