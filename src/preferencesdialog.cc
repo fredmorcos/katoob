@@ -1,42 +1,38 @@
 /*
  * preferencesdialog.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include <gtkmm/stock.h>
-#include <gtkmm/enums.h>
-#include "preferencesdialog.hh"
+#include "dialogs.hh"
+#include "dict.hh"
 #include "macros.h"
 #include "mdi.hh"
+#include "preferencesdialog.hh"
 #include "utils.hh"
-#include "dict.hh"
-#include "dialogs.hh"
+#include <gtkmm.h>
 
-PreferencesDialog::PreferencesDialog(Conf& conf, Encodings& enc) :
-  _conf(conf),
-  _enc(enc),
-  apply(Gtk::Stock::APPLY)
+PreferencesDialog::PreferencesDialog(Conf &conf, Encodings &enc):
+ _conf(conf),
+ _enc(enc),
+ apply(Gtk::Stock::APPLY)
 {
   dialog.set_title(_("Preferences"));
   dialog.set_modal(true);
@@ -58,7 +54,8 @@ PreferencesDialog::PreferencesDialog(Conf& conf, Encodings& enc) :
   sw.add(treeview);
   sw.set_size_request(150, 300);
   selection = treeview.get_selection();
-  selection->signal_changed().connect(sigc::mem_fun(*this, &PreferencesDialog::selection_signal_changed_cb));
+  selection->signal_changed().connect(
+      sigc::mem_fun(*this, &PreferencesDialog::selection_signal_changed_cb));
 
   add_applet(_("General"), new GeneralApplet(_conf));
   add_applet(_("Interface"), new InterfaceApplet(_conf));
@@ -76,16 +73,15 @@ PreferencesDialog::PreferencesDialog(Conf& conf, Encodings& enc) :
 #ifdef ENABLE_MULTIPRESS
   add_applet(_("Multipress"), new MultipressApplet(_conf));
 #endif
-  add_applet(_("Remote Documents"),new RemoteDocumentsApplet(_conf));
+  add_applet(_("Remote Documents"), new RemoteDocumentsApplet(_conf));
   add_applet(_("Advanced"), new AdvancedApplet(_conf));
   add_applet(_("Network"), new NetworkApplet(_conf));
 
   paned.pack2(notebook, true, true);
   notebook.set_show_tabs(false);
 
-
   dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  Gtk::HButtonBox* box = dialog.get_action_area();
+  Gtk::HButtonBox *box = dialog.get_action_area();
   box->pack_start(apply);
   //  dialog.add_button(Gtk::Stock::APPLY, Gtk::RESPONSE_APPLY);
   dialog.add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
@@ -93,14 +89,16 @@ PreferencesDialog::PreferencesDialog(Conf& conf, Encodings& enc) :
   apply.signal_clicked().connect(sigc::mem_fun(*this, &PreferencesDialog::apply_clicked_cb));
 }
 
-void PreferencesDialog::add_applet(const std::string& name, Applet *applet) {
+void PreferencesDialog::add_applet(const std::string &name, Applet *applet)
+{
   applets[name] = applet;
-  Gtk::TreeModel::Row row = *(store->append ());
+  Gtk::TreeModel::Row row = *(store->append());
   row[section] = name;
   notebook.append_page(applet->get_box());
 }
 
-PreferencesDialog::~PreferencesDialog() {
+PreferencesDialog::~PreferencesDialog()
+{
   std::map<std::string, Applet *>::iterator iter;
   for (iter = applets.begin(); iter != applets.end(); iter++) {
     delete iter->second;
@@ -108,7 +106,8 @@ PreferencesDialog::~PreferencesDialog() {
   applets.clear();
 }
 
-bool PreferencesDialog::run() {
+bool PreferencesDialog::run()
+{
   dialog.show_all();
   if (dialog.run() == Gtk::RESPONSE_OK) {
     repopulate_conf();
@@ -117,7 +116,8 @@ bool PreferencesDialog::run() {
   return false;
 }
 
-void PreferencesDialog::selection_signal_changed_cb() {
+void PreferencesDialog::selection_signal_changed_cb()
+{
   Gtk::TreeModel::iterator iter = selection->get_selected();
   if (iter) {
     Gtk::TreeModel::Row row = *iter;
@@ -127,7 +127,8 @@ void PreferencesDialog::selection_signal_changed_cb() {
   }
 }
 
-void PreferencesDialog::repopulate_conf() {
+void PreferencesDialog::repopulate_conf()
+{
   std::map<std::string, Applet *>::iterator iter;
   for (iter = applets.begin(); iter != applets.end(); iter++) {
     iter->second->apply();

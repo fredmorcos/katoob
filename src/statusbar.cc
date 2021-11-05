@@ -1,38 +1,36 @@
 /*
  * statusbar.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include <string>
+#include "macros.h"
 #include "statusbar.hh"
 #include "utils.hh"
-#include "macros.h"
+#include <string>
 
-Statusbar::Statusbar(Conf& conf) :
-  _conf(conf),
-  red(Utils::get_data_path("red.png")),
-  green(Utils::get_data_path("green.png")) {
+Statusbar::Statusbar(Conf &conf):
+ _conf(conf),
+ red(Utils::get_data_path("red.png")),
+ green(Utils::get_data_path("green.png"))
+{
   pack_start(red, false, false);
   pack_start(green, false, false);
 
@@ -61,63 +59,71 @@ Statusbar::Statusbar(Conf& conf) :
   red.hide();
 }
 
-Statusbar::~Statusbar() {
-
+Statusbar::~Statusbar()
+{
 }
 
-void Statusbar::set_overwrite(bool o) {
+void Statusbar::set_overwrite(bool o)
+{
   overwrite.set_text(o ? _("OVR") : _("INS"));
 }
 
-void Statusbar::set_position(int c, int l) {
+void Statusbar::set_position(int c, int l)
+{
   sbar.pop(0);
   sbar.push(Utils::substitute(_(" L: %d, C: %d"), l, c));
 }
 
-void Statusbar::set_modified(bool m) {
+void Statusbar::set_modified(bool m)
+{
   if (m) {
     green.hide();
     red.show();
-  }
-  else {
+  } else {
     red.hide();
     green.show();
   }
 }
 
-void Statusbar::reset_gui() {
+void Statusbar::reset_gui()
+{
   _conf.get("statusbar", true) ? Gtk::HBox::show() : hide();
 }
 
-void Statusbar::show(bool do_show) {
+void Statusbar::show(bool do_show)
+{
   do_show ? Gtk::HBox::show() : hide();
   _conf.set("statusbar", do_show);
 }
 
-void Statusbar::set_encoding(std::string e) {
+void Statusbar::set_encoding(std::string e)
+{
   enc.set_text(e);
 }
 
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
-bool Statusbar::set_input_status(bool active) {
+bool Statusbar::set_input_status(bool active)
+{
   if (active == input.get_active()) {
     return false;
-  }
-  else {
+  } else {
     input.set_active(active);
     return true;
   }
 }
 
-bool Statusbar::get_input_status() {
+bool Statusbar::get_input_status()
+{
   return input.get_active();
 }
 
-void Statusbar::signal_input_toggled_cb() {
+void Statusbar::signal_input_toggled_cb()
+{
   signal_input_toggled.emit(input.get_active());
 }
 
-void Statusbar::activate_input(bool active) {
+void Statusbar::activate_input(bool active)
+{
   input.set_sensitive(active);
 }
 #endif

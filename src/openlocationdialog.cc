@@ -1,35 +1,33 @@
 /*
  * openlocationdialog.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include "openlocationdialog.hh"
-#include <gtkmm/stock.h>
 #include "macros.h"
+#include "openlocationdialog.hh"
 #include "utils.hh"
+#include <gtkmm.h>
 
-OpenLocationDialog::OpenLocationDialog(Conf& conf, Encodings& enc) : _conf(conf) {
+OpenLocationDialog::OpenLocationDialog(Conf &conf, Encodings &enc): _conf(conf)
+{
   set_modal();
   set_position(Gtk::WIN_POS_CENTER);
   Gtk::VBox *vbox = Gtk::Dialog::get_vbox();
@@ -65,7 +63,6 @@ OpenLocationDialog::OpenLocationDialog(Conf& conf, Encodings& enc) : _conf(conf)
   box1.set_border_width(5);
   box2.set_border_width(5);
 
-
   add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
   add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_ACCEPT);
 
@@ -73,15 +70,17 @@ OpenLocationDialog::OpenLocationDialog(Conf& conf, Encodings& enc) : _conf(conf)
   location.set_size_request(500, -1);
 }
 
-OpenLocationDialog::~OpenLocationDialog() {
-
+OpenLocationDialog::~OpenLocationDialog()
+{
 }
 
-std::string& OpenLocationDialog::get_uri() {
+std::string &OpenLocationDialog::get_uri()
+{
   return uri;
 }
 
-bool OpenLocationDialog::run(std::string& out) {
+bool OpenLocationDialog::run(std::string &out)
+{
   show_all();
 
   if (Gtk::Dialog::run() == Gtk::RESPONSE_ACCEPT) {
@@ -91,8 +90,7 @@ bool OpenLocationDialog::run(std::string& out) {
     if (uri.size() == 0) {
       out = _("You must enter a location to open.");
       return false;
-    }
-    else {
+    } else {
       _conf.locations_prepend(uri);
       return true;
     }
@@ -101,14 +99,17 @@ bool OpenLocationDialog::run(std::string& out) {
   return false;
 }
 
-int OpenLocationDialog::get_encoding() {
+int OpenLocationDialog::get_encoding()
+{
   return _encodings.get(encoding.get_active_text());
 }
 
-bool OpenLocationDialog::insert_to_active() {
+bool OpenLocationDialog::insert_to_active()
+{
   return to_active.get_active();
 }
 
-void OpenLocationDialog::disable_insert_to_active() {
+void OpenLocationDialog::disable_insert_to_active()
+{
   to_active.set_sensitive(false);
 }

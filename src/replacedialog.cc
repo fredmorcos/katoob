@@ -1,48 +1,45 @@
 /*
  * replacedialog.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include "replacedialog.hh"
-#include <gtkmm/stock.h>
 #include "macros.h"
+#include "replacedialog.hh"
+#include <gtkmm.h>
 
-ReplaceDialog::ReplaceDialog() :
-  dialog(_("Find"), true, true),
-  label(_("Search for:")),
-  label2(_("Replace with:")),
-  _whole_word(_("Match entire word only")),
-  _match_case(_("Match case")),
-  _wrap(_("Wrap search")),
-  _cursor(_("Search from the cursor position")),
-  _backwards(_("Search backwards")),
-  _beginning(_("Search from the beginnig of the document")),
-  find(Gtk::Stock::FIND),
-  replace(_("_Replace")),
-  /*  find_replace(Gtk::Stock::FIND_AND_REPLACE),*/
-  replace_all(_("Replace _All")),
-  _close(Gtk::Stock::CLOSE)
+ReplaceDialog::ReplaceDialog():
+ dialog(_("Find"), true, true),
+ label(_("Search for:")),
+ label2(_("Replace with:")),
+ _whole_word(_("Match entire word only")),
+ _match_case(_("Match case")),
+ _wrap(_("Wrap search")),
+ _cursor(_("Search from the cursor position")),
+ _backwards(_("Search backwards")),
+ _beginning(_("Search from the beginnig of the document")),
+ find(Gtk::Stock::FIND),
+ replace(_("_Replace")),
+ /*  find_replace(Gtk::Stock::FIND_AND_REPLACE),*/
+ replace_all(_("Replace _All")),
+ _close(Gtk::Stock::CLOSE)
 {
   dialog.set_border_width(10);
 
@@ -73,21 +70,19 @@ ReplaceDialog::ReplaceDialog() :
 
   /*  dialog.get_action_area()->pack_start(find_replace);*/
 
-
-
   what.signal_activate().connect(sigc::mem_fun(find, &Gtk::Button::clicked));
   with.signal_activate().connect(sigc::mem_fun(replace, &Gtk::Button::clicked));
 
   find.signal_clicked().connect(sigc::mem_fun(this, &ReplaceDialog::on_find_clicked));
   replace.signal_clicked().connect(sigc::mem_fun(this, &ReplaceDialog::on_replace_clicked));
-  /*  find_replace.signal_clicked().connect(sigc::mem_fun(this, &ReplaceDialog::on_find_replace_clicked));*/
+  /*  find_replace.signal_clicked().connect(sigc::mem_fun(this,
+   * &ReplaceDialog::on_find_replace_clicked));*/
   replace_all.signal_clicked().connect(sigc::mem_fun(this, &ReplaceDialog::on_replace_all_clicked));
   _close.signal_clicked().connect(sigc::mem_fun(this, &ReplaceDialog::on_close_clicked));
 }
 
 ReplaceDialog::~ReplaceDialog()
 {
-
 }
 
 void ReplaceDialog::run()

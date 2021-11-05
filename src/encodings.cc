@@ -1,38 +1,36 @@
 /*
  * encodings.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include <iostream>
-#include <cassert>
 #include "encodings.hh"
 #include "macros.h"
+#include <cassert>
+#include <iostream>
 
 /**
  * \brief constructor
  */
-Encodings::Encodings() {
+Encodings::Encodings()
+{
   _default_save = 28;
   _default_open = 1;
 
@@ -272,7 +270,8 @@ Encodings::Encodings() {
 /**
  * \brief destructor
  */
-Encodings::~Encodings() {
+Encodings::~Encodings()
+{
   // TODO: Free all what we've allocated.
 }
 
@@ -281,7 +280,8 @@ Encodings::~Encodings() {
  * \param x position of the encoding.
  * \return the encoding itself (ex: WINDOWS-1256).
  */
-const std::string& Encodings::get_charset(unsigned x) {
+const std::string &Encodings::get_charset(unsigned x)
+{
   assert(x <= _encodings.size());
   return _encodings[x]->encoding;
 }
@@ -291,7 +291,8 @@ const std::string& Encodings::get_charset(unsigned x) {
  * \param enc the name of the encoding (ex: Arabic (Windows))
  * \return the position of the encoding.
  */
-int Encodings::get(const std::string& enc) {
+int Encodings::get(const std::string &enc)
+{
   for (unsigned int x = 0; x < _encodings.size(); x++) {
     if (_encodings[x]->name == enc) {
       return x;
@@ -305,7 +306,8 @@ int Encodings::get(const std::string& enc) {
  * \param enc the character set of the encoding (ex: WINDOWS-1256)
  * \return the position of the encoding.
  */
-int Encodings::get_by_charset(const std::string& cset) {
+int Encodings::get_by_charset(const std::string &cset)
+{
   for (unsigned int x = 0; x < _encodings.size(); x++) {
     if (_encodings[x]->encoding == cset) {
       return x;
@@ -319,7 +321,8 @@ int Encodings::get_by_charset(const std::string& cset) {
  * \param x the position of the encoding.
  * \return the name of the encoding
  */
-const std::string& Encodings::name(unsigned x) {
+const std::string &Encodings::name(unsigned x)
+{
   assert(x <= _encodings.size());
   return _encodings[x]->name;
 }
@@ -333,28 +336,31 @@ const std::string& Encodings::name(unsigned x) {
  * \param err a string to contain an error in case of a conversion error.
  * \return true if the conversion is correct, false otherwise. err is set to any error.
  */
-bool Encodings::convert(const Glib::ustring& text, std::string& res, unsigned int from, unsigned int to, std::string& err) {
+bool Encodings::convert(const Glib::ustring &text,
+                        std::string &res,
+                        unsigned int from,
+                        unsigned int to,
+                        std::string &err)
+{
   assert(from <= _encodings.size());
   assert(to <= _encodings.size());
   assert(from != to);
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try {
-    res = Glib::convert (text, get_charset(to), get_charset(from));
+    res = Glib::convert(text, get_charset(to), get_charset(from));
     if (utf8(res)) {
       return true;
-    }
-    else {
+    } else {
       err = _("I wasn't able to convert the encoding.");
       return false;
     }
-  }
-  catch (Glib::ConvertError& _err) {
+  } catch (Glib::ConvertError &_err) {
     err = _err.what();
     return false;
   }
 #else
   std::auto_ptr<Glib::Error> error;
-  res = Glib::convert (text, get_charset(to), get_charset(from), error);
+  res = Glib::convert(text, get_charset(to), get_charset(from), error);
   if (error.get()) {
     err = error->what();
     return false;
@@ -362,8 +368,7 @@ bool Encodings::convert(const Glib::ustring& text, std::string& res, unsigned in
 
   if (utf8(res)) {
     return true;
-  }
-  else {
+  } else {
     err = _("I wasn't able to convert the encoding.");
     return false;
   }
@@ -377,13 +382,13 @@ bool Encodings::convert(const Glib::ustring& text, std::string& res, unsigned in
  * \param enc the encoding position to convert from.
  * \return -1 in case of error, out wil contain the error string. otherwise the encoding.
  */
-int Encodings::convert_to(const Glib::ustring& in, std::string& out, int enc) {
+int Encodings::convert_to(const Glib::ustring &in, std::string &out, int enc)
+{
   std::string err;
   if (in.validate()) {
     out = in;
     return utf8();
-  }
-  else {
+  } else {
     if (convert(in, out, enc, utf8(), err)) {
       return enc;
     }
@@ -399,7 +404,8 @@ int Encodings::convert_to(const Glib::ustring& in, std::string& out, int enc) {
  * \param enc the encoding position to convert to.
  * \return -1 in case of error, out wil contain the error string. otherwise the encoding.
  */
-int Encodings::convert_from(const Glib::ustring& in, std::string& out, int enc) {
+int Encodings::convert_from(const Glib::ustring &in, std::string &out, int enc)
+{
   if (enc == utf8()) {
     out = in;
     return enc;
@@ -418,7 +424,8 @@ int Encodings::convert_from(const Glib::ustring& in, std::string& out, int enc) 
  * \param text the text to check.
  * \return true if the contents are valid utf8, false otherwise.
  */
-bool Encodings::utf8(const Glib::ustring& text) {
+bool Encodings::utf8(const Glib::ustring &text)
+{
   return text.validate();
 }
 
@@ -426,7 +433,8 @@ bool Encodings::utf8(const Glib::ustring& text) {
  * \brief get the number of languages we know.
  * \return the number of languages.
  */
-int Encodings::languages() {
+int Encodings::languages()
+{
   return _languages.size();
 }
 
@@ -435,7 +443,8 @@ int Encodings::languages() {
  * \param x the position of the language.
  * \return the number of encodings.
  */
-int Encodings::languages(int x) {
+int Encodings::languages(int x)
+{
   return _languages[x]->children.size();
 }
 
@@ -444,7 +453,8 @@ int Encodings::languages(int x) {
  * \param x the number of the language to query.
  * \return the name of the language (Ex: Arabic).
  */
-std::string& Encodings::language(int x) {
+std::string &Encodings::language(int x)
+{
   return _languages[x]->name;
 }
 
@@ -454,7 +464,8 @@ std::string& Encodings::language(int x) {
  * \param y the position of the encoding within the language children.
  * \return the name of the encoding.
  */
-std::string& Encodings::name(unsigned x, unsigned y) {
+std::string &Encodings::name(unsigned x, unsigned y)
+{
   return _languages[x]->children[y]->name;
 }
 
@@ -462,7 +473,8 @@ std::string& Encodings::name(unsigned x, unsigned y) {
  * \brief get default save encoding.
  * \return the number of the default save encoding.
  */
-int Encodings::default_save() {
+int Encodings::default_save()
+{
   return _default_save;
 }
 
@@ -470,7 +482,8 @@ int Encodings::default_save() {
  * \brief get default open encoding.
  * \return the number of the default open encoding.
  */
-int Encodings::default_open() {
+int Encodings::default_open()
+{
   return _default_open;
 }
 
@@ -478,7 +491,8 @@ int Encodings::default_open() {
  * \brief return the size (Number of encodings we know).
  * \return the number (size) of encodings.
  */
-int Encodings::size() {
+int Encodings::size()
+{
   return _encodings.size();
 }
 
@@ -487,7 +501,8 @@ int Encodings::size() {
  * \param x the encoding position.
  * \return the name of the encoding.
  */
-const std::string& Encodings::at(unsigned x) {
+const std::string &Encodings::at(unsigned x)
+{
   return _encodings[x]->name;
 }
 
@@ -495,7 +510,8 @@ const std::string& Encodings::at(unsigned x) {
  * \brief return the utf8 encoding.
  * \return the number "position" of the utf8 encoding.
  */
-int Encodings::utf8() {
+int Encodings::utf8()
+{
   return 28;
 }
 
@@ -503,7 +519,8 @@ int Encodings::utf8() {
  * \brief set the default save encoding.
  * \param x the encoding.
  */
-void Encodings::default_save(unsigned x) {
+void Encodings::default_save(unsigned x)
+{
   if (x <= _encodings.size()) {
     _default_save = x;
   }
@@ -513,7 +530,8 @@ void Encodings::default_save(unsigned x) {
  * \brief set the default open encoding.
  * \param x the encoding.
  */
-void Encodings::default_open(unsigned x) {
+void Encodings::default_open(unsigned x)
+{
   if (x <= _encodings.size()) {
     _default_open = x;
   }

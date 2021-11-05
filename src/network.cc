@@ -1,60 +1,72 @@
 /*
  * network.cc
- * This file is part of katoob
  *
- * Copyright (C) 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include <glibmm/main.h>
-#include "network.hh"
 #include "macros.h"
+#include "network.hh"
+#include <glibmm/main.h>
+
 #ifdef ENABLE_MAEMO
 #include "maemo-wrapper.hh"
 #endif
 
 class URL {
-public:
-  URL(const char *url) : _url(url) {}
+ public:
+  URL(const char *url): _url(url)
+  {
+  }
 
-  ~URL() {
+  ~URL()
+  {
     if (_url) {
       g_free(const_cast<char *>(_url));
     }
   }
 
-  const char *get() { return _url; }
+  const char *get()
+  {
+    return _url;
+  }
 
-  char *release() {
+  char *release()
+  {
     char *url = const_cast<char *>(_url);
     _url = NULL;
     return url;
   }
-private:
-  URL(const URL&);
-  URL& operator=(const URL&);
+
+ private:
+  URL(const URL &);
+  URL &operator=(const URL &);
   const char *_url;
 };
 
-CURLcode Network::populate_proxy(CURL *handle, const std::string& host, const int& port, const bool& auth, const std::string& user, const std::string& pass) {
+CURLcode Network::populate_proxy(CURL *handle,
+                                 const std::string &host,
+                                 const int &port,
+                                 const bool &auth,
+                                 const std::string &user,
+                                 const std::string &pass)
+{
   CURLcode code;
   code = curl_easy_setopt(handle, CURLOPT_PROXY, host.c_str());
   if (code != CURLE_OK) {
@@ -73,14 +85,16 @@ CURLcode Network::populate_proxy(CURL *handle, const std::string& host, const in
       return code;
     }
     return CURLE_OK;
-  }
-  else {
+  } else {
     return CURLE_OK;
   }
 }
 
-bool Network::add_transfer(const std::string& uri, std::string& error, sigc::slot<void, bool, const std::string&> slot, void *get_handle) {
-
+bool Network::add_transfer(const std::string &uri,
+                           std::string &error,
+                           sigc::slot<void, bool, const std::string &> slot,
+                           void *get_handle)
+{
   if (!m_handle) {
     m_handle = curl_multi_init();
   }
@@ -106,77 +120,82 @@ bool Network::add_transfer(const std::string& uri, std::string& error, sigc::slo
   std::string proxyhost = conf->get("proxyhost", "");
   int proxytype = conf->get("proxytype", 0);
   switch (proxytype) {
-  case 0: // None
-    code = curl_easy_setopt(handle, CURLOPT_PROXY, "");
-    if (code != CURLE_OK) {
-      error = curl_easy_strerror(code);
-      curl_easy_cleanup(handle);
-      return false;
-    }
-    break;
-  case 1: // "Get from the environment
+    case 0:   // None
+      code = curl_easy_setopt(handle, CURLOPT_PROXY, "");
+      if (code != CURLE_OK) {
+        error = curl_easy_strerror(code);
+        curl_easy_cleanup(handle);
+        return false;
+      }
+      break;
+    case 1:   // "Get from the environment
 #ifdef ENABLE_MAEMO
     {
       std::string host, user, pass;
       int port;
       bool auth;
       if (MaemoProxy::get_info(host, port, auth, user, pass)) {
-	code = populate_proxy(handle, host, port, auth, user, pass);
-	if (code != CURLE_OK) {
-	  error = curl_easy_strerror(code);
-	  curl_easy_cleanup(handle);
-	  return false;
-	}
-	code = curl_easy_setopt(handle, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
-	if (code != CURLE_OK) {
-	  error = curl_easy_strerror(code);
-	  curl_easy_cleanup(handle);
-	  return false;
-	}
+        code = populate_proxy(handle, host, port, auth, user, pass);
+        if (code != CURLE_OK) {
+          error = curl_easy_strerror(code);
+          curl_easy_cleanup(handle);
+          return false;
+        }
+        code = curl_easy_setopt(handle, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
+        if (code != CURLE_OK) {
+          error = curl_easy_strerror(code);
+          curl_easy_cleanup(handle);
+          return false;
+        }
       }
     }
 #endif
     break;
-  case 2: // HTTP
-  case 3: // SOCKS4
-  case 4: // SOCKS5
-    if (proxyauth == true) {
-      if (proxyuser.size() == 0) {
-	error = _("Please set the proxy authentication username.");
-	curl_easy_cleanup(handle);
-	return false;
+    case 2:   // HTTP
+    case 3:   // SOCKS4
+    case 4:   // SOCKS5
+      if (proxyauth == true) {
+        if (proxyuser.size() == 0) {
+          error = _("Please set the proxy authentication username.");
+          curl_easy_cleanup(handle);
+          return false;
+        }
+        if (proxypass.size() == 0) {
+          error = _("Please set the proxy authentication password.");
+          curl_easy_cleanup(handle);
+          return false;
+        }
       }
-      if (proxypass.size() == 0) {
-	error = _("Please set the proxy authentication password.");
-	curl_easy_cleanup(handle);
-	return false;
+
+      if (proxyhost == "") {
+        error = _("Please set a proxy host.");
+        curl_easy_cleanup(handle);
+        return false;
       }
-    }
+      code = populate_proxy(handle, proxyhost, proxyport, proxyauth, proxyuser, proxypass);
+      if (code != CURLE_OK) {
+        error = curl_easy_strerror(code);
+        curl_easy_cleanup(handle);
+        return false;
+      }
 
-    if (proxyhost == "") {
-      error = _("Please set a proxy host.");
-      curl_easy_cleanup(handle);
+      code = curl_easy_setopt(handle,
+                              CURLOPT_PROXYTYPE,
+                              proxytype == 2   ? CURLPROXY_HTTP
+                              : proxytype == 3 ? CURLPROXY_SOCKS4
+                                               : CURLPROXY_SOCKS5);
+      if (code != CURLE_OK) {
+        error = curl_easy_strerror(code);
+        curl_easy_cleanup(handle);
+        return false;
+      }
+
+      break;
+
+    default:
+      error = "The proxy setting code is not in sync. with the network code. Please inform the "
+              "developer.";
       return false;
-    }
-    code = populate_proxy(handle, proxyhost, proxyport, proxyauth, proxyuser, proxypass);
-    if (code != CURLE_OK) {
-      error = curl_easy_strerror(code);
-      curl_easy_cleanup(handle);
-      return false;
-    }
-
-    code = curl_easy_setopt(handle, CURLOPT_PROXYTYPE, proxytype == 2 ? CURLPROXY_HTTP : proxytype == 3 ? CURLPROXY_SOCKS4 : CURLPROXY_SOCKS5);
-    if (code != CURLE_OK) {
-      error = curl_easy_strerror(code);
-      curl_easy_cleanup(handle);
-      return false;
-    }
-
-    break;
-
-  default:
-    error = "The proxy setting code is not in sync. with the network code. Please inform the developer.";
-    return false;
   }
 
   code = curl_easy_setopt(handle, CURLOPT_TIMEOUT, conf->get("timeout", 180));
@@ -209,14 +228,14 @@ bool Network::add_transfer(const std::string& uri, std::string& error, sigc::slo
     return false;
   }
 
-  code = curl_easy_setopt(handle, CURLOPT_PRIVATE, url.get()); // TODO: Hack
+  code = curl_easy_setopt(handle, CURLOPT_PRIVATE, url.get());   // TODO: Hack
   if (code != CURLE_OK) {
     error = curl_easy_strerror(code);
     curl_easy_cleanup(handle);
     return false;
   }
 
-  code = curl_easy_setopt(handle, CURLOPT_WRITEDATA, handle); // TODO: Hack
+  code = curl_easy_setopt(handle, CURLOPT_WRITEDATA, handle);   // TODO: Hack
   if (code != CURLE_OK) {
     error = curl_easy_strerror(code);
     curl_easy_cleanup(handle);
@@ -246,8 +265,7 @@ bool Network::add_transfer(const std::string& uri, std::string& error, sigc::slo
 
   if (!conn.connected()) {
     conn = Glib::signal_idle().connect(sigc::ptr_fun(Network::network_perform), G_PRIORITY_LOW);
-  }
-  else if (conn.blocked()) {
+  } else if (conn.blocked()) {
     conn.unblock();
   }
 
@@ -259,25 +277,29 @@ bool Network::add_transfer(const std::string& uri, std::string& error, sigc::slo
   return true;
 }
 
-Network::Network(Conf& _conf) {
+Network::Network(Conf &_conf)
+{
   conf = &_conf;
 };
 
-Network::~Network() {
+Network::~Network()
+{
   if (m_handle) {
     curl_multi_cleanup(m_handle);
   }
 }
 
-void Network::del_transfer(void *handle) {
-  std::map<CURL *, sigc::slot<void, bool, const std::string&> >::iterator iter = cons.find(handle);
+void Network::del_transfer(void *handle)
+{
+  std::map<CURL *, sigc::slot<void, bool, const std::string &> >::iterator iter = cons.find(handle);
   std::map<CURL *, std::string>::iterator d_iter = data.find(handle);
   clean_handle(handle);
   cons.erase(iter);
   data.erase(d_iter);
 }
 
-void Network::clean_handle(void *handle) {
+void Network::clean_handle(void *handle)
+{
   char *url;
   CURLcode code = curl_easy_getinfo(handle, CURLINFO_PRIVATE, &url);
   if (code == CURLE_OK) {
@@ -290,7 +312,8 @@ void Network::clean_handle(void *handle) {
   // TODO: error
 }
 
-bool Network::network_perform() {
+bool Network::network_perform()
+{
   int running_handles;
   int msgs_in_queue;
   CURLMcode code;
@@ -305,11 +328,9 @@ bool Network::network_perform() {
 
     if (code == CURLM_CALL_MULTI_PERFORM) {
       continue;
-    }
-    else if (code == CURLM_OK) {
+    } else if (code == CURLM_OK) {
       break;
-    }
-    else {
+    } else {
       // TODO: Error.
     }
   }
@@ -323,39 +344,41 @@ bool Network::network_perform() {
     while (true) {
       msg = curl_multi_info_read(m_handle, &msgs_in_queue);
       if (msg == NULL) {
-	return true;
-      }
-      else {
-	if (msg->msg == CURLMSG_DONE) {
-	  // done.
-	  bool good = msg->data.result == CURLE_OK;
+        return true;
+      } else {
+        if (msg->msg == CURLMSG_DONE) {
+          // done.
+          bool good = msg->data.result == CURLE_OK;
 
-	  std::map<CURL *, sigc::slot<void, bool, const std::string&> >::iterator iter = cons.find(msg->easy_handle);
-	  std::map<CURL *, std::string>::iterator d_iter = data.find(msg->easy_handle);
-	  std::string er = curl_easy_strerror(msg->data.result);
-	  iter->second(good, good ? d_iter->second : er);
-	  clean_handle(msg->easy_handle);
-	  cons.erase(iter);
-	  data.erase(d_iter);
-	  //	  curl_easy_cleanup(msg->easy_handle);
-	}
+          std::map<CURL *, sigc::slot<void, bool, const std::string &> >::iterator iter =
+              cons.find(msg->easy_handle);
+          std::map<CURL *, std::string>::iterator d_iter = data.find(msg->easy_handle);
+          std::string er = curl_easy_strerror(msg->data.result);
+          iter->second(good, good ? d_iter->second : er);
+          clean_handle(msg->easy_handle);
+          cons.erase(iter);
+          data.erase(d_iter);
+          //	  curl_easy_cleanup(msg->easy_handle);
+        }
       }
     }
   }
   return true;
 }
 
-size_t Network::__curl_data_callback(void *ptr, size_t size, size_t nmemb, void  *stream) {
+size_t Network::__curl_data_callback(void *ptr, size_t size, size_t nmemb, void *stream)
+{
   // TODO: This is _really_ bad
   std::map<CURL *, std::string>::iterator iter = data.find(static_cast<CURL *>(stream));
   char *str = static_cast<char *>(ptr);
-  for (size_t x = 0; x < nmemb*size; x++) {
+  for (size_t x = 0; x < nmemb * size; x++) {
     iter->second += str[x];
   }
-  return nmemb*size;
+  return nmemb * size;
 }
 
-void Network::destroy() {
+void Network::destroy()
+{
   for (std::map<CURL *, std::string>::iterator iter = data.begin(); iter != data.end(); iter++) {
     del_transfer(iter->first);
   }
@@ -365,10 +388,10 @@ void Network::destroy() {
 }
 
 /* Our static members */
-std::map<CURL *, sigc::slot<void, bool, const std::string&> > Network::cons;
+std::map<CURL *, sigc::slot<void, bool, const std::string &> > Network::cons;
 std::map<CURL *, std::string> Network::data;
-//std::map<CURL *, sigc::signal<void, bool, const std::string&> > *Network::cons = NULL;
-//std::map<CURL *, std::string> *Network::data = NULL;
+// std::map<CURL *, sigc::signal<void, bool, const std::string&> > *Network::cons = NULL;
+// std::map<CURL *, std::string> *Network::data = NULL;
 Conf *Network::conf = NULL;
 CURLM *Network::m_handle = NULL;
 sigc::connection Network::conn;

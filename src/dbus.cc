@@ -1,28 +1,25 @@
 /*
  * dbus.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
 #include <iostream>
 //#include <cassert>
@@ -32,23 +29,27 @@
 #define BUS_PATH "/org/foolab/katoob"
 
 #define OPEN_FILES "OpenFiles"
-#define PING "Ping"
+#define PING       "Ping"
 
-DBusHandlerResult katoob_dbus_message_handler(DBusConnection *connection, DBusMessage *message, void *user_data) {
+DBusHandlerResult
+katoob_dbus_message_handler(DBusConnection *connection, DBusMessage *message, void *user_data)
+{
   return static_cast<DBus *>(user_data)->got_message(connection, message);
 }
 
-DBus::DBus() :
-  server(NULL) {
+DBus::DBus(): server(NULL)
+{
 }
 
-DBus::~DBus() {
+DBus::~DBus()
+{
   if (server) {
     dbus_connection_unref(server);
   }
 }
 
-void DBus::start() {
+void DBus::start()
+{
   //  assert(server = NULL);
   if (!connect(&server)) {
     return;
@@ -62,13 +63,14 @@ void DBus::start() {
   }
 }
 
-bool DBus::connect(DBusConnection **conn) {
+bool DBus::connect(DBusConnection **conn)
+{
   DBusError error;
   dbus_error_init(&error);
-  *conn = dbus_bus_get (DBUS_BUS_SESSION, &error);
+  *conn = dbus_bus_get(DBUS_BUS_SESSION, &error);
   if (!*conn) {
     std::cerr << error.message << std::endl;
-    dbus_error_free (&error);
+    dbus_error_free(&error);
     return false;
   }
 
@@ -78,22 +80,22 @@ bool DBus::connect(DBusConnection **conn) {
   if (dbus_error_is_set(&error)) {
     // TODO: handle the last call properly ??
     std::cerr << error.message << std::endl;
-    dbus_error_free (&error);
+    dbus_error_free(&error);
     return false;
   }
-  dbus_error_free (&error);
+  dbus_error_free(&error);
   return true;
 }
 
-DBusHandlerResult DBus::got_message(DBusConnection *connection, DBusMessage *message) {
+DBusHandlerResult DBus::got_message(DBusConnection *connection, DBusMessage *message)
+{
   if ((!connection) || (!message)) {
     return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
   }
   std::string method = dbus_message_get_member(message);
   if (method == PING) {
     return pong(connection, message);
-  }
-  else if (method == OPEN_FILES) {
+  } else if (method == OPEN_FILES) {
     return open_files(connection, message);
   }
 #ifdef ENABLE_MAEMO
@@ -111,7 +113,8 @@ DBusHandlerResult DBus::got_message(DBusConnection *connection, DBusMessage *mes
   }
 }
 
-DBusHandlerResult DBus::open_files(DBusConnection *connection, DBusMessage *message) {
+DBusHandlerResult DBus::open_files(DBusConnection *connection, DBusMessage *message)
+{
   DBusError error;
   bool done = true;
   int len;
@@ -119,9 +122,15 @@ DBusHandlerResult DBus::open_files(DBusConnection *connection, DBusMessage *mess
 
   dbus_error_init(&error);
 
-  if (!dbus_message_get_args(message, &error, DBUS_TYPE_ARRAY, DBUS_TYPE_STRING, &list, &len, DBUS_TYPE_INVALID)) {
+  if (!dbus_message_get_args(message,
+                             &error,
+                             DBUS_TYPE_ARRAY,
+                             DBUS_TYPE_STRING,
+                             &list,
+                             &len,
+                             DBUS_TYPE_INVALID)) {
     std::cerr << error.message << std::endl;
-    dbus_error_free (&error);
+    dbus_error_free(&error);
     done = false;
   }
 
@@ -135,7 +144,7 @@ DBusHandlerResult DBus::open_files(DBusConnection *connection, DBusMessage *mess
   dbus_message_unref(reply);
 
   std::vector<std::string> files;
-  for (int i = 0; i < len;i++) {
+  for (int i = 0; i < len; i++) {
     files.push_back(list[i]);
   }
   // dbus_connection_flush
@@ -143,7 +152,8 @@ DBusHandlerResult DBus::open_files(DBusConnection *connection, DBusMessage *mess
   return DBUS_HANDLER_RESULT_HANDLED;
 }
 
-DBusHandlerResult DBus::pong(DBusConnection *connection, DBusMessage *message) {
+DBusHandlerResult DBus::pong(DBusConnection *connection, DBusMessage *message)
+{
   DBusError error;
   bool done = true;
 
@@ -160,7 +170,8 @@ DBusHandlerResult DBus::pong(DBusConnection *connection, DBusMessage *message) {
   return DBUS_HANDLER_RESULT_HANDLED;
 }
 
-bool DBus::ping() {
+bool DBus::ping()
+{
   DBusConnection *con;
   DBusMessage *msg, *res;
   DBusError error;
@@ -173,7 +184,7 @@ bool DBus::ping() {
     dbus_error_free(&error);
     return false;
   }
-  msg = dbus_message_new_method_call (BUS_NAME, BUS_PATH, BUS_NAME, PING);
+  msg = dbus_message_new_method_call(BUS_NAME, BUS_PATH, BUS_NAME, PING);
   dbus_message_set_auto_start(msg, FALSE);
 
   dbus_message_append_args(msg, DBUS_TYPE_STRING, &_ping, DBUS_TYPE_INVALID);
@@ -185,11 +196,11 @@ bool DBus::ping() {
     return false;
   }
 
-  if (dbus_message_get_type (res) == DBUS_MESSAGE_TYPE_ERROR) {
+  if (dbus_message_get_type(res) == DBUS_MESSAGE_TYPE_ERROR) {
     dbus_set_error_from_message(&error, res);
     std::cerr << error.message << std::endl;
-    dbus_message_unref (res);
-    dbus_error_free (&error);
+    dbus_message_unref(res);
+    dbus_error_free(&error);
     return false;
   }
 
@@ -198,14 +209,14 @@ bool DBus::ping() {
   return true;
 }
 
-bool DBus::open_files(std::vector<std::string>& _files) {
-  gchar **files = g_new(gchar *, _files.size()+1);
+bool DBus::open_files(std::vector<std::string> &_files)
+{
+  gchar **files = g_new(gchar *, _files.size() + 1);
   for (unsigned i = 0; i < _files.size(); i++) {
     // We need to add absolute paths
     if (g_path_is_absolute(_files[i].c_str())) {
       files[i] = g_strdup(_files[i].c_str());
-    }
-    else {
+    } else {
       char *dir = g_get_current_dir();
       char *file = g_build_filename(dir, _files[i].c_str(), NULL);
       g_free(dir);
@@ -227,10 +238,15 @@ bool DBus::open_files(std::vector<std::string>& _files) {
     g_strfreev(files);
     return false;
   }
-  msg = dbus_message_new_method_call (BUS_NAME, BUS_PATH, BUS_NAME, OPEN_FILES);
+  msg = dbus_message_new_method_call(BUS_NAME, BUS_PATH, BUS_NAME, OPEN_FILES);
   dbus_message_set_auto_start(msg, FALSE);
 
-  dbus_message_append_args(msg, DBUS_TYPE_ARRAY, DBUS_TYPE_STRING, &files, g_strv_length(files), DBUS_TYPE_INVALID);
+  dbus_message_append_args(msg,
+                           DBUS_TYPE_ARRAY,
+                           DBUS_TYPE_STRING,
+                           &files,
+                           g_strv_length(files),
+                           DBUS_TYPE_INVALID);
   res = dbus_connection_send_with_reply_and_block(con, msg, 2000, &error);
   dbus_message_unref(msg);
   if (res == NULL) {
@@ -240,11 +256,11 @@ bool DBus::open_files(std::vector<std::string>& _files) {
     return false;
   }
 
-  if (dbus_message_get_type (res) == DBUS_MESSAGE_TYPE_ERROR) {
+  if (dbus_message_get_type(res) == DBUS_MESSAGE_TYPE_ERROR) {
     dbus_set_error_from_message(&error, res);
     std::cerr << error.message << std::endl;
-    dbus_message_unref (res);
-    dbus_error_free (&error);
+    dbus_message_unref(res);
+    dbus_error_free(&error);
     g_strfreev(files);
     return false;
   }

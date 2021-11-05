@@ -1,56 +1,56 @@
 /*
  * applets.cc
- * This file is part of katoob
  *
- * Copyright (C) 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
 #include "applets.hh"
-#include "utils.hh"
 #include "dict.hh"
 #include "macros.h"
 #include "network.hh"
+#include "utils.hh"
 
-Applet::Applet(Conf& conf) : _conf(conf) {
+Applet::Applet(Conf &conf): _conf(conf)
+{
   box.set_spacing(5);
   box.set_border_width(10);
   box.set_homogeneous(false);
 }
 
-Applet::~Applet() {
+Applet::~Applet()
+{
   // Nothing.
 }
 
-Gtk::Widget& Applet::get_box() {
+Gtk::Widget &Applet::get_box()
+{
   return box;
 }
 
 /* GeneralApplet */
-GeneralApplet::GeneralApplet(Conf& _conf) :
-  Applet::Applet(_conf),
-  undono_adj(0,0,100),
-  exec_adj(0,0,100),
-  undo_closed_adj(0,0,100) {
-
+GeneralApplet::GeneralApplet(Conf &_conf):
+ Applet::Applet(_conf),
+ undono_adj(0, 0, 100),
+ exec_adj(0, 0, 100),
+ undo_closed_adj(0, 0, 100)
+{
   undo.set_use_underline();
   undo.set_label(_("_Enable undo, redo\t"));
   undo_closed.set_use_underline();
@@ -70,14 +70,50 @@ GeneralApplet::GeneralApplet(Conf& _conf) :
   box.pack_start(general_table2, false, false);
 
   general_table1.set_col_spacing(0, 5);
-  general_table1.attach(undo_label, 0, 1, 0, 1, Gtk::AttachOptions(Gtk::SHRINK), Gtk::AttachOptions(Gtk::SHRINK));
-  general_table1.attach(undono, 1, 2, 0, 1, Gtk::AttachOptions(Gtk::EXPAND|Gtk::FILL), Gtk::AttachOptions(Gtk::SHRINK));
-  general_table1.attach(exec_label, 0, 1, 1, 2, Gtk::AttachOptions(Gtk::SHRINK), Gtk::AttachOptions(Gtk::SHRINK));
-  general_table1.attach(exec_cmd_size, 1, 2, 1, 2, Gtk::AttachOptions(Gtk::EXPAND|Gtk::FILL), Gtk::AttachOptions(Gtk::SHRINK));
+  general_table1.attach(undo_label,
+                        0,
+                        1,
+                        0,
+                        1,
+                        Gtk::AttachOptions(Gtk::SHRINK),
+                        Gtk::AttachOptions(Gtk::SHRINK));
+  general_table1.attach(undono,
+                        1,
+                        2,
+                        0,
+                        1,
+                        Gtk::AttachOptions(Gtk::EXPAND | Gtk::FILL),
+                        Gtk::AttachOptions(Gtk::SHRINK));
+  general_table1.attach(exec_label,
+                        0,
+                        1,
+                        1,
+                        2,
+                        Gtk::AttachOptions(Gtk::SHRINK),
+                        Gtk::AttachOptions(Gtk::SHRINK));
+  general_table1.attach(exec_cmd_size,
+                        1,
+                        2,
+                        1,
+                        2,
+                        Gtk::AttachOptions(Gtk::EXPAND | Gtk::FILL),
+                        Gtk::AttachOptions(Gtk::SHRINK));
 
   general_table2.set_col_spacing(0, 5);
-  general_table2.attach(undo_closed_label, 0, 1, 2, 3, Gtk::AttachOptions(Gtk::SHRINK), Gtk::AttachOptions(Gtk::SHRINK));
-  general_table2.attach(undo_closedno, 1, 2, 2, 3, Gtk::AttachOptions(Gtk::EXPAND|Gtk::FILL), Gtk::AttachOptions(Gtk::SHRINK));
+  general_table2.attach(undo_closed_label,
+                        0,
+                        1,
+                        2,
+                        3,
+                        Gtk::AttachOptions(Gtk::SHRINK),
+                        Gtk::AttachOptions(Gtk::SHRINK));
+  general_table2.attach(undo_closedno,
+                        1,
+                        2,
+                        2,
+                        3,
+                        Gtk::AttachOptions(Gtk::EXPAND | Gtk::FILL),
+                        Gtk::AttachOptions(Gtk::SHRINK));
 
   undono_adj.set_value(_conf.get("undono", 0));
   exec_adj.set_value(_conf.get("exec_cmd_size", 10));
@@ -86,12 +122,14 @@ GeneralApplet::GeneralApplet(Conf& _conf) :
   undo_closed.set_active(_conf.get("undo_closed", true));
 
   undo.signal_toggled().connect(sigc::mem_fun(*this, &GeneralApplet::undo_toggled_cb));
-  undo_closed.signal_toggled().connect(sigc::mem_fun(*this, &GeneralApplet::undo_closed_toggled_cb));
+  undo_closed.signal_toggled().connect(
+      sigc::mem_fun(*this, &GeneralApplet::undo_closed_toggled_cb));
   undo.toggled();
   undo_closed.toggled();
 }
 
-void GeneralApplet::apply() {
+void GeneralApplet::apply()
+{
   _conf.set("undo", undo.get_active());
   _conf.set("undo_closed", undo_closed.get_active());
   _conf.set("undono", undono.get_value_as_int());
@@ -99,19 +137,19 @@ void GeneralApplet::apply() {
   _conf.set("undo_closedno", undo_closedno.get_value_as_int());
 }
 
-void GeneralApplet::undo_toggled_cb() {
+void GeneralApplet::undo_toggled_cb()
+{
   undono.set_sensitive(undo.get_active());
 }
 
-void GeneralApplet::undo_closed_toggled_cb() {
+void GeneralApplet::undo_closed_toggled_cb()
+{
   undo_closedno.set_sensitive(undo_closed.get_active());
 }
 
 /* InterfaceApplet */
-InterfaceApplet::InterfaceApplet(Conf& _conf) :
-  Applet::Applet(_conf),
-  recentno_adj(0,0,100) {
-
+InterfaceApplet::InterfaceApplet(Conf &_conf): Applet::Applet(_conf), recentno_adj(0, 0, 100)
+{
   toolbar.set_use_underline();
   extended_toolbar.set_use_underline();
   statusbar.set_use_underline();
@@ -139,10 +177,34 @@ InterfaceApplet::InterfaceApplet(Conf& _conf) :
   box.pack_start(interface_table, false, false);
 
   interface_table.set_col_spacing(0, 5);
-  interface_table.attach(recentno_label, 0, 1, 0, 1, Gtk::AttachOptions(Gtk::SHRINK), Gtk::AttachOptions(Gtk::SHRINK));
-  interface_table.attach(recentno, 1, 2, 0, 1, Gtk::AttachOptions(Gtk::FILL|Gtk::EXPAND), Gtk::AttachOptions(Gtk::SHRINK));
-  interface_table.attach(toolbartype_label, 0, 1, 1, 2, Gtk::AttachOptions(Gtk::SHRINK), Gtk::AttachOptions(Gtk::SHRINK));
-  interface_table.attach(toolbartype, 1, 2, 1, 2, Gtk::AttachOptions(Gtk::FILL|Gtk::EXPAND), Gtk::AttachOptions(Gtk::SHRINK));
+  interface_table.attach(recentno_label,
+                         0,
+                         1,
+                         0,
+                         1,
+                         Gtk::AttachOptions(Gtk::SHRINK),
+                         Gtk::AttachOptions(Gtk::SHRINK));
+  interface_table.attach(recentno,
+                         1,
+                         2,
+                         0,
+                         1,
+                         Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
+                         Gtk::AttachOptions(Gtk::SHRINK));
+  interface_table.attach(toolbartype_label,
+                         0,
+                         1,
+                         1,
+                         2,
+                         Gtk::AttachOptions(Gtk::SHRINK),
+                         Gtk::AttachOptions(Gtk::SHRINK));
+  interface_table.attach(toolbartype,
+                         1,
+                         2,
+                         1,
+                         2,
+                         Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
+                         Gtk::AttachOptions(Gtk::SHRINK));
   box.pack_start(showclose, false, false);
   box.pack_start(extra_buttons, false, false);
 
@@ -154,17 +216,14 @@ InterfaceApplet::InterfaceApplet(Conf& _conf) :
   statusbar.set_active(_conf.get("statusbar", true));
   recent.set_active(_conf.get("recent", true));
   showclose.set_active(_conf.get("showclose", true));
-  std::string type = _conf.get("toolbartype","both");
+  std::string type = _conf.get("toolbartype", "both");
   if (type == "text") {
     toolbartype.set_active_text(_("Text only"));
-  }
-  else if (type == "icons") {
+  } else if (type == "icons") {
     toolbartype.set_active_text(_("Icons only"));
-  }
-  else if (type == "both_horiz") {
+  } else if (type == "both_horiz") {
     toolbartype.set_active_text(_("Text beside icons"));
-  }
-  else {
+  } else {
     toolbartype.set_active_text(_("Both"));
   }
 
@@ -174,7 +233,8 @@ InterfaceApplet::InterfaceApplet(Conf& _conf) :
   recent.toggled();
 }
 
-void InterfaceApplet::apply() {
+void InterfaceApplet::apply()
+{
   _conf.set("toolbar", toolbar.get_active());
   _conf.set("extended_toolbar", extended_toolbar.get_active());
   _conf.set("statusbar", statusbar.get_active());
@@ -185,32 +245,35 @@ void InterfaceApplet::apply() {
 
   std::string val;
   switch (toolbartype.get_active_row_number()) {
-  case 0:
-    val = "text";
-    break;
-  case 1:
-    val = "icons";
-    break;
-  case 3:
-    val = "both_horiz";
-    break;
-  default:
-    val = "both";
-    break;
+    case 0:
+      val = "text";
+      break;
+    case 1:
+      val = "icons";
+      break;
+    case 3:
+      val = "both_horiz";
+      break;
+    default:
+      val = "both";
+      break;
   }
   _conf.set("toolbartype", val.c_str());
 }
 
-void InterfaceApplet::recent_toggled_cb() {
+void InterfaceApplet::recent_toggled_cb()
+{
   recentno.set_sensitive(recent.get_active());
 }
 
-void InterfaceApplet::toolbar_toggled_cb() {
+void InterfaceApplet::toolbar_toggled_cb()
+{
   toolbartype.set_sensitive(toolbar.get_active());
 }
 
 /* TabsApplet */
-TabsApplet::TabsApplet(Conf& _conf) : Applet::Applet(_conf) {
+TabsApplet::TabsApplet(Conf &_conf): Applet::Applet(_conf)
+{
   showtabs.set_use_underline();
   tabsmenu.set_use_underline();
   scrolltabs.set_use_underline();
@@ -256,56 +319,105 @@ TabsApplet::TabsApplet(Conf& _conf) : Applet::Applet(_conf) {
   box.pack_start(scrolltabs, false, false);
   box.pack_start(tabs_table, true, true);
 
-  tabs_table.attach(tabspos_label, 0, 1, 0, 1, Gtk::AttachOptions(Gtk::FILL|Gtk::EXPAND), Gtk::AttachOptions(Gtk::SHRINK));
-  tabs_table.attach(tabspos, 1, 2, 0, 1, Gtk::AttachOptions(Gtk::FILL|Gtk::EXPAND), Gtk::AttachOptions(Gtk::SHRINK));
-  tabs_table.attach(readonly_label, 0, 1, 1, 2, Gtk::AttachOptions(Gtk::FILL|Gtk::EXPAND), Gtk::AttachOptions(Gtk::SHRINK));
-  tabs_table.attach(readonly, 1, 2, 1, 2, Gtk::AttachOptions(Gtk::FILL|Gtk::EXPAND), Gtk::AttachOptions(Gtk::SHRINK));
-  tabs_table.attach(modified_label, 0, 1, 3, 4, Gtk::AttachOptions(Gtk::FILL|Gtk::EXPAND), Gtk::AttachOptions(Gtk::SHRINK));
-  tabs_table.attach(modified, 1, 2, 3, 4, Gtk::AttachOptions(Gtk::FILL|Gtk::EXPAND), Gtk::AttachOptions(Gtk::SHRINK));
-  tabs_table.attach(normal_label, 0, 1, 5, 6, Gtk::AttachOptions(Gtk::FILL|Gtk::EXPAND), Gtk::AttachOptions(Gtk::SHRINK));
-  tabs_table.attach(normal, 1, 2, 5, 6, Gtk::AttachOptions(Gtk::FILL|Gtk::EXPAND), Gtk::AttachOptions(Gtk::SHRINK));
+  tabs_table.attach(tabspos_label,
+                    0,
+                    1,
+                    0,
+                    1,
+                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
+                    Gtk::AttachOptions(Gtk::SHRINK));
+  tabs_table.attach(tabspos,
+                    1,
+                    2,
+                    0,
+                    1,
+                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
+                    Gtk::AttachOptions(Gtk::SHRINK));
+  tabs_table.attach(readonly_label,
+                    0,
+                    1,
+                    1,
+                    2,
+                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
+                    Gtk::AttachOptions(Gtk::SHRINK));
+  tabs_table.attach(readonly,
+                    1,
+                    2,
+                    1,
+                    2,
+                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
+                    Gtk::AttachOptions(Gtk::SHRINK));
+  tabs_table.attach(modified_label,
+                    0,
+                    1,
+                    3,
+                    4,
+                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
+                    Gtk::AttachOptions(Gtk::SHRINK));
+  tabs_table.attach(modified,
+                    1,
+                    2,
+                    3,
+                    4,
+                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
+                    Gtk::AttachOptions(Gtk::SHRINK));
+  tabs_table.attach(normal_label,
+                    0,
+                    1,
+                    5,
+                    6,
+                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
+                    Gtk::AttachOptions(Gtk::SHRINK));
+  tabs_table.attach(normal,
+                    1,
+                    2,
+                    5,
+                    6,
+                    Gtk::AttachOptions(Gtk::FILL | Gtk::EXPAND),
+                    Gtk::AttachOptions(Gtk::SHRINK));
 
   showtabs.set_active(_conf.get("showtabs", true));
   tabsmenu.set_active(_conf.get("tabsmenu", true));
   scrolltabs.set_active(_conf.get("scrolltabs", true));
-  switch(_conf.get("tabspos", TABS_POS_TOP)) {
-  case TABS_POS_BOTTOM:
-    tabspos.set_active_text(_("Bottom"));
-    break;
-  case TABS_POS_RIGHT:
-    tabspos.set_active_text(_("Right"));
-    break;
-  case TABS_POS_LEFT:
-    tabspos.set_active_text(_("Left"));
-    break;
-  default:
-    tabspos.set_active_text(_("Top"));
-    break;
+  switch (_conf.get("tabspos", TABS_POS_TOP)) {
+    case TABS_POS_BOTTOM:
+      tabspos.set_active_text(_("Bottom"));
+      break;
+    case TABS_POS_RIGHT:
+      tabspos.set_active_text(_("Right"));
+      break;
+    case TABS_POS_LEFT:
+      tabspos.set_active_text(_("Left"));
+      break;
+    default:
+      tabspos.set_active_text(_("Top"));
+      break;
   }
 
   showtabs.signal_toggled().connect(sigc::mem_fun(*this, &TabsApplet::showtabs_toggled_cb));
   showtabs.toggled();
 }
 
-void TabsApplet::apply() {
+void TabsApplet::apply()
+{
   _conf.set("showtabs", showtabs.get_active());
   _conf.set("tabsmenu", tabsmenu.get_active());
   _conf.set("scrolltabs", scrolltabs.get_active());
 
   int i;
   switch (tabspos.get_active_row_number()) {
-  case 1:
-    i = TABS_POS_BOTTOM;
-    break;
-  case 2:
-    i = TABS_POS_RIGHT;
-    break;
-  case 3:
-    i = TABS_POS_LEFT;
-    break;
-  default:
-    i = TABS_POS_TOP;
-    break;
+    case 1:
+      i = TABS_POS_BOTTOM;
+      break;
+    case 2:
+      i = TABS_POS_RIGHT;
+      break;
+    case 3:
+      i = TABS_POS_LEFT;
+      break;
+    default:
+      i = TABS_POS_TOP;
+      break;
   }
   _conf.set("tabspos", i);
   Gdk::Color color = readonly.get_color();
@@ -322,15 +434,14 @@ void TabsApplet::apply() {
   _conf.set("normal_blue", color.get_blue());
 }
 
-void TabsApplet::showtabs_toggled_cb() {
+void TabsApplet::showtabs_toggled_cb()
+{
   tabspos.set_sensitive(showtabs.get_active());
 }
 
 /* EditorApplet */
-EditorApplet::EditorApplet(Conf& _conf) :
-  Applet::Applet(_conf),
-  tab_width_adj(0,0,10) {
-
+EditorApplet::EditorApplet(Conf &_conf): Applet::Applet(_conf), tab_width_adj(0, 0, 10)
+{
   textwrap.set_use_underline();
   linenumbers.set_use_underline();
   default_font.set_use_underline();
@@ -381,14 +492,11 @@ EditorApplet::EditorApplet(Conf& _conf) :
   bool l = _conf.get("numbers_left", true);
   if ((l) && (r)) {
     linenumbers_pos.set_active_text(_("Both"));
-  }
-  else if (l) {
+  } else if (l) {
     linenumbers_pos.set_active_text(_("Left"));
-  }
-  else if (r) {
+  } else if (r) {
     linenumbers_pos.set_active_text(_("Right"));
-  }
-  else {
+  } else {
     linenumbers_pos.set_active_text(_("Both"));
   }
 
@@ -399,12 +507,14 @@ EditorApplet::EditorApplet(Conf& _conf) :
   tab_width_adj.set_value(_conf.get("tab_width", 8));
 
   linenumbers.signal_toggled().connect(sigc::mem_fun(*this, &EditorApplet::linenumbers_toggled_cb));
-  default_font.signal_toggled().connect(sigc::mem_fun(*this, &EditorApplet::default_font_toggled_cb));
+  default_font.signal_toggled().connect(
+      sigc::mem_fun(*this, &EditorApplet::default_font_toggled_cb));
   linenumbers.toggled();
   default_font.toggled();
 }
 
-void EditorApplet::apply() {
+void EditorApplet::apply()
+{
   _conf.set("tab_width", tab_width.get_value_as_int());
   _conf.set("textwrap", textwrap.get_active());
   _conf.set("linenumbers", linenumbers.get_active());
@@ -416,36 +526,36 @@ void EditorApplet::apply() {
 
   bool r, l;
   switch (linenumbers_pos.get_active_row_number()) {
-  case 0:
-    l = false;
-    r = true;
-    break;
-  case 1:
-    l = true;
-    r = false;
-    break;
-  default:
-    l = true;
-    r = true;
-    break;
+    case 0:
+      l = false;
+      r = true;
+      break;
+    case 1:
+      l = true;
+      r = false;
+      break;
+    default:
+      l = true;
+      r = true;
+      break;
   }
   _conf.set("numbers_right", r);
   _conf.set("numbers_left", l);
 }
 
-void EditorApplet::linenumbers_toggled_cb() {
+void EditorApplet::linenumbers_toggled_cb()
+{
   linenumbers_pos.set_sensitive(linenumbers.get_active());
 }
 
-void EditorApplet::default_font_toggled_cb() {
+void EditorApplet::default_font_toggled_cb()
+{
   font.set_sensitive(!default_font.get_active());
 }
 
 /* EncodingsApplet */
-EncodingsApplet::EncodingsApplet(Conf& _conf, Encodings& enc) :
-  Applet::Applet(_conf),
-  _enc(enc) {
-
+EncodingsApplet::EncodingsApplet(Conf &_conf, Encodings &enc): Applet::Applet(_conf), _enc(enc)
+{
   locale_enc.set_use_underline();
   locale_enc.set_label(_("_Use the locale encoding"));
   saved_enc_label.set_text(_("Specify an encoding"));
@@ -481,23 +591,27 @@ EncodingsApplet::EncodingsApplet(Conf& _conf, Encodings& enc) :
   saved_enc.set_active(_enc.default_open());
   save_enc.set_active(_enc.default_save());
 
-  locale_enc.signal_toggled().connect(sigc::mem_fun(*this, &EncodingsApplet::locale_enc_toggled_cb));
+  locale_enc.signal_toggled().connect(
+      sigc::mem_fun(*this, &EncodingsApplet::locale_enc_toggled_cb));
   locale_enc.toggled();
 }
 
-void EncodingsApplet::apply() {
+void EncodingsApplet::apply()
+{
   _conf.set("save_enc", _enc.get_charset(save_enc.get_active_row_number()).c_str());
   _conf.set("saved_enc", _enc.get_charset(saved_enc.get_active_row_number()).c_str());
   _conf.set("locale_enc", locale_enc.get_active());
   _conf.defaults(_enc);
 }
 
-void EncodingsApplet::locale_enc_toggled_cb() {
+void EncodingsApplet::locale_enc_toggled_cb()
+{
   saved_enc.set_sensitive(!locale_enc.get_active());
 }
 
 /* FileSaveApplet */
-FileSaveApplet::FileSaveApplet(Conf& _conf) : Applet::Applet(_conf) {
+FileSaveApplet::FileSaveApplet(Conf &_conf): Applet::Applet(_conf)
+{
   backup.set_use_underline();
   backup.set_label(_("_Backup files before saving."));
   backup_label.set_text(_("Backup extension"));
@@ -514,7 +628,8 @@ FileSaveApplet::FileSaveApplet(Conf& _conf) : Applet::Applet(_conf) {
   backup.toggled();
 }
 
-void FileSaveApplet::apply() {
+void FileSaveApplet::apply()
+{
   _conf.set("backup", backup.get_active());
   if (backup_ext.get_text().size() == 0) {
     backup_ext.set_text("~");
@@ -522,13 +637,15 @@ void FileSaveApplet::apply() {
   _conf.set("backup_ext", backup_ext.get_text().c_str());
 }
 
-void FileSaveApplet::backup_toggled_cb() {
+void FileSaveApplet::backup_toggled_cb()
+{
   backup_ext.set_sensitive(backup.get_active());
 }
 
 /* SpellCheckerApplet */
 #ifdef ENABLE_SPELL
-SpellCheckerApplet::SpellCheckerApplet(Conf& _conf) : Applet::Applet(_conf) {
+SpellCheckerApplet::SpellCheckerApplet(Conf &_conf): Applet::Applet(_conf)
+{
   spell_check.set_use_underline();
 
   spell_check.set_label(_("_Autocheck Spelling"));
@@ -554,11 +671,13 @@ SpellCheckerApplet::SpellCheckerApplet(Conf& _conf) : Applet::Applet(_conf) {
     misspelled.set_color(color);
     misspelled.set_use_alpha(false);
   */
-  //  spell_check.signal_toggled().connect(sigc::mem_fun(*this, &PreferencesDialog::spell_check_toggled_cb));
+  //  spell_check.signal_toggled().connect(sigc::mem_fun(*this,
+  //  &PreferencesDialog::spell_check_toggled_cb));
   spell_check.toggled();
 }
 
-void SpellCheckerApplet::apply() {
+void SpellCheckerApplet::apply()
+{
   _conf.set("spell_check", spell_check.get_active());
   _conf.set("default_dict", default_dict.get_active_text().c_str());
 
@@ -578,10 +697,9 @@ void SpellCheckerApplet::spell_check_toggled_cb() {
 
 /* PrintApplet */
 #ifdef ENABLE_PRINT
-PrintApplet::PrintApplet(Conf& _conf) :
-  Applet::Applet(_conf)
-  //  dpi_x_adj(0,0,0),
-  //  dpi_y_adj(0,0,0),
+PrintApplet::PrintApplet(Conf &_conf): Applet::Applet(_conf)
+//  dpi_x_adj(0,0,0),
+//  dpi_y_adj(0,0,0),
 {
   print_label.set_text(_("Printing font"));
 
@@ -628,7 +746,8 @@ PrintApplet::PrintApplet(Conf& _conf) :
 #endif
 }
 
-void PrintApplet::apply() {
+void PrintApplet::apply()
+{
   //  _conf.print_set("gui_show_advanced", gui_show_advanced.get_active());
   //  _conf.print_set("dpi_x", dpi_x.get_value_as_int());
   //  _conf.print_set("dpi_y", dpi_y.get_value_as_int());
@@ -643,11 +762,11 @@ print_frame.set_sensitive(gui_show_advanced.get_active());
 #endif
 
 /* DictionaryApplet */
-DictionaryApplet::DictionaryApplet(Conf& _conf) :
-  Applet::Applet(_conf),
-  handle(NULL),
-  dict_port_adj(0,0,0) {
-
+DictionaryApplet::DictionaryApplet(Conf &_conf):
+ Applet::Applet(_conf),
+ handle(NULL),
+ dict_port_adj(0, 0, 0)
+{
   dict.set_use_underline();
   dict.set_label(_("_Enable the dictionary."));
   dict_host_label.set_text(_("Host"));
@@ -676,7 +795,7 @@ DictionaryApplet::DictionaryApplet(Conf& _conf) :
   dicts.append_column(_("Description"), dict_description);
   dict_selection = dicts.get_selection();
 
-  Gtk::TreeModel::Row row = *(dict_store->append ());
+  Gtk::TreeModel::Row row = *(dict_store->append());
   row[dict_name] = _conf.get("dict_db", "arabic");
   row[dict_description] = _("Not Available.");
   dict_selection->select(row);
@@ -687,7 +806,13 @@ DictionaryApplet::DictionaryApplet(Conf& _conf) :
 
   dictionary_table.attach(dict_host_label, 0, 1, 0, 1, Gtk::AttachOptions(Gtk::SHRINK));
   dictionary_table.attach(dict_host, 1, 2, 0, 1);
-  dictionary_table.attach(list_dicts, 2, 3, 0, 1, Gtk::AttachOptions(Gtk::SHRINK), Gtk::AttachOptions(Gtk::SHRINK));
+  dictionary_table.attach(list_dicts,
+                          2,
+                          3,
+                          0,
+                          1,
+                          Gtk::AttachOptions(Gtk::SHRINK),
+                          Gtk::AttachOptions(Gtk::SHRINK));
   dictionary_table.attach(dict_port_label, 0, 1, 1, 2, Gtk::AttachOptions(Gtk::SHRINK));
   dictionary_table.attach(dict_port, 1, 2, 1, 2);
   dictionary_table.attach(dict_name_label, 0, 1, 2, 3, Gtk::AttachOptions(Gtk::SHRINK));
@@ -695,10 +820,12 @@ DictionaryApplet::DictionaryApplet(Conf& _conf) :
 
   dict.signal_toggled().connect(sigc::mem_fun(*this, &DictionaryApplet::dict_toggled_cb));
   dict.toggled();
-  list_dicts.signal_clicked().connect(sigc::mem_fun(*this, &DictionaryApplet::list_dicts_clicked_cb));
+  list_dicts.signal_clicked().connect(
+      sigc::mem_fun(*this, &DictionaryApplet::list_dicts_clicked_cb));
 }
 
-void DictionaryApplet::apply() {
+void DictionaryApplet::apply()
+{
   _conf.set("dict", dict.get_active());
   _conf.set("dict_host", dict_host.get_text().c_str());
   _conf.set("dict_port", dict_port.get_value_as_int());
@@ -711,17 +838,20 @@ void DictionaryApplet::apply() {
   }
 }
 
-void DictionaryApplet::dict_toggled_cb() {
+void DictionaryApplet::dict_toggled_cb()
+{
   dictionary_table.set_sensitive(dict.get_active());
 }
 
-void DictionaryApplet::signal_cancel_clicked_cb() {
+void DictionaryApplet::signal_cancel_clicked_cb()
+{
   Network::del_transfer(handle);
   handle = NULL;
   conn.disconnect();
 }
 
-void DictionaryApplet::signal_dict_transfer_complete_cb(bool st, const std::string& str) {
+void DictionaryApplet::signal_dict_transfer_complete_cb(bool st, const std::string &str)
+{
   // stop the progress indicator.
   meter->quit();
 
@@ -736,22 +866,19 @@ void DictionaryApplet::signal_dict_transfer_complete_cb(bool st, const std::stri
   if (!Dict::parse_dbs(str, res)) {
     if (res.size() == 0) {
       katoob_error(_("Failed to get the available dictionaries."));
-    }
-    else if (res.begin()->first.size() == 0) {
+    } else if (res.begin()->first.size() == 0) {
       katoob_error(_("Failed to get the available dictionaries."));
-    }
-    else {
+    } else {
       katoob_error(res.begin()->first);
     }
-  }
-  else {
+  } else {
     dict_store->clear();
     Gtk::TreeModel::Row _row;
     std::map<std::string, std::string>::iterator iter;
     for (iter = res.begin(); iter != res.end(); iter++) {
       Gtk::TreeModel::Row row = *(dict_store->append());
       if (iter == res.begin()) {
-	_row = row;
+        _row = row;
       }
       row[dict_name] = iter->first;
       row[dict_description] = iter->second;
@@ -760,7 +887,8 @@ void DictionaryApplet::signal_dict_transfer_complete_cb(bool st, const std::stri
   }
 }
 
-void DictionaryApplet::list_dicts_clicked_cb() {
+void DictionaryApplet::list_dicts_clicked_cb()
+{
   std::string host(dict_host.get_text());
   int port = dict_port.get_value_as_int();
 
@@ -769,7 +897,8 @@ void DictionaryApplet::list_dicts_clicked_cb() {
     return;
   }
 
-  sigc::slot<void, bool, const std::string&> slot = sigc::mem_fun(this, &DictionaryApplet::signal_dict_transfer_complete_cb);
+  sigc::slot<void, bool, const std::string &> slot =
+      sigc::mem_fun(this, &DictionaryApplet::signal_dict_transfer_complete_cb);
 
   std::string uri = Dict::construct_lsdb_uri(_conf, host, port);
 
@@ -780,7 +909,8 @@ void DictionaryApplet::list_dicts_clicked_cb() {
 
   meter = katoob_activity();
 
-  conn = meter->signal_cancel_clicked.connect(sigc::mem_fun(this, &DictionaryApplet::signal_cancel_clicked_cb));
+  conn = meter->signal_cancel_clicked.connect(
+      sigc::mem_fun(this, &DictionaryApplet::signal_cancel_clicked_cb));
 
   meter->run();
 
@@ -789,12 +919,13 @@ void DictionaryApplet::list_dicts_clicked_cb() {
 
 #ifdef ENABLE_MULTIPRESS
 /* MultipressApplet */
-MultipressApplet::MultipressApplet(Conf& _conf) :
-  Applet::Applet(_conf),
-  multipress_timeout_adj(0,0,0) {
-
+MultipressApplet::MultipressApplet(Conf &_conf):
+ Applet::Applet(_conf),
+ multipress_timeout_adj(0, 0, 0)
+{
   multipress_timeout_l.set_use_underline();
-  multipress_timeout_l.set_label(_("_Milliseconds before multipress will accept the current value."));
+  multipress_timeout_l.set_label(
+      _("_Milliseconds before multipress will accept the current value."));
   multipress_timeout.set_adjustment(multipress_timeout_adj);
   multipress_timeout_adj.set_upper(2000);
   multipress_timeout_adj.set_lower(200);
@@ -804,16 +935,17 @@ MultipressApplet::MultipressApplet(Conf& _conf) :
   box.pack_start(m_box1, false, false);
 }
 
-void MultipressApplet::apply() {
+void MultipressApplet::apply()
+{
   _conf.set("multipress_timeout", multipress_timeout.get_value_as_int());
 }
 #endif
 
 /* RemoteDocumentsApplet */
-RemoteDocumentsApplet::RemoteDocumentsApplet(Conf& _conf) :
-  Applet::Applet(_conf),
-  locations_size_adj(0,0,0) {
-
+RemoteDocumentsApplet::RemoteDocumentsApplet(Conf &_conf):
+ Applet::Applet(_conf),
+ locations_size_adj(0, 0, 0)
+{
   box.pack_start(open_location_to_active, false, false);
   box.pack_start(r_box1, false, false);
   box.pack_start(r_box2, false, false);
@@ -830,18 +962,20 @@ RemoteDocumentsApplet::RemoteDocumentsApplet(Conf& _conf) :
   open_location_to_active.set_label(_("_Insert into the active document enabled by default ?"));
 }
 
-void RemoteDocumentsApplet::apply() {
+void RemoteDocumentsApplet::apply()
+{
   _conf.set("open_location_to_active", open_location_to_active.get_active());
   _conf.set("locations_size", locations_size.get_value_as_int());
 }
 
 /* AdvancedApplet */
-AdvancedApplet::AdvancedApplet(Conf& _conf) :
-  Applet::Applet(_conf),
-  x_adj(0,0,0),
-  y_adj(0,0,0),
-  w_adj(0,0,0),
-  h_adj(0,0,0) {
+AdvancedApplet::AdvancedApplet(Conf &_conf):
+ Applet::Applet(_conf),
+ x_adj(0, 0, 0),
+ y_adj(0, 0, 0),
+ w_adj(0, 0, 0),
+ h_adj(0, 0, 0)
+{
   x_label.set_text(_("Left"));
   y_label.set_text(_("Top"));
   w_label.set_text(_("Width"));
@@ -879,8 +1013,8 @@ AdvancedApplet::AdvancedApplet(Conf& _conf) :
   size_table.attach(h, 1, 2, 1, 2);
 
   Glib::RefPtr<Gdk::Screen> screen = Gdk::Screen::get_default();
-  x_adj.set_upper(screen->get_width()-10);
-  y_adj.set_upper(screen->get_height()-10);
+  x_adj.set_upper(screen->get_width() - 10);
+  y_adj.set_upper(screen->get_height() - 10);
   h_adj.set_upper(screen->get_height());
   w_adj.set_upper(screen->get_width());
   w_adj.set_lower(400);
@@ -898,7 +1032,8 @@ AdvancedApplet::AdvancedApplet(Conf& _conf) :
   savewinpos.toggled();
 }
 
-void AdvancedApplet::apply() {
+void AdvancedApplet::apply()
+{
   _conf.set("saveonexit", saveonexit.get_active());
   _conf.set("savewinpos", savewinpos.get_active());
   _conf.set("x", x.get_value_as_int());
@@ -907,18 +1042,19 @@ void AdvancedApplet::apply() {
   _conf.set("h", h.get_value_as_int());
 }
 
-void AdvancedApplet::savewinpos_toggled_cb() {
+void AdvancedApplet::savewinpos_toggled_cb()
+{
   bool active = savewinpos.get_active();
   size.set_sensitive(active);
   pos.set_sensitive(active);
 }
 
 /* NetworkApplet */
-NetworkApplet::NetworkApplet(Conf& _conf) :
-  Applet(_conf),
-  timeout_adj(0,0,0),
-  proxyport_adj(0,0,0) {
-
+NetworkApplet::NetworkApplet(Conf &_conf):
+ Applet(_conf),
+ timeout_adj(0, 0, 0),
+ proxyport_adj(0, 0, 0)
+{
   timeout.set_adjustment(timeout_adj);
   proxyport.set_adjustment(proxyport_adj);
 
@@ -983,7 +1119,8 @@ NetworkApplet::NetworkApplet(Conf& _conf) :
   proxypass.set_text(_conf.get("proxypass", ""));
 }
 
-void NetworkApplet::apply() {
+void NetworkApplet::apply()
+{
   // TODO: Password is saved as plain text.
   _conf.set("timeout", timeout.get_value_as_int());
   _conf.set("proxyport", proxyport.get_value_as_int());

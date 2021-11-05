@@ -1,47 +1,48 @@
 /*
  * export.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
 #include "export.hh"
 #include "macros.h"
 #include "utils.hh"
+
 #ifdef HAVE_GZIP
-#include <zlib.h>
 #include "tempfile.hh"
+#include <zlib.h>
 #endif
+
 #ifdef HAVE_BZIP2
 #include <bzlib.h>
 #endif
+
 #ifdef HAVE_FRIBIDI
-#include <fribidi/fribidi.h>
 #include "shape_arabic.h"
+#include <fribidi/fribidi.h>
 #endif
 
 // TODO: Export HTML character references.
 
-void export_init(std::vector<Export>& exprt) {
+void export_init(std::vector<Export> &exprt)
+{
   Export exp;
 
 #ifdef HAVE_FRIBIDI
@@ -74,8 +75,9 @@ void export_init(std::vector<Export>& exprt) {
 }
 
 #ifdef HAVE_FRIBIDI
-bool katoob_export_plain(Glib::ustring& text, std::string& out, std::string& error) {
-  gunichar *ch = new gunichar[text.size()+1];
+bool katoob_export_plain(Glib::ustring &text, std::string &out, std::string &error)
+{
+  gunichar *ch = new gunichar[text.size() + 1];
   for (unsigned i = 0; i < text.size(); i++) {
     ch[i] = text[i];
   }
@@ -89,14 +91,15 @@ bool katoob_export_plain(Glib::ustring& text, std::string& out, std::string& err
   }
   out = _out;
 
-  delete [] ch;
+  delete[] ch;
 
   return true;
 }
 #endif
 
 #ifdef HAVE_GZIP
-bool katoob_export_gz(Glib::ustring& text, std::string& out, std::string& error) {
+bool katoob_export_gz(Glib::ustring &text, std::string &out, std::string &error)
+{
   TempFile tf;
   if (!tf.ok(error)) {
     return false;
@@ -120,18 +123,25 @@ bool katoob_export_gz(Glib::ustring& text, std::string& out, std::string& error)
 #endif
 
 #ifdef HAVE_BZIP2
-bool katoob_export_bz2(Glib::ustring& text, std::string& out, std::string& error) {
+bool katoob_export_bz2(Glib::ustring &text, std::string &out, std::string &error)
+{
   unsigned dest_len;
 
   // From the php bzip2 extension.
-  dest_len = (unsigned )(text.bytes() + (0.01*text.bytes())+600);
-  char *dest = (char *)malloc(dest_len + 1);
+  dest_len = (unsigned) (text.bytes() + (0.01 * text.bytes()) + 600);
+  char *dest = (char *) malloc(dest_len + 1);
   if (!dest) {
     error = _("Couldn't allocate memory for compression.");
     return false;
   }
 
-  int er = BZ2_bzBuffToBuffCompress(dest, &dest_len, const_cast<char *>(text.c_str()), text.bytes(), 4, 0, 0);
+  int er = BZ2_bzBuffToBuffCompress(dest,
+                                    &dest_len,
+                                    const_cast<char *>(text.c_str()),
+                                    text.bytes(),
+                                    4,
+                                    0,
+                                    0);
   if (er != BZ_OK) {
     error = _("Couldn't compress the text.");
     free(dest);
@@ -147,7 +157,8 @@ bool katoob_export_bz2(Glib::ustring& text, std::string& out, std::string& error
 #endif
 
 #ifdef HAVE_FRIBIDI
-bool katoob_export_bidi_shape(Glib::ustring& text, std::string& out, std::string& error) {
+bool katoob_export_bidi_shape(Glib::ustring &text, std::string &out, std::string &error)
+{
   // We apply shaping first then bidi.
   // Memory representation  0 1 2 3
   // If we have a word like WaSaLaKa
@@ -161,7 +172,7 @@ bool katoob_export_bidi_shape(Glib::ustring& text, std::string& out, std::string
     no_lam_alef = text;
   }
 
-  gunichar *ch = new gunichar[no_lam_alef.size()+1], *_ch;
+  gunichar *ch = new gunichar[no_lam_alef.size() + 1], *_ch;
 
   for (unsigned i = 0; i < no_lam_alef.size(); i++) {
     ch[i] = no_lam_alef[i];
@@ -172,16 +183,16 @@ bool katoob_export_bidi_shape(Glib::ustring& text, std::string& out, std::string
   unsigned new_len;
   _ch = shape_arabic(ch, no_lam_alef.size(), &new_len);
 
-  delete [] ch;
+  delete[] ch;
 
-  ch = new gunichar[new_len+1];
+  ch = new gunichar[new_len + 1];
 
   FriBidiCharType base = FRIBIDI_TYPE_RTL;
 
   // then bidi.
   if (!fribidi_log2vis(_ch, new_len, &base, ch, NULL, NULL, NULL)) {
-    delete [] ch;
-    g_free(_ch); // _ch is allocated via g_new();
+    delete[] ch;
+    g_free(_ch);   // _ch is allocated via g_new();
     error = _("Couldn't apply the bidi algorithm.");
     return false;
   }
@@ -193,7 +204,7 @@ bool katoob_export_bidi_shape(Glib::ustring& text, std::string& out, std::string
   }
   out = _out;
 
-  delete [] ch;
+  delete[] ch;
 
   return true;
 }

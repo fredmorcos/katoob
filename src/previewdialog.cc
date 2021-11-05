@@ -1,46 +1,45 @@
 /*
  * previewdialog.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include <gtkmm/stock.h>
-#include "previewdialog.hh"
 #include "macros.h"
+#include "previewdialog.hh"
 #include "utils.hh"
+#include <gtkmm.h>
 
-PreviewDialog::PreviewDialog(const Glib::RefPtr<Gtk::PrintOperationPreview>& prvw, const Glib::RefPtr<Gtk::PrintContext>& ctx, Gtk::Window* parent) :
-  preview(prvw),
-  context(ctx),
-  n_pages(0),
-  adj(1, 1, 1),
-  pages(adj),
-  label(""),
-  back(Gtk::Stock::GO_BACK),
-  forward(Gtk::Stock::GO_FORWARD),
-  rewind(Gtk::Stock::GOTO_FIRST),
-  ff(Gtk::Stock::GOTO_LAST) {
-
+PreviewDialog::PreviewDialog(const Glib::RefPtr<Gtk::PrintOperationPreview> &prvw,
+                             const Glib::RefPtr<Gtk::PrintContext> &ctx,
+                             Gtk::Window *parent):
+ preview(prvw),
+ context(ctx),
+ n_pages(0),
+ adj(1, 1, 1),
+ pages(adj),
+ label(""),
+ back(Gtk::Stock::GO_BACK),
+ forward(Gtk::Stock::GO_FORWARD),
+ rewind(Gtk::Stock::GOTO_FIRST),
+ ff(Gtk::Stock::GOTO_LAST)
+{
   if (parent) {
     set_transient_for(*parent);
   }
@@ -70,10 +69,11 @@ PreviewDialog::PreviewDialog(const Glib::RefPtr<Gtk::PrintOperationPreview>& prv
 
   Glib::RefPtr<Gdk::Screen> sc = Gdk::Screen::get_default();
 
-  set_size_request(sc->get_width()/2, sc->get_height()/2);
+  set_size_request(sc->get_width() / 2, sc->get_height() / 2);
   area.set_double_buffered(false);
 
-  pages.signal_value_changed().connect(sigc::mem_fun(*this, &PreviewDialog::on_signal_value_changed));
+  pages.signal_value_changed().connect(
+      sigc::mem_fun(*this, &PreviewDialog::on_signal_value_changed));
 
   back.signal_clicked().connect(sigc::mem_fun(*this, &PreviewDialog::on_back_clicked));
   forward.signal_clicked().connect(sigc::mem_fun(*this, &PreviewDialog::on_forward_clicked));
@@ -81,11 +81,15 @@ PreviewDialog::PreviewDialog(const Glib::RefPtr<Gtk::PrintOperationPreview>& prv
   rewind.signal_clicked().connect(sigc::mem_fun(*this, &PreviewDialog::on_rewind_clicked));
 
   area.signal_realize().connect(sigc::mem_fun(*this, &PreviewDialog::signal_area_realize_cb));
-  area.signal_expose_event().connect(sigc::mem_fun(*this, &PreviewDialog::signal_area_expose_event_cb));
+  area.signal_expose_event().connect(
+      sigc::mem_fun(*this, &PreviewDialog::signal_area_expose_event_cb));
 
   preview->signal_ready().connect(sigc::mem_fun(*this, &PreviewDialog::signal_preview_ready_cb));
-  preview->signal_got_page_size().connect(sigc::mem_fun(*this, &PreviewDialog::signal_preview_got_page_size_cb));
-  add_button(Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE)->signal_clicked().connect(sigc::mem_fun(this, &PreviewDialog::hide));
+  preview->signal_got_page_size().connect(
+      sigc::mem_fun(*this, &PreviewDialog::signal_preview_got_page_size_cb));
+  add_button(Gtk::Stock::CLOSE, Gtk::RESPONSE_CLOSE)
+      ->signal_clicked()
+      .connect(sigc::mem_fun(this, &PreviewDialog::hide));
   recalculate_gui();
 #ifndef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
   signal_hide().connect(sigc::mem_fun(this, &PreviewDialog::on_hide));
@@ -98,7 +102,8 @@ PreviewDialog::~PreviewDialog() {
 }
 */
 
-void PreviewDialog::on_hide() {
+void PreviewDialog::on_hide()
+{
   preview->end_preview();
   preview.clear();
   context.clear();
@@ -107,34 +112,41 @@ void PreviewDialog::on_hide() {
 #endif
 }
 
-void PreviewDialog::run() {
+void PreviewDialog::run()
+{
   show_all();
 }
 
-void PreviewDialog::on_signal_value_changed() {
+void PreviewDialog::on_signal_value_changed()
+{
   area.queue_draw();
   recalculate_gui();
 }
 
-void PreviewDialog::on_back_clicked() {
-  pages.set_value(pages.get_value_as_int()-1);
+void PreviewDialog::on_back_clicked()
+{
+  pages.set_value(pages.get_value_as_int() - 1);
 }
 
-void PreviewDialog::on_rewind_clicked() {
+void PreviewDialog::on_rewind_clicked()
+{
   pages.set_value(1);
 }
 
-void PreviewDialog::on_forward_clicked() {
-  pages.set_value(pages.get_value_as_int()+1);
+void PreviewDialog::on_forward_clicked()
+{
+  pages.set_value(pages.get_value_as_int() + 1);
 }
 
-void PreviewDialog::on_ff_clicked() {
+void PreviewDialog::on_ff_clicked()
+{
   double s, e;
   pages.get_range(s, e);
   pages.set_value(e);
 }
 
-void PreviewDialog::recalculate_gui() {
+void PreviewDialog::recalculate_gui()
+{
   int c = pages.get_value_as_int();
   back.set_sensitive(!(c == 1));
   rewind.set_sensitive(!(c == 1));
@@ -142,54 +154,62 @@ void PreviewDialog::recalculate_gui() {
   ff.set_sensitive(!(c == n_pages));
 }
 
-PreviewDialog *PreviewDialog::create(const Glib::RefPtr<Gtk::PrintOperationPreview>& preview, const Glib::RefPtr<Gtk::PrintContext>& context, Gtk::Window* parent) {
+PreviewDialog *PreviewDialog::create(const Glib::RefPtr<Gtk::PrintOperationPreview> &preview,
+                                     const Glib::RefPtr<Gtk::PrintContext> &context,
+                                     Gtk::Window *parent)
+{
   return new PreviewDialog(preview, context, parent);
 }
 
-void PreviewDialog::signal_area_realize_cb() {
+void PreviewDialog::signal_area_realize_cb()
+{
   Glib::RefPtr<Gdk::Window> win = area.get_window();
   if (win) {
     Cairo::RefPtr<Cairo::Context> ctx = win->create_cairo_context();
     if (ctx) {
       if (context) {
-	// We will change the DPI later anyway.
-	context->set_cairo_context(ctx, 72, 72);
+        // We will change the DPI later anyway.
+        context->set_cairo_context(ctx, 72, 72);
       }
     }
   }
 }
 
-bool PreviewDialog::signal_area_expose_event_cb(GdkEventExpose *event) {
+bool PreviewDialog::signal_area_expose_event_cb(GdkEventExpose *event)
+{
   if (n_pages == 0) {
     return false;
   }
   area.get_window()->clear();
   if (preview) {
-    preview->render_page(pages.get_value_as_int()-1);
+    preview->render_page(pages.get_value_as_int() - 1);
   }
   return true;
 }
 
-void PreviewDialog::signal_preview_ready_cb(const Glib::RefPtr<Gtk::PrintContext>& ctx) {
-  n_pages =  signal_get_n_pages.emit();
+void PreviewDialog::signal_preview_ready_cb(const Glib::RefPtr<Gtk::PrintContext> &ctx)
+{
+  n_pages = signal_get_n_pages.emit();
   pages.set_range(1, n_pages);
   label.set_text(Utils::substitute(_("of %i"), n_pages));
   area.queue_draw();
 }
 
-void PreviewDialog::signal_preview_got_page_size_cb(const Glib::RefPtr<Gtk::PrintContext>& ctx, const Glib::RefPtr<Gtk::PageSetup>& setup) {
+void PreviewDialog::signal_preview_got_page_size_cb(const Glib::RefPtr<Gtk::PrintContext> &ctx,
+                                                    const Glib::RefPtr<Gtk::PageSetup> &setup)
+{
   Gtk::PaperSize paper_size = setup->get_paper_size();
 
-  area.set_size_request((int)ceil(paper_size.get_width(Gtk::UNIT_POINTS)), (int)ceil(paper_size.get_height(Gtk::UNIT_POINTS)));
+  area.set_size_request((int) ceil(paper_size.get_width(Gtk::UNIT_POINTS)),
+                        (int) ceil(paper_size.get_height(Gtk::UNIT_POINTS)));
 
   // Avoid getting an odd allocation.
-  if(area.is_realized()) {
+  if (area.is_realized()) {
     Cairo::RefPtr<Cairo::Context> cairo_ctx = area.get_window()->create_cairo_context();
-      context->set_cairo_context(cairo_ctx, ctx->get_dpi_x(), ctx->get_dpi_y());
-      Glib::RefPtr<Pango::Layout> layout = signal_get_layout.emit();
-      if(layout) {
-	layout->update_from_cairo_context(cairo_ctx);
-      }
+    context->set_cairo_context(cairo_ctx, ctx->get_dpi_x(), ctx->get_dpi_y());
+    Glib::RefPtr<Pango::Layout> layout = signal_get_layout.emit();
+    if (layout) {
+      layout->update_from_cairo_context(cairo_ctx);
+    }
   }
 }
-

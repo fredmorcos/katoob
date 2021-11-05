@@ -1,78 +1,78 @@
 /*
  * toolbar.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include "toolbar.hh"
-#include <gtkmm/stock.h>
 #include "macros.h"
+#include "toolbar.hh"
 #include "utils.hh"
 #include <fstream>
+#include <gtkmm.h>
 #include <iostream>
 
-Toolbar::Toolbar(Conf& conf) :
-  _conf(conf),
-  _create(Gtk::Stock::NEW),
-  _open(Gtk::Stock::OPEN),
-  _save(Gtk::Stock::SAVE),
+Toolbar::Toolbar(Conf &conf):
+ _conf(conf),
+ _create(Gtk::Stock::NEW),
+ _open(Gtk::Stock::OPEN),
+ _save(Gtk::Stock::SAVE),
 #ifdef ENABLE_PRINT
-  _print(Gtk::Stock::PRINT),
+ _print(Gtk::Stock::PRINT),
 #endif
-  _close(Gtk::Stock::CLOSE),
-  _undo(Gtk::Stock::UNDO),
-  _redo(Gtk::Stock::REDO),
-  _cut(Gtk::Stock::CUT),
-  _copy(Gtk::Stock::COPY),
-  _paste(Gtk::Stock::PASTE),
-  _erase(Gtk::Stock::DELETE),
+ _close(Gtk::Stock::CLOSE),
+ _undo(Gtk::Stock::UNDO),
+ _redo(Gtk::Stock::REDO),
+ _cut(Gtk::Stock::CUT),
+ _copy(Gtk::Stock::COPY),
+ _paste(Gtk::Stock::PASTE),
+ _erase(Gtk::Stock::DELETE),
 #ifdef ENABLE_MAEMO
-  _full_screen(Gtk::Stock::ZOOM_FIT),
+ _full_screen(Gtk::Stock::ZOOM_FIT),
 #endif
-  _go_to_l(_("Goto Line")),
-  _search_l(_("Search"))
+ _go_to_l(_("Goto Line")),
+ _search_l(_("Search"))
 #ifdef ENABLE_SPELL
-  ,
-  _dictionary_l(_("Spelling Dictionary"))
+ ,
+ _dictionary_l(_("Spelling Dictionary"))
 #endif
 {
   create_main();
   create_extended();
 }
 
-Toolbar::~Toolbar() {
-
+Toolbar::~Toolbar()
+{
 }
 
-Gtk::Toolbar& Toolbar::get_main() {
+Gtk::Toolbar &Toolbar::get_main()
+{
   return _main;
 };
 
-Gtk::VBox& Toolbar::get_extended() {
+Gtk::VBox &Toolbar::get_extended()
+{
   return _extended;
 }
 
-void Toolbar::create_main() {
+void Toolbar::create_main()
+{
   _main.append(_create);
   _main.append(_open);
   _main.append(_save);
@@ -101,7 +101,7 @@ void Toolbar::create_main() {
   Gtk::Tooltips *tips = _main.get_tooltips_object();
   _create.set_tooltip(*tips, _("Create a new file"));
   _open.set_tooltip(*tips, _("Open a file for editing"));
-  _save.set_tooltip(*tips,  _("Save the existing file"));
+  _save.set_tooltip(*tips, _("Save the existing file"));
 #ifdef ENABLE_PRINT
   _print.set_tooltip(*tips, _("Print this document"));
 #endif
@@ -152,11 +152,13 @@ void Toolbar::create_main() {
   _paste.signal_clicked().connect(sigc::mem_fun(signal_paste_clicked, &sigc::signal<void>::emit));
   _erase.signal_clicked().connect(sigc::mem_fun(signal_erase_clicked, &sigc::signal<void>::emit));
 #ifdef ENABLE_MAEMO
-  _full_screen.signal_clicked().connect(sigc::mem_fun(signal_full_screen_clicked, &sigc::signal<void>::emit));
+  _full_screen.signal_clicked().connect(
+      sigc::mem_fun(signal_full_screen_clicked, &sigc::signal<void>::emit));
 #endif
 }
 
-void Toolbar::create_extended() {
+void Toolbar::create_extended()
+{
   _extended.pack_start(box);
   box.pack_start(_search_l, false, false, 10);
   box.pack_start(_search, false, false);
@@ -167,7 +169,8 @@ void Toolbar::create_extended() {
   box.pack_start(_dictionary_l, false, false, 10);
   box.pack_start(_dictionary, false, false);
 
-  Gtk::Image *image = Gtk::manage(new Gtk::Image(Gtk::Stock::SPELL_CHECK, Gtk::IconSize(Gtk::ICON_SIZE_MENU)));
+  Gtk::Image *image =
+      Gtk::manage(new Gtk::Image(Gtk::Stock::SPELL_CHECK, Gtk::IconSize(Gtk::ICON_SIZE_MENU)));
   _spell.set_image(*image);
   box.pack_start(_spell, false, false, 10);
   _spell.set_relief(Gtk::RELIEF_NONE);
@@ -175,8 +178,11 @@ void Toolbar::create_extended() {
 
   _dictionary.set_active_text(_conf.get("default_dict", "en"));
   // TODO: I want to connect without the callback step.
-  signal_dictionary_changed_conn = _dictionary.signal_changed().connect(sigc::mem_fun(*this, &Toolbar::dictionary_changed_cb));
-  //  signal_dictionary_changed_conn = _dictionary.signal_changed().connect(sigc::bind<std::string>(sigc::mem_fun(signal_dictionary_changed, &sigc::signal<void, std::string>::emit), _dictionary.get_active_text()));
+  signal_dictionary_changed_conn =
+      _dictionary.signal_changed().connect(sigc::mem_fun(*this, &Toolbar::dictionary_changed_cb));
+  //  signal_dictionary_changed_conn =
+  //  _dictionary.signal_changed().connect(sigc::bind<std::string>(sigc::mem_fun(signal_dictionary_changed,
+  //  &sigc::signal<void, std::string>::emit), _dictionary.get_active_text()));
 #endif
   _search.signal_activate().connect(sigc::mem_fun(*this, &Toolbar::search_activate_cb));
   _go_to.signal_activate().connect(sigc::mem_fun(*this, &Toolbar::go_to_activate_cb));
@@ -190,63 +196,68 @@ void Toolbar::create_extended() {
   _extended.show_all();
 }
 
-void Toolbar::set_text() {
+void Toolbar::set_text()
+{
   _main.set_toolbar_style(Gtk::ToolbarStyle(Gtk::TOOLBAR_TEXT));
-  _conf.set("toolbartype","text");
+  _conf.set("toolbartype", "text");
 }
 
-void Toolbar::set_icons() {
+void Toolbar::set_icons()
+{
   _main.set_toolbar_style(Gtk::ToolbarStyle(Gtk::TOOLBAR_ICONS));
-  _conf.set("toolbartype","icons");
+  _conf.set("toolbartype", "icons");
 }
 
-void Toolbar::set_both() {
+void Toolbar::set_both()
+{
   _main.set_toolbar_style(Gtk::ToolbarStyle(Gtk::TOOLBAR_BOTH));
-  _conf.set("toolbartype","both");
+  _conf.set("toolbartype", "both");
 }
 
-void Toolbar::set_beside() {
+void Toolbar::set_beside()
+{
   _main.set_toolbar_style(Gtk::ToolbarStyle(Gtk::TOOLBAR_BOTH_HORIZ));
-  _conf.set("toolbartype","both_horiz");
+  _conf.set("toolbartype", "both_horiz");
 }
 
 #ifdef ENABLE_SPELL
-void Toolbar::set_dictionary(std::string& d) {
+void Toolbar::set_dictionary(std::string &d)
+{
   signal_dictionary_changed_conn.block();
   _dictionary.set_active_text(d);
   signal_dictionary_changed_conn.unblock();
 }
 
-std::string Toolbar::get_dictionary() {
+std::string Toolbar::get_dictionary()
+{
   return _dictionary.get_active_text();
 }
 #endif
 
-void Toolbar::reset_gui() {
+void Toolbar::reset_gui()
+{
   _conf.get("toolbar", true) == true ? _main.show() : _main.hide();
   _conf.get("extended_toolbar", true) == true ? _extended.show() : _extended.hide();
   _conf.get("extra_buttons", true) == true ? _extra_buttons.show_all() : _extra_buttons.hide();
 
 #ifdef ENABLE_MAEMO
-  const std::string& toolbartype = _conf.get("toolbartype", "icons");
+  const std::string &toolbartype = _conf.get("toolbartype", "icons");
 #else
-  const std::string& toolbartype = _conf.get("toolbartype", "both");
+  const std::string &toolbartype = _conf.get("toolbartype", "both");
 #endif
   if (toolbartype == "text") {
     set_text();
-  }
-  else if (toolbartype == "icons") {
+  } else if (toolbartype == "icons") {
     set_icons();
-  }
-  else if (toolbartype == "both_horiz") {
+  } else if (toolbartype == "both_horiz") {
     set_beside();
-  }
-  else {
+  } else {
     set_both();
   }
 }
 
-void Toolbar::reset_gui(bool enable) {
+void Toolbar::reset_gui(bool enable)
+{
   _save.set_sensitive(enable);
 #ifdef ENABLE_PRINT
   _print.set_sensitive(enable);
@@ -268,19 +279,22 @@ void Toolbar::reset_gui(bool enable) {
   _extra_buttons.set_sensitive(enable);
 }
 
-void Toolbar::search_activate_cb() {
+void Toolbar::search_activate_cb()
+{
   if (_search.get_text().size()) {
     signal_search_activated.emit(_search.get_text());
   }
 }
 
-void Toolbar::go_to_activate_cb() {
+void Toolbar::go_to_activate_cb()
+{
   if (_go_to.get_text().size()) {
     signal_go_to_activated.emit(atoi(_go_to.get_text().c_str()));
   }
 }
 
-void Toolbar::create_extra_buttons() {
+void Toolbar::create_extra_buttons()
+{
   std::string path = Utils::get_data_path("toolbar");
   std::ifstream ifs;
   ifs.open(path.c_str());
@@ -293,41 +307,49 @@ void Toolbar::create_extra_buttons() {
   }
 }
 
-void Toolbar::create_extra_button(std::string& label) {
+void Toolbar::create_extra_button(std::string &label)
+{
   Gtk::ToolButton *button = Gtk::manage(new Gtk::ToolButton);
   button->set_label(label);
   button->show_all();
   _extra_buttons.append(*button);
-  button->signal_clicked().connect(sigc::bind<std::string>(sigc::mem_fun(*this, &Toolbar::extra_button_clicked), label));
+  button->signal_clicked().connect(
+      sigc::bind<std::string>(sigc::mem_fun(*this, &Toolbar::extra_button_clicked), label));
 }
 
-void Toolbar::enable_undo(bool s) {
+void Toolbar::enable_undo(bool s)
+{
   _undo.set_sensitive(s);
 }
 
-void Toolbar::enable_redo(bool s) {
+void Toolbar::enable_redo(bool s)
+{
   _redo.set_sensitive(s);
 }
 
 #ifdef ENABLE_SPELL
-void Toolbar::enable_dictionary(bool s) {
+void Toolbar::enable_dictionary(bool s)
+{
   _dictionary.set_sensitive(s);
 }
 #endif
 
-void Toolbar::set_read_only(bool r) {
+void Toolbar::set_read_only(bool r)
+{
   _save.set_sensitive(!r);
   _cut.set_sensitive(!r);
   _erase.set_sensitive(!r);
   _paste.set_sensitive(!r);
 }
 
-void Toolbar::show_main(bool do_show) {
+void Toolbar::show_main(bool do_show)
+{
   do_show ? _main.show() : _main.hide();
   _conf.set("toolbar", do_show);
 }
 
-void Toolbar::show_extended(bool do_show) {
+void Toolbar::show_extended(bool do_show)
+{
   do_show ? _extended.show() : _extended.hide();
   _conf.set("extended_toolbar", do_show);
 }

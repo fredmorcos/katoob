@@ -1,46 +1,44 @@
 /*
  * emulator.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include <cassert>
-#include <iostream>
-#include <fstream>
-#include <memory>
-#include <glibmm.h>
 #include "emulator.hh"
 #include "utils.hh"
+#include <cassert>
+#include <fstream>
+#include <glibmm.h>
+#include <iostream>
+#include <memory>
 
-Emulator::Emulator() {
-  std::string dir(Utils::get_data_dir() + Utils::get_dir_separator() + "emulator" + Utils::get_dir_separator());
+Emulator::Emulator()
+{
+  std::string dir(Utils::get_data_dir() + Utils::get_dir_separator() + "emulator" +
+                  Utils::get_dir_separator());
 
   std::auto_ptr<Glib::Dir> d;
 
   try {
     d = std::auto_ptr<Glib::Dir>(new Glib::Dir(dir));
-  }
-  catch (Glib::FileError& e) {
+  } catch (Glib::FileError &e) {
     _err = e.what();
     return;
   }
@@ -56,20 +54,18 @@ Emulator::Emulator() {
     if (parse_file(file, map)) {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try {
-	std::string _utf8 = Glib::filename_to_utf8(*start);
-	names.push_back(_utf8);
-      }
-      catch (Glib::ConvertError& er) {
-	names.push_back(*start);
+        std::string _utf8 = Glib::filename_to_utf8(*start);
+        names.push_back(_utf8);
+      } catch (Glib::ConvertError &er) {
+        names.push_back(*start);
       }
 #else
       std::string _utf8 = Glib::filename_to_utf8(*start, error);
       if (error.get()) {
-	names.push_back(*start);
-	error.reset();
-      }
-      else {
-	names.push_back(_utf8);
+        names.push_back(*start);
+        error.reset();
+      } else {
+        names.push_back(_utf8);
       }
 #endif
       layouts.push_back(map);
@@ -79,20 +75,23 @@ Emulator::Emulator() {
   }
 }
 
-Emulator::~Emulator() {
-
+Emulator::~Emulator()
+{
 }
 
-std::vector<std::string>& Emulator::list_layouts() {
+std::vector<std::string> &Emulator::list_layouts()
+{
   return names;
 }
 
-bool Emulator::ok(std::string& e) {
+bool Emulator::ok(std::string &e)
+{
   e = _err;
   return _ok;
 }
 
-bool Emulator::parse_file(std::string& file, std::map<std::string, std::string>& map) {
+bool Emulator::parse_file(std::string &file, std::map<std::string, std::string> &map)
+{
   std::ifstream ifs;
   ifs.open(file.c_str());
   if (ifs.is_open()) {
@@ -105,13 +104,13 @@ bool Emulator::parse_file(std::string& file, std::map<std::string, std::string>&
     }
     ifs.close();
     return true;
-  }
-  else {
+  } else {
     return false;
   }
 }
 
-bool Emulator::get(const std::string& key, std::string& value) {
+bool Emulator::get(const std::string &key, std::string &value)
+{
   assert(layout < layouts.size());
   assert(layout >= 0);
 
@@ -123,16 +122,19 @@ bool Emulator::get(const std::string& key, std::string& value) {
   return true;
 }
 
-void Emulator::activate(int x) {
+void Emulator::activate(int x)
+{
   assert((x == -1) || (x < layouts.size()));
   layout = x;
 }
 
-bool Emulator::get_active() {
+bool Emulator::get_active()
+{
   return (layout != -1);
 }
 
-std::map<std::string, std::string>& Emulator::get_layout() {
+std::map<std::string, std::string> &Emulator::get_layout()
+{
   assert(layout != -1);
   return layouts[layout];
 }

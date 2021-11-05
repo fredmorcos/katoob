@@ -1,47 +1,49 @@
 /*
  * import.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include <glibmm/miscutils.h>
 #include "import.hh"
 #include "macros.h"
+#include "utils.hh"
+#include <glibmm/fileutils.h>
+#include <glibmm/miscutils.h>
+#include <glibmm/ustring.h>
+#include <vector>
+
 #ifdef HAVE_GZIP
 #include <zlib.h>
 #endif
+
 #ifdef HAVE_BZIP2
 #include <bzlib.h>
 #endif
-#include <glibmm/fileutils.h>
-#include <glibmm/ustring.h>
-#include "utils.hh"
+
 #ifdef HAVE_FRIBIDI
-#include <fribidi/fribidi.h>
 #include "shape_arabic.h"
+#include <fribidi/fribidi.h>
 #endif
 
-void import_init(std::vector<Import>& import) {
+void import_init(std::vector<Import> &import)
+{
   Import imp;
 
   imp.name = _("_HTML Character Reference...");
@@ -67,7 +69,8 @@ void import_init(std::vector<Import>& import) {
 #endif
 }
 
-bool katoob_import_html(std::string& file, std::string& _out) {
+bool katoob_import_html(std::string &file, std::string &_out)
+{
   Glib::ustring out;
   std::string contents;
 
@@ -78,27 +81,24 @@ bool katoob_import_html(std::string& file, std::string& _out) {
 
   std::string num;
   for (unsigned x = 0; x < contents.size(); x++) {
-    if (x+1 < contents.size()) {
-      if ((contents[x] == '&') && (contents[x+1] == '#')) {
-	++x;
-	++x;
-	num.clear();
-	while (x < contents.size()) {
-	  if (contents[x] == ';') {
-	    gunichar n = atoi(num.c_str());
-	    out += n;
-	    break;
-	  }
-	  else {
-	    num += contents[x++];
-	  }
-	}
+    if (x + 1 < contents.size()) {
+      if ((contents[x] == '&') && (contents[x + 1] == '#')) {
+        ++x;
+        ++x;
+        num.clear();
+        while (x < contents.size()) {
+          if (contents[x] == ';') {
+            gunichar n = atoi(num.c_str());
+            out += n;
+            break;
+          } else {
+            num += contents[x++];
+          }
+        }
+      } else {
+        out += contents[x];
       }
-      else {
-	out += contents[x];
-      }
-    }
-    else {
+    } else {
       out += contents[x];
     }
   }
@@ -107,7 +107,8 @@ bool katoob_import_html(std::string& file, std::string& _out) {
 }
 
 #ifdef HAVE_GZIP
-bool katoob_import_gz(std::string& file, std::string& out) {
+bool katoob_import_gz(std::string &file, std::string &out)
+{
   // Is it really a gzipped file ?
   FILE *fp = fopen(file.c_str(), "rb");
   if (!fp) {
@@ -128,8 +129,7 @@ bool katoob_import_gz(std::string& file, std::string& out) {
     fclose(fp);
     // Do nothing.
     ;
-  }
-  else {
+  } else {
     close(fd);
     fclose(fp);
     out = _("Error reading file.");
@@ -148,11 +148,9 @@ bool katoob_import_gz(std::string& file, std::string& out) {
     x = gzread(zfile, &c, 1);
     if (x == 1) {
       out += c;
-    }
-    else if (x == 0) {
+    } else if (x == 0) {
       break;
-    }
-    else {
+    } else {
       // Error.
       out = _("Error reading file.");
       gzclose(zfile);
@@ -165,7 +163,8 @@ bool katoob_import_gz(std::string& file, std::string& out) {
 #endif
 
 #ifdef HAVE_BZIP2
-bool katoob_import_bz2(std::string& file, std::string& out) {
+bool katoob_import_bz2(std::string &file, std::string &out)
+{
   BZFILE *bzfile;
   bzfile = BZ2_bzopen(file.c_str(), "rb");
   if (bzfile == NULL) {
@@ -179,11 +178,9 @@ bool katoob_import_bz2(std::string& file, std::string& out) {
     x = BZ2_bzread(bzfile, &c, 1);
     if (x == 1) {
       out += c;
-    }
-    else if (x == 0) {
+    } else if (x == 0) {
       break;
-    }
-    else {
+    } else {
       // Error.
       out = _("Error reading file.");
       BZ2_bzclose(bzfile);
@@ -196,7 +193,8 @@ bool katoob_import_bz2(std::string& file, std::string& out) {
 #endif
 
 #ifdef HAVE_FRIBIDI
-bool katoob_import_bidi_shape(std::string& file, std::string& out) {
+bool katoob_import_bidi_shape(std::string &file, std::string &out)
+{
   Glib::ustring contents;
 
   if (!Utils::katoob_read(file, out)) {
@@ -217,7 +215,7 @@ bool katoob_import_bidi_shape(std::string& file, std::string& out) {
   contents.clear();
 
   for (unsigned i = 0; i < lines.size(); i++) {
-    gunichar *ch = new gunichar[lines[i].size()+1];
+    gunichar *ch = new gunichar[lines[i].size() + 1];
     for (unsigned x = 0; x < lines[i].size(); x++) {
       ch[x] = lines[i][x];
     }
@@ -228,14 +226,14 @@ bool katoob_import_bidi_shape(std::string& file, std::string& out) {
 
     // let's unshape.
     gunichar *_ch = unshape_arabic(ch, l, &length);
-    delete [] ch;
+    delete[] ch;
 
     // Now we apply the bidi.
     FriBidiCharType base = FRIBIDI_TYPE_RTL;
-    ch = new gunichar[length+1];
+    ch = new gunichar[length + 1];
     if (!fribidi_log2vis(_ch, length, &base, ch, NULL, NULL, NULL)) {
       g_free(_ch);
-      delete [] ch;
+      delete[] ch;
       out = _("Couldn't apply the bidi algorithm.");
       return false;
     }
@@ -247,7 +245,7 @@ bool katoob_import_bidi_shape(std::string& file, std::string& out) {
     // TODO: We need to check whether the document has a \n at the end or not.
     contents += '\n';
 
-    delete [] ch;
+    delete[] ch;
   }
 
   out = contents;

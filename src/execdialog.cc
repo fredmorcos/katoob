@@ -1,34 +1,32 @@
 /*
  * execdialog.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
 #include "execdialog.hh"
-#include <gtkmm/stock.h>
 #include "macros.h"
+#include <gtkmm.h>
 
-ExecDialog::ExecDialog(Conf& conf) {
+ExecDialog::ExecDialog(Conf &conf)
+{
   set_modal();
   Gtk::VBox *vbox = Gtk::Dialog::get_vbox();
   vbox->pack_start(box);
@@ -38,7 +36,8 @@ ExecDialog::ExecDialog(Conf& conf) {
   box.pack_start(command);
 
   label.set_text(_("Command to execute"));
-  tips.set_text(_("'%s' will be substituted with a temporary filename\ncontaining the text from the document."));
+  tips.set_text(_("'%s' will be substituted with a temporary filename\ncontaining the text from "
+                  "the document."));
   box.set_border_width(10);
 
   set_border_width(10);
@@ -60,28 +59,30 @@ ExecDialog::ExecDialog(Conf& conf) {
   new_buffer.set_active(conf.get("exec_cmd_in_new", true));
 }
 
-ExecDialog::~ExecDialog() {
-
+ExecDialog::~ExecDialog()
+{
 }
 
-bool ExecDialog::run() {
+bool ExecDialog::run()
+{
   show_all();
   if (Gtk::Dialog::run() == Gtk::RESPONSE_ACCEPT) {
     Gtk::Entry *entry = command.get_entry();
     if (entry->get_text().size() == 0) {
       return false;
-    }
-    else {
+    } else {
       return true;
     }
   }
   return false;
 }
 
-std::string ExecDialog::get_command() {
+std::string ExecDialog::get_command()
+{
   return command.get_entry()->get_text();
 }
 
-bool ExecDialog::get_new_buffer() {
+bool ExecDialog::get_new_buffer()
+{
   return new_buffer.get_active();
 }

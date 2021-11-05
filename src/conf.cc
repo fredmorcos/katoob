@@ -1,40 +1,37 @@
 /*
  * conf.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include <fstream>
-#include <iostream>
-#include <sstream>
-#include <glibmm/miscutils.h>
-#include <glibmm/fileutils.h>
-#include <glib/gstdio.h>
 #include "conf.hh"
 #include "utils.hh"
+#include <fstream>
+#include <glib/gstdio.h>
+#include <glibmm/fileutils.h>
+#include <glibmm/miscutils.h>
+#include <iostream>
+#include <sstream>
 
-Conf::Conf(Encodings& _encodings) :
-  _ok(false) {
+Conf::Conf(Encodings &_encodings): _ok(false)
+{
   if (!prepare_dir()) {
     return;
   }
@@ -44,7 +41,8 @@ Conf::Conf(Encodings& _encodings) :
   defaults(_encodings);
 }
 
-Conf::~Conf() {
+Conf::~Conf()
+{
   if (!prepare_dir()) {
     return;
   }
@@ -67,13 +65,12 @@ Conf::~Conf() {
     set("saveonexit", false);
     if (get("savewinpos", true)) {
       if (!prepare_dir()) {
-	return;
+        return;
       }
       load_conf();
       save_conf();
     }
-  }
-  else {
+  } else {
     if (!prepare_dir()) {
       return;
     }
@@ -81,18 +78,21 @@ Conf::~Conf() {
   }
 }
 
-void Conf::save_conf() {
+void Conf::save_conf()
+{
   save_conf("config", config);
   save_conf("print", print);
 }
 
-void Conf::save_list() {
+void Conf::save_list()
+{
   save_list("recent", recent);
   save_list("exec-cmd", exec_cmd);
   save_list("locations", locations);
 }
 
-void Conf::save_conf(const char *_file, std::map<std::string, std::string>& mp) {
+void Conf::save_conf(const char *_file, std::map<std::string, std::string> &mp)
+{
   if (conf_dir.length()) {
     std::string file = conf_dir;
     file += _file;
@@ -101,14 +101,15 @@ void Conf::save_conf(const char *_file, std::map<std::string, std::string>& mp) 
     if (ofs.is_open()) {
       std::map<std::string, std::string>::iterator iter;
       for (iter = mp.begin(); iter != mp.end(); iter++) {
-	ofs << iter->first << " = " << iter->second << std::endl;
+        ofs << iter->first << " = " << iter->second << std::endl;
       }
       ofs.close();
     }
   }
 }
 
-void Conf::save_list(const char * _file, std::vector<std::string>& mp) {
+void Conf::save_list(const char *_file, std::vector<std::string> &mp)
+{
   if (conf_dir.length()) {
     std::string file = conf_dir;
     file += _file;
@@ -116,52 +117,55 @@ void Conf::save_list(const char * _file, std::vector<std::string>& mp) {
     ofs.open(file.c_str());
     if (ofs.is_open()) {
       for (unsigned x = 0; x < mp.size(); x++) {
-	ofs << mp[x] << std::endl;
+        ofs << mp[x] << std::endl;
       }
       ofs.close();
     }
   }
 }
 
-bool Conf::prepare_dir() {
+bool Conf::prepare_dir()
+{
   conf_dir = (Utils::get_conf_dir() + Utils::get_dir_separator());
 
   // We check that it's there and is a directory.
-  if (!Glib::file_test (conf_dir, Glib::FILE_TEST_IS_DIR)) {
+  if (!Glib::file_test(conf_dir, Glib::FILE_TEST_IS_DIR)) {
     // It might be a file, Katoob 0.1 used ~/.katoob as a configuration file.
-    if (Glib::file_test (conf_dir, Glib::FILE_TEST_IS_REGULAR))	{
+    if (Glib::file_test(conf_dir, Glib::FILE_TEST_IS_REGULAR)) {
       // Sadly erase it.
-      if (remove (conf_dir.c_str())) {
-	conf_dir.clear();
-	g_warning ("Can't remove old configuration file");
-	return false;
+      if (remove(conf_dir.c_str())) {
+        conf_dir.clear();
+        g_warning("Can't remove old configuration file");
+        return false;
       }
     }
     // Let's try to create a directory.
-    if (g_mkdir (conf_dir.c_str(), 0700)) {
+    if (g_mkdir(conf_dir.c_str(), 0700)) {
       conf_dir.clear();
-      g_warning ("Can't create configuration directory");
+      g_warning("Can't create configuration directory");
       return false;
     }
   }
 
   // Now our crashed documents directory.
-  if (!Glib::file_test (Utils::get_recovery_dir(), Glib::FILE_TEST_IS_DIR)) {
-    if (g_mkdir (Utils::get_recovery_dir().c_str(), 0700)) {
-      g_warning ("Can't create recovery directory");
+  if (!Glib::file_test(Utils::get_recovery_dir(), Glib::FILE_TEST_IS_DIR)) {
+    if (g_mkdir(Utils::get_recovery_dir().c_str(), 0700)) {
+      g_warning("Can't create recovery directory");
       return false;
     }
   }
   return true;
 }
 
-void Conf::load_conf() {
+void Conf::load_conf()
+{
   _ok = load_conf("config", config);
   load_conf("print", print);
   adjust_lists();
 }
 
-bool Conf::load_conf(const char *_file, std::map<std::string, std::string>& mp) {
+bool Conf::load_conf(const char *_file, std::map<std::string, std::string> &mp)
+{
   if (conf_dir.length()) {
     std::string file(conf_dir + _file);
     std::ifstream ifs;
@@ -169,17 +173,17 @@ bool Conf::load_conf(const char *_file, std::map<std::string, std::string>& mp) 
     if (ifs.is_open()) {
       std::string buff;
       while (getline(ifs, buff)) {
-	int x = buff.find('=');
-	int y = x;
-	while (buff[--y] == ' ') {
-	  ; // Do nothing.
-	}
-	std::string key(buff, 0, ++y);
-	while (buff[++x] == ' ') {
-	  ; // Do nothing.
-	}
-	std::string value(buff, x);
-	mp[key] = value;
+        int x = buff.find('=');
+        int y = x;
+        while (buff[--y] == ' ') {
+          ;   // Do nothing.
+        }
+        std::string key(buff, 0, ++y);
+        while (buff[++x] == ' ') {
+          ;   // Do nothing.
+        }
+        std::string value(buff, x);
+        mp[key] = value;
       }
       ifs.close();
       return true;
@@ -188,13 +192,15 @@ bool Conf::load_conf(const char *_file, std::map<std::string, std::string>& mp) 
   return false;
 }
 
-void Conf::load_list() {
+void Conf::load_list()
+{
   load_list("recent", recent);
   load_list("exec-cmd", exec_cmd);
   load_list("locations", locations);
 }
 
-void Conf::load_list(const gchar *_file, std::vector<std::string>& mp) {
+void Conf::load_list(const gchar *_file, std::vector<std::string> &mp)
+{
   if (conf_dir.length()) {
     std::string file = conf_dir;
     file += _file;
@@ -203,14 +209,15 @@ void Conf::load_list(const gchar *_file, std::vector<std::string>& mp) {
     if (ifs.is_open()) {
       std::string buff;
       while (getline(ifs, buff)) {
-	mp.push_back(buff);
+        mp.push_back(buff);
       }
       ifs.close();
     }
   }
 }
 
-double Conf::_get(std::map<std::string, std::string>& m, const char *key, double val) {
+double Conf::_get(std::map<std::string, std::string> &m, const char *key, double val)
+{
   std::map<std::string, std::string>::iterator iter;
   iter = m.find(key);
   if (iter == m.end()) {
@@ -226,7 +233,8 @@ double Conf::_get(std::map<std::string, std::string>& m, const char *key, double
   return atof(iter->second.c_str());
 }
 
-int Conf::_get(std::map<std::string, std::string>& m, const char *key, int val) {
+int Conf::_get(std::map<std::string, std::string> &m, const char *key, int val)
+{
   std::map<std::string, std::string>::iterator iter;
   iter = m.find(key);
   if (iter == m.end()) {
@@ -242,7 +250,8 @@ int Conf::_get(std::map<std::string, std::string>& m, const char *key, int val) 
   return atoi(iter->second.c_str());
 }
 
-bool Conf::_get(std::map<std::string, std::string>& m, const char *key, bool val) {
+bool Conf::_get(std::map<std::string, std::string> &m, const char *key, bool val)
+{
   std::map<std::string, std::string>::iterator iter;
   iter = m.find(key);
   if (iter == m.end()) {
@@ -258,7 +267,8 @@ bool Conf::_get(std::map<std::string, std::string>& m, const char *key, bool val
   return atoi(iter->second.c_str()) == 0 ? false : true;
 }
 
-std::string Conf::_get(std::map<std::string, std::string>& m, const char *key, std::string& val) {
+std::string Conf::_get(std::map<std::string, std::string> &m, const char *key, std::string &val)
+{
   std::map<std::string, std::string>::iterator iter;
   iter = m.find(key);
   if (iter == m.end()) {
@@ -272,19 +282,22 @@ std::string Conf::_get(std::map<std::string, std::string>& m, const char *key, s
   return iter->second;
 }
 
-void Conf::_set(std::map<std::string, std::string>&m, const char *key, double val) {
+void Conf::_set(std::map<std::string, std::string> &m, const char *key, double val)
+{
   std::stringstream str;
   str << val;
   m[key] = str.str();
 }
 
-void Conf::_set(std::map<std::string, std::string>& m, const char *key, int val) {
+void Conf::_set(std::map<std::string, std::string> &m, const char *key, int val)
+{
   std::stringstream str;
   str << val;
   m[key] = str.str();
 }
 
-void Conf::list_prepend(std::vector<std::string>& list, const std::string& file, unsigned size) {
+void Conf::list_prepend(std::vector<std::string> &list, const std::string &file, unsigned size)
+{
   // Let's insert it.
   list.insert(list.begin(), file);
 
@@ -308,7 +321,8 @@ void Conf::list_prepend(std::vector<std::string>& list, const std::string& file,
   }
 }
 
-void Conf::defaults(Encodings& enc) {
+void Conf::defaults(Encodings &enc)
+{
   std::string def_open = "WINDOWS-1256";
   std::string def_save = "UTF-8";
   int _default_open = -1;
@@ -318,8 +332,7 @@ void Conf::defaults(Encodings& enc) {
 
   if (get("locale_enc", false)) {
     _default_open = enc.get(cset);
-  }
-  else if (get("special_enc", true)) {
+  } else if (get("special_enc", true)) {
     std::string def = get("saved_enc", def_open);
     _default_open = enc.get(def);
   }
@@ -328,7 +341,7 @@ void Conf::defaults(Encodings& enc) {
   }
   // if it's utf8 or -1, we will default to cp1256
   if ((_default_open == -1) || _default_open == enc.utf8()) {
-      enc.default_open(enc.get_by_charset(def_open));
+    enc.default_open(enc.get_by_charset(def_open));
   }
 
   /* Now for the saving. */
@@ -336,41 +349,44 @@ void Conf::defaults(Encodings& enc) {
   enc.default_save(enc.get(def));
 }
 
-const std::string& Conf::open_dir() {
+const std::string &Conf::open_dir()
+{
   if (_open_dir.size()) {
     return _open_dir;
-  }
-  else {
+  } else {
     _open_dir = Glib::get_current_dir();
     _open_dir += Utils::get_dir_separator();
     return _open_dir;
   }
 }
 
-const std::string& Conf::save_dir() {
+const std::string &Conf::save_dir()
+{
   if (_save_dir.size()) {
     return _save_dir;
-  }
-  else {
+  } else {
     _save_dir = Glib::get_current_dir();
     _save_dir += Utils::get_dir_separator();
     return _save_dir;
   }
 }
 
-void Conf::open_dir(const std::string& path) {
-  if (Glib::file_test (path, Glib::FILE_TEST_IS_DIR)) {
+void Conf::open_dir(const std::string &path)
+{
+  if (Glib::file_test(path, Glib::FILE_TEST_IS_DIR)) {
     _open_dir = path + Utils::get_dir_separator();
   }
 }
 
-void Conf::save_dir(const std::string& path) {
-  if (Glib::file_test (path, Glib::FILE_TEST_IS_DIR)) {
+void Conf::save_dir(const std::string &path)
+{
+  if (Glib::file_test(path, Glib::FILE_TEST_IS_DIR)) {
     _save_dir = path + Utils::get_dir_separator();
   }
 }
 
-void Conf::adjust_lists() {
+void Conf::adjust_lists()
+{
   // recent
   unsigned x = get("recentno", 10);
   std::vector<std::string>::iterator start;
@@ -397,14 +413,14 @@ void Conf::adjust_lists() {
   }
 }
 
-std::string Conf::get_version() {
+std::string Conf::get_version()
+{
   std::map<std::string, std::string>::iterator iter;
   std::string ver;
   iter = config.find("version");
   if (iter == config.end()) {
     return ver;
-  }
-  else {
+  } else {
     return iter->second;
   }
 }

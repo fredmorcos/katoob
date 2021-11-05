@@ -1,41 +1,39 @@
 /*
  * katoob.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include <iostream>
-#include "katoob.hh"
-#include "network.hh"
 #include "dialogs.hh"
+#include "katoob.hh"
 #include "macros.h"
+#include "network.hh"
+#include <csignal>
+#include <iostream>
 //#include "utils.hh"
+
 #ifdef ENABLE_MAEMO
+#include <hildon-fmmm/init.h>
 #include <hildonmm/init.h>
 #include <hildonmm/program.h>
-#include <hildon-fmmm/init.h>
 #endif
-#include <csignal>
 
 /**
  * \brief constructor.
@@ -47,13 +45,13 @@
  * If we can send the message, we will exit. Otherwise we
  * will start DBus::start
  */
-Katoob::Katoob(int argc, char *argv[]) :
-  Gtk::Main(argc, argv), conf(encodings) {
+Katoob::Katoob(int argc, char *argv[]): Gtk::Main(argc, argv), conf(encodings)
+{
 #ifdef ENABLE_MAEMO
   osso_context = NULL;
 
   osso_context = osso_initialize(PACKAGE, VERSION, true, NULL);
-  if(!osso_context) {
+  if (!osso_context) {
     std::cerr << "osso_initialize() failed." << std::endl;
     return;
   }
@@ -90,12 +88,10 @@ Katoob::Katoob(int argc, char *argv[]) :
   if (dbus.ping()) {
     if (dbus.open_files(files)) {
       exit(0);
-    }
-    else {
+    } else {
       dbus.start();
     }
-  }
-  else {
+  } else {
     dbus.start();
   }
 #endif
@@ -106,17 +102,16 @@ Katoob::Katoob(int argc, char *argv[]) :
   Glib::set_application_name(PACKAGE);
   // Let's connect our signals.
 
-  int signals[] = {SIGILL,  // Illegal instruction.
-		   SIGABRT, // Abort signal from abort()
-		   SIGFPE, // Floating point exception
-		   SIGTERM, // Termination signal
-		   SIGSEGV, // Invalid memory reference (Segmentation violation)
-		   SIGINT, // Interrupt from keyboard
-		   SIGBUS, // Bus error (bad memory access)
-		   SIGXCPU, // CPU time limit exceeded
-		   SIGXFSZ, // File size limit exceeded
-		   0x0
-  };
+  int signals[] = {SIGILL,    // Illegal instruction.
+                   SIGABRT,   // Abort signal from abort()
+                   SIGFPE,    // Floating point exception
+                   SIGTERM,   // Termination signal
+                   SIGSEGV,   // Invalid memory reference (Segmentation violation)
+                   SIGINT,    // Interrupt from keyboard
+                   SIGBUS,    // Bus error (bad memory access)
+                   SIGXCPU,   // CPU time limit exceeded
+                   SIGXFSZ,   // File size limit exceeded
+                   0x0};
 
   int *sig = signals;
   while (*sig) {
@@ -124,14 +119,16 @@ Katoob::Katoob(int argc, char *argv[]) :
     sig++;
   }
 
-  signal(SIGPIPE, SIG_IGN); // Broken pipe: write to pipe with no readers
-  signal(SIGHUP, SIG_IGN); //  Hangup detected on controlling terminal or death of controlling process
+  signal(SIGPIPE, SIG_IGN);   // Broken pipe: write to pipe with no readers
+  signal(SIGHUP,
+         SIG_IGN);   //  Hangup detected on controlling terminal or death of controlling process
 }
 
 /**
  * \brief destructor.
  */
-Katoob::~Katoob() {
+Katoob::~Katoob()
+{
 #ifdef ENABLE_MAEMO
   if (osso_context) {
     osso_deinitialize(osso_context);
@@ -150,7 +147,8 @@ Katoob::~Katoob() {
  * This handles any signal(7) we might get.
  * \param signum the signal number.
  */
-void Katoob::signal_cb(int signum) {
+void Katoob::signal_cb(int signum)
+{
   static volatile int s = 0;
   if (s) {
     return;
@@ -161,7 +159,8 @@ void Katoob::signal_cb(int signum) {
   for (unsigned x = 0; x < children.size(); x++) {
     children[x]->autosave();
   }
-  //  katoob_error(Utils::substitute(_("Katoob crashed (%s). Katoob tried to save all the open documents. They will be recovered the next time you run Katoob."), strsignal(signum)));
+  //  katoob_error(Utils::substitute(_("Katoob crashed (%s). Katoob tried to save all the open
+  //  documents. They will be recovered the next time you run Katoob."), strsignal(signum)));
   exit(255);
 }
 
@@ -173,7 +172,8 @@ void Katoob::signal_cb(int signum) {
  * \param argc the argc parameter passed to main().
  * \param argv the argv parameter passed to main().
  */
-void Katoob::parse(int argc, char *argv[]) {
+void Katoob::parse(int argc, char *argv[])
+{
   for (int x = 1; x < argc; x++) {
     if ((!strcmp(argv[x], "-u")) || (!strcmp(argv[x], "--usage"))) {
       usage();
@@ -195,7 +195,8 @@ void Katoob::parse(int argc, char *argv[]) {
  * \brief run the main loop (We call Gtk::Main::run()).
  * \return always 0
  */
-int Katoob::run() {
+int Katoob::run()
+{
   Gtk::Main::run();
   return 0;
 }
@@ -203,7 +204,8 @@ int Katoob::run() {
 /**
  * \brief create a new Window
  */
-void Katoob::window() {
+void Katoob::window()
+{
   // TODO: Use open_files() instead of passing them to the constructor ??
   Window *win = new Window(conf, encodings, files);
   win->signal_quit.connect(sigc::mem_fun(*this, &Katoob::quit_cb));
@@ -222,44 +224,51 @@ void Katoob::window() {
 /**
  * \brief print usage (--usage).
  */
-void Katoob::usage() {
+void Katoob::usage()
+{
   std::cout << "usage: katoob [--help] [--version] [--usage] [file1 file2 file3... ]" << std::endl;
 }
 
 /**
  * \brief print our version (--version).
  */
-void Katoob::version() {
+void Katoob::version()
+{
   std::cout << PACKAGE << " " << VERSION << std::endl;
 }
 
 /**
  * \brief print the help (--help).
  */
-void Katoob::help() {
+void Katoob::help()
+{
   std::cout << "usage: katoob  [OPTIONS] [FILES_TO_OPEN]" << std::endl
-	    << "  -h, --help       Show this help message" << std::endl
-	    << "  -v, --version    Display version information" << std::endl
-	    << "  -u, --usage      Display brief usage message" << std::endl;
+            << "  -h, --help       Show this help message" << std::endl
+            << "  -v, --version    Display version information" << std::endl
+            << "  -u, --usage      Display brief usage message" << std::endl;
 }
 
 /**
  * \brief quit the Gtk::Main loop by calling Gtk::Main::quit()
  */
-void Katoob::quit_cb() {
+void Katoob::quit_cb()
+{
   Gtk::Main::quit();
 }
 
 #ifdef ENABLE_MAEMO
-bool Katoob::ok() {
+bool Katoob::ok()
+{
   return osso_context != NULL;
 }
 
-int Katoob::get_error() {
+int Katoob::get_error()
+{
   return OSSO_ERROR;
 }
 
-void Katoob::hw_event_handler(osso_hw_state_t *state, gpointer data) {
+void Katoob::hw_event_handler(osso_hw_state_t *state, gpointer data)
+{
   if ((state->shutdown_ind) || (state->save_unsaved_data_ind)) {
     for (unsigned x = 0; x < children.size(); x++) {
       children[x]->autosave();
@@ -269,9 +278,9 @@ void Katoob::hw_event_handler(osso_hw_state_t *state, gpointer data) {
     }
   }
 
-    if (state->memory_low_ind) {
-      // Maybe trim our closed windows list ?
-    }
+  if (state->memory_low_ind) {
+    // Maybe trim our closed windows list ?
+  }
 }
 /*
 void Katoob::exit_event_handler(gboolean die_now, gpointer data) {

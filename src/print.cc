@@ -1,39 +1,39 @@
 /*
  * print.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include "print.hh"
 #include "macros.h"
+#include "print.hh"
 
-Print::Print(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Glib::RefPtr<PrintSettings>& settings) :
-  _conf(conf),
-  _doc(doc),
-  applet(conf),
-  _page_setup(page_setup),
-  _settings(settings) {
-
+Print::Print(Conf &conf,
+             Document *doc,
+             Glib::RefPtr<PageSetup> &page_setup,
+             Glib::RefPtr<PrintSettings> &settings):
+ _conf(conf),
+ _doc(doc),
+ applet(conf),
+ _page_setup(page_setup),
+ _settings(settings)
+{
   set_allow_async(false);
   set_show_progress(true);
 
@@ -52,20 +52,25 @@ Print::Print(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Gli
 #endif
 }
 
-Print::~Print() {
+Print::~Print()
+{
 }
 
-Glib::RefPtr<Print> Print::create(Conf& conf, Document *doc, Glib::RefPtr<PageSetup>& page_setup, Glib::RefPtr<PrintSettings>& settings) {
+Glib::RefPtr<Print> Print::create(Conf &conf,
+                                  Document *doc,
+                                  Glib::RefPtr<PageSetup> &page_setup,
+                                  Glib::RefPtr<PrintSettings> &settings)
+{
   return Glib::RefPtr<Print>(new Print(conf, doc, page_setup, settings));
 }
 
-bool Print::run(std::string& error, Gtk::PrintOperationAction print_action) {
+bool Print::run(std::string &error, Gtk::PrintOperationAction print_action)
+{
   Gtk::PrintOperationResult res;
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try {
     res = Gtk::PrintOperation::run(print_action);
-  }
-  catch (Glib::Error& err) {
+  } catch (Glib::Error &err) {
     error = err.what();
     return false;
   }
@@ -80,28 +85,30 @@ bool Print::run(std::string& error, Gtk::PrintOperationAction print_action) {
 #endif
 
   switch (res) {
-  case Gtk::PRINT_OPERATION_RESULT_ERROR:
-    // We should not reach this.
-    return false;
+    case Gtk::PRINT_OPERATION_RESULT_ERROR:
+      // We should not reach this.
+      return false;
 
-  case Gtk::PRINT_OPERATION_RESULT_APPLY:
-    return true;
+    case Gtk::PRINT_OPERATION_RESULT_APPLY:
+      return true;
 
-  case Gtk::PRINT_OPERATION_RESULT_CANCEL:
-  case Gtk::PRINT_OPERATION_RESULT_IN_PROGRESS:
-  default:
-    // Should never get the last two!
-    return false;
+    case Gtk::PRINT_OPERATION_RESULT_CANCEL:
+    case Gtk::PRINT_OPERATION_RESULT_IN_PROGRESS:
+    default:
+      // Should never get the last two!
+      return false;
   }
 }
 
-void Print::on_begin_print(const Glib::RefPtr<Gtk::PrintContext>& context) {
+void Print::on_begin_print(const Glib::RefPtr<Gtk::PrintContext> &context)
+{
   // You must handle this signal, because this is where you create and set up
   // a Pango::Layout using the provided Gtk::PrintContext, and break up your
   // printing output into pages.
 
   layout = context->create_pango_layout();
-  Pango::FontDescription font = Pango::FontDescription(_conf.print_get("print_font", "Sans Regular 12"));
+  Pango::FontDescription font =
+      Pango::FontDescription(_conf.print_get("print_font", "Sans Regular 12"));
   layout->set_font_description(font);
 
   const double width = context->get_width();
@@ -126,14 +133,12 @@ void Print::on_begin_print(const Glib::RefPtr<Gtk::PrintContext>& context) {
       _nr.clear();
       _nr.push_back(line);
       page_height = 0;
-    }
-    else if (page_height + line_height == height) {
+    } else if (page_height + line_height == height) {
       _nr.push_back(line);
       pages.push_back(_nr);
       _nr.clear();
       page_height += line_height;
-    }
-    else {
+    } else {
       _nr.push_back(line);
       page_height += line_height;
     }
@@ -146,7 +151,8 @@ void Print::on_begin_print(const Glib::RefPtr<Gtk::PrintContext>& context) {
   set_n_pages(pages.size());
 }
 
-void Print::on_draw_page(const Glib::RefPtr<Gtk::PrintContext>& context, int nr) {
+void Print::on_draw_page(const Glib::RefPtr<Gtk::PrintContext> &context, int nr)
+{
   // You must handle this signal, which provides a PrintContext and a page number.
   // The PrintContext should be used to create a Cairo::Context into which the provided
   // page should be drawn. To render text, iterate over the Pango::Layout you created
@@ -161,7 +167,7 @@ void Print::on_draw_page(const Glib::RefPtr<Gtk::PrintContext>& context, int nr)
     return;
   }
 
-  std::vector<int>& lines = pages[nr];
+  std::vector<int> &lines = pages[nr];
   // TODO: Is this correct ??
   if (lines.size() == 0) {
     return;
@@ -187,7 +193,10 @@ void Print::on_draw_page(const Glib::RefPtr<Gtk::PrintContext>& context, int nr)
   }
 }
 
-bool Print::on_preview(const Glib::RefPtr<Gtk::PrintOperationPreview>& preview, const Glib::RefPtr<Gtk::PrintContext>& context, Gtk::Window *parent) {
+bool Print::on_preview(const Glib::RefPtr<Gtk::PrintOperationPreview> &preview,
+                       const Glib::RefPtr<Gtk::PrintContext> &context,
+                       Gtk::Window *parent)
+{
   _preview = PreviewDialog::create(preview, context, parent);
   _preview->signal_get_n_pages.connect(sigc::mem_fun(this, &Print::get_n_pages));
   _preview->signal_get_layout.connect(sigc::mem_fun(this, &Print::get_layout));
@@ -196,35 +205,41 @@ bool Print::on_preview(const Glib::RefPtr<Gtk::PrintOperationPreview>& preview, 
   return true;
 }
 
-void Print::on_preview_window_hide() {
+void Print::on_preview_window_hide()
+{
   if (_preview) {
     delete _preview;
     _preview = NULL;
   }
 }
 
-Gtk::Widget* Print::on_create_custom_widget() {
+Gtk::Widget *Print::on_create_custom_widget()
+{
   set_custom_tab_label(_("Other"));
   applet.get_box().show_all();
   return &applet.get_box();
 }
 
-void Print::on_custom_widget_apply(Gtk::Widget *) {
+void Print::on_custom_widget_apply(Gtk::Widget *)
+{
   // Note: the returned widget is the VBox we created in on_create_custom_widget().
   // We don't need to use it, because we can access the applet directly.
   applet.apply();
   _settings->reset();
 }
 
-void Print::on_done(Gtk::PrintOperationResult result) {
+void Print::on_done(Gtk::PrintOperationResult result)
+{
   // TODO:
   //  _preview.clear();
 }
 
-int Print::get_n_pages() {
+int Print::get_n_pages()
+{
   return pages.size();
 }
 
-Glib::RefPtr<Pango::Layout> Print::get_layout() {
+Glib::RefPtr<Pango::Layout> Print::get_layout()
+{
   return layout;
 }

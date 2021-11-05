@@ -1,36 +1,35 @@
 /*
  * spellmenu.cc
- * This file is part of katoob
  *
- * Copyright (C) 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include "spellmenu.hh"
 #include "spell.hh"
+#include "spellmenu.hh"
+
 #ifdef ENABLE_ISOCODES
 #include <cassert>
 #endif
 
-SpellMenu::SpellMenu() {
+SpellMenu::SpellMenu()
+{
   katoob_spell_list_available(dicts);
   for (unsigned x = 0; x < dicts.size(); x++) {
 #ifdef ENABLE_ISOCODES
@@ -41,7 +40,8 @@ SpellMenu::SpellMenu() {
   }
 }
 
-const Glib::ustring SpellMenu::get_active_text() {
+const Glib::ustring SpellMenu::get_active_text()
+{
 #ifdef ENABLE_ISOCODES
   int x = get_active_row_number();
   assert(x != -1);
@@ -51,7 +51,8 @@ const Glib::ustring SpellMenu::get_active_text() {
 #endif
 }
 
-void SpellMenu::set_active_text(const Glib::ustring& str) {
+void SpellMenu::set_active_text(const Glib::ustring &str)
+{
 #ifdef ENABLE_ISOCODES
   return Gtk::ComboBoxText::set_active_text(iso_codes.translate(str));
 #else

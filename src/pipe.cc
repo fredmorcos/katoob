@@ -1,42 +1,40 @@
 /*
  * pipe.cc
- * This file is part of katoob
  *
- * Copyright (C) 2006, 2007 Mohammed Sameer
+ * This file is part of Katoob.
  *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or
- * (at your option) any later version.
+ * Copyright (C) 2008-2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+ * Copyright (C) 2002-2007 Mohammed Sameer <msameer@foolab.org>
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * This program is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU General Public License as published by the Free Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330,
- * Boston, MA 02111-1307, USA.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program; if
+ * not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA.
  */
 
-#ifdef HAVE_CONFIG_H
 #include <config.h>
-#endif /* HAVE_CONFIG_H */
 
-#include <unistd.h>
-#include <cerrno>
+#include "macros.h"
 #include "pipe.hh"
+#include "utils.hh"
+#include <cerrno>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include "macros.h"
-#include "utils.hh"
+#include <unistd.h>
 
 /**
  * \brief constructor.
  * \param command the command to execute without any arguments.
  */
-Pipe::Pipe(const std::string& command) : _ok(false) {
+Pipe::Pipe(const std::string &command): _ok(false)
+{
   std::string res;
 
   std::string::size_type w = command.find(" ");
@@ -44,22 +42,20 @@ Pipe::Pipe(const std::string& command) : _ok(false) {
   // If we get nothing, We will check for the whole string.
   if (w == std::string::npos) {
     res = Glib::find_program_in_path(command);
-  }
-  else {
+  } else {
     res = Glib::find_program_in_path(command.substr(0, w));
   }
 
   if (res == "") {
     _err = Utils::substitute(_("I can't execute %s. I can't find it in your path"), command);
-  }
-  else {
+  } else {
     _ok = true;
   }
 }
 
 /** \brief destructor. */
-Pipe::~Pipe() {
-
+Pipe::~Pipe()
+{
 }
 
 /**
@@ -69,7 +65,8 @@ Pipe::~Pipe() {
  * \param err a reference to a std::string to store any error.
  * \return true upon success or false otherwise.
  */
-bool Pipe::exec(const std::string& command, std::string& out, std::string& err) {
+bool Pipe::exec(const std::string &command, std::string &out, std::string &err)
+{
   FILE *p = popen(command.c_str(), "r");
   if (!p) {
     err = strerror(errno);
@@ -121,11 +118,11 @@ bool Pipe::exec(const std::string& command, std::string& out, std::string& err) 
  * \param err a reference to a std::string to store any error.
  * \return true if the command can be executed. false otherwise.
  */
-bool Pipe::ok(std::string& err) {
+bool Pipe::ok(std::string &err)
+{
   if (_ok) {
     return true;
-  }
-  else {
+  } else {
     err = _err;
     return false;
   }
@@ -139,7 +136,11 @@ bool Pipe::ok(std::string& err) {
  * \param error a reference to a std::string to store any error.
  * \return true upon success or false otherwise.
  */
-bool Pipe::exec(const std::string& command1, const std::string& command2, std::string& out, std::string& error) {
+bool Pipe::exec(const std::string &command1,
+                const std::string &command2,
+                std::string &out,
+                std::string &error)
+{
   Pipe pipe(command1);
   if (!pipe.ok(error)) {
     return false;
