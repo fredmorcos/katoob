@@ -1,3 +1,8 @@
+# Language-server cache files
+.cache
+.ccls-cache
+compile_commands.json
+
 config.log
 
 # http://www.gnu.org/software/automake
