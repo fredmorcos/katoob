@@ -22,7 +22,8 @@
 #include <config.h>
 
 #include "sourcemanager.hh"
-#include "xdgmime/xdgmime.h"
+#include <giomm.h>
+#include <glibmm.h>
 #include <iostream>
 
 void SourceManager::init()
@@ -67,9 +68,10 @@ const char *SourceManager::get_name(const std::string &id)
 
 std::string SourceManager::get_language_for_file(const std::string &file)
 {
-  const char *_mime = xdg_mime_get_mime_type_from_file_name(file.c_str());
+  bool uncertain = false;
+  Glib::ustring _mime = Gio::content_type_guess(file, NULL, 0, uncertain);
 
-  if (!strcmp(_mime, XDG_MIME_TYPE_UNKNOWN)) {
+  if (uncertain) {
     return "";
   }
 
@@ -78,14 +80,22 @@ std::string SourceManager::get_language_for_file(const std::string &file)
       GtkSourceLanguage *lang =
           gtk_source_language_manager_get_language(manager, iter->second[x].c_str());
       gchar **mimes = gtk_source_language_get_mime_types(lang);
+
+      if (!mimes) {
+        std::cerr << "Error getting mimetype" << std::endl;
+        continue;
+      }
+
       gchar **m = mimes;
+
       while (*m) {
-        if (!strcmp(*m, _mime)) {
+        if (!strcmp(*m, _mime.c_str())) {
           g_strfreev(mimes);
           return iter->second[x];
         }
         ++m;
       }
+
       g_strfreev(mimes);
     }
   }
