@@ -1098,13 +1098,8 @@ void MDI::reset_gui()
     popup_disable();
   }
 
-#ifdef ENABLE_MAEMO
-  set_show_tabs(_conf.get("showtabs", false));
-  set_scrollable(_conf.get("scrolltabs", false));
-#else
   set_show_tabs(_conf.get("showtabs", true));
   set_scrollable(_conf.get("scrolltabs", true));
-#endif
 
   switch (_conf.get("tabspos", TABS_POS_TOP)) {
     case TABS_POS_BOTTOM:

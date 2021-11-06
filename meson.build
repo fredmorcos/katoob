@@ -186,23 +186,6 @@ if enable_isocodes
   conf.set_quoted('ISOCODES_PREFIX', dep_isocodes_prefix, description: 'Isocodes installation dir')
 endif
 
-enable_maemo = get_option('maemo')
-
-if enable_maemo
-  if enable_dbus == false
-    error('Maemo requires support for DBus to be enabled')
-  endif
-
-  dependencies += dependency('libosso')
-  dependencies += dependency('hildonmm')
-  dependencies += dependency('hildon-fmm')
-  dependencies += dependency('gconfmm-2.6')
-
-  conf.set('ENABLE_MAEMO', enable_maemo)
-  conf.set_quoted('KATOOB_ICON', 'katoob-icon')
-  conf.set_quoted('X_OSSO_SERVICE', 'X-Osso-Service=' + app_id)
-endif
-
 enable_multipress = get_option('multipress')
 
 if enable_multipress

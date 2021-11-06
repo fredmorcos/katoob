@@ -33,8 +33,6 @@
 
 #ifdef _WIN32
 #define __KATOOB_CONF_DIR__ "Katoob"
-#elif defined(ENABLE_MAEMO)
-#define __KATOOB_CONF_DIR__ ".osso/katoob"
 #else /* ! _WIN32 */
 #define __KATOOB_CONF_DIR__ ".katoob"
 #endif

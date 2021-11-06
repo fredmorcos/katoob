@@ -25,10 +25,6 @@
 #include "network.hh"
 #include <glibmm/main.h>
 
-#ifdef ENABLE_MAEMO
-#include "maemo-wrapper.hh"
-#endif
-
 class URL {
  public:
   URL(const char *url): _url(url)
@@ -129,28 +125,7 @@ bool Network::add_transfer(const std::string &uri,
       }
       break;
     case 1:   // "Get from the environment
-#ifdef ENABLE_MAEMO
-    {
-      std::string host, user, pass;
-      int port;
-      bool auth;
-      if (MaemoProxy::get_info(host, port, auth, user, pass)) {
-        code = populate_proxy(handle, host, port, auth, user, pass);
-        if (code != CURLE_OK) {
-          error = curl_easy_strerror(code);
-          curl_easy_cleanup(handle);
-          return false;
-        }
-        code = curl_easy_setopt(handle, CURLOPT_PROXYTYPE, CURLPROXY_HTTP);
-        if (code != CURLE_OK) {
-          error = curl_easy_strerror(code);
-          curl_easy_cleanup(handle);
-          return false;
-        }
-      }
-    }
-#endif
-    break;
+      break;
     case 2:   // HTTP
     case 3:   // SOCKS4
     case 4:   // SOCKS5

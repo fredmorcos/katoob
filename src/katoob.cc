@@ -29,12 +29,6 @@
 #include <iostream>
 //#include "utils.hh"
 
-#ifdef ENABLE_MAEMO
-#include <hildon-fmmm/init.h>
-#include <hildonmm/init.h>
-#include <hildonmm/program.h>
-#endif
-
 /**
  * \brief constructor.
  *
@@ -47,39 +41,6 @@
  */
 Katoob::Katoob(int argc, char *argv[]): Gtk::Main(argc, argv), conf(encodings)
 {
-#ifdef ENABLE_MAEMO
-  osso_context = NULL;
-
-  osso_context = osso_initialize(PACKAGE, VERSION, true, NULL);
-  if (!osso_context) {
-    std::cerr << "osso_initialize() failed." << std::endl;
-    return;
-  }
-
-  // We listen to any libosso events.
-  /* Add handler for hardware D-BUS messages */
-  int result = osso_hw_set_event_cb(osso_context, NULL, Katoob::hw_event_handler, NULL);
-  if (result != OSSO_OK) {
-    g_print("Error setting HW state callback (%d)\n", result);
-    osso_deinitialize(osso_context);
-    osso_context = NULL;
-    return;
-  }
-
-  /* Add handler for Exit D-BUS messages */
-  /*
-  result = osso_application_set_exit_cb(Katoob::osso_context, exit_event_handler, NULL);
-  if (result != OSSO_OK) {
-    g_print("Error setting exit callback (%d)\n", result);
-    osso_deinitialize(osso_context);
-    osso_context = NULL;
-    return;
-  }
-  */
-  Hildon::init();
-  Hildon::fm_init();
-#endif
-
   Network net(conf);
 
   parse(argc, argv);
@@ -129,11 +90,6 @@ Katoob::Katoob(int argc, char *argv[]): Gtk::Main(argc, argv), conf(encodings)
  */
 Katoob::~Katoob()
 {
-#ifdef ENABLE_MAEMO
-  if (osso_context) {
-    osso_deinitialize(osso_context);
-  }
-#endif
   for (unsigned x = 0; x < children.size(); x++) {
     delete children[x];
   }
@@ -213,12 +169,6 @@ void Katoob::window()
 #ifdef ENABLE_DBUS
   dbus.signal_open_files.connect(sigc::mem_fun(win, &Window::open_files));
 #endif
-#ifdef ENABLE_MAEMO
-#ifdef ENABLE_DBUS
-  dbus.signal_request_top.connect(sigc::mem_fun(win, &Window::signal_request_top_cb));
-#endif
-  Hildon::Program::get_instance()->add_window(*win);
-#endif
 }
 
 /**
@@ -255,41 +205,5 @@ void Katoob::quit_cb()
 {
   Gtk::Main::quit();
 }
-
-#ifdef ENABLE_MAEMO
-bool Katoob::ok()
-{
-  return osso_context != NULL;
-}
-
-int Katoob::get_error()
-{
-  return OSSO_ERROR;
-}
-
-void Katoob::hw_event_handler(osso_hw_state_t *state, gpointer data)
-{
-  if ((state->shutdown_ind) || (state->save_unsaved_data_ind)) {
-    for (unsigned x = 0; x < children.size(); x++) {
-      children[x]->autosave();
-    }
-    if (state->shutdown_ind) {
-      Gtk::Main::quit();
-    }
-  }
-
-  if (state->memory_low_ind) {
-    // Maybe trim our closed windows list ?
-  }
-}
-/*
-void Katoob::exit_event_handler(gboolean die_now, gpointer data) {
-  for (unsigned x = 0; x < children.size(); x++) {
-    children[x]->autosave();
-  }
-  Gtk::Main::quit();
-}
-*/
-#endif
 
 std::vector<Window *> Katoob::children;

@@ -69,11 +69,6 @@ MenuBar::MenuBar(Conf &config,
 #endif
   show_all();
   recent_menu_item->hide();
-#ifdef ENABLE_MAEMO
-  // NOTE: The only way to hide the icons is here. We'll have generated GtkImageMenuItems by
-  // now and GtkSettings will carry the "gtk-menu-images" option.
-  g_object_set(Gtk::Settings::get_default()->gobj(), "gtk-menu-images", FALSE, NULL);
-#endif
 }
 
 MenuBar::~MenuBar()
@@ -129,7 +124,6 @@ Gtk::MenuItem *MenuBar::item(Gtk::Menu *menu, const std::string &str)
 Gtk::MenuItem *
 MenuBar::item(Gtk::Menu *menu, const Gtk::StockID &stock_id, guint key, Gdk::ModifierType mod)
 {
-  // TODO: Missing shortcuts under maemo.
   Gtk::AccelKey _key(key, mod);
   menu->items().push_back(Gtk::Menu_Helpers::StockMenuElem(stock_id, _key));
   return &menu->items().back();
@@ -710,11 +704,7 @@ void MenuBar::signal_export_activate_cb(Export exp)
 
 void MenuBar::reset_gui()
 {
-#ifdef ENABLE_MAEMO
-  dynamic_cast<Gtk::CheckMenuItem *>(_line_numbers)->set_active(_conf.get("linenumbers", false));
-#else
   dynamic_cast<Gtk::CheckMenuItem *>(_line_numbers)->set_active(_conf.get("linenumbers", true));
-#endif
 
   dynamic_cast<Gtk::CheckMenuItem *>(_statusbar)->set_active(_conf.get("statusbar", true));
   dynamic_cast<Gtk::CheckMenuItem *>(_wrap_text)->set_active(_conf.get("textwrap", true));

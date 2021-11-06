@@ -65,13 +65,6 @@ void _on_toggle_overwrite(GtkTextView *textview, gpointer user_data)
   static_cast<Document *>(user_data)->on_toggle_overwrite();
 }
 
-#ifdef ENABLE_MAEMO
-void __tap_and_hold(GtkWidget *widget, gpointer user_data)
-{
-  static_cast<Document *>(user_data)->_tap_and_hold();
-}
-#endif
-
 Document::Document(Conf &conf, Encodings &encodings, int num):
  _label(conf),
  _conf(conf),
@@ -328,10 +321,6 @@ void Document::set_text(std::string &str)
 void Document::create_ui()
 {
   _text_view.signal_expose_event().connect(sigc::mem_fun(*this, &Document::expose_event_cb));
-#ifdef ENABLE_MAEMO
-  g_signal_connect(_text_view.gobj(), "tap-and-hold", G_CALLBACK(__tap_and_hold), this);
-  gtk_widget_tap_and_hold_setup(GTK_WIDGET(_text_view.gobj()), NULL, NULL, GTK_TAP_AND_HOLD_NONE);
-#endif
 
   //#ifdef ENABLE_HIGHLIGHT
   //  _text_view.set_buffer(SourceBuffer::create());
@@ -380,11 +369,7 @@ void Document::create_ui()
   spell_checker_connect_worker();
 
   misspelled_tag = _text_view.get_buffer()->create_tag();
-#ifndef ENABLE_MAEMO
   misspelled_tag->property_underline() = Pango::UNDERLINE_ERROR;
-#else
-  g_object_set(misspelled_tag->gobj(), "underline", PANGO_UNDERLINE_ERROR, NULL);
-#endif
 #endif
 
   // TODO: Make these configurable ?
@@ -393,10 +378,6 @@ void Document::create_ui()
   add(_text_view);
   show_all();
   reset_gui();
-#ifdef ENABLE_MAEMO
-  // Hide the Input Method menu. We put this here so GtkSettings will have the property already.
-  g_object_set(Gtk::Settings::get_default()->gobj(), "gtk-show-input-method-menu", FALSE, NULL);
-#endif
 }
 
 void Document::grab_focus()
@@ -1897,10 +1878,3 @@ void Document::autosave()
     std::cerr << "Failed to write to temp file: " << std::strerror(errno) << std::endl;
   }
 }
-
-#ifdef ENABLE_MAEMO
-void Document::_tap_and_hold()
-{
-  g_signal_emit_by_name(GTK_WIDGET(_text_view.gobj()), "popup-menu");
-}
-#endif

@@ -308,11 +308,9 @@ TabsApplet::TabsApplet(Conf &_conf): Applet::Applet(_conf)
   modified.set_color(modified_color);
   normal.set_color(normal_color);
 
-#ifndef ENABLE_MAEMO
   readonly.set_use_alpha(false);
   normal.set_use_alpha(false);
   modified.set_use_alpha(false);
-#endif
 
   box.pack_start(showtabs, false, false);
   box.pack_start(tabsmenu, false, false);

@@ -40,7 +40,6 @@ TextView::TextView(GtkTextView *tv): Gtk::TextView(tv)
 
 #endif
 
-// TODO: Need to check this under maemo but how ?
 void TextView::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext> &context,
                                      int x,
                                      int y,
@@ -76,7 +75,6 @@ void TextView::on_drag_data_received(const Glib::RefPtr<Gdk::DragContext> &conte
 #endif
   } else {
 #ifdef GLIBMM_DEFAULT_SIGNAL_HANDLERS_ENABLED
-    // FIXME: maemo
     Gtk::TextView::on_drag_data_received(context, x, y, selection_data, info, time);
 #endif
   }

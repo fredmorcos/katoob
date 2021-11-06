@@ -7,7 +7,6 @@ option('gzip'      , type: 'boolean', value: true,  description: 'Support gzip c
 option('highlight' , type: 'boolean', value: true,  description: 'Syntax highlighting')
 option('spell'     , type: 'boolean', value: true,  description: 'Spell checking')
 option('isocodes'  , type: 'boolean', value: true,  description: 'Human-readable names for spell languages')
-option('maemo'     , type: 'boolean', value: false, description: 'Build for the Maemo platform')
 option('multipress', type: 'boolean', value: true,  description: 'Build the multipress feature')
 option('nls'       , type: 'boolean', value: true,  description: 'Native language support')
 option('print'     , type: 'boolean', value: true,  description: 'Support printing')

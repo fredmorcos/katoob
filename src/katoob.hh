@@ -31,10 +31,6 @@
 #include "dbus.hh"
 #endif
 
-#ifdef ENABLE_MAEMO
-#include <libosso.h>
-#endif
-
 /**
  * \brief This is our application entry point.
  */
@@ -47,16 +43,8 @@ class Katoob: public Gtk::Main {
   void window();
 
   void quit_cb();
-#ifdef ENABLE_MAEMO
-  int get_error();
-  bool ok();
-#endif
 
  private:
-#ifdef ENABLE_MAEMO
-  static void hw_event_handler(osso_hw_state_t *, gpointer);
-  //  static void exit_event_handler(gboolean, gpointer);
-#endif
   void parse(int argc, char *argv[]);
   void usage();
   void help();
@@ -81,9 +69,4 @@ class Katoob: public Gtk::Main {
 
   /** \brief the files we are passed are stored here by our Katoob::parse function. */
   std::vector<std::string> files;
-
-#ifdef ENABLE_MAEMO
-  /** \brief the osso_context returned by osso_initialize() (Only if maemo support is enabled). */
-  osso_context_t *osso_context;
-#endif
 };

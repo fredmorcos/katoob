@@ -25,20 +25,10 @@
 #include "encodings.hh"
 #include <gtkmm.h>
 
-#ifdef ENABLE_MAEMO
-#include <hildon-fmmm/file-chooser-dialog.h>
-#include <hildonmm/caption.h>
-#endif
-
 #define FILE_OPEN Gtk::FILE_CHOOSER_ACTION_OPEN
 #define FILE_SAVE Gtk::FILE_CHOOSER_ACTION_SAVE
 
-#ifdef ENABLE_MAEMO
-class SimpleFileDialog: protected Hildon::FileChooserDialog {
-#else
 class SimpleFileDialog: protected Gtk::FileChooserDialog {
-#endif
-
  protected:
   SimpleFileDialog(const std::string &, Gtk::FileChooserAction, Conf &);
   ~SimpleFileDialog();
@@ -58,14 +48,9 @@ class FileDialog: private SimpleFileDialog {
   std::vector<std::string> get();
 
  private:
-#ifdef ENABLE_MAEMO
-  // We are using a caption for maemo otherwise the dialog looks like shit.
-  // I also get a crash if I don't use a pointer. No idea why.
-  Hildon::Caption *caption;
-#else
   Gtk::Label label;
   Gtk::HBox box;
-#endif
+
   Gtk::ComboBoxText cbox;
   Encodings &_encodings;
   //  std::string file;

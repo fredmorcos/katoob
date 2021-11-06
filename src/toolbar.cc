@@ -43,9 +43,6 @@ Toolbar::Toolbar(Conf &conf):
  _copy(Gtk::Stock::COPY),
  _paste(Gtk::Stock::PASTE),
  _erase(Gtk::Stock::DELETE),
-#ifdef ENABLE_MAEMO
- _full_screen(Gtk::Stock::ZOOM_FIT),
-#endif
  _go_to_l(_("Goto Line")),
  _search_l(_("Search"))
 #ifdef ENABLE_SPELL
@@ -89,9 +86,6 @@ void Toolbar::create_main()
   _main.append(_copy);
   _main.append(_paste);
   _main.append(_erase);
-#ifdef ENABLE_MAEMO
-  _main.append(_full_screen);
-#endif
 
   // Our tooltips.
   // NOTE:
@@ -111,9 +105,6 @@ void Toolbar::create_main()
   _copy.set_tooltip_text(_("Copy"));
   _paste.set_tooltip_text(_("Paste"));
   _erase.set_tooltip_text(_("Delete current selection"));
-#ifdef ENABLE_MAEMO
-  _full_screen.set_tooltip(*tips, _("Toggle full screen mode"));
-#endif
 
   // This is for both_horiz style
   // NOTE: http://mail.gnome.org/archives/gtkmm-list/2004-June/msg00112.html
@@ -130,9 +121,6 @@ void Toolbar::create_main()
   _copy.set_is_important();
   _paste.set_is_important();
   _erase.set_is_important();
-#ifdef ENABLE_MAEMO
-  _full_screen.set_is_important();
-#endif
 
   _main.show_all();
 
@@ -150,10 +138,6 @@ void Toolbar::create_main()
   _copy.signal_clicked().connect(sigc::mem_fun(signal_copy_clicked, &sigc::signal<void>::emit));
   _paste.signal_clicked().connect(sigc::mem_fun(signal_paste_clicked, &sigc::signal<void>::emit));
   _erase.signal_clicked().connect(sigc::mem_fun(signal_erase_clicked, &sigc::signal<void>::emit));
-#ifdef ENABLE_MAEMO
-  _full_screen.signal_clicked().connect(
-      sigc::mem_fun(signal_full_screen_clicked, &sigc::signal<void>::emit));
-#endif
 }
 
 void Toolbar::create_extended()
@@ -239,11 +223,8 @@ void Toolbar::reset_gui()
   _conf.get("extended_toolbar", true) == true ? _extended.show() : _extended.hide();
   _conf.get("extra_buttons", true) == true ? _extra_buttons.show_all() : _extra_buttons.hide();
 
-#ifdef ENABLE_MAEMO
-  const std::string &toolbartype = _conf.get("toolbartype", "icons");
-#else
   const std::string &toolbartype = _conf.get("toolbartype", "both");
-#endif
+
   if (toolbartype == "text") {
     set_text();
   } else if (toolbartype == "icons") {

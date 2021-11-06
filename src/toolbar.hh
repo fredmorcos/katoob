@@ -68,10 +68,6 @@ class Toolbar {
   sigc::signal<void> signal_copy_clicked;
   sigc::signal<void> signal_paste_clicked;
   sigc::signal<void> signal_erase_clicked;
-#ifdef ENABLE_MAEMO
-  sigc::signal<void> signal_full_screen_clicked;
-#endif
-
   sigc::signal<void, int> signal_go_to_activated;
   sigc::signal<void, std::string> signal_search_activated;
 #ifdef ENABLE_SPELL
@@ -123,9 +119,6 @@ class Toolbar {
   Gtk::ToolButton _copy;
   Gtk::ToolButton _paste;
   Gtk::ToolButton _erase;
-#ifdef ENABLE_MAEMO
-  Gtk::ToolButton _full_screen;
-#endif
 
   /* Extended */
   Gtk::HBox box;

@@ -43,13 +43,7 @@
 #include "inputwindow.hh"
 #endif
 
-#ifdef ENABLE_MAEMO
-#include <hildonmm/window.h>
-class Window: public Hildon::Window {
-#else
 class Window: public Gtk::Window {
-#endif
-
  public:
   Window(Conf &, Encodings &, std::vector<std::string> &);
   ~Window();
@@ -67,9 +61,6 @@ class Window: public Gtk::Window {
 #endif
 
   void autosave();
-#ifdef ENABLE_MAEMO
-  void signal_request_top_cb();
-#endif
 
  private:
   // Our menubar and tolbar callbacks
@@ -84,14 +75,8 @@ class Window: public Gtk::Window {
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   void signal_input_toggled_cb(bool);
 #endif
-#ifdef ENABLE_MAEMO
-  void toggle_full_screen();
-#endif
 
   // Signals for various gtk events.
-#ifdef ENABLE_MAEMO
-  bool signal_window_state_event_cb(GdkEventWindowState *);
-#endif
   void signal_drag_data_received_cb(const Glib::RefPtr<Gdk::DragContext> &,
                                     int,
                                     int,
@@ -168,8 +153,4 @@ class Window: public Gtk::Window {
 #endif
   sigc::connection signal_wrap_text_activate_conn;
   sigc::connection signal_line_numbers_activate_conn;
-
-#ifdef ENABLE_MAEMO
-  bool is_fullscreen;
-#endif
 };

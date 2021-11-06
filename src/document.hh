@@ -40,10 +40,6 @@
 #endif
 
 class Document: public Gtk::ScrolledWindow {
-#ifdef ENABLE_MAEMO
-  friend void __tap_and_hold(GtkWidget *, gpointer);
-#endif
-
  public:
   Document(Conf &, Encodings &, int);
   Document(Conf &, Encodings &, int, std::string &);
@@ -401,7 +397,4 @@ class Document: public Gtk::ScrolledWindow {
 
  protected:
   void on_populate_popup_cb(Gtk::Menu *);
-#ifdef ENABLE_MAEMO
-  void _tap_and_hold();
-#endif
 };

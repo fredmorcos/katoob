@@ -41,9 +41,6 @@ class DBus {
   friend DBusHandlerResult katoob_dbus_message_handler(DBusConnection *, DBusMessage *, void *);
 
   sigc::signal<void, std::vector<std::string> &> signal_open_files;
-#ifdef ENABLE_MAEMO
-  sigc::signal<void> signal_request_top;
-#endif
 
  protected:
   DBusHandlerResult got_message(DBusConnection *, DBusMessage *);

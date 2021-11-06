@@ -44,17 +44,6 @@ int main(int argc, char *argv[])
   //  signal(SIGPIPE, SIG_IGN);
 
   Katoob katoob(argc, argv);
-
-#ifdef ENABLE_MAEMO
-  if (katoob.ok()) {
-#endif
-
-    katoob.window();
-    return katoob.run();
-
-#ifdef ENABLE_MAEMO
-  } else {
-    return katoob.get_error();
-  }
-#endif
+  katoob.window();
+  return katoob.run();
 }

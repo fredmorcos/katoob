@@ -94,17 +94,7 @@ DBusHandlerResult DBus::got_message(DBusConnection *connection, DBusMessage *mes
     return pong(connection, message);
   } else if (method == OPEN_FILES) {
     return open_files(connection, message);
-  }
-#ifdef ENABLE_MAEMO
-  else if (method == "top_application") {
-    signal_request_top.emit();
-    //    DBusMessage *reply = dbus_message_new_method_return(message);
-    //    dbus_connection_send(connection, reply, NULL);
-    //    dbus_message_unref(reply);
-    return DBUS_HANDLER_RESULT_HANDLED;
-  }
-#endif
-  else {
+  } else {
     std::cerr << "Katoob: Unhandled DBus event: " << method << std::endl;
     return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
   }

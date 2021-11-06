@@ -25,10 +25,6 @@
 #include <dialogs.hh>
 #include <gtkmm.h>
 
-#ifdef ENABLE_MAEMO
-#include <hildonmm/color-button.h>
-#endif
-
 #ifdef ENABLE_SPELL
 #include "spellmenu.hh"
 #endif
@@ -90,11 +86,7 @@ class TabsApplet: public Applet {
   Gtk::Label tabspos_label, readonly_label, modified_label, normal_label;
   Gtk::ComboBoxText tabspos;
   Gtk::Table tabs_table;
-#ifdef ENABLE_MAEMO
-  Hildon::ColorButton readonly, modified, normal;
-#else
   Gtk::ColorButton readonly, modified, normal;
-#endif
 };
 
 class EditorApplet: public Applet {

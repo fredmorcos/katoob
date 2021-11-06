@@ -67,12 +67,7 @@ struct ClosedDocItem {
   std::string title;
 };
 
-#ifdef ENABLE_MAEMO
-class MenuBar: public Gtk::Menu {
-#else
 class MenuBar: public Gtk::MenuBar {
-#endif
-
  public:
   MenuBar(Conf &,
           Encodings &

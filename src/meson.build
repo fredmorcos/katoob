@@ -45,10 +45,6 @@ if enable_isocodes
   sources += 'isocodes.cc'
 endif
 
-if enable_maemo
-  sources += 'maemo-wrapper.cc'
-endif
-
 if enable_multipress
   sources += 'multipress.cc'
   sources += 'multipresswindow.cc'
