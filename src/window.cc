@@ -23,6 +23,7 @@
 
 #include "aboutdialog.hh"
 #include "dialogs.hh"
+#include "glibmm/miscutils.h"
 #include "macros.h"
 #include "preferencesdialog.hh"
 #include "utils.hh"
@@ -93,9 +94,11 @@ Window::Window(Conf &conf, Encodings &encodings, std::vector<std::string> &files
 
   move(conf.get("x", 50), conf.get("y", 50));
   resize(conf.get("w", 500), conf.get("h", 400));
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try {
-    set_icon_from_file(Utils::get_data_path("katoob-small.png"));
+    std::string smallIcon = Glib::build_filename(APP_DATADIR, "katoob-small.png");
+    set_icon_from_file(smallIcon);
   }
 #ifndef _WIN32
   catch (Glib::Error &er) {
@@ -105,18 +108,18 @@ Window::Window(Conf &conf, Encodings &encodings, std::vector<std::string> &files
   catch (...) {
     // NOTE: Why the hell can't I catch Glib::Error or Glib::FileError under win32 ?
 #ifndef NDEBUG
-    std::cout << "I can't set the main window icon to " << Utils::get_data_path("katoob-small.png")
-              << std::endl;
+    std::cout << "I can't set the main window icon to " << smallIcon << std::endl;
 #endif
   }
 #endif
 #else /* ! GLIBMM_EXCEPTIONS_ENABLED */
   std::auto_ptr<Glib::Error> error;
-  set_icon_from_file(Utils::get_data_path("katoob-small.png"), error);
+  set_icon_from_file(smallIcon, error);
   if (error.get()) {
     std::cout << error->what() << std::endl;
   }
 #endif
+
   //  set_title();
   signal_delete_event().connect(sigc::mem_fun(*this, &Window::signal_delete_event_cb));
 

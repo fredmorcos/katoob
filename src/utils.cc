@@ -47,8 +47,7 @@ std::string Utils::recoveryDir()
 
 std::string Utils::get_data_path(const char *str)
 {
-  std::string s(APP_DATADIR + get_dir_separator() + str);
-  return s;
+  return Glib::build_filename(APP_DATADIR, str);
 }
 
 std::string Utils::get_dir_separator()
