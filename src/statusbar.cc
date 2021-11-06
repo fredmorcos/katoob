@@ -26,22 +26,20 @@
 #include "utils.hh"
 #include <string>
 
-Statusbar::Statusbar(Conf &conf):
- _conf(conf),
- red(Utils::get_data_path("red.png")),
- green(Utils::get_data_path("green.png"))
+Statusbar::Statusbar(Conf &conf): _conf(conf)
 {
-  pack_start(red, false, false);
-  pack_start(green, false, false);
+  pack_start(unmodified, false, false);
 
   // TODO: I want to drop this!
   pack_start(tips, true, true);
 
   pack_start(enc, false, false);
   pack_start(overwrite, false, false);
+
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   pack_start(input, false, false);
 #endif
+
   pack_start(sbar, false, false);
 
   enc.set_size_request(150, -1);
@@ -50,13 +48,14 @@ Statusbar::Statusbar(Conf &conf):
 
   set_overwrite(false);
   set_position(1, 1);
+
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   input.set_label(_("Input"));
   input.signal_toggled().connect(sigc::mem_fun(*this, &Statusbar::signal_input_toggled_cb));
   activate_input(false);
 #endif
+
   show_all();
-  red.hide();
 }
 
 Statusbar::~Statusbar()
@@ -77,11 +76,9 @@ void Statusbar::set_position(int c, int l)
 void Statusbar::set_modified(bool m)
 {
   if (m) {
-    green.hide();
-    red.show();
+    unmodified.setNo();   // Red
   } else {
-    red.hide();
-    green.show();
+    unmodified.setYes();   // Green
   }
 }
 

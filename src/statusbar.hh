@@ -21,8 +21,9 @@
 
 #pragma once
 
-#include <gtkmm.h>
 #include "conf.hh"
+#include "redgreen.hh"
+#include <gtkmm.h>
 
 class Statusbar: public Gtk::HBox {
  public:
@@ -34,6 +35,7 @@ class Statusbar: public Gtk::HBox {
   void set_modified(bool);
   void reset_gui();
   void show(bool);
+
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   bool get_input_status();
   bool set_input_status(bool);
@@ -46,11 +48,14 @@ class Statusbar: public Gtk::HBox {
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   void signal_input_toggled_cb();
 #endif
+
+  RedGreen unmodified;
+
   Conf &_conf;
 
   Gtk::Statusbar sbar;
-  Gtk::Image red, green;
   Gtk::Label enc, tips, overwrite;
+
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   Gtk::ToggleButton input;
 #endif
