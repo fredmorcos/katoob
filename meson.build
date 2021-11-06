@@ -212,4 +212,5 @@ config_h = vcs_tag(
   command: ['git', 'rev-parse', '--short', 'HEAD']
 )
 
+subdir('data')
 subdir('src')
