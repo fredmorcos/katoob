@@ -187,7 +187,7 @@ void MDI::add_document(Document *doc, bool signals)
 
   // This should be first otherwise the documents menu will try to manipulate
   // a menu that has not been added.
-  signal_document_added.emit(doc->get_readonly(), doc->get_modified(), doc->get_title());
+  signal_document_added.emit(doc->is_readonly(), doc->is_modified(), doc->get_title());
 
   append_page(*doc, doc->get_label());
   set_menu_label_text(*doc, doc->get_title());
@@ -293,7 +293,7 @@ void MDI::insert_file_cb()
     return;
   }
 
-  if (doc->get_readonly()) {
+  if (doc->is_readonly()) {
     katoob_error(_("This is a read only document."));
     return;
   }
@@ -337,7 +337,7 @@ bool MDI::save(Document *doc)
 {
   assert(doc != NULL);
 
-  if (doc->get_readonly()) {
+  if (doc->is_readonly()) {
     katoob_error(_("This document can not be saved. It's a read only file."));
     return true;
   }
@@ -476,7 +476,7 @@ bool MDI::close(int n)
     return true;
   }
 
-  if (doc->get_modified()) {
+  if (doc->is_modified()) {
     std::string message;
     if (doc->has_file()) {
       message = Utils::substitute(_("The file %s is not saved, Save first ?"), doc->get_file());
@@ -920,7 +920,7 @@ void MDI::set_auto_spell(bool s)
 void MDI::do_spell()
 {
   Document *doc = get_active();
-  if ((!doc) || (doc->get_readonly()) || (doc->is_empty())) {
+  if ((!doc) || (doc->is_readonly()) || (doc->is_empty())) {
     return;
   }
   // TODO: Check that the document can really do the spell checking.
@@ -1126,16 +1126,16 @@ void MDI::reset_gui()
 
   int total = get_n_pages();
   for (int x = 0; x < total; x++) {
-    bool m = children[x]->get_modified();
-    bool r = children[x]->get_readonly();
+    bool m = children[x]->is_modified();
+    bool r = children[x]->is_readonly();
 
     if (m) {
       dynamic_cast<Label *>(get_tab_label(*children[x]))
-          ->set_modified(children[x]->get_modified(), true);
+          ->set_modified(children[x]->is_modified(), true);
     }
     if (r) {
       dynamic_cast<Label *>(get_tab_label(*children[x]))
-          ->set_readonly(children[x]->get_readonly(), true);
+          ->set_readonly(children[x]->is_readonly(), true);
     }
     if ((!r) && (!m)) {
       dynamic_cast<Label *>(get_tab_label(*children[x]))->set_normal();

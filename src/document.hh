@@ -66,11 +66,12 @@ class Document: public Gtk::ScrolledWindow {
 
   void autosave();
 
-  bool get_readonly()
+  bool is_readonly() const
   {
     return !_text_view.get_editable();
   };
-  bool get_modified()
+
+  bool is_modified() const
   {
     return _text_view.get_buffer()->get_modified();
   }

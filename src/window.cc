@@ -607,7 +607,7 @@ void Window::signal_insert_key_cb(std::string &str)
 {
   Document *doc = mdi.get_active();
   assert(doc != NULL);
-  if ((!doc) || (doc->get_readonly())) {
+  if ((!doc) || (doc->is_readonly())) {
     return;
   }
   doc->insert(str);

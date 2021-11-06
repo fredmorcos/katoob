@@ -871,8 +871,8 @@ void Document::emit_signals()
 {
   signal_can_undo.emit(can_undo());
   signal_can_redo.emit(can_redo());
-  signal_modified_set.emit(get_modified());
-  signal_readonly_set.emit(get_readonly());
+  signal_modified_set.emit(is_modified());
+  signal_readonly_set.emit(is_readonly());
   signal_file_changed.emit(_file);
   signal_encoding_changed.emit(_encoding);
   signal_overwrite_toggled.emit(_overwrite);
@@ -1277,7 +1277,7 @@ void Document::on_populate_popup_cb(Gtk::Menu *menu)
         sigc::bind<std::string>(sigc::mem_fun(*this, &Document::dict_menu_item_activated), word));
   }
 #ifdef ENABLE_SPELL
-  if (get_readonly()) {
+  if (is_readonly()) {
     return;
   }
 
