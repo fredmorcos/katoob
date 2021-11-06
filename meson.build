@@ -212,6 +212,8 @@ config_h = vcs_tag(
   command: ['git', 'rev-parse', '--short', 'HEAD']
 )
 
+install_data('LICENSE', 'README.md', install_dir: prefix / app_docdir)
+
 subdir('data')
 subdir('desktop')
 subdir('src')
