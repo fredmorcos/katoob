@@ -22,6 +22,7 @@
 #pragma once
 
 #include "document.hh"
+#include "redgreen.hh"
 #include <gtkmm.h>
 
 class SpellDialog: public Gtk::Window {
@@ -47,10 +48,12 @@ class SpellDialog: public Gtk::Window {
 
   bool signal_key_press_event_cb(GdkEventKey *);
 
+  RedGreen yesNo;
+
   //  Gtk::Window window;
   Gtk::Button close, ignore, ignore_all, change, /*change_all,*/ check, add;
   Gtk::Label misspelled_word, misspelled, change_to;
-  Gtk::Image yes, no, image;
+  Gtk::Image image;
   Gtk::VBox vbox1, vbox2;
   Gtk::HBox hbox1, hbox2, hbox3;
   Gtk::Table table;

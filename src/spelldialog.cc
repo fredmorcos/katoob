@@ -30,6 +30,7 @@
 // Start checking from the insert mark not from the beginning of the document.
 
 SpellDialog::SpellDialog(Document *doc):
+ yesNo(),
  close(Gtk::Stock::CLOSE),
  ignore(_("_Ignore"), true),
  ignore_all(_("Ignore _All"), true),
@@ -39,8 +40,6 @@ SpellDialog::SpellDialog(Document *doc):
  add(_("_Add to user dictionary"), true),
  misspelled(_("Misspelled:")),
  change_to(_("Change to:")),
- yes(Gtk::StockID(Gtk::Stock::YES), Gtk::IconSize(Gtk::ICON_SIZE_BUTTON)),
- no(Gtk::StockID(Gtk::Stock::NO), Gtk::IconSize(Gtk::ICON_SIZE_BUTTON)),
  _doc(doc)
 {
   set_title(_("Check Spelling"));
@@ -81,8 +80,7 @@ SpellDialog::SpellDialog(Document *doc):
 
   table.set_spacings(5);
 
-  hbox2.pack_start(yes, false, false);
-  hbox2.pack_start(no, false, false);
+  hbox2.pack_start(yesNo, false, false);
 
   record.add(suggestions_col);
   store = Gtk::ListStore::create(record);
@@ -95,8 +93,6 @@ SpellDialog::SpellDialog(Document *doc):
   selection = suggestions.get_selection();
   selection->signal_changed().connect(
       sigc::mem_fun(*this, &SpellDialog::selection_signal_changed_cb));
-
-  no.set_no_show_all();
 
   // our signals.
   close.signal_clicked().connect(sigc::mem_fun(*this, &SpellDialog::close_clicked_cb));
@@ -230,12 +226,10 @@ void SpellDialog::check_clicked_cb()
   std::string word = entry.get_text();
   if (word.length() > 0) {
     if (_doc->spell_dialog_helper_check(word)) {
-      yes.show();
-      no.hide();
+      yesNo.setYes();
       store->clear();
     } else {
-      no.show();
-      yes.hide();
+      yesNo.setNo();
       std::vector<std::string> suggestions;
       _doc->spell_dialog_helper_get_suggestions(word, suggestions);
       populate_suggestions(suggestions);
