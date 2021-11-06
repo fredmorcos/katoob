@@ -28,13 +28,12 @@
 
 Label::Label(Conf &conf): _conf(conf), _readonly(false), _modified(false)
 {
-  std::string path = Utils::get_data_path("close.png");
-
-  Gtk::Image *image = Gtk::manage(new Gtk::Image(path));
+  Gtk::Image *image =
+      Gtk::manage(new Gtk::Image(Gtk::Stock::CLOSE, Gtk::BuiltinIconSize::ICON_SIZE_MENU));
 
   close.set_image(*image);
   close.set_relief(Gtk::RELIEF_NONE);
-  close.set_size_request(16, 16);
+  close.set_size_request(24, 24);
   close.set_border_width(0);
 
   close.signal_clicked().connect(sigc::mem_fun(signal_close_clicked, &sigc::signal<void>::emit));
