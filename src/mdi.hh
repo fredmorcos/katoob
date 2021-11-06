@@ -152,7 +152,7 @@ class MDI: public Gtk::Notebook {
 #endif
 
   void scan_temp();
-  bool autosave();
+  bool autosave() const noexcept;
 
  private:
   void connect_signals(Document *);

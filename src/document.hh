@@ -64,7 +64,7 @@ class Document: public Gtk::ScrolledWindow {
   bool has_selection();
   int get_line_count();
 
-  void autosave();
+  void autosave() const;
 
   bool is_readonly() const
   {

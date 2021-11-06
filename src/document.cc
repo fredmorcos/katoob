@@ -1861,7 +1861,7 @@ void Document::set_tab_width()
   _text_view.set_tabs(tab_array);
 }
 
-void Document::autosave()
+void Document::autosave() const
 {
   if (ftruncate(_tmp_file_fd, 0) == -1) {
     std::cerr << "Failed to truncate temp file: " << std::strerror(errno) << std::endl;

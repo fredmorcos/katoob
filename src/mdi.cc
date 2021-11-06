@@ -104,18 +104,12 @@ void MDI::scan_temp()
   }
 }
 
-bool MDI::autosave()
+bool MDI::autosave() const noexcept
 {
-  Document *doc;
-  for (unsigned x = 0; x < children.size(); x++) {
-    doc = children[x];
-    if (doc->get_readonly()) {
-      continue;
+  for (const auto doc: children) {
+    if (!doc->is_readonly() && doc->is_modified()) {
+      doc->autosave();
     }
-    if (!doc->get_modified()) {
-      continue;
-    }
-    doc->autosave();
   }
 
   return true;
