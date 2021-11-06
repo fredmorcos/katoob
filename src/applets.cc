@@ -901,7 +901,7 @@ void DictionaryApplet::list_dicts_clicked_cb()
   std::string uri = Dict::construct_lsdb_uri(_conf, host, port);
 
   std::string error;
-  if (!Network::add_transfer(uri, error, slot), handle) {
+  if (!Network::add_transfer(uri, error, slot, handle)) {
     katoob_error(error);
   }
 
