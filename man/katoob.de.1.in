@@ -1,0 +1,124 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+
+.TH @PROJECT_RAW@ 1 "November 7, 2021" "@PROJECT_RAW@ Texteditor" @PACKAGE@
+
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+
+.SH NAME
+.B @PROJECT_RAW@
+\- Ein leichtgewichtiger Gtk2 Mehrsprachen BiDi-fähiger Texteditor.
+.sp
+@PROJECT_URL_RAW@
+.sp
+@PROJECT_RAW@ ist ein Texteditor für X. Sie können ihn zum erstellen und bearbeiten von
+Textdateien verwenden. @PROJECT_RAW@ unterstützt das Lesen und Speichern von Textdateien
+in vielen Encodings. Genauso wie das Importieren/Exportieren von/zu HTML
+Zeichenreferenzen.
+
+.SH SYNOPSIS
+.B @PACKAGE_RAW@
+.RI [ optionen ] " dateien" ...
+.br
+
+.SH DESCRIPTION
+Diese Manualseite beschreibt kurz die
+.B @PACKAGE_RAW@
+Befehle.
+.PP
+.\" TeX users may be more comfortable with the \fB<whatever>\fP and
+.\" \fI<whatever>\fP escape sequences to invode bold face and italics,
+.\" respectively.
+\fB@PACKAGE_RAW@\fP ist ein leichtgewichtiger, mehrsprachen, BiDi-fähiger Texteditor.  Er
+unterstützt das Öffnen und Speichern von Dateien in mehrsprachigen Encodings. Die
+Hauptunterstützung war für die arabische Sprache, aber es sind mehr Sprachen unterstützt.
+
+.SH OPTIONS
+Dieses Programm verwendet die gebräuchliche GNU Kommandozeilen Syntax mit langen Optionen
+welche mit zwei Bindestrichen ("--") beginnen.  Eine Zusammenfassung von Optionen ist
+nachfolgend aufgeführt.
+.\" For a complete description, see the Info files.
+.TP
+.B \-h, \-\-help
+Zeigt Zusammenfassung der Optionen.
+.TP
+.B \-v, \-\-version
+Zeigt die Version des Programs an.
+.TP
+.B \-u, \-\-usage
+Zeigt kurze Bedienungsnachricht
+.TP
+.B \-
+Ließt Eingabe vom Standardeingabe.
+.TP
+.B dateien...
+Gibt die zu öffnenden Dateien an. Mehrere Dateien sind unterstützt, diese müssen aber
+durch Leerzeichen getrennt werden. Das Lesen von Pipes ist ebenso unterstützt unter
+Verwendeung des Bindestriches ("-").  Wenn keine Dateien angegeben wurden, wird
+@PROJECT_RAW@ mit einem leeren Dokument starten.
+
+.SH "FILES"
+.LP
+.TP
+%XDG_CONFIG_HOME%/@PACKAGE_RAW@/
+Verzeichnis der Benutzerkonfiguration
+.TP
+%XDG_CONFIG_HOME%/@PACKAGE_RAW@/config
+Hauptkonfiguratinsdatei
+.TP
+%XDG_CACHE_HOME%/@PACKAGE_RAW@/recent
+Liste der lezten Dateien
+.TP
+@APP_DATADIR_RAW@
+Globales Programmverzeichnis
+
+.SH EXAMPLES
+.TP
+Öffnen mehrerer Dateien:
+@PACKAGE_RAW@ foo.txt bar.text zot
+.TP
+Öffnen einer Datei genannt foo und der Ausgabe von cat:
+cat bar | @PACKAGE_RAW@ foo -
+.TP
+Lesen von einer Pipe:
+ls | @PACKAGE_RAW@ -
+.TP
+Lesen von mehreren Pipes:
+@PACKAGE_RAW@ - -
+.PP
+Hier wird @PROJECT_RAW@ versuchen, von der Standardeingabe zwei mal zu lesen.  Um die
+Standardeingabe zu schließen, müssen sie CTRL-D drücken.  @PROJECT_RAW@ wird für jeden
+angegebenen Bindestrich die Standardeingabe erneut öffnen und von ihr lesen.
+
+.SH BUGS
+Etwas wie
+.B cat foo | @PACKAGE_RAW@ - -
+"soll die Ausgabe von cat lesen, dann auf eine Benutzereingabe warten
+und jedes in einem seperaten Dokument öffnen" ist nicht unterstützt.
+.sp
+Fehler sollen an @PROJECT_URL_ISSUES_RAW@ gemeldet werden.
+
+.SH AUTHORS
+.B @PROJECT_RAW@
+wurde von Fred Morcos und Mohammed Sameer geschrieben.
+
+.SH COPYRIGHT
+.B @PROJECT_RAW@
+ist freie Software, die unter der GPLv2-Lizenz oder später veröffentlicht.
+.sp
+Copyright (c) 2008-2021 Fred Morcos <fm+@PROJECT_RAW@@fredmorcos.com>
+.sp
+Copyright (c) 2002-2007 Mohammed Sameer <msameer@foolab.org>

@@ -216,4 +216,5 @@ install_data('LICENSE', 'README.md', install_dir: prefix / app_docdir)
 
 subdir('data')
 subdir('desktop')
+subdir('man')
 subdir('src')

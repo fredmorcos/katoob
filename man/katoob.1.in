@@ -1,0 +1,124 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+
+.TH @PROJECT_RAW@ 1 "November 7, 2021" "@PROJECT_RAW@ Text Editor" @PACKAGE@
+
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+
+.SH NAME
+.B @PROJECT_RAW@
+\- @PROJECT_COMMENT_RAW@
+.sp
+@PROJECT_URL_RAW@
+.sp
+@PROJECT_RAW@ is a text editor for X11. You can use it to create and edit text files.
+@PROJECT_RAW@ supports reading and saving text files in many encodings as well as
+importing/exporting to HTML character reference.
+
+.SH SYNOPSIS
+.B @PACKAGE_RAW@
+.RI [ options ] " files" ...
+.br
+
+.SH DESCRIPTION
+This manual page documents briefly the
+.B @PACKAGE_RAW@
+commands.
+.PP
+.\" TeX users may be more comfortable with the \fB<whatever>\fP and
+.\" \fI<whatever>\fP escape sequences to invode bold face and italics,
+.\" respectively.
+\fB@PACKAGE_RAW@\fP is a light-weight, multi-lingual, BiDi aware text editor. It supports
+opening and saving files in multiple encodings. Primary support used to be for Arabic but
+more languages are currently supported.
+
+.SH OPTIONS
+This program follows the usual GNU command line syntax, with long options starting with
+two dashes ("--").  A summary of options is included below.
+.\" For a complete description, see the Info files.
+.TP
+.B \-h, \-\-help
+Show summary of options.
+.TP
+.B \-v, \-\-version
+Show version of program.
+.TP
+.B \-u, \-\-usage
+Display a brief usage message.
+.TP
+.B \-
+Read from the standard input.
+.TP
+.B files...
+Specifies the files to be opened. Multiple files are supported and should be separated by
+spaces. Reading from pipes is also supported by using a single dash ("-").  If no files
+specified, @PROJECT_RAW@ will start with an empty document.
+
+.SH FILES
+.LP
+.TP
+%XDG_CONFIG_HOME%/@PACKAGE_RAW@/
+Directory for user configuration files.
+.TP
+%XDG_CONFIG_HOME%/@PACKAGE_RAW@/config
+Main configuration file.
+.TP
+%XDG_CACHE_HOME%/@PACKAGE_RAW@/recent
+Recent files list.
+.TP
+@APP_DATADIR_RAW@
+Global directory for program data (e.g license, readme and icons).
+
+.SH EXAMPLES
+.TP
+Open multiple files:
+@PACKAGE_RAW@ foo.txt bar.txt baz.txt
+.TP
+Open a file called foo.txt and the output of cat:
+cat bar | @PACKAGE_RAW@ foo.txt -
+.TP
+Read from a pipe:
+ls | @PACKAGE_RAW@ -
+.TP
+Read from multiple pipes:
+@PACKAGE_RAW@ - -
+.PP
+Here, @PROJECT_RAW@ will try to read twice from standard input.  To close the standard
+input you must press CTRL-D for each dash passed, @PROJECT_RAW@ will reopen standard input
+and read from it.
+
+.SH BUGS
+Something like
+.B `cat foo | @PACKAGE_RAW@ - -`
+should read cat output, wait for user input and open each one in a separate document is
+not supported.
+.sp
+Bugs can be reported at @PROJECT_URL_ISSUES_RAW@
+
+.SH AUTHORS
+.B @PROJECT_RAW@
+is being developed and maintained by Fred Morcos since 2008.
+.sp
+.B @PROJECT_RAW@
+was originally written and maintained by Mohammed Sameer from 2002 to 2007.
+
+.SH COPYRIGHT
+.B @PROJECT_RAW@
+is free software released under the GPLv2 or later.
+.sp
+Copyright (c) 2008-2021 Fred Morcos <fm+@PROJECT_RAW@@fredmorcos.com>
+.sp
+Copyright (c) 2002-2007 Mohammed Sameer <msameer@foolab.org>
