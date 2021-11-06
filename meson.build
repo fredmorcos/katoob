@@ -213,4 +213,5 @@ config_h = vcs_tag(
 )
 
 subdir('data')
+subdir('desktop')
 subdir('src')
