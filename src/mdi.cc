@@ -121,10 +121,10 @@ Document *MDI::create_document(std::string &file, int enc)
     enc = _encodings.default_open();
   }
 
-  int x = children.size();
   Document *doc;
+
   if (file == "-") {
-    doc = new Document(_conf, _encodings, ++x, enc);
+    doc = new Document(_conf, _encodings, children.size() + 1, enc);
   } else {
     doc = new Document(_conf, _encodings, enc, file);
   }
@@ -155,8 +155,8 @@ Document *MDI::create_document(std::string &file, int enc)
 
 Document *MDI::create_document()
 {
-  int x = children.size();
-  Document *doc = new Document(_conf, _encodings, ++x);
+  Document *doc = new Document(_conf, _encodings, children.size() + 1);
+
   if (doc->ok()) {
     add_document(doc);
     return doc;
