@@ -25,6 +25,8 @@
 #include "macros.h"
 #include "utils.hh"
 #include <gdkmm/pixbuf.h>
+#include <glibmm.h>
+#include <iostream>
 #include <sstream>
 
 /**
@@ -33,17 +35,18 @@
 AboutDialog::AboutDialog()
 {
   std::vector<std::string> authors, artists;
+  std::string iconPath = Glib::build_filename(APP_DATADIR, PACKAGE ".svg");
+
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try {
-    Glib::RefPtr<Gdk::Pixbuf> icon =
-        Gdk::Pixbuf::create_from_file(Utils::get_data_path("katoob.png"));
+    Glib::RefPtr<Gdk::Pixbuf> icon = Gdk::Pixbuf::create_from_file(iconPath);
     set_logo(icon);
-  } catch (...) {
+  } catch (Glib::Exception &e) {
+    std::cerr << "Error loading icon for about dialog: " << e.what() << std::endl;
   }
 #else
   std::auto_ptr<Glib::Error> error;
-  Glib::RefPtr<Gdk::Pixbuf> icon =
-      Gdk::Pixbuf::create_from_file(Utils::get_data_path("katoob.png"), 150, -1, true, error);
+  Glib::RefPtr<Gdk::Pixbuf> icon = Gdk::Pixbuf::create_from_file(iconPath, 150, -1, true, error);
   set_logo(icon);
 #endif
   std::stringstream license;
@@ -51,32 +54,42 @@ AboutDialog::AboutDialog()
                "terms of the GNU General Public License as published by the Free Software "
                "Foundation; either version 2 of the License, or (at your option) any later "
                "version.")
-          << "\n\n"
+          << std::endl
+          << std::endl
           << _("Katoob is distributed in the hope that it will be useful, but WITHOUT ANY "
                "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
                "FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
                "details.")
-          << "\n\n"
+          << std::endl
+          << std::endl
           << _("You should have received a copy of the GNU General Public License along with "
                "This program; if not, write to the Free Software Foundation, Inc., 59 Temple "
                "Place, Suite 330, Boston, MA  02111-1307  USA")
-          << "\n\n";
-
-  set_name(_("Katoob"));
-  set_version(VERSION);
-  set_website("http://www.foolab.org/projects/katoob");
+          << std::endl
+          << std::endl;
   set_license(license.str());
   set_wrap_license(true);
-  set_copyright(_("Copyright \xc2\xa9 2006, 2007 Mohammed Sameer."));
 
+  set_name(_(PROJECT));
+  set_version(VERSION " (" TAG ")");
+  set_website(PROJECT_URL);
+  set_website_label(PROJECT_URL_LABEL);
+
+  std::stringstream copyright;
+  copyright << _("Copyright \xc2\xa9 2008-2021 Fred Morcos.") << std::endl
+            << _("Copyright \xc2\xa9 2002-2007 Mohammed Sameer.") << std::endl;
+  set_copyright(copyright.str());
+
+  authors.push_back(_("Fred Morcos"));
   authors.push_back(_("Mohammed Sameer"));
   set_authors(authors);
 
+  artists.push_back(_("Fred Morcos"));
   artists.push_back(_("Mohammed Sameer"));
   artists.push_back(_("Mostafa Hussein"));
   set_artists(artists);
 
-  set_comments(_("A lightweight multilingual unicode and bidi aware text editor"));
+  set_comments(_(PROJECT_COMMENT));
   set_translator_credits(_("translator-credits"));
   set_position(Gtk::WIN_POS_CENTER);
 }
