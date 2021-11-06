@@ -36,6 +36,8 @@ namespace Utils {
     KATOOB_COLOR_NORMAL
   } KatoobColor;
 
+  std::string configDir();
+  std::string recoveryDir();
   std::string get_dir_separator();
   std::string get_data_path(const char *);
   std::string prepend_home_dir(char *);
@@ -60,8 +62,6 @@ namespace Utils {
                          const int,
                          const std::string &,
                          const std::string &);
-  std::string get_recovery_dir();
-  std::string get_conf_dir();
   bool create_recovery_file(std::string &, int &);
   bool get_recovery_files(std::map<std::string, std::string> &, std::string &);
   std::string get_recovery_template(std::string = "XXXXXX");

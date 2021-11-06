@@ -126,7 +126,7 @@ void Conf::save_list(const char *_file, std::vector<std::string> &mp)
 
 bool Conf::prepare_dir()
 {
-  conf_dir = (Utils::get_conf_dir() + Utils::get_dir_separator());
+  conf_dir = (Utils::configDir() + Utils::get_dir_separator());
 
   // We check that it's there and is a directory.
   if (!Glib::file_test(conf_dir, Glib::FILE_TEST_IS_DIR)) {
@@ -140,7 +140,7 @@ bool Conf::prepare_dir()
       }
     }
     // Let's try to create a directory.
-    if (g_mkdir(conf_dir.c_str(), 0700)) {
+    if (g_mkdir_with_parents(conf_dir.c_str(), 0700)) {
       conf_dir.clear();
       g_warning("Can't create configuration directory");
       return false;
@@ -148,8 +148,8 @@ bool Conf::prepare_dir()
   }
 
   // Now our crashed documents directory.
-  if (!Glib::file_test(Utils::get_recovery_dir(), Glib::FILE_TEST_IS_DIR)) {
-    if (g_mkdir(Utils::get_recovery_dir().c_str(), 0700)) {
+  if (!Glib::file_test(Utils::recoveryDir(), Glib::FILE_TEST_IS_DIR)) {
+    if (g_mkdir_with_parents(Utils::recoveryDir().c_str(), 0700)) {
       g_warning("Can't create recovery directory");
       return false;
     }

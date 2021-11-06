@@ -21,6 +21,7 @@
 
 #include <config.h>
 
+#include "glibmm/miscutils.h"
 #include "macros.h"
 #include "utils.hh"
 #include <cerrno>
@@ -31,11 +32,18 @@
 #include <iostream>
 #include <unistd.h>
 
-#ifdef _WIN32
-#define __KATOOB_CONF_DIR__ "Katoob"
-#else /* ! _WIN32 */
-#define __KATOOB_CONF_DIR__ ".katoob"
-#endif
+std::string Utils::configDir()
+{
+  static const std::string dir = Glib::build_filename(Glib::get_user_config_dir(), PACKAGE);
+  return dir;
+}
+
+std::string Utils::recoveryDir()
+{
+  static const std::string dir =
+      Glib::build_filename(Glib::get_user_cache_dir(), PACKAGE, "recovery");
+  return dir;
+}
 
 std::string Utils::get_data_path(const char *str)
 {
@@ -451,27 +459,9 @@ bool Utils::file_is_locked(int fd)
   return lock.l_pid != 0;
 }
 
-std::string Utils::get_conf_dir()
-{
-  static std::string _dir;
-  if (_dir.size() == 0) {
-    _dir = Glib::build_filename(Glib::get_home_dir(), __KATOOB_CONF_DIR__);
-  }
-  return _dir;
-}
-
-std::string Utils::get_recovery_dir()
-{
-  static std::string _dir;
-  if (_dir.size() == 0) {
-    _dir = Glib::build_filename(Utils::get_conf_dir(), "recover");
-  }
-  return _dir;
-}
-
 bool Utils::create_recovery_file(std::string &file, int &fd)
 {
-  file = Glib::build_filename(get_recovery_dir(), get_recovery_template());
+  file = Glib::build_filename(recoveryDir(), get_recovery_template());
   fd = Glib::mkstemp(file);
   return fd != -1;
 }
@@ -484,7 +474,7 @@ std::string Utils::get_recovery_template(std::string suffix)
 bool Utils::get_recovery_files(std::map<std::string, std::string> &files, std::string &error)
 {
   try {
-    Glib::Dir dir(get_recovery_dir());
+    Glib::Dir dir(recoveryDir());
     std::vector<std::string> entries(dir.begin(), dir.end());
     dir.close();
     for (unsigned x = 0; x < entries.size(); x++) {
@@ -493,7 +483,7 @@ bool Utils::get_recovery_files(std::map<std::string, std::string> &files, std::s
         continue;
       }
 
-      std::string file = Glib::build_filename(get_recovery_dir(), entries[x]);
+      std::string file = Glib::build_filename(recoveryDir(), entries[x]);
       // is it free ?
       if (file_is_locked(file)) {
         std::cerr << "Skipping locked file " << file << std::endl;
