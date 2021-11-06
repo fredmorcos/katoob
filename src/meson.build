@@ -21,6 +21,7 @@ sources = [
   'openlocationdialog.cc',
   'pipe.cc',
   'preferencesdialog.cc',
+  'redgreen.cc',
   'replacedialog.cc',
   'searchdialog.cc',
   'statusbar.cc',
