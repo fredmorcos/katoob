@@ -13,7 +13,7 @@ project(
 )
 
 # TODO: Enable those while porting.
-extra_args  = [
+extra_flags  = [
 #  '-DGTK_DISABLE_DEPRECATED',
 #  '-DGTK_DISABLE_SINGLE_INCLUDES',
 #  '-DGDK_DISABLE_DEPRECATED',
@@ -24,20 +24,20 @@ extra_args  = [
 #  '-DGIOMM_DISABLE_DEPRECATED',
 ]
 
-add_global_arguments(extra_args, language: 'cpp')
-add_global_arguments(extra_args, language: 'c')
+add_global_arguments(extra_flags, language: 'cpp')
+add_global_arguments(extra_flags, language: 'c')
 
-extra_args_clang = [
+extra_flags_clang = [
   '-ferror-limit=0',
   '-Db_lundef=false',
 ]
 
 if meson.get_compiler('c').get_id() == 'clang'
-    add_global_arguments(extra_args_clang, language: 'c')
+    add_global_arguments(extra_flags_clang, language: 'c')
 endif
 
 if meson.get_compiler('cpp').get_id() == 'clang'
-    add_global_arguments(extra_args_clang, language: 'cpp')
+    add_global_arguments(extra_flags_clang, language: 'cpp')
 endif
 
 i18n = import('i18n')
