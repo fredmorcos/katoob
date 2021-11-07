@@ -21,10 +21,12 @@
 
 #include <config.h>
 
+#include "glibmm/miscutils.h"
 #include "multipress.hh"
 #include "utils.hh"
 #include <cassert>
 #include <fstream>
+#include <iostream>
 
 Multipress::Multipress()
 {
@@ -39,12 +41,15 @@ Multipress::Multipress()
 
   Glib::DirIterator start = d->begin();
   Glib::DirIterator end = d->end();
+
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
   std::auto_ptr<Glib::Error> error;
 #endif
+
   while (start != end) {
     std::map<std::string, std::vector<std::string> > map;
-    std::string file = MULTIPRESS_DIR + *start;
+    std::string file = Glib::build_filename(MULTIPRESS_DIR, *start);
+    std::cout << "Found multipress file: " << file << std::endl;
     if (parse_file(file, map)) {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try {
@@ -71,6 +76,10 @@ Multipress::Multipress()
   window->signal_insert_key.connect(sigc::ptr_fun(&Multipress::signal_insert_key_cb));
   window->signal_invalid_key.connect(sigc::ptr_fun(&Multipress::signal_invalid_key_cb));
   window->signal_change_key.connect(sigc::ptr_fun(&Multipress::signal_change_key_cb));
+
+  if (!_ok) {
+    std::cout << "Multipress will not work" << std::endl;
+  }
 }
 
 Multipress::~Multipress()

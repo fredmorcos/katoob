@@ -132,21 +132,33 @@ Window::Window(Conf &conf, Encodings &encodings, std::vector<std::string> &files
   if (doc) {
     doc->grab_focus();
   }
-#if (defined ENABLE_EMULATOR) || (defined ENABLE_MULTIPRESS)
-  std::string err;
-#endif
+
 #ifdef ENABLE_EMULATOR
-  if (!Emulator::ok(err)) {
-    err += _(" The keyboard emulator will not work.");
-    katoob_error(err);
+  {
+    std::string err;
+
+    if (!Emulator::ok(err)) {
+      std::stringstream errStream;
+      errStream << err << "." << std::endl << std::endl;
+      errStream << _("<b>The keyboard emulator will not work.</b>");
+      katoob_error(errStream.str());
+    }
   }
 #endif
+
 #ifdef ENABLE_MULTIPRESS
-  if (!Multipress::ok(err)) {
-    err += _(" Multipress will not work.");
-    katoob_error(err);
+  {
+    std::string err;
+
+    if (!Multipress::ok(err)) {
+      std::stringstream errStream;
+      errStream << err << "." << std::endl << std::endl;
+      errStream << _("<b>Multipress will not work.</b>");
+      katoob_error(errStream.str());
+    }
   }
 #endif
+
   std::string ver = conf.get_version();
   if ((ver.size() == 0) && conf.ok()) {
     katoob_info(_("A lot of the configuration options have been changed in this version.\nPlease "
@@ -169,6 +181,7 @@ Window::Window(Conf &conf, Encodings &encodings, std::vector<std::string> &files
   _multipress.signal_invalid_key.connect(sigc::mem_fun(*this, &Window::signal_invalid_key_cb));
   _multipress.signal_insert_key.connect(sigc::mem_fun(*this, &Window::signal_insert_key_cb));
 #endif
+
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   // Statusbar input button.
   statusbar.signal_input_toggled.connect(mem_fun(*this, &Window::signal_input_toggled_cb));

@@ -22,6 +22,7 @@
 #include <config.h>
 
 #include "emulator.hh"
+#include "glibmm/miscutils.h"
 #include "utils.hh"
 #include <cassert>
 #include <fstream>
@@ -42,12 +43,15 @@ Emulator::Emulator()
 
   Glib::DirIterator start = d->begin();
   Glib::DirIterator end = d->end();
+
 #ifndef GLIBMM_EXCEPTIONS_ENABLED
   std::auto_ptr<Glib::Error> error;
 #endif
+
   while (start != end) {
     std::map<std::string, std::string> map;
-    std::string file = EMULATOR_DIR + *start;
+    std::string file = Glib::build_filename(EMULATOR_DIR, *start);
+    std::cout << "Found emulator file: " << file << std::endl;
     if (parse_file(file, map)) {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try {
@@ -69,6 +73,10 @@ Emulator::Emulator()
       _ok = true;
     }
     start++;
+  }
+
+  if (!_ok) {
+    std::cout << "Emulator will not work" << std::endl;
   }
 }
 
