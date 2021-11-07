@@ -37,6 +37,7 @@ namespace Utils {
   } KatoobColor;
 
   std::string configDir();
+  std::string cacheDir();
   std::string recoveryDir();
   std::string get_dir_separator();
   std::string get_data_path(const char *);

@@ -171,6 +171,7 @@ class Conf {
   std::map<std::string, std::string> config;
 
   std::map<std::string, std::string> print;
-  std::string conf_dir;
+  std::string configDir;
+  std::string cacheDir;
   bool _ok;
 };

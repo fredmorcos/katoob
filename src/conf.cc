@@ -93,8 +93,8 @@ void Conf::save_list()
 
 void Conf::save_conf(const char *_file, std::map<std::string, std::string> &mp)
 {
-  if (conf_dir.length()) {
-    std::string file = conf_dir;
+  if (configDir.length()) {
+    std::string file = configDir;
     file += _file;
     std::ofstream ofs;
     ofs.open(file.c_str());
@@ -110,8 +110,8 @@ void Conf::save_conf(const char *_file, std::map<std::string, std::string> &mp)
 
 void Conf::save_list(const char *_file, std::vector<std::string> &mp)
 {
-  if (conf_dir.length()) {
-    std::string file = conf_dir;
+  if (cacheDir.length()) {
+    std::string file = cacheDir;
     file += _file;
     std::ofstream ofs;
     ofs.open(file.c_str());
@@ -126,22 +126,29 @@ void Conf::save_list(const char *_file, std::vector<std::string> &mp)
 
 bool Conf::prepare_dir()
 {
-  conf_dir = (Utils::configDir() + Utils::get_dir_separator());
+  configDir = Utils::configDir() + Utils::get_dir_separator();
+  cacheDir = Utils::cacheDir() + Utils::get_dir_separator();
+
+  if (g_mkdir_with_parents(cacheDir.c_str(), 0700)) {
+    cacheDir.clear();
+    g_warning("Cannot create cache directory %s", cacheDir.c_str());
+    return false;
+  }
 
   // We check that it's there and is a directory.
-  if (!Glib::file_test(conf_dir, Glib::FILE_TEST_IS_DIR)) {
+  if (!Glib::file_test(configDir, Glib::FILE_TEST_IS_DIR)) {
     // It might be a file, Katoob 0.1 used ~/.katoob as a configuration file.
-    if (Glib::file_test(conf_dir, Glib::FILE_TEST_IS_REGULAR)) {
+    if (Glib::file_test(configDir, Glib::FILE_TEST_IS_REGULAR)) {
       // Sadly erase it.
-      if (remove(conf_dir.c_str())) {
-        conf_dir.clear();
+      if (remove(configDir.c_str())) {
+        configDir.clear();
         g_warning("Can't remove old configuration file");
         return false;
       }
     }
     // Let's try to create a directory.
-    if (g_mkdir_with_parents(conf_dir.c_str(), 0700)) {
-      conf_dir.clear();
+    if (g_mkdir_with_parents(configDir.c_str(), 0700)) {
+      configDir.clear();
       g_warning("Can't create configuration directory");
       return false;
     }
@@ -166,8 +173,8 @@ void Conf::load_conf()
 
 bool Conf::load_conf(const char *_file, std::map<std::string, std::string> &mp)
 {
-  if (conf_dir.length()) {
-    std::string file(conf_dir + _file);
+  if (configDir.length()) {
+    std::string file(configDir + _file);
     std::ifstream ifs;
     ifs.open(file.c_str());
     if (ifs.is_open()) {
@@ -201,8 +208,8 @@ void Conf::load_list()
 
 void Conf::load_list(const gchar *_file, std::vector<std::string> &mp)
 {
-  if (conf_dir.length()) {
-    std::string file = conf_dir;
+  if (cacheDir.length()) {
+    std::string file = cacheDir;
     file += _file;
     std::ifstream ifs;
     ifs.open(file.c_str());

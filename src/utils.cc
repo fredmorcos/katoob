@@ -38,10 +38,15 @@ std::string Utils::configDir()
   return dir;
 }
 
+std::string Utils::cacheDir()
+{
+  static const std::string dir = Glib::build_filename(Glib::get_user_cache_dir(), PACKAGE);
+  return dir;
+}
+
 std::string Utils::recoveryDir()
 {
-  static const std::string dir =
-      Glib::build_filename(Glib::get_user_cache_dir(), PACKAGE, "recovery");
+  static const std::string dir = Glib::build_filename(Utils::cacheDir(), "recovery");
   return dir;
 }
 
