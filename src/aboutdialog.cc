@@ -35,7 +35,7 @@
 AboutDialog::AboutDialog()
 {
   std::vector<std::string> authors, artists;
-  std::string iconPath = Glib::build_filename(APP_DATADIR, PACKAGE ".svg");
+  std::string iconPath = Glib::build_filename(APP_DATADIR, PACKAGE "-large.png");
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try {

@@ -97,8 +97,8 @@ Window::Window(Conf &conf, Encodings &encodings, std::vector<std::string> &files
 
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
   try {
-    std::string smallIcon = Glib::build_filename(APP_DATADIR, PACKAGE "-small.png");
-    set_icon_from_file(smallIcon);
+    std::string iconPath = Glib::build_filename(APP_DATADIR, PACKAGE "-large.png");
+    set_icon_from_file(iconPath);
   }
 #ifndef _WIN32
   catch (Glib::Error &er) {
