@@ -38,7 +38,7 @@ bool katoob_simple_question(const std::string &message)
 
 void katoob_error(const std::string &message)
 {
-  Gtk::MessageDialog dlg(message, false, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
+  Gtk::MessageDialog dlg(message, true, Gtk::MESSAGE_ERROR, Gtk::BUTTONS_OK, true);
   dlg.run();
   //  dlg.destroy();
 }
