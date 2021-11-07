@@ -187,13 +187,13 @@ update-po: Makefile
 	  if $$result; then \
 	    if cmp $(srcdir)/$$lang.po $$tmpdir/$$lang.new.po >/dev/null 2>&1; then \
 	      rm -f $$tmpdir/$$lang.new.po; \
-            else \
+	    else \
 	      if mv -f $$tmpdir/$$lang.new.po $$lang.po; then \
-	        :; \
+		:; \
 	      else \
-	        echo "msgmerge for $$lang.po failed: cannot move $$tmpdir/$$lang.new.po to $$lang.po" 1>&2; \
-	        rm -f $$tmpdir/$$lang.new.po; \
-	        exit 1; \
+		echo "msgmerge for $$lang.po failed: cannot move $$tmpdir/$$lang.new.po to $$lang.po" 1>&2; \
+		rm -f $$tmpdir/$$lang.new.po; \
+		exit 1; \
 	      fi; \
 	    fi; \
 	  else \

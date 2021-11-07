@@ -1,5 +1,5 @@
 [encoding: UTF-8]
-katoob.desktop.in
+desktop/katoob.desktop.in
 src/aboutdialog.cc
 src/aboutdialog.hh
 src/applets.cc
@@ -35,8 +35,6 @@ src/katoob.hh
 src/label.cc
 src/label.hh
 src/macros.h
-src/maemo-wrapper.cc
-src/maemo-wrapper.hh
 src/main.cc
 src/mdi.cc
 src/mdi.hh
@@ -59,11 +57,11 @@ src/preferencesdialog.hh
 src/previewdialog.cc
 src/previewdialog.hh
 src/print.cc
-src/printdialog.cc
-src/printdialog.hh
 src/print.hh
 src/printsettings.cc
 src/printsettings.hh
+src/redgreen.cc
+src/redgreen.hh
 src/replacedialog.cc
 src/replacedialog.hh
 src/searchdialog.cc
