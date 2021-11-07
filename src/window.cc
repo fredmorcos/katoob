@@ -390,7 +390,7 @@ void Window::set_title(const char *str)
   if (str) {
     title << str << " - ";
   }
-  title << PACKAGE;
+  title << PROJECT;
   Gtk::Window::set_title(title.str());
 }
 
