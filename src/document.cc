@@ -1276,29 +1276,34 @@ void Document::on_populate_popup_cb(Gtk::Menu *menu)
     item->signal_activate().connect(
         sigc::bind<std::string>(sigc::mem_fun(*this, &Document::dict_menu_item_activated), word));
   }
+
 #ifdef ENABLE_SPELL
   if (is_readonly()) {
+    // TODO: Don't return when the document is read-only, the user might still want to
+    // spell-check it and add words to their user dictionary.
     return;
   }
 
   if (do_spell) {
     if (start.has_tag(misspelled_tag)) {
       // Misspelled word.
-      menu->items().push_front(Gtk::Menu_Helpers::SeparatorElem());
       Gtk::Menu *spell_menu = Gtk::manage(new Gtk::Menu());
-      std::string str(_("Spelling Suggestions"));
+      std::string spellSuggestionsText(_("Spelling Suggestions"));
 
       Gtk::Image *image = Gtk::manage(new Gtk::Image(Gtk::StockID(Gtk::Stock::SPELL_CHECK),
                                                      Gtk::IconSize(Gtk::ICON_SIZE_MENU)));
-      menu->items().push_front(Gtk::Menu_Helpers::ImageMenuElem(str, *image, *spell_menu));
+      menu->items().push_front(Gtk::Menu_Helpers::SeparatorElem());
+      menu->items().push_front(
+          Gtk::Menu_Helpers::ImageMenuElem(spellSuggestionsText, *image, *spell_menu));
+
       // Let's build the suggestions menu.
       std::vector<std::string> suggestions;
       spell.suggest(word, suggestions);
 
-      str += Utils::substitute(_("Add \"%s\" to dictionary"), word);
+      std::string addWordToDictText = Utils::substitute(_("Add <b>%s</b> to dictionary"), word);
       image = Gtk::manage(
           new Gtk::Image(Gtk::StockID(Gtk::Stock::ADD), Gtk::IconSize(Gtk::ICON_SIZE_MENU)));
-      spell_menu->items().push_back(Gtk::Menu_Helpers::ImageMenuElem(str, *image));
+      spell_menu->items().push_back(Gtk::Menu_Helpers::ImageMenuElem(addWordToDictText, *image));
       Gtk::MenuItem *item = &spell_menu->items().back();
       item->signal_activate().connect(sigc::bind<std::string, Gtk::TextIter, Gtk::TextIter>(
           sigc::mem_fun(*this, &Document::spell_menu_add_to_dictionary_cb),
