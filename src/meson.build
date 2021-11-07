@@ -45,9 +45,9 @@ if enable_isocodes
 endif
 
 if enable_multipress
+  sources += 'inputwindow.cc'
   sources += 'multipress.cc'
   sources += 'multipresswindow.cc'
-  sources += 'inputwindow.cc'
 endif
 
 if enable_emulator
