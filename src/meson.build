@@ -4,13 +4,11 @@ sources = [
   'conf.cc',
   'dialogs.cc',
   'document.cc',
-  'emulator.cc',
   'encodings.cc',
   'execdialog.cc',
   'export.cc',
   'filedialog.cc',
   'import.cc',
-  'inputwindow.cc',
   'katoob.cc',
   'label.cc',
   'macros.h',
@@ -49,6 +47,12 @@ endif
 if enable_multipress
   sources += 'multipress.cc'
   sources += 'multipresswindow.cc'
+  sources += 'inputwindow.cc'
+endif
+
+if enable_emulator
+  sources += 'emulator.cc'
+  sources += 'inputwindow.cc'
 endif
 
 if enable_print
@@ -71,6 +75,10 @@ endif
 
 if enable_fribidi
   sources += 'shape_arabic.c'
+endif
+
+if target_machine.system() == 'windows'
+  sources += 'win32.rc'
 endif
 
 # Comes from top-level meson build file.
