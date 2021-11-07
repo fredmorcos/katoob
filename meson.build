@@ -111,6 +111,7 @@ conf.set_quoted('PROJECT_URL_LABEL', project_url_label, description: 'Project we
 conf.set('PROJECT_URL_ISSUES_RAW', project_url_issues, description: 'Project issues database (unquoted)')
 conf.set_quoted('PROJECT_URL_ISSUES', project_url_issues, description: 'Project issues database')
 
+conf.set_quoted('GETTEXT_PACKAGE', app_name, description: 'Gettext package name')
 conf.set_quoted('LOCALEDIR', prefix / localedir, description: 'Dir for locale files')
 
 conf.set('APP_DATADIR_RAW', prefix / app_datadir, description: 'Dir for application data files (unquoted)')
@@ -236,4 +237,5 @@ subdir('data')
 subdir('desktop')
 subdir('icon')
 subdir('man')
+subdir('po')
 subdir('src')

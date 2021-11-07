@@ -1,20 +1,22 @@
-# translation of ja.po to Japanese
-# Copyright (C) 2004, 2006 Free Software Foundation, Inc.
+# Katoob POT file.
+# Copyright (C) 2021 Fred Morcos <fm+Katoob@fredmorcos.com>
+# This file is distributed under the same license as the Katoob package.
+# Fred Morcos <fm+Katoob@fredmorcos.com>, 2021.
 #
-# UTUMI Hirosi <utuhiro78@yahoo.co.jp>, 2004, 2006.
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ja\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-07 22:29+0100\n"
-"PO-Revision-Date: 2006-10-12 23:38+0900\n"
-"Last-Translator: UTUMI Hirosi <utuhiro78@yahoo.co.jp>\n"
-"Language-Team: Japanese <ja@li.org>\n"
-"Language: ja\n"
+"Project-Id-Version: Katoob\n"
+"Report-Msgid-Bugs-To: https://github.com/fredmorcos/katoob/issues\n"
+"POT-Creation-Date: 2021-11-07 22:17+0100\n"
+"PO-Revision-Date: 2021-11-07 22:17+0100\n"
+"Last-Translator: Fred Morcos <fm+Katoob@fredmorcos.com>\n"
+"Language-Team: Fred Morcos <fm+Katoob@fredmorcos.com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
 #: src/aboutdialog.cc:53
 msgid ""
@@ -61,149 +63,141 @@ msgstr ""
 
 #: src/aboutdialog.cc:93
 msgid "translator-credits"
-msgstr "UTUMI Hirosi <utuhiro78@yahoo.co.jp>"
+msgstr ""
 
 #: src/applets.cc:55
 msgid "_Enable undo, redo\t"
-msgstr "アンドゥ/リドゥを有効に(_E)\t"
+msgstr ""
 
 #: src/applets.cc:57
 msgid "Keep a history of recently closed documents"
-msgstr "最近閉じた文書の履歴を保持する"
+msgstr ""
 
 #: src/applets.cc:59
 msgid ""
 "Undo history size\n"
 "(0 for unlimited)"
 msgstr ""
-"アンドゥ履歴のサイズ\n"
-"(0 で無制限)"
 
 #: src/applets.cc:60
 msgid ""
 "Executed commands history size\n"
 "(0 for unlimited)"
 msgstr ""
-"コマンド実行履歴のサイズ\n"
-"(0 で無制限)"
 
 #: src/applets.cc:61
 msgid ""
 "Closed documents history size\n"
 "(0 for unlimited)"
 msgstr ""
-"閉じた文書の履歴のサイズ\n"
-"(0 で無制限)"
 
 #: src/applets.cc:160
 msgid "Show the extra _buttons"
-msgstr "拡張ボタンを表示(_b)"
+msgstr ""
 
 #: src/applets.cc:161
 msgid "Show the _Main Toolbar"
-msgstr "メインツールバーを表示(_M)"
+msgstr ""
 
 #: src/applets.cc:162
 msgid "Show the _Extended Toolbar"
-msgstr "拡張ツールバーを表示(_E)"
+msgstr ""
 
 #: src/applets.cc:163
 msgid "Show the _Statusbar"
-msgstr "ステータスバーを表示(_S)"
+msgstr ""
 
 #: src/applets.cc:164
 msgid "Enable re_cent menu"
-msgstr "履歴を有効に(_c)"
+msgstr ""
 
 #: src/applets.cc:165
 msgid "Show the _close button on each tab label"
-msgstr "タブごとに'閉じる'ボタンを表示"
+msgstr ""
 
 #: src/applets.cc:166
 msgid ""
 "No. of recent entries\n"
 "(0 for unlimited)"
 msgstr ""
-"履歴の数\n"
-"(0 で無制限)"
 
 #: src/applets.cc:167
 msgid "Show the toolbar as"
-msgstr "ツールバーの表示"
+msgstr ""
 
 #: src/applets.cc:168 src/applets.cc:221 src/menubar.cc:365
 msgid "Text only"
-msgstr "文字のみ"
+msgstr ""
 
 #: src/applets.cc:169 src/applets.cc:223 src/menubar.cc:362
 msgid "Icons only"
-msgstr "アイコンのみ"
+msgstr ""
 
 #: src/applets.cc:170 src/applets.cc:227 src/applets.cc:459 src/applets.cc:492
 #: src/applets.cc:498 src/menubar.cc:368
 msgid "Both"
-msgstr "両方"
+msgstr ""
 
 #: src/applets.cc:171 src/applets.cc:225 src/menubar.cc:371
 msgid "Text beside icons"
-msgstr "アイコンの横に文字"
+msgstr ""
 
 #: src/applets.cc:280
 msgid "_Show tabs"
-msgstr "タブを表示(_S)"
+msgstr ""
 
 #: src/applets.cc:281
 msgid "_Enable tabs menu"
-msgstr "タブのメニュー有効(_E)"
+msgstr ""
 
 #: src/applets.cc:282
 msgid "Scro_ll tabs"
-msgstr "タブをスクロール(_l)"
+msgstr ""
 
 #: src/applets.cc:283
 msgid "Show the tabs at the"
-msgstr "タブの位置"
+msgstr ""
 
 #: src/applets.cc:284 src/applets.cc:391 src/applets.cc:978
 msgid "Top"
-msgstr "上"
+msgstr ""
 
 #: src/applets.cc:285 src/applets.cc:382
 msgid "Bottom"
-msgstr "下"
+msgstr ""
 
 #: src/applets.cc:286 src/applets.cc:385 src/applets.cc:457 src/applets.cc:496
 msgid "Right"
-msgstr "右"
+msgstr ""
 
 #: src/applets.cc:287 src/applets.cc:388 src/applets.cc:458 src/applets.cc:494
 #: src/applets.cc:977
 msgid "Left"
-msgstr "左"
+msgstr ""
 
 #: src/applets.cc:289
 msgid "Color for read only tabs"
-msgstr "読み取り専用タブの色"
+msgstr ""
 
 #: src/applets.cc:290
 msgid "Color for modified tabs"
-msgstr "変更したタブの色"
+msgstr ""
 
 #: src/applets.cc:291
 msgid "Color for normal tabs"
-msgstr "通常のタブの色"
+msgstr ""
 
 #: src/applets.cc:450
 msgid "Text _Wrapping is on by default"
-msgstr "テキストをデフォルトで折り返す(_W)"
+msgstr ""
 
 #: src/applets.cc:451
 msgid "Show _Line numbers by default"
-msgstr "行番号をデフォルトで表示"
+msgstr ""
 
 #: src/applets.cc:452
 msgid "Use the default _font"
-msgstr "デフォルトのフォントを使う(_f)"
+msgstr ""
 
 #: src/applets.cc:454
 msgid "_Automatic syntax highlighting for known file types"
@@ -211,11 +205,11 @@ msgstr ""
 
 #: src/applets.cc:456
 msgid "Line numbers position"
-msgstr "行番号の位置"
+msgstr ""
 
 #: src/applets.cc:460
 msgid "Font"
-msgstr "フォント"
+msgstr ""
 
 #: src/applets.cc:462
 msgid "Tab width"
@@ -223,79 +217,79 @@ msgstr ""
 
 #: src/applets.cc:558
 msgid "_Use the locale encoding"
-msgstr "ロケールのエンコーディングを使う(_U)"
+msgstr ""
 
 #: src/applets.cc:559 src/applets.cc:560
 msgid "Specify an encoding"
-msgstr "エンコーディングを指定"
+msgstr ""
 
 #: src/applets.cc:564
 msgid "File open encoding"
-msgstr "ファイルを開くときのエンコーディング"
+msgstr ""
 
 #: src/applets.cc:565
 msgid "File save encoding"
-msgstr "ファイルを保存するときのエンコーディング"
+msgstr ""
 
 #: src/applets.cc:614
 msgid "_Backup files before saving."
-msgstr "保存前にファイルをバックアップ(_B)"
+msgstr ""
 
 #: src/applets.cc:615
 msgid "Backup extension"
-msgstr "バックアップの拡張子"
+msgstr ""
 
 #: src/applets.cc:649 src/menubar.cc:416
 msgid "_Autocheck Spelling"
-msgstr "スペルを自動確認(_A)"
+msgstr ""
 
 #: src/applets.cc:651
 msgid "Choose the default dictionary"
-msgstr "デフォルトのディレクトリを選択"
+msgstr ""
 
 #: src/applets.cc:702
 msgid "Printing font"
-msgstr "印刷時のフォント"
+msgstr ""
 
 #: src/applets.cc:706
 msgid "_Enable advanced options"
-msgstr "高度なオプションを有効に(_E)"
+msgstr ""
 
 #: src/applets.cc:710
 msgid "X Dot Per Inch"
-msgstr "インチ当たりのドット数(X)"
+msgstr ""
 
 #: src/applets.cc:711
 msgid "Y Dot Per Inch"
-msgstr "インチ当たりのドット数(Y)"
+msgstr ""
 
 #: src/applets.cc:769
 msgid "_Enable the dictionary."
-msgstr "辞書を有効にする(_E)"
+msgstr ""
 
 #: src/applets.cc:770
 msgid "Host"
-msgstr "ホスト"
+msgstr ""
 
 #: src/applets.cc:771
 msgid "_List dictionaries"
-msgstr "辞書をリスト表示(_L)"
+msgstr ""
 
 #: src/applets.cc:773
 msgid "Port"
-msgstr "ポート"
+msgstr ""
 
 #: src/applets.cc:784 src/applets.cc:792 src/preferencesdialog.cc:72
 msgid "Dictionary"
-msgstr "辞書"
+msgstr ""
 
 #: src/applets.cc:793
 msgid "Description"
-msgstr "説明"
+msgstr ""
 
 #: src/applets.cc:798
 msgid "Not Available."
-msgstr "利用不可"
+msgstr ""
 
 #: src/applets.cc:866 src/applets.cc:868
 msgid "Failed to get the available dictionaries."
@@ -314,36 +308,34 @@ msgid ""
 "Number of remote addresses to save\n"
 "(0 for unlimited)"
 msgstr ""
-"保存するリモートアドレスの数\n"
-"(0 で無制限)"
 
 #: src/applets.cc:960
 msgid "_Insert into the active document enabled by default ?"
-msgstr "アクティブな文書への挿入をデフォルトで有効に(_I)"
+msgstr ""
 
 #: src/applets.cc:979
 msgid "Width"
-msgstr "幅"
+msgstr ""
 
 #: src/applets.cc:980
 msgid "Height"
-msgstr "高さ"
+msgstr ""
 
 #: src/applets.cc:982
 msgid "Save all the program _settings on exit"
-msgstr "終了時に全てのプログラムの設定を保存(_s)"
+msgstr ""
 
 #: src/applets.cc:983
 msgid "Save the main window _attributes on exit"
-msgstr "終了時にメインウィンドウの設定を保存(_a)"
+msgstr ""
 
 #: src/applets.cc:988
 msgid "Window position"
-msgstr "ウィンドウの位置"
+msgstr ""
 
 #: src/applets.cc:989
 msgid "Window size"
-msgstr "ウィンドウのサイズ"
+msgstr ""
 
 #: src/applets.cc:1059
 msgid "Network timeout (In seconds):"
@@ -398,17 +390,16 @@ msgid "Proxy password:"
 msgstr ""
 
 #: src/dialogs.cc:66
-#, fuzzy
 msgid "Insert to document"
-msgstr "アクティブな文書に挿入(_I)"
+msgstr ""
 
 #: src/dialogs.cc:96 src/toolbar.cc:47
 msgid "Goto Line"
-msgstr "行へ移動"
+msgstr ""
 
 #: src/dialogs.cc:103
 msgid "Line:"
-msgstr "行:"
+msgstr ""
 
 #: src/dialogs.cc:137
 msgid "Please wait..."
@@ -419,27 +410,25 @@ msgid "Invalid daatabase. Please reconfigure the dictionary in use."
 msgstr ""
 
 #: src/dict.cc:63
-#, fuzzy
 msgid "No matches were found"
-msgstr "合致する結果はありません"
+msgstr ""
 
 #: src/dict.cc:119 src/dict.cc:136
-#, fuzzy
 msgid "No databases were found."
-msgstr "合致する結果はありません"
+msgstr ""
 
 #: src/document.cc:101
 msgid " Is a directory."
-msgstr " はディレクトリです"
+msgstr ""
 
 #: src/document.cc:125 src/mdi.cc:305 src/mdi.cc:1172
 #, c-format
 msgid "Couldn't detect the encoding of %s"
-msgstr "%s のエンコーディングを検出できません"
+msgstr ""
 
 #: src/document.cc:181
 msgid "Couldn't detect the encoding of the text."
-msgstr "テキストのエンコーディングを検出できません"
+msgstr ""
 
 #: src/document.cc:286
 #, c-format
@@ -448,33 +437,32 @@ msgstr ""
 
 #: src/document.cc:1273
 msgid "Define "
-msgstr "定義 "
+msgstr ""
 
 #: src/document.cc:1291
 msgid "Spelling Suggestions"
-msgstr "スペルを提案"
+msgstr ""
 
 #: src/document.cc:1303
-#, fuzzy, c-format
+#, c-format
 msgid "Add <b>%s</b> to dictionary"
-msgstr "\"%s\" を辞書に追加"
+msgstr ""
 
 #: src/document.cc:1317
 msgid "no suggestions"
-msgstr "提案なし"
+msgstr ""
 
 #: src/document.cc:1327
 msgid "More..."
-msgstr "もっと.."
+msgstr ""
 
 #: src/encodings.cc:354 src/encodings.cc:372
-#, fuzzy
 msgid "I wasn't able to convert the encoding."
-msgstr "テキストを変換できません"
+msgstr ""
 
 #: src/execdialog.cc:38
 msgid "Command to execute"
-msgstr "実行するコマンド"
+msgstr ""
 
 #: src/execdialog.cc:39
 #, c-format
@@ -482,68 +470,66 @@ msgid ""
 "'%s' will be substituted with a temporary filename\n"
 "containing the text from the document."
 msgstr ""
-"文書に含まれているテキストから\n"
-"'%s' を一時的なファイル名にします"
 
 #: src/execdialog.cc:46
 msgid "_Show the results in a new tab"
-msgstr "結果を新規タブに表示(_S)"
+msgstr ""
 
 #: src/export.cc:49
 msgid "_Text file with no unicode control characters..."
-msgstr "unicode 制御文字なしのテキストファイル(_T)"
+msgstr ""
 
 #: src/export.cc:56 src/import.cc:54
 msgid "Text file compressed with _gzip"
-msgstr "gzip で圧縮したテキストファイル(_g)"
+msgstr ""
 
 #: src/export.cc:63 src/import.cc:60
 msgid "Text file compressed with _bzip2"
-msgstr "bzip で圧縮したテキストファイル(_b)"
+msgstr ""
 
 #: src/export.cc:70 src/import.cc:66
 msgid "Text with _shaping and bidi applied"
-msgstr "整形と bidi を適用したテキスト(_s)"
+msgstr ""
 
 #: src/export.cc:110
 msgid "Can't open temporary file."
-msgstr "一時ファイルを開けません"
+msgstr ""
 
 #: src/export.cc:116
 msgid "Error writing to temporary file."
-msgstr "一時ファイルに書き込めません"
+msgstr ""
 
 #: src/export.cc:134
 msgid "Couldn't allocate memory for compression."
-msgstr "圧縮用にメモリを割り当てることができません"
+msgstr ""
 
 #: src/export.cc:146
 msgid "Couldn't compress the text."
-msgstr "テキストを圧縮できません"
+msgstr ""
 
 #: src/export.cc:196 src/import.cc:237
 msgid "Couldn't apply the bidi algorithm."
-msgstr "bidi アルゴリズムを適用できません"
+msgstr ""
 
 #: src/filedialog.cc:41 src/openlocationdialog.cc:36
 msgid "Encoding"
-msgstr "エンコーディング"
+msgstr ""
 
 #: src/filedialog.cc:132
 msgid "This is a directory."
-msgstr "これはディレクトリです"
+msgstr ""
 
 #: src/import.cc:49
 msgid "_HTML Character Reference..."
-msgstr "HTML キャラクタレファレンス(_H)"
+msgstr ""
 
 #: src/import.cc:115 src/import.cc:121 src/import.cc:141 src/import.cc:171
 msgid "Can't open file."
-msgstr "ファイルを開けません"
+msgstr ""
 
 #: src/import.cc:135 src/import.cc:155 src/import.cc:185
 msgid "Error reading file."
-msgstr "ファイルの読み込みエラー"
+msgstr ""
 
 #: src/inputwindow.cc:29
 msgid "Input Window"
@@ -557,7 +543,7 @@ msgstr ""
 #: src/label.cc:56
 #, c-format
 msgid "Untitled New %d"
-msgstr "新規 %d"
+msgstr ""
 
 #: src/mdi.cc:86
 #, c-format
@@ -570,43 +556,43 @@ msgstr ""
 
 #: src/mdi.cc:208
 msgid "Please select a file for editing."
-msgstr "編集するファイルを選んでください"
+msgstr ""
 
 #: src/mdi.cc:291
 msgid "This is a read only document."
-msgstr "読み取り専用文書です"
+msgstr ""
 
 #: src/mdi.cc:295
 msgid "Please select a file."
-msgstr "ファイルを選んでください"
+msgstr ""
 
 #: src/mdi.cc:335
 msgid "This document can not be saved. It's a read only file."
-msgstr "この文書を保存できません。読み取り専用ファイルです"
+msgstr ""
 
 #: src/mdi.cc:368
 msgid "Please select a file for saving."
-msgstr "保存するファイルを選んでください"
+msgstr ""
 
 #: src/mdi.cc:380 src/mdi.cc:1191
 #, c-format
 msgid "Are you sure you want to overwrite the file %s ?"
-msgstr "ファイル %s を上書きしますか？"
+msgstr ""
 
 #: src/mdi.cc:476
 #, c-format
 msgid "The file %s is not saved, Save first ?"
-msgstr "ファイル %s を保存していません。保存しますか？"
+msgstr ""
 
 #: src/mdi.cc:478
 #, c-format
 msgid "\"%s\" is not saved, Save first?"
-msgstr "\"%s\" を保存していません。保存しますか？"
+msgstr ""
 
 #: src/mdi.cc:531
-#, fuzzy, c-format
+#, c-format
 msgid "The file \"%s\" doesn't exist."
-msgstr "ファイル %s を保存していません。保存しますか？"
+msgstr ""
 
 #: src/mdi.cc:603
 #, c-format
@@ -614,28 +600,26 @@ msgid ""
 "This will close the current file \"%s\". Discard any changes done and reload "
 "the saved copy of the file. Are you sure you want to continue ?"
 msgstr ""
-"現在のファイル \"%s\" を閉じます。全ての変更を破棄して保存済みのファイルを再"
-"読み込みします。続けますか？"
 
 #: src/mdi.cc:715
 msgid "You must inter a word to search for."
-msgstr "検索する単語を入力してください"
+msgstr ""
 
 #: src/mdi.cc:727 src/mdi.cc:744 src/mdi.cc:799
 msgid "No search results found."
-msgstr "合致するものがありません"
+msgstr ""
 
 #: src/mdi.cc:835
-#, fuzzy, c-format
+#, c-format
 msgid "Replaced %d occurence."
 msgid_plural "Replaced %d occurences."
-msgstr[0] "%d 個 置き換えました"
-msgstr[1] "%d 個 置き換えました"
+msgstr[0] ""
+msgstr[1] ""
 
 #: src/mdi.cc:861
 #, c-format
 msgid "You can use only one '%s'"
-msgstr "'%s' は１個だけ使えます"
+msgstr ""
 
 #: src/mdi.cc:1026 src/mdi.cc:1028
 msgid "Failed to get any definitions."
@@ -643,96 +627,95 @@ msgstr ""
 
 #: src/menubar.cc:147
 msgid "_File"
-msgstr "ファイル(_F)"
+msgstr ""
 
 #: src/menubar.cc:156
 msgid "Open _Location..."
-msgstr "場所を開く(_L)"
+msgstr ""
 
 #: src/menubar.cc:161
 msgid "Recent"
-msgstr "履歴"
+msgstr ""
 
 #: src/menubar.cc:175
 msgid "Sa_ve Copy..."
-msgstr "コピーを保存(_v)"
+msgstr ""
 
 #: src/menubar.cc:184
 msgid "_Import"
-msgstr "インポート(_I)"
+msgstr ""
 
 #: src/menubar.cc:195
 msgid "_Export"
-msgstr "エクスポート(_E)"
+msgstr ""
 
 #: src/menubar.cc:207
 msgid "Page Set_up..."
 msgstr ""
 
 #: src/menubar.cc:212
-#, fuzzy
 msgid "Print Previe_w"
-msgstr "印刷プレビュー"
+msgstr ""
 
 #: src/menubar.cc:270
 msgid "_Edit"
-msgstr "編集(_E)"
+msgstr ""
 
 #: src/menubar.cc:296
 msgid "_Select All"
-msgstr "全て選択(_S)"
+msgstr ""
 
 #: src/menubar.cc:301
 msgid "_Insert File"
-msgstr "ファイルを挿入(_I)"
+msgstr ""
 
 #: src/menubar.cc:313
 msgid "_Search"
-msgstr "検索(_S)"
+msgstr ""
 
 #: src/menubar.cc:318
 msgid "Find Ne_xt"
-msgstr "次を検索(_x)"
+msgstr ""
 
 #: src/menubar.cc:335
 msgid "_View"
-msgstr "表示(_V)"
+msgstr ""
 
 #: src/menubar.cc:337
 msgid "_Statusbar"
-msgstr "ステータスバー(_S)"
+msgstr ""
 
 #: src/menubar.cc:341
 msgid "_Line Numbers"
-msgstr "行番号(_L)"
+msgstr ""
 
 #: src/menubar.cc:345
 msgid "_Wrap Text"
-msgstr "テキストを折り返す(_W)"
+msgstr ""
 
 #: src/menubar.cc:351
 msgid "Toolbars"
-msgstr "ツールバー"
+msgstr ""
 
 #: src/menubar.cc:353
 msgid "_Main Toolbar"
-msgstr "メインツールバー(_M)"
+msgstr ""
 
 #: src/menubar.cc:356
 msgid "_Extended Toolbar"
-msgstr "拡張ツールバー(_E)"
+msgstr ""
 
 #: src/menubar.cc:374
 msgid "_Encoding"
-msgstr "エンコーディング(_E)"
+msgstr ""
 
 #: src/menubar.cc:401
 msgid "_Tools"
-msgstr "ツール(_T)"
+msgstr ""
 
 #: src/menubar.cc:403
 msgid "_Execute Command On Buffer..."
-msgstr "バッファでコマンドを実行(_E)"
+msgstr ""
 
 #: src/menubar.cc:423 src/statusbar.cc:53
 msgid "Input"
@@ -744,7 +727,7 @@ msgstr ""
 
 #: src/menubar.cc:430
 msgid "Keyboard emulator"
-msgstr "キーボードエミュレータ"
+msgstr ""
 
 #: src/menubar.cc:434 src/preferencesdialog.cc:74
 msgid "Multipress"
@@ -752,41 +735,39 @@ msgstr ""
 
 #: src/menubar.cc:455
 msgid "_Documents"
-msgstr "文書(_D)"
+msgstr ""
 
 #: src/menubar.cc:456
 msgid "Save _All"
-msgstr "全て保存(_A)"
+msgstr ""
 
 #: src/menubar.cc:461
 msgid "Clos_e All"
-msgstr "全て閉じる(_e)"
+msgstr ""
 
 #: src/menubar.cc:469
 msgid "_Opened Documents"
-msgstr "文書を開く(_O)"
+msgstr ""
 
 #: src/menubar.cc:470
 msgid "_Closed Documents"
-msgstr "文書を閉じる(_C)"
+msgstr ""
 
 #: src/menubar.cc:476
 msgid "_Help"
-msgstr "ヘルプ(_H)"
+msgstr ""
 
 #: src/menubar.cc:893
-#, fuzzy
 msgid "_Highlight"
-msgstr "高さ"
+msgstr ""
 
 #: src/network.cc:99
 msgid "Failed to initialize the networking backend."
 msgstr ""
 
 #: src/network.cc:105
-#, fuzzy
 msgid "Couldn't initialize network handler."
-msgstr "ファイルを印刷できません"
+msgstr ""
 
 #: src/network.cc:134
 msgid "Please set the proxy authentication username."
@@ -797,21 +778,20 @@ msgid "Please set the proxy authentication password."
 msgstr ""
 
 #: src/network.cc:146
-#, fuzzy
 msgid "Please set a proxy host."
-msgstr "印刷するファイルを選んでください"
+msgstr ""
 
 #: src/openlocationdialog.cc:35
 msgid "Location"
-msgstr "場所"
+msgstr ""
 
 #: src/openlocationdialog.cc:52
 msgid "_Insert into the active document."
-msgstr "アクティブな文書に挿入(_I)"
+msgstr ""
 
 #: src/openlocationdialog.cc:91
 msgid "You must enter a location to open."
-msgstr "開く場所を入力してください"
+msgstr ""
 
 #: src/pipe.cc:50
 #, c-format
@@ -820,56 +800,55 @@ msgstr ""
 
 #: src/pipe.cc:96
 msgid "Couldn't get the required content."
-msgstr "要求したコンテンツを取得できません"
+msgstr ""
 
 #: src/preferencesdialog.cc:37
 msgid "Preferences"
-msgstr "設定"
+msgstr ""
 
 #: src/preferencesdialog.cc:51
 msgid "Options for"
-msgstr "オプション "
+msgstr ""
 
 #: src/preferencesdialog.cc:60
 msgid "General"
-msgstr "全般"
+msgstr ""
 
 #: src/preferencesdialog.cc:61
 msgid "Interface"
-msgstr "インタフェース"
+msgstr ""
 
 #: src/preferencesdialog.cc:62
 msgid "Tabs"
-msgstr "タブ"
+msgstr ""
 
 #: src/preferencesdialog.cc:63
 msgid "Editor"
-msgstr "エディタ"
+msgstr ""
 
 #: src/preferencesdialog.cc:64
 msgid "Encodings"
-msgstr "エンコーディング"
+msgstr ""
 
 #: src/preferencesdialog.cc:65
 msgid "File Save"
-msgstr "ファイル保存"
+msgstr ""
 
 #: src/preferencesdialog.cc:67
 msgid "Spell Checker"
-msgstr "スペル確認"
+msgstr ""
 
 #: src/preferencesdialog.cc:70
 msgid "Print"
-msgstr "印刷"
+msgstr ""
 
 #: src/preferencesdialog.cc:76
-#, fuzzy
 msgid "Remote Documents"
-msgstr "文書を開く(_O)"
+msgstr ""
 
 #: src/preferencesdialog.cc:77
 msgid "Advanced"
-msgstr "高度"
+msgstr ""
 
 #: src/preferencesdialog.cc:78
 msgid "Network"
@@ -877,12 +856,12 @@ msgstr ""
 
 #: src/previewdialog.cc:47
 msgid "Print preview"
-msgstr "印刷プレビュー"
+msgstr ""
 
 #: src/previewdialog.cc:55 src/previewdialog.cc:194
 #, c-format
 msgid "of %i"
-msgstr "of %i"
+msgstr ""
 
 #: src/print.cc:218
 msgid "Other"
@@ -890,157 +869,156 @@ msgstr ""
 
 #: src/replacedialog.cc:29 src/searchdialog.cc:29
 msgid "Find"
-msgstr "検索"
+msgstr ""
 
 #: src/replacedialog.cc:30 src/searchdialog.cc:30
 msgid "Search for:"
-msgstr "検索する語:"
+msgstr ""
 
 #: src/replacedialog.cc:31
 msgid "Replace with:"
-msgstr "置き換える語:"
+msgstr ""
 
 #: src/replacedialog.cc:32 src/searchdialog.cc:31
 msgid "Match entire word only"
-msgstr "完全に一致する語のみ"
+msgstr ""
 
 #: src/replacedialog.cc:33 src/searchdialog.cc:32
 msgid "Match case"
-msgstr "大文字小文字を区別"
+msgstr ""
 
 #: src/replacedialog.cc:34 src/searchdialog.cc:34
 msgid "Wrap search"
-msgstr "循環して検索"
+msgstr ""
 
 #: src/replacedialog.cc:35 src/searchdialog.cc:35
 msgid "Search from the cursor position"
-msgstr "カーソル位置から検索"
+msgstr ""
 
 #: src/replacedialog.cc:36 src/searchdialog.cc:36
 msgid "Search backwards"
-msgstr "後方に検索"
+msgstr ""
 
 #: src/replacedialog.cc:37 src/searchdialog.cc:37
 msgid "Search from the beginnig of the document"
-msgstr "文書の最初から検索"
+msgstr ""
 
 #: src/replacedialog.cc:39
 msgid "_Replace"
-msgstr "置換(_R)"
+msgstr ""
 
 #: src/replacedialog.cc:41
 msgid "Replace _All"
-msgstr "全て置換(_A)"
+msgstr ""
 
 #: src/spell.cc:50
 msgid "Failed to initialize the spell checker"
 msgstr ""
 
 #: src/spell.cc:63
-#, fuzzy
 msgid "Failed to set the requested dictionary."
-msgstr "デフォルトのディレクトリを選択"
+msgstr ""
 
 #: src/spelldialog.cc:35
 msgid "_Ignore"
-msgstr "無視(_I)"
+msgstr ""
 
 #: src/spelldialog.cc:36
 msgid "Ignore _All"
-msgstr "全て無視(_A)"
+msgstr ""
 
 #: src/spelldialog.cc:37
 msgid "C_hange"
-msgstr "変更(_h)"
+msgstr ""
 
 #: src/spelldialog.cc:40
 msgid "_Add to user dictionary"
-msgstr "ユーザ辞書に追加(_A)"
+msgstr ""
 
 #: src/spelldialog.cc:41
 msgid "Misspelled:"
-msgstr "スペル間違い:"
+msgstr ""
 
 #: src/spelldialog.cc:42
 msgid "Change to:"
-msgstr "次の語に変更:"
+msgstr ""
 
 #: src/spelldialog.cc:45
 msgid "Check Spelling"
-msgstr "スペルをチェック"
+msgstr ""
 
 #: src/spelldialog.cc:89
 msgid "Suggestions"
-msgstr "提案"
+msgstr ""
 
 #: src/spelldialog.cc:128
 msgid "No misspelled words."
-msgstr "スペル間違いはありません"
+msgstr ""
 
 #: src/statusbar.cc:67
 msgid "OVR"
-msgstr "上書き"
+msgstr ""
 
 #: src/statusbar.cc:67
 msgid "INS"
-msgstr "挿入"
+msgstr ""
 
 #: src/statusbar.cc:73
 #, c-format
 msgid " L: %d, C: %d"
-msgstr " 行: %d, 列: %d"
+msgstr ""
 
 #: src/toolbar.cc:48
 msgid "Search"
-msgstr "検索"
+msgstr ""
 
 #: src/toolbar.cc:51
 msgid "Spelling Dictionary"
-msgstr "スペル用の辞書"
+msgstr ""
 
 #: src/toolbar.cc:96
 msgid "Create a new file"
-msgstr "新規ファイルを作成"
+msgstr ""
 
 #: src/toolbar.cc:97
 msgid "Open a file for editing"
-msgstr "編集用にファイルを開く"
+msgstr ""
 
 #: src/toolbar.cc:98
 msgid "Save the existing file"
-msgstr "既存のファイルを保存"
+msgstr ""
 
 #: src/toolbar.cc:100
 msgid "Print this document"
-msgstr "この文書を印刷"
+msgstr ""
 
 #: src/toolbar.cc:102
 msgid "Close the active file"
-msgstr "現在のファイルを閉じる"
+msgstr ""
 
 #: src/toolbar.cc:103
 msgid "Undo"
-msgstr "アンドゥ"
+msgstr ""
 
 #: src/toolbar.cc:104
 msgid "Redo"
-msgstr "リドゥ"
+msgstr ""
 
 #: src/toolbar.cc:105
 msgid "Cut"
-msgstr "切り取り"
+msgstr ""
 
 #: src/toolbar.cc:106
 msgid "Copy"
-msgstr "コピー"
+msgstr ""
 
 #: src/toolbar.cc:107
 msgid "Paste"
-msgstr "貼り付け"
+msgstr ""
 
 #: src/toolbar.cc:108
 msgid "Delete current selection"
-msgstr "選択したものを削除"
+msgstr ""
 
 #: src/toolbar.cc:293
 msgid "<b>Extra toolbar buttons will not be available.</b>"
@@ -1051,155 +1029,20 @@ msgid "I can't backup the old file.\n"
 msgstr ""
 
 #: src/utils.cc:252
-#, fuzzy, c-format
+#, c-format
 msgid "%s is a directory."
-msgstr "これはディレクトリです"
+msgstr ""
 
 #: src/window.cc:143
-#, fuzzy
 msgid "<b>The keyboard emulator will not work.</b>"
-msgstr " キーボードエミュレータは動きません"
+msgstr ""
 
 #: src/window.cc:156
-#, fuzzy
 msgid "<b>Multipress will not work.</b>"
-msgstr " キーボードエミュレータは動きません"
+msgstr ""
 
 #: src/window.cc:164
-#, fuzzy
 msgid ""
 "A lot of the configuration options have been changed in this version.\n"
 "Please adjust the configuration first."
 msgstr ""
-"このバージョンでは多くの設定オプションを変更しています。\n"
-"最初に設定を調整してください"
-
-#~ msgid "Katoob"
-#~ msgstr "Katoob"
-
-#~ msgid "Multilingual Unicode Text Editor"
-#~ msgstr "多国語対応Unicodeテキストエディタ"
-
-#, fuzzy
-#~ msgid "A lightweight multilingual unicode and bidi aware text editor"
-#~ msgstr "多国語対応Unicodeテキストエディタ"
-
-#~ msgid "Print to file."
-#~ msgstr "ファイルに印刷"
-
-#~ msgid "_All"
-#~ msgstr "全て(_A)"
-
-#~ msgid "_Selection"
-#~ msgstr "選択(_S)"
-
-#~ msgid "_Lines"
-#~ msgstr "行(_L)"
-
-#~ msgid "Printer:"
-#~ msgstr "プリンタ:"
-
-#~ msgid "Location:"
-#~ msgstr "場所:"
-
-#~ msgid "Number of copies"
-#~ msgstr "コピーの数"
-
-#~ msgid "Print range"
-#~ msgstr "印刷幅"
-
-#~ msgid "From:"
-#~ msgstr "From:"
-
-#~ msgid "To:"
-#~ msgstr "To:"
-
-#~ msgid "Paper size:"
-#~ msgstr "紙のサイズ:"
-
-#~ msgid "Page orientation:"
-#~ msgstr "ページの方向:"
-
-#~ msgid "Printer name"
-#~ msgstr "プリンタの名前"
-
-#~ msgid "Status"
-#~ msgstr "ステータス"
-
-#~ msgid "Custom"
-#~ msgstr "カスタム"
-
-#~ msgid "Create a PDF document"
-#~ msgstr "PDF ドキュメントを作成"
-
-#~ msgid "Create a Postscript document"
-#~ msgstr "Postscript ドキュメントを作成"
-
-#~ msgid "Portrait"
-#~ msgstr "縦長"
-
-#~ msgid "Landscape"
-#~ msgstr "横長"
-
-#~ msgid "Width:"
-#~ msgstr "幅:"
-
-#~ msgid "Height:"
-#~ msgstr "高さ:"
-
-#~ msgid "Please choose a file to print to."
-#~ msgstr "印刷するファイルを選んでください"
-
-#~ msgid "Please choose a file not a directory."
-#~ msgstr "ディレクトリではなくファイルを選んでください"
-
-#~ msgid "Please select a file to print to."
-#~ msgstr "印刷するファイルを選んでください"
-
-#~ msgid "I couldn't get the selected printer."
-#~ msgstr "選んだプリンタに接続できません"
-
-#~ msgid "Unknown"
-#~ msgstr "不明"
-
-#~ msgid "Ready"
-#~ msgstr "Ready"
-
-#~ msgid "Printing"
-#~ msgstr "印刷"
-
-#~ msgid "Disabled"
-#~ msgstr "無効"
-
-#~ msgid "You must select something to print."
-#~ msgstr "印刷するファイルを選んでください"
-
-#~ msgid "I couldn't connect to the dict server."
-#~ msgstr "辞書サーバに接続できません"
-
-#~ msgid "Couldn't get the definition from the server."
-#~ msgstr "サーバから定義を取得できません"
-
-#~ msgid "Couldn't get the list of dictionaries from the server."
-#~ msgstr "サーバから辞書リストを取得できません"
-
-#~ msgid "Timeout"
-#~ msgstr "タイムアウト"
-
-#~ msgid "Command"
-#~ msgstr "コマンド"
-
-#~ msgid "Failed to display image"
-#~ msgstr "画像の表示に失敗"
-
-#~ msgid "katoob"
-#~ msgstr "katoob"
-
-#~ msgid "Disable"
-#~ msgstr "無効"
-
-#~ msgid "Remote"
-#~ msgstr "リモート"
-
-#~ msgid "Are you sure you want to overwrite the file "
-#~ msgstr "ファイルを上書きしますか "

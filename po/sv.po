@@ -6,24 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: katoob 0.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-12-18 12:03+0200\n"
+"POT-Creation-Date: 2021-11-07 22:29+0100\n"
 "PO-Revision-Date: 2002-09-14 18:30+0200\n"
 "Last-Translator: Jens Askengren <jensus@linux.nu>\n"
 "Language-Team: Swedish <Support@Arabeyes.org>\n"
+"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../katoob.desktop.in.h:1 ../src/aboutdialog.cc:66
-#, fuzzy
-msgid "Katoob"
-msgstr "Om Katoob"
-
-#: ../katoob.desktop.in.h:2
-msgid "Multilingual Unicode Text Editor"
-msgstr ""
-
-#: ../src/aboutdialog.cc:51
+#: src/aboutdialog.cc:53
 msgid ""
 "Katoob is free software; you can redistribute it and/or modify it under the "
 "terms of the GNU General Public License as published by the Free Software "
@@ -31,7 +23,7 @@ msgid ""
 "version."
 msgstr ""
 
-#: ../src/aboutdialog.cc:56
+#: src/aboutdialog.cc:59
 msgid ""
 "Katoob is distributed in the hope that it will be useful, but WITHOUT ANY "
 "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
@@ -39,288 +31,289 @@ msgid ""
 "details."
 msgstr ""
 
-#: ../src/aboutdialog.cc:61
+#: src/aboutdialog.cc:65
 msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "This program; if not, write to the Free Software Foundation, Inc., 59 Temple "
 "Place, Suite 330, Boston, MA  02111-1307  USA"
 msgstr ""
 
-#: ../src/aboutdialog.cc:71
-msgid "Copyright © 2006, 2007 Mohammed Sameer."
+#: src/aboutdialog.cc:79
+msgid "Copyright © 2008-2021 Fred Morcos."
 msgstr ""
 
-#: ../src/aboutdialog.cc:73 ../src/aboutdialog.cc:76
+#: src/aboutdialog.cc:80
+msgid "Copyright © 2002-2007 Mohammed Sameer."
+msgstr ""
+
+#: src/aboutdialog.cc:83 src/aboutdialog.cc:87
+msgid "Fred Morcos"
+msgstr ""
+
+#: src/aboutdialog.cc:84 src/aboutdialog.cc:88
 msgid "Mohammed Sameer"
 msgstr ""
 
-#: ../src/aboutdialog.cc:77
+#: src/aboutdialog.cc:89
 msgid "Mostafa Hussein"
 msgstr ""
 
-#: ../src/aboutdialog.cc:80
-msgid "A lightweight multilingual unicode and bidi aware text editor"
-msgstr ""
-
-#: ../src/aboutdialog.cc:81
+#: src/aboutdialog.cc:93
 msgid "translator-credits"
 msgstr ""
 
-#: ../src/applets.cc:55
+#: src/applets.cc:55
 msgid "_Enable undo, redo\t"
 msgstr "_Aktivera kommandona Ångra och Gör om"
 
-#: ../src/applets.cc:57
+#: src/applets.cc:57
 msgid "Keep a history of recently closed documents"
 msgstr ""
 
-#: ../src/applets.cc:59
+#: src/applets.cc:59
 msgid ""
 "Undo history size\n"
 "(0 for unlimited)"
 msgstr "Antal operationer som kan ångras (0 för obegränsat)"
 
-#: ../src/applets.cc:60
+#: src/applets.cc:60
 #, fuzzy
 msgid ""
 "Executed commands history size\n"
 "(0 for unlimited)"
 msgstr "Antal operationer som kan ångras (0 för obegränsat)"
 
-#: ../src/applets.cc:61
+#: src/applets.cc:61
 #, fuzzy
 msgid ""
 "Closed documents history size\n"
 "(0 for unlimited)"
 msgstr "Antal operationer som kan ångras (0 för obegränsat)"
 
-#: ../src/applets.cc:122
+#: src/applets.cc:160
 #, fuzzy
 msgid "Show the extra _buttons"
 msgstr "Visa dokumentflikar vid"
 
-#: ../src/applets.cc:123
+#: src/applets.cc:161
 #, fuzzy
 msgid "Show the _Main Toolbar"
 msgstr "Visa _verktygsraden"
 
-#: ../src/applets.cc:124
+#: src/applets.cc:162
 #, fuzzy
 msgid "Show the _Extended Toolbar"
 msgstr "Visa _verktygsraden"
 
-#: ../src/applets.cc:125
+#: src/applets.cc:163
 #, fuzzy
 msgid "Show the _Statusbar"
 msgstr "Visa _statusraden"
 
-#: ../src/applets.cc:126
+#: src/applets.cc:164
 msgid "Enable re_cent menu"
 msgstr "Visa menyn med senast använda filer"
 
-#: ../src/applets.cc:127
+#: src/applets.cc:165
 msgid "Show the _close button on each tab label"
 msgstr "Dokumentflikar har stäng-knapp"
 
-#: ../src/applets.cc:128
+#: src/applets.cc:166
 msgid ""
 "No. of recent entries\n"
 "(0 for unlimited)"
 msgstr ""
 "Antal filer i menyn med senast använda dokument (ange 0 för obegränsat)"
 
-#: ../src/applets.cc:129
+#: src/applets.cc:167
 msgid "Show the toolbar as"
 msgstr "Visa verktygsraden som"
 
-#: ../src/applets.cc:130 ../src/applets.cc:159 ../src/menubar.cc:318
+#: src/applets.cc:168 src/applets.cc:221 src/menubar.cc:365
 #, fuzzy
 msgid "Text only"
 msgstr "Text"
 
-#. TODO: Disable these when the main toolbar is not shown.
-#: ../src/applets.cc:131 ../src/applets.cc:162 ../src/menubar.cc:315
+#: src/applets.cc:169 src/applets.cc:223 src/menubar.cc:362
 msgid "Icons only"
 msgstr "Enbart Ikon"
 
-#: ../src/applets.cc:132 ../src/applets.cc:168 ../src/applets.cc:350
-#: ../src/applets.cc:383 ../src/applets.cc:392 ../src/menubar.cc:321
+#: src/applets.cc:170 src/applets.cc:227 src/applets.cc:459 src/applets.cc:492
+#: src/applets.cc:498 src/menubar.cc:368
 msgid "Both"
 msgstr "Text under ikon"
 
-#: ../src/applets.cc:133 ../src/applets.cc:165 ../src/menubar.cc:324
+#: src/applets.cc:171 src/applets.cc:225 src/menubar.cc:371
 msgid "Text beside icons"
 msgstr "Text bredvid ikon"
 
-#: ../src/applets.cc:217
+#: src/applets.cc:280
 msgid "_Show tabs"
 msgstr "Visa _dokumentflikar"
 
-#: ../src/applets.cc:218
+#: src/applets.cc:281
 msgid "_Enable tabs menu"
 msgstr "Använd flikmeny"
 
-#: ../src/applets.cc:219
+#: src/applets.cc:282
 #, fuzzy
 msgid "Scro_ll tabs"
 msgstr "Rulla flikar"
 
-#: ../src/applets.cc:220
+#: src/applets.cc:283
 #, fuzzy
 msgid "Show the tabs at the"
 msgstr "Visa dokumentflikar vid"
 
-#: ../src/applets.cc:221 ../src/applets.cc:282 ../src/applets.cc:846
+#: src/applets.cc:284 src/applets.cc:391 src/applets.cc:978
 msgid "Top"
 msgstr "Topp"
 
-#: ../src/applets.cc:222 ../src/applets.cc:273
+#: src/applets.cc:285 src/applets.cc:382
 msgid "Bottom"
 msgstr "Botten"
 
-#: ../src/applets.cc:223 ../src/applets.cc:276 ../src/applets.cc:348
-#: ../src/applets.cc:389
+#: src/applets.cc:286 src/applets.cc:385 src/applets.cc:457 src/applets.cc:496
 msgid "Right"
 msgstr "Höger"
 
-#: ../src/applets.cc:224 ../src/applets.cc:279 ../src/applets.cc:349
-#: ../src/applets.cc:386 ../src/applets.cc:845
+#: src/applets.cc:287 src/applets.cc:388 src/applets.cc:458 src/applets.cc:494
+#: src/applets.cc:977
 msgid "Left"
 msgstr "Vänster"
 
-#: ../src/applets.cc:226
+#: src/applets.cc:289
 msgid "Color for read only tabs"
 msgstr ""
 
-#: ../src/applets.cc:227
+#: src/applets.cc:290
 msgid "Color for modified tabs"
 msgstr ""
 
-#: ../src/applets.cc:228
+#: src/applets.cc:291
 msgid "Color for normal tabs"
 msgstr ""
 
-#: ../src/applets.cc:341
+#: src/applets.cc:450
 msgid "Text _Wrapping is on by default"
 msgstr "Använd automatisk _radbrytning som standard"
 
-#: ../src/applets.cc:342
+#: src/applets.cc:451
 msgid "Show _Line numbers by default"
 msgstr ""
 
-#: ../src/applets.cc:343
+#: src/applets.cc:452
 msgid "Use the default _font"
 msgstr ""
 
-#: ../src/applets.cc:345
+#: src/applets.cc:454
 msgid "_Automatic syntax highlighting for known file types"
 msgstr ""
 
-#: ../src/applets.cc:347
+#: src/applets.cc:456
 #, fuzzy
 msgid "Line numbers position"
 msgstr "Fönsterposition"
 
-#: ../src/applets.cc:351
+#: src/applets.cc:460
 msgid "Font"
 msgstr ""
 
-#: ../src/applets.cc:353
+#: src/applets.cc:462
 msgid "Tab width"
 msgstr ""
 
-#: ../src/applets.cc:450
+#: src/applets.cc:558
 msgid "_Use the locale encoding"
 msgstr ""
 
-#: ../src/applets.cc:451 ../src/applets.cc:452
+#: src/applets.cc:559 src/applets.cc:560
 #, fuzzy
 msgid "Specify an encoding"
 msgstr "Teckenkodning"
 
-#: ../src/applets.cc:456
+#: src/applets.cc:564
 msgid "File open encoding"
 msgstr ""
 
-#: ../src/applets.cc:457
+#: src/applets.cc:565
 msgid "File save encoding"
 msgstr ""
 
-#: ../src/applets.cc:502
+#: src/applets.cc:614
 msgid "_Backup files before saving."
 msgstr ""
 
-#: ../src/applets.cc:503
+#: src/applets.cc:615
 msgid "Backup extension"
 msgstr ""
 
-#: ../src/applets.cc:534 ../src/menubar.cc:362
+#: src/applets.cc:649 src/menubar.cc:416
 msgid "_Autocheck Spelling"
 msgstr ""
 
-#. misspelled_label.set_text(_("Misspelled words color"));
-#: ../src/applets.cc:536
+#: src/applets.cc:651
 msgid "Choose the default dictionary"
 msgstr ""
 
-#: ../src/applets.cc:586
+#: src/applets.cc:702
 msgid "Printing font"
 msgstr ""
 
-#: ../src/applets.cc:590
+#: src/applets.cc:706
 msgid "_Enable advanced options"
 msgstr ""
 
-#: ../src/applets.cc:594
+#: src/applets.cc:710
 msgid "X Dot Per Inch"
 msgstr ""
 
-#: ../src/applets.cc:595
+#: src/applets.cc:711
 msgid "Y Dot Per Inch"
 msgstr ""
 
-#: ../src/applets.cc:652
+#: src/applets.cc:769
 msgid "_Enable the dictionary."
 msgstr ""
 
-#: ../src/applets.cc:653
+#: src/applets.cc:770
 msgid "Host"
 msgstr ""
 
-#: ../src/applets.cc:654
+#: src/applets.cc:771
 msgid "_List dictionaries"
 msgstr ""
 
-#: ../src/applets.cc:656
+#: src/applets.cc:773
 #, fuzzy
 msgid "Port"
 msgstr "Rad: "
 
-#: ../src/applets.cc:667 ../src/applets.cc:675 ../src/preferencesdialog.cc:75
+#: src/applets.cc:784 src/applets.cc:792 src/preferencesdialog.cc:72
 msgid "Dictionary"
 msgstr ""
 
-#: ../src/applets.cc:676
+#: src/applets.cc:793
 msgid "Description"
 msgstr ""
 
-#: ../src/applets.cc:681
+#: src/applets.cc:798
 msgid "Not Available."
 msgstr ""
 
-#: ../src/applets.cc:738 ../src/applets.cc:741
+#: src/applets.cc:866 src/applets.cc:868
 msgid "Failed to get the available dictionaries."
 msgstr ""
 
-#: ../src/applets.cc:768
+#: src/applets.cc:894
 msgid "Please provide a dict server"
 msgstr ""
 
-#: ../src/applets.cc:797
+#: src/applets.cc:926
 msgid "_Milliseconds before multipress will accept the current value."
 msgstr ""
 
-#: ../src/applets.cc:827
+#: src/applets.cc:957
 #, fuzzy
 msgid ""
 "Number of remote addresses to save\n"
@@ -328,907 +321,850 @@ msgid ""
 msgstr ""
 "Antal filer i menyn med senast använda dokument (ange 0 för obegränsat)"
 
-#: ../src/applets.cc:830
+#: src/applets.cc:960
 msgid "_Insert into the active document enabled by default ?"
 msgstr ""
 
-#: ../src/applets.cc:847
+#: src/applets.cc:979
 msgid "Width"
 msgstr "Vidd"
 
-#: ../src/applets.cc:848
+#: src/applets.cc:980
 msgid "Height"
 msgstr "Höjd"
 
-#: ../src/applets.cc:850
+#: src/applets.cc:982
 msgid "Save all the program _settings on exit"
 msgstr "Spara inställningar vid avslut"
 
-#: ../src/applets.cc:851
+#: src/applets.cc:983
 msgid "Save the main window _attributes on exit"
 msgstr "Kom ihåg fönstrets storlek och position"
 
-#: ../src/applets.cc:856
+#: src/applets.cc:988
 msgid "Window position"
 msgstr "Fönsterposition"
 
-#: ../src/applets.cc:857
+#: src/applets.cc:989
 msgid "Window size"
 msgstr "Fönsterstorlek"
 
-#: ../src/applets.cc:925
+#: src/applets.cc:1059
 msgid "Network timeout (In seconds):"
 msgstr ""
 
-#: ../src/applets.cc:926
+#: src/applets.cc:1060
 msgid "Proxy host:"
 msgstr ""
 
-#: ../src/applets.cc:927
+#: src/applets.cc:1061
 msgid "Proxy port:"
 msgstr ""
 
-#: ../src/applets.cc:928
+#: src/applets.cc:1062
 msgid "Proxy type:"
 msgstr ""
 
-#: ../src/applets.cc:930 ../src/menubar.cc:798
+#: src/applets.cc:1064 src/menubar.cc:895
 msgid "None"
 msgstr ""
 
-#: ../src/applets.cc:931
+#: src/applets.cc:1065
 msgid "Get from the environment"
 msgstr ""
 
-#: ../src/applets.cc:932
+#: src/applets.cc:1066
 msgid "HTTP"
 msgstr ""
 
-#: ../src/applets.cc:933
+#: src/applets.cc:1067
 msgid "SOCKS4"
 msgstr ""
 
-#: ../src/applets.cc:934
+#: src/applets.cc:1068
 msgid "SOCKS5"
 msgstr ""
 
-#: ../src/applets.cc:948
+#: src/applets.cc:1082
 msgid "Tunnel traffic through the proxy"
 msgstr ""
 
-#: ../src/applets.cc:950
+#: src/applets.cc:1084
 msgid "Use proxy authentication"
 msgstr ""
 
-#: ../src/applets.cc:951
+#: src/applets.cc:1085
 msgid "Proxy username:"
 msgstr ""
 
-#: ../src/applets.cc:952
+#: src/applets.cc:1086
 msgid "Proxy password:"
 msgstr ""
 
-#: ../src/dialogs.cc:70
+#: src/dialogs.cc:66
 msgid "Insert to document"
 msgstr ""
 
-#: ../src/dialogs.cc:98 ../src/toolbar.cc:52
+#: src/dialogs.cc:96 src/toolbar.cc:47
 msgid "Goto Line"
 msgstr "Gå till rad"
 
-#: ../src/dialogs.cc:105
+#: src/dialogs.cc:103
 msgid "Line:"
 msgstr "Rad: "
 
-#: ../src/dialogs.cc:139
+#: src/dialogs.cc:137
 msgid "Please wait..."
 msgstr ""
 
-#: ../src/dict.cc:60
+#: src/dict.cc:60
 msgid "Invalid daatabase. Please reconfigure the dictionary in use."
 msgstr ""
 
-#: ../src/dict.cc:64
+#: src/dict.cc:63
 #, fuzzy
 msgid "No matches were found"
 msgstr "Texten hittades inte"
 
-#: ../src/dict.cc:122 ../src/dict.cc:139
+#: src/dict.cc:119 src/dict.cc:136
 #, fuzzy
 msgid "No databases were found."
 msgstr "Texten hittades inte"
 
-#: ../src/document.cc:109
+#: src/document.cc:101
 msgid " Is a directory."
 msgstr ""
 
-#: ../src/document.cc:133 ../src/mdi.cc:295 ../src/mdi.cc:1107
+#: src/document.cc:125 src/mdi.cc:305 src/mdi.cc:1172
 #, fuzzy, c-format
 msgid "Couldn't detect the encoding of %s"
 msgstr "Kunde inte öppna temporärfil"
 
-#: ../src/document.cc:193
+#: src/document.cc:181
 #, fuzzy
 msgid "Couldn't detect the encoding of the text."
 msgstr "Kunde inte öppna temporärfil"
 
-#: ../src/document.cc:285
+#: src/document.cc:286
 #, fuzzy, c-format
 msgid "Failed to create the autorecovery file %s"
 msgstr "Kunde inte skapa temporärfil"
 
-#: ../src/document.cc:1240
+#: src/document.cc:1273
 msgid "Define "
 msgstr ""
 
-#: ../src/document.cc:1255
+#: src/document.cc:1291
 msgid "Spelling Suggestions"
 msgstr ""
 
-#: ../src/document.cc:1263
+#: src/document.cc:1303
 #, c-format
-msgid "Add \"%s\" to dictionary"
+msgid "Add <b>%s</b> to dictionary"
 msgstr ""
 
-#. TODO: Use italics markup.
-#: ../src/document.cc:1272
+#: src/document.cc:1317
 msgid "no suggestions"
 msgstr ""
 
-#: ../src/document.cc:1283
+#: src/document.cc:1327
 msgid "More..."
 msgstr ""
 
-#: ../src/encodings.cc:347 ../src/encodings.cc:367
+#: src/encodings.cc:354 src/encodings.cc:372
 msgid "I wasn't able to convert the encoding."
 msgstr ""
 
-#: ../src/execdialog.cc:40
+#: src/execdialog.cc:38
 msgid "Command to execute"
 msgstr ""
 
-#: ../src/execdialog.cc:41
+#: src/execdialog.cc:39
 #, c-format
 msgid ""
 "'%s' will be substituted with a temporary filename\n"
 "containing the text from the document."
 msgstr ""
 
-#: ../src/execdialog.cc:47
+#: src/execdialog.cc:46
 #, fuzzy
 msgid "_Show the results in a new tab"
 msgstr "Visa dokumentflikar vid"
 
-#: ../src/export.cc:48
+#: src/export.cc:49
 msgid "_Text file with no unicode control characters..."
 msgstr ""
 
-#: ../src/export.cc:55 ../src/import.cc:52
+#: src/export.cc:56 src/import.cc:54
 msgid "Text file compressed with _gzip"
 msgstr ""
 
-#: ../src/export.cc:62 ../src/import.cc:58
+#: src/export.cc:63 src/import.cc:60
 msgid "Text file compressed with _bzip2"
 msgstr ""
 
-#: ../src/export.cc:69 ../src/import.cc:64
+#: src/export.cc:70 src/import.cc:66
 msgid "Text with _shaping and bidi applied"
 msgstr ""
 
-#: ../src/export.cc:107
+#: src/export.cc:110
 #, fuzzy
 msgid "Can't open temporary file."
 msgstr "Kunde inte öppna temporärfil"
 
-#: ../src/export.cc:113
+#: src/export.cc:116
 #, fuzzy
 msgid "Error writing to temporary file."
 msgstr "Kunde inte öppna temporärfil"
 
-#: ../src/export.cc:130
+#: src/export.cc:134
 msgid "Couldn't allocate memory for compression."
 msgstr ""
 
-#: ../src/export.cc:136
+#: src/export.cc:146
 #, fuzzy
 msgid "Couldn't compress the text."
 msgstr "Kunde inte öppna temporärfil"
 
-#. _ch is allocated via g_new();
-#: ../src/export.cc:185 ../src/import.cc:239
+#: src/export.cc:196 src/import.cc:237
 #, fuzzy
 msgid "Couldn't apply the bidi algorithm."
 msgstr "Kunde inte öppna temporärfil"
 
-#: ../src/filedialog.cc:38 ../src/filedialog.cc:52
-#: ../src/openlocationdialog.cc:38
+#: src/filedialog.cc:41 src/openlocationdialog.cc:36
 msgid "Encoding"
 msgstr "Teckenkodning"
 
-#: ../src/filedialog.cc:144
+#: src/filedialog.cc:132
 msgid "This is a directory."
 msgstr ""
 
-#: ../src/import.cc:47
+#: src/import.cc:49
 msgid "_HTML Character Reference..."
 msgstr ""
 
-#: ../src/import.cc:114 ../src/import.cc:120 ../src/import.cc:141
-#: ../src/import.cc:172
+#: src/import.cc:115 src/import.cc:121 src/import.cc:141 src/import.cc:171
 #, fuzzy
 msgid "Can't open file."
 msgstr "Kunde inte öppna temporärfil"
 
-#. Error.
-#: ../src/import.cc:135 ../src/import.cc:157 ../src/import.cc:188
+#: src/import.cc:135 src/import.cc:155 src/import.cc:185
 msgid "Error reading file."
 msgstr ""
 
-#: ../src/inputwindow.cc:33
+#: src/inputwindow.cc:29
 msgid "Input Window"
 msgstr ""
 
-#: ../src/isocodes.cc:117
+#: src/isocodes.cc:132
 #, c-format
 msgid "%s (%s)"
 msgstr ""
 
-#: ../src/label.cc:60
+#: src/label.cc:56
 #, c-format
 msgid "Untitled New %d"
 msgstr ""
 
-#: ../src/mdi.cc:83
+#: src/mdi.cc:86
 #, c-format
 msgid "Failed to scan for any autorecovery files: %s"
 msgstr ""
 
-#: ../src/mdi.cc:88
+#: src/mdi.cc:91
 msgid "Some unrecovered files were found. Try to recover them ?"
 msgstr ""
 
-#: ../src/mdi.cc:203
+#: src/mdi.cc:208
 #, fuzzy
 msgid "Please select a file for editing."
 msgstr "Öppna en fil"
 
-#: ../src/mdi.cc:281
+#: src/mdi.cc:291
 msgid "This is a read only document."
 msgstr ""
 
-#: ../src/mdi.cc:285
+#: src/mdi.cc:295
 #, fuzzy
 msgid "Please select a file."
 msgstr "Öppna en fil"
 
-#: ../src/mdi.cc:324
+#: src/mdi.cc:335
 msgid "This document can not be saved. It's a read only file."
 msgstr ""
 
-#: ../src/mdi.cc:354
+#: src/mdi.cc:368
 #, fuzzy
 msgid "Please select a file for saving."
 msgstr "Öppna en fil"
 
-#: ../src/mdi.cc:361 ../src/mdi.cc:1124 ../src/printdialog.cc:254
+#: src/mdi.cc:380 src/mdi.cc:1191
 #, c-format
 msgid "Are you sure you want to overwrite the file %s ?"
 msgstr ""
 
-#: ../src/mdi.cc:452
+#: src/mdi.cc:476
 #, fuzzy, c-format
 msgid "The file %s is not saved, Save first ?"
 msgstr "Filen %s existerar inte. Skall den skapas?"
 
-#: ../src/mdi.cc:455
+#: src/mdi.cc:478
 #, fuzzy, c-format
 msgid "\"%s\" is not saved, Save first?"
 msgstr "Filen %s existerar inte. Skall den skapas?"
 
-#: ../src/mdi.cc:509
+#: src/mdi.cc:531
 #, fuzzy, c-format
 msgid "The file \"%s\" doesn't exist."
 msgstr "Filen %s existerar inte. Skall den skapas?"
 
-#: ../src/mdi.cc:573
+#: src/mdi.cc:603
 #, c-format
 msgid ""
 "This will close the current file \"%s\". Discard any changes done and reload "
 "the saved copy of the file. Are you sure you want to continue ?"
 msgstr ""
 
-#: ../src/mdi.cc:673
+#: src/mdi.cc:715
 msgid "You must inter a word to search for."
 msgstr ""
 
-#: ../src/mdi.cc:685 ../src/mdi.cc:701 ../src/mdi.cc:748
+#: src/mdi.cc:727 src/mdi.cc:744 src/mdi.cc:799
 #, fuzzy
 msgid "No search results found."
 msgstr "Texten hittades inte"
 
-#: ../src/mdi.cc:781
+#: src/mdi.cc:835
 #, fuzzy, c-format
 msgid "Replaced %d occurence."
 msgid_plural "Replaced %d occurences."
 msgstr[0] "Ersatte %d förekomster"
 msgstr[1] "Ersatte %d förekomster"
 
-#: ../src/mdi.cc:806
+#: src/mdi.cc:861
 #, c-format
 msgid "You can use only one '%s'"
 msgstr ""
 
-#: ../src/mdi.cc:959 ../src/mdi.cc:962
+#: src/mdi.cc:1026 src/mdi.cc:1028
 msgid "Failed to get any definitions."
 msgstr ""
 
-#: ../src/menubar.cc:142
+#: src/menubar.cc:147
 msgid "_File"
 msgstr "_Arkiv"
 
-#: ../src/menubar.cc:150
+#: src/menubar.cc:156
 #, fuzzy
 msgid "Open _Location..."
 msgstr "Information"
 
-#. Recent
-#: ../src/menubar.cc:154
+#: src/menubar.cc:161
 msgid "Recent"
 msgstr "Senaste filer"
 
-#: ../src/menubar.cc:164
+#: src/menubar.cc:175
 #, fuzzy
 msgid "Sa_ve Copy..."
 msgstr "Spara kopia"
 
-#: ../src/menubar.cc:171
+#: src/menubar.cc:184
 msgid "_Import"
 msgstr ""
 
-#: ../src/menubar.cc:179
+#: src/menubar.cc:195
 msgid "_Export"
 msgstr ""
 
-#: ../src/menubar.cc:188
+#: src/menubar.cc:207
 msgid "Page Set_up..."
 msgstr ""
 
-#: ../src/menubar.cc:191
+#: src/menubar.cc:212
 #, fuzzy
 msgid "Print Previe_w"
 msgstr "Rad: "
 
-#: ../src/menubar.cc:240
+#: src/menubar.cc:270
 msgid "_Edit"
 msgstr "_Redigera"
 
-#: ../src/menubar.cc:261
+#: src/menubar.cc:296
 msgid "_Select All"
 msgstr "Markera _allt"
 
-#: ../src/menubar.cc:265
+#: src/menubar.cc:301
 msgid "_Insert File"
 msgstr ""
 
-#: ../src/menubar.cc:274
+#: src/menubar.cc:313
 msgid "_Search"
 msgstr "_Sök"
 
-#: ../src/menubar.cc:279
+#: src/menubar.cc:318
 msgid "Find Ne_xt"
 msgstr "Sök _nästa"
 
-#: ../src/menubar.cc:292
+#: src/menubar.cc:335
 msgid "_View"
 msgstr "_Visa"
 
-#: ../src/menubar.cc:294
+#: src/menubar.cc:337
 msgid "_Statusbar"
 msgstr "_Statusrad"
 
-#: ../src/menubar.cc:297
+#: src/menubar.cc:341
 msgid "_Line Numbers"
 msgstr ""
 
-#: ../src/menubar.cc:300
+#: src/menubar.cc:345
 msgid "_Wrap Text"
 msgstr "_Radbryt text"
 
-#: ../src/menubar.cc:305
+#: src/menubar.cc:351
 #, fuzzy
 msgid "Toolbars"
 msgstr "Anpassa verktygsrad"
 
-#: ../src/menubar.cc:307
+#: src/menubar.cc:353
 #, fuzzy
 msgid "_Main Toolbar"
 msgstr "Anpassa verktygsrad"
 
-#: ../src/menubar.cc:310
+#: src/menubar.cc:356
 msgid "_Extended Toolbar"
 msgstr ""
 
-#: ../src/menubar.cc:327
+#: src/menubar.cc:374
 msgid "_Encoding"
 msgstr "_Teckenkodning"
 
-#: ../src/menubar.cc:352
+#: src/menubar.cc:401
 #, fuzzy
 msgid "_Tools"
 msgstr "Anpassa verktygsrad"
 
-#: ../src/menubar.cc:353
+#: src/menubar.cc:403
 msgid "_Execute Command On Buffer..."
 msgstr ""
 
-#: ../src/menubar.cc:368 ../src/statusbar.cc:56
+#: src/menubar.cc:423 src/statusbar.cc:53
 msgid "Input"
 msgstr ""
 
-#: ../src/menubar.cc:369
+#: src/menubar.cc:424
 msgid "Default"
 msgstr ""
 
-#: ../src/menubar.cc:374
+#: src/menubar.cc:430
 msgid "Keyboard emulator"
 msgstr ""
 
-#: ../src/menubar.cc:378 ../src/preferencesdialog.cc:77
+#: src/menubar.cc:434 src/preferencesdialog.cc:74
 msgid "Multipress"
 msgstr ""
 
-#: ../src/menubar.cc:393
+#: src/menubar.cc:455
 msgid "_Documents"
 msgstr "_Dokument"
 
-#: ../src/menubar.cc:394
+#: src/menubar.cc:456
 msgid "Save _All"
 msgstr "Spa_ra alla"
 
-#: ../src/menubar.cc:397
+#: src/menubar.cc:461
 msgid "Clos_e All"
 msgstr "St_äng alla"
 
-#: ../src/menubar.cc:402
+#: src/menubar.cc:469
 #, fuzzy
 msgid "_Opened Documents"
 msgstr "_Dokument"
 
-#: ../src/menubar.cc:403
+#: src/menubar.cc:470
 #, fuzzy
 msgid "_Closed Documents"
 msgstr "_Dokument"
 
-#: ../src/menubar.cc:408
+#: src/menubar.cc:476
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: ../src/menubar.cc:796
+#: src/menubar.cc:893
 #, fuzzy
 msgid "_Highlight"
 msgstr "Höjd"
 
-#: ../src/network.cc:89
+#: src/network.cc:99
 msgid "Failed to initialize the networking backend."
 msgstr ""
 
-#: ../src/network.cc:95
+#: src/network.cc:105
 #, fuzzy
 msgid "Couldn't initialize network handler."
 msgstr "Kunde inte öppna temporärfil"
 
-#: ../src/network.cc:145
+#: src/network.cc:134
 msgid "Please set the proxy authentication username."
 msgstr ""
 
-#: ../src/network.cc:150
+#: src/network.cc:139
 msgid "Please set the proxy authentication password."
 msgstr ""
 
-#: ../src/network.cc:157
+#: src/network.cc:146
 #, fuzzy
 msgid "Please set a proxy host."
 msgstr "Öppna en fil"
 
-#: ../src/openlocationdialog.cc:37
+#: src/openlocationdialog.cc:35
 #, fuzzy
 msgid "Location"
 msgstr "Information"
 
-#: ../src/openlocationdialog.cc:54
+#: src/openlocationdialog.cc:52
 msgid "_Insert into the active document."
 msgstr ""
 
-#: ../src/openlocationdialog.cc:92
+#: src/openlocationdialog.cc:91
 msgid "You must enter a location to open."
 msgstr ""
 
-#: ../src/pipe.cc:53
+#: src/pipe.cc:50
 #, c-format
 msgid "I can't execute %s. I can't find it in your path"
 msgstr ""
 
-#. TODO: Possible some commands might not return 0
-#: ../src/pipe.cc:99
+#: src/pipe.cc:96
 #, fuzzy
 msgid "Couldn't get the required content."
 msgstr "Kunde inte öppna temporärfil"
 
-#: ../src/preferencesdialog.cc:41
+#: src/preferencesdialog.cc:37
 msgid "Preferences"
 msgstr "Inställningar"
 
-#: ../src/preferencesdialog.cc:55
+#: src/preferencesdialog.cc:51
 msgid "Options for"
 msgstr ""
 
-#: ../src/preferencesdialog.cc:63
+#: src/preferencesdialog.cc:60
 msgid "General"
 msgstr ""
 
-#: ../src/preferencesdialog.cc:64
+#: src/preferencesdialog.cc:61
 msgid "Interface"
 msgstr ""
 
-#: ../src/preferencesdialog.cc:65
+#: src/preferencesdialog.cc:62
 msgid "Tabs"
 msgstr ""
 
-#: ../src/preferencesdialog.cc:66
+#: src/preferencesdialog.cc:63
 #, fuzzy
 msgid "Editor"
 msgstr "_Redigera"
 
-#: ../src/preferencesdialog.cc:67
+#: src/preferencesdialog.cc:64
 #, fuzzy
 msgid "Encodings"
 msgstr "Teckenkodning"
 
-#: ../src/preferencesdialog.cc:68
+#: src/preferencesdialog.cc:65
 msgid "File Save"
 msgstr ""
 
-#: ../src/preferencesdialog.cc:70
+#: src/preferencesdialog.cc:67
 msgid "Spell Checker"
 msgstr ""
 
-#: ../src/preferencesdialog.cc:73 ../src/printdialog.cc:97
+#: src/preferencesdialog.cc:70
 msgid "Print"
 msgstr ""
 
-#: ../src/preferencesdialog.cc:79
+#: src/preferencesdialog.cc:76
 #, fuzzy
 msgid "Remote Documents"
 msgstr "_Dokument"
 
-#: ../src/preferencesdialog.cc:80
+#: src/preferencesdialog.cc:77
 msgid "Advanced"
 msgstr ""
 
-#: ../src/preferencesdialog.cc:81
+#: src/preferencesdialog.cc:78
 msgid "Network"
 msgstr ""
 
-#: ../src/previewdialog.cc:48
+#: src/previewdialog.cc:47
 #, fuzzy
 msgid "Print preview"
 msgstr "Rad: "
 
-#: ../src/previewdialog.cc:56 ../src/previewdialog.cc:176
+#: src/previewdialog.cc:55 src/previewdialog.cc:194
 #, c-format
 msgid "of %i"
 msgstr ""
 
-#: ../src/print.cc:207
+#: src/print.cc:218
 msgid "Other"
 msgstr ""
 
-#: ../src/printdialog.cc:77
-#, fuzzy
-msgid "Print to file."
-msgstr "Kunde inte öppna temporärfil"
-
-#: ../src/printdialog.cc:78
-#, fuzzy
-msgid "_All"
-msgstr "Spa_ra alla"
-
-#: ../src/printdialog.cc:79
-#, fuzzy
-msgid "_Selection"
-msgstr "Markera _allt"
-
-#: ../src/printdialog.cc:80
-#, fuzzy
-msgid "_Lines"
-msgstr "Rad: "
-
-#: ../src/printdialog.cc:81
-#, fuzzy
-msgid "Printer:"
-msgstr "Rad: "
-
-#: ../src/printdialog.cc:89
-#, fuzzy
-msgid "Location:"
-msgstr "Information"
-
-#: ../src/printdialog.cc:90
-msgid "Number of copies"
-msgstr ""
-
-#: ../src/printdialog.cc:91
-msgid "Print range"
-msgstr ""
-
-#: ../src/printdialog.cc:92
-msgid "From:"
-msgstr ""
-
-#: ../src/printdialog.cc:93
-#, fuzzy
-msgid "To:"
-msgstr "Topp"
-
-#: ../src/printdialog.cc:94
-#, fuzzy
-msgid "Paper size:"
-msgstr "Klistra in"
-
-#: ../src/printdialog.cc:95
-msgid "Page orientation:"
-msgstr ""
-
-#: ../src/printdialog.cc:113
-#, fuzzy
-msgid "Printer name"
-msgstr "Rad: "
-
-#: ../src/printdialog.cc:114
-#, fuzzy
-msgid "Status"
-msgstr "_Statusrad"
-
-#: ../src/printdialog.cc:132 ../src/printdialog.cc:190
-#, fuzzy
-msgid "Custom"
-msgstr "Klipp ut"
-
-#: ../src/printdialog.cc:136
-msgid "Create a PDF document"
-msgstr ""
-
-#: ../src/printdialog.cc:137
-msgid "Create a Postscript document"
-msgstr ""
-
-#: ../src/printdialog.cc:183
-msgid "Portrait"
-msgstr ""
-
-#: ../src/printdialog.cc:184
-msgid "Landscape"
-msgstr ""
-
-#: ../src/printdialog.cc:196
-#, fuzzy
-msgid "Width:"
-msgstr "Vidd"
-
-#: ../src/printdialog.cc:196
-#, fuzzy
-msgid "Height:"
-msgstr "Höjd"
-
-#: ../src/printdialog.cc:246
-#, fuzzy
-msgid "Please choose a file to print to."
-msgstr "Öppna en fil"
-
-#: ../src/printdialog.cc:250
-#, fuzzy
-msgid "Please choose a file not a directory."
-msgstr "Öppna en fil"
-
-#: ../src/printdialog.cc:341
-#, fuzzy
-msgid "Please select a file to print to."
-msgstr "Öppna en fil"
-
-#: ../src/printdialog.cc:421
-msgid "I couldn't get the selected printer."
-msgstr ""
-
-#: ../src/replacedialog.cc:32 ../src/searchdialog.cc:32
+#: src/replacedialog.cc:29 src/searchdialog.cc:29
 msgid "Find"
 msgstr "Sök"
 
-#: ../src/replacedialog.cc:33 ../src/searchdialog.cc:33
+#: src/replacedialog.cc:30 src/searchdialog.cc:30
 #, fuzzy
 msgid "Search for:"
 msgstr "_Sök"
 
-#: ../src/replacedialog.cc:34
+#: src/replacedialog.cc:31
 msgid "Replace with:"
 msgstr "Ersätt med:"
 
-#: ../src/replacedialog.cc:35 ../src/searchdialog.cc:34
+#: src/replacedialog.cc:32 src/searchdialog.cc:31
 msgid "Match entire word only"
 msgstr ""
 
-#: ../src/replacedialog.cc:36 ../src/searchdialog.cc:35
+#: src/replacedialog.cc:33 src/searchdialog.cc:32
 #, fuzzy
 msgid "Match case"
 msgstr "Gör skillnad på geme_ner/VERSALER"
 
-#. regex(_("Regular expression")),
-#: ../src/replacedialog.cc:37 ../src/searchdialog.cc:37
+#: src/replacedialog.cc:34 src/searchdialog.cc:34
 msgid "Wrap search"
 msgstr ""
 
-#: ../src/replacedialog.cc:38 ../src/searchdialog.cc:38
+#: src/replacedialog.cc:35 src/searchdialog.cc:35
 #, fuzzy
 msgid "Search from the cursor position"
 msgstr "Sök från mark_örpositionen"
 
-#: ../src/replacedialog.cc:39 ../src/searchdialog.cc:39
+#: src/replacedialog.cc:36 src/searchdialog.cc:36
 msgid "Search backwards"
 msgstr ""
 
-#: ../src/replacedialog.cc:40 ../src/searchdialog.cc:40
+#: src/replacedialog.cc:37 src/searchdialog.cc:37
 #, fuzzy
 msgid "Search from the beginnig of the document"
 msgstr "Sök frå_n början av dokumentet"
 
-#: ../src/replacedialog.cc:42
+#: src/replacedialog.cc:39
 msgid "_Replace"
 msgstr "_Ersätt"
 
-#. find_replace(Gtk::Stock::FIND_AND_REPLACE),
-#: ../src/replacedialog.cc:44
+#: src/replacedialog.cc:41
 #, fuzzy
 msgid "Replace _All"
 msgstr "Ersätt _alla"
 
-#: ../src/spell.cc:53
+#: src/spell.cc:50
 msgid "Failed to initialize the spell checker"
 msgstr ""
 
-#: ../src/spell.cc:66
+#: src/spell.cc:63
 #, fuzzy
 msgid "Failed to set the requested dictionary."
 msgstr "Kunde inte öppna temporärfil"
 
-#: ../src/spelldialog.cc:37
+#: src/spelldialog.cc:35
 msgid "_Ignore"
 msgstr ""
 
-#: ../src/spelldialog.cc:38
+#: src/spelldialog.cc:36
 #, fuzzy
 msgid "Ignore _All"
 msgstr "Spa_ra alla"
 
-#: ../src/spelldialog.cc:39
+#: src/spelldialog.cc:37
 msgid "C_hange"
 msgstr ""
 
-#: ../src/spelldialog.cc:42
+#: src/spelldialog.cc:40
 msgid "_Add to user dictionary"
 msgstr ""
 
-#: ../src/spelldialog.cc:43
+#: src/spelldialog.cc:41
 msgid "Misspelled:"
 msgstr ""
 
-#: ../src/spelldialog.cc:44
+#: src/spelldialog.cc:42
 msgid "Change to:"
 msgstr ""
 
-#: ../src/spelldialog.cc:48
+#: src/spelldialog.cc:45
 msgid "Check Spelling"
 msgstr ""
 
-#: ../src/spelldialog.cc:92
+#: src/spelldialog.cc:89
 msgid "Suggestions"
 msgstr ""
 
-#: ../src/spelldialog.cc:128
+#: src/spelldialog.cc:128
 msgid "No misspelled words."
 msgstr ""
 
-#: ../src/statusbar.cc:69
+#: src/statusbar.cc:67
 msgid "OVR"
 msgstr ""
 
-#: ../src/statusbar.cc:69
+#: src/statusbar.cc:67
 #, fuzzy
 msgid "INS"
 msgstr "ISO"
 
-#: ../src/statusbar.cc:74
+#: src/statusbar.cc:73
 #, fuzzy, c-format
 msgid " L: %d, C: %d"
 msgstr "%d rader, %d tecken"
 
-#: ../src/toolbar.cc:53
+#: src/toolbar.cc:48
 #, fuzzy
 msgid "Search"
 msgstr "_Sök"
 
-#: ../src/toolbar.cc:56
+#: src/toolbar.cc:51
 msgid "Spelling Dictionary"
 msgstr ""
 
-#: ../src/toolbar.cc:102
+#: src/toolbar.cc:96
 msgid "Create a new file"
 msgstr "Skapa en ny fil"
 
-#: ../src/toolbar.cc:103
+#: src/toolbar.cc:97
 msgid "Open a file for editing"
 msgstr "Öppna en fil"
 
-#: ../src/toolbar.cc:104
+#: src/toolbar.cc:98
 msgid "Save the existing file"
 msgstr "Spara"
 
-#: ../src/toolbar.cc:106
+#: src/toolbar.cc:100
 msgid "Print this document"
 msgstr ""
 
-#: ../src/toolbar.cc:108
+#: src/toolbar.cc:102
 msgid "Close the active file"
 msgstr "Stäng aktiv fil"
 
-#: ../src/toolbar.cc:109
+#: src/toolbar.cc:103
 msgid "Undo"
 msgstr "Ångra"
 
-#: ../src/toolbar.cc:110
+#: src/toolbar.cc:104
 msgid "Redo"
 msgstr "Gör om"
 
-#: ../src/toolbar.cc:111
+#: src/toolbar.cc:105
 msgid "Cut"
 msgstr "Klipp ut"
 
-#: ../src/toolbar.cc:112
+#: src/toolbar.cc:106
 msgid "Copy"
 msgstr "Kopiera"
 
-#: ../src/toolbar.cc:113
+#: src/toolbar.cc:107
 msgid "Paste"
 msgstr "Klistra in"
 
-#: ../src/toolbar.cc:114
+#: src/toolbar.cc:108
 msgid "Delete current selection"
 msgstr "Ta bort"
 
-#: ../src/toolbar.cc:116
-msgid "Toggle full screen mode"
+#: src/toolbar.cc:293
+msgid "<b>Extra toolbar buttons will not be available.</b>"
 msgstr ""
 
-#: ../src/utils.cc:189
+#: src/utils.cc:192
 msgid "I can't backup the old file.\n"
 msgstr ""
 
-#: ../src/utils.cc:247
+#: src/utils.cc:252
 #, c-format
 msgid "%s is a directory."
 msgstr ""
 
-#: ../src/window.cc:141
-msgid " The keyboard emulator will not work."
+#: src/window.cc:143
+msgid "<b>The keyboard emulator will not work.</b>"
 msgstr ""
 
-#: ../src/window.cc:147
-msgid " Multipress will not work."
+#: src/window.cc:156
+msgid "<b>Multipress will not work.</b>"
 msgstr ""
 
-#: ../src/window.cc:153
+#: src/window.cc:164
 msgid ""
 "A lot of the configuration options have been changed in this version.\n"
 "Please adjust the configuration first."
 msgstr ""
+
+#, fuzzy
+#~ msgid "Katoob"
+#~ msgstr "Om Katoob"
+
+#, fuzzy
+#~ msgid "Print to file."
+#~ msgstr "Kunde inte öppna temporärfil"
+
+#, fuzzy
+#~ msgid "_All"
+#~ msgstr "Spa_ra alla"
+
+#, fuzzy
+#~ msgid "_Selection"
+#~ msgstr "Markera _allt"
+
+#, fuzzy
+#~ msgid "_Lines"
+#~ msgstr "Rad: "
+
+#, fuzzy
+#~ msgid "Printer:"
+#~ msgstr "Rad: "
+
+#, fuzzy
+#~ msgid "Location:"
+#~ msgstr "Information"
+
+#, fuzzy
+#~ msgid "To:"
+#~ msgstr "Topp"
+
+#, fuzzy
+#~ msgid "Paper size:"
+#~ msgstr "Klistra in"
+
+#, fuzzy
+#~ msgid "Printer name"
+#~ msgstr "Rad: "
+
+#, fuzzy
+#~ msgid "Status"
+#~ msgstr "_Statusrad"
+
+#, fuzzy
+#~ msgid "Custom"
+#~ msgstr "Klipp ut"
+
+#, fuzzy
+#~ msgid "Width:"
+#~ msgstr "Vidd"
+
+#, fuzzy
+#~ msgid "Height:"
+#~ msgstr "Höjd"
+
+#, fuzzy
+#~ msgid "Please choose a file to print to."
+#~ msgstr "Öppna en fil"
+
+#, fuzzy
+#~ msgid "Please choose a file not a directory."
+#~ msgstr "Öppna en fil"
+
+#, fuzzy
+#~ msgid "Please select a file to print to."
+#~ msgstr "Öppna en fil"
 
 #, fuzzy
 #~ msgid "Ready"
