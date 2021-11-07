@@ -1,2 +1,0 @@
-?package(katoob):needs="X11" section="Applications/Editors"\
-  title="katoob" command="/usr/bin/katoob"

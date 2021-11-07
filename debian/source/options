@@ -1,1 +1,0 @@
-extend-diff-ignore = "(^|/)(config\.sub|config\.guess|Makefile|Makefile\.in|configure|aclocal.m4|intltool-merge|intltool-update|intltool-extract|katoob\.desktop|config\.h\.in)$"
