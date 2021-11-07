@@ -21,6 +21,7 @@
 
 #include <config.h>
 
+#include "dialogs.hh"
 #include "macros.h"
 #include "toolbar.hh"
 #include "utils.hh"
@@ -284,6 +285,14 @@ void Toolbar::create_extra_buttons()
       create_extra_button(buff);
     }
     ifs.close();
+  } else {
+    {
+      std::stringstream errStream;
+
+      errStream << "Cannot open toolbar file: " << path << "." << std::endl << std::endl;
+      errStream << _("<b>Extra toolbar buttons will not be available.</b>");
+      katoob_error(errStream.str());
+    }
   }
 }
 
