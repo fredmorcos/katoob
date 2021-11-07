@@ -77,10 +77,6 @@ if enable_fribidi
   sources += 'shape_arabic.c'
 endif
 
-if target_machine.system() == 'windows'
-  sources += 'win32.rc'
-endif
-
 # Comes from top-level meson build file.
 dependencies += declare_dependency(sources: [config_h])
 
@@ -88,4 +84,5 @@ executable(app_name,
            sources,
            dependencies: dependencies,
            implicit_include_directories: true,
-           install: true)
+           install: true,
+           win_subsystem: 'windows')

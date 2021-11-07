@@ -27,6 +27,24 @@ extra_flags  = [
 add_global_arguments(extra_flags, language: 'cpp')
 add_global_arguments(extra_flags, language: 'c')
 
+if target_machine.system() == 'windows'
+  windows_flags = [
+    '-mms-bitfields',
+    '-mwindows',
+  ]
+
+  add_global_arguments(windows_flags, language: 'cpp')
+  add_global_arguments(windows_flags, language: 'c')
+
+
+  windows_link_flags = [
+    '-lwsock32',
+  ]
+
+  add_global_link_arguments(windows_link_flags, language: 'cpp')
+  add_global_link_arguments(windows_link_flags, language: 'c')
+endif
+
 extra_flags_clang = [
   '-ferror-limit=0',
   '-Db_lundef=false',
