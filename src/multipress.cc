@@ -27,13 +27,14 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
+#include <memory>
 
 Multipress::Multipress()
 {
   std::unique_ptr<Glib::Dir> d;
 
   try {
-    d = std::unique_ptr<Glib::Dir>(new Glib::Dir(MULTIPRESS_DIR));
+    d = std::make_unique<Glib::Dir>(MULTIPRESS_DIR);
   } catch (Glib::FileError &e) {
     _err = e.what();
     return;
@@ -139,13 +140,13 @@ bool Multipress::get(const std::string &key, int timeout)
 
 bool Multipress::get_values(const std::string &key, std::vector<std::string> &values)
 {
-  std::map<std::string, std::vector<std::string> >::iterator iter = layouts[layout].find(key);
+  auto iter = layouts[layout].find(key);
 
   if (iter == layouts[layout].end()) {
     return false;
   }
 
-  if (iter->second.size() == 0) {
+  if (iter->second.empty()) {
     return false;
   }
   values = iter->second;
