@@ -226,7 +226,7 @@ bool Utils::katoob_write(Conf &conf, std::string &file, std::string &text, std::
 // to the target file.
 bool Utils::katoob_write(const char *file, const char *text, unsigned len, std::string &error)
 {
-  int fd = open(file, O_CREAT | O_TRUNC | O_WRONLY, S_IRWXU);
+  int fd = open(file, O_CREAT | O_TRUNC | O_WRONLY, 0644);
   if (fd == -1) {
     error = Utils::substitute("I can't create the file %s\n", file) + std::strerror(errno);
     return false;
@@ -276,7 +276,7 @@ bool Utils::file_copy(const char *f1, const char *f2, std::string &error)
     return false;
   }
 
-  ofd = open(f2, O_WRONLY | O_CREAT | O_TRUNC);
+  ofd = open(f2, O_WRONLY | O_CREAT | O_TRUNC, 0644);
   if (ofd == -1) {
     error = std::strerror(errno);
     close(ifd);
