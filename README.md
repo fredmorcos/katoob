@@ -9,8 +9,8 @@ in C++ using [Gtkmm](https://gtkmm.org).
 
 ## Copyright & License
 
-* Katoob, Copyright © 2002-2007 Mohammed Sameer.
 * Katoob, Copyright © 2008-2018 Frederic-Gerald Morcos.
+* Katoob, Copyright © 2002-2007 Mohammed Sameer.
 
 This program is free software; you can redistribute it and/or modify it under the terms of
 the GNU General Public License as published by the Free Software Foundation; either
@@ -82,7 +82,7 @@ Linux](https://docs.microsoft.com/en-us/windows/wsl/about).
 
 Katoob is being developed and modernized on [Archlinux](https://archlinux.org/). It
 originally was being developed on [Debian GNU/Linux](https://www.debian.org/) but it
-should work on any GNU/Linux distro.
+should work on any Linux distro, the BSDs and perhaps even MacOS and Windows.
 
 ### Dependencies
 
