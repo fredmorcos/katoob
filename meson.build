@@ -58,8 +58,6 @@ if meson.get_compiler('cpp').get_id() == 'clang'
     add_global_arguments(extra_flags_clang, language: 'cpp')
 endif
 
-i18n = import('i18n')
-
 # Provided by meson.
 prefix = get_option('prefix')
 bindir = get_option('bindir')
@@ -111,13 +109,16 @@ conf.set_quoted('PROJECT_URL_LABEL', project_url_label, description: 'Project we
 conf.set('PROJECT_URL_ISSUES_RAW', project_url_issues, description: 'Project issues database (unquoted)')
 conf.set_quoted('PROJECT_URL_ISSUES', project_url_issues, description: 'Project issues database')
 
-conf.set_quoted('GETTEXT_PACKAGE', app_name, description: 'Gettext package name')
-conf.set_quoted('LOCALEDIR', prefix / localedir, description: 'Dir for locale files')
-
 conf.set('APP_DATADIR_RAW', prefix / app_datadir, description: 'Dir for application data files (unquoted)')
 conf.set_quoted('APP_DATADIR', prefix / app_datadir, description: 'Dir for application data files')
 
 conf.set('BINDIR_RAW', prefix / bindir, description: 'Dir where binaries are going to be installed')
+
+conf.set_quoted('GETTEXT_PACKAGE', app_name, description: 'Gettext package name')
+conf.set_quoted('LOCALEDIR', prefix / localedir, description: 'Dir for locale files')
+
+add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format(app_name), language: 'cpp')
+add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format(app_name), language: 'c')
 
 dependencies = [
   dependency('gtkmm-2.4'),
@@ -233,8 +234,8 @@ config_h = vcs_tag(
 
 install_data('LICENSE', 'README.md', install_dir: prefix / app_docdir)
 
-subdir('data')
 subdir('desktop')
+subdir('data')
 subdir('icon')
 subdir('man')
 subdir('po')
