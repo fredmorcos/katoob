@@ -29,7 +29,7 @@
 class Multipress {
  public:
   Multipress();
-  ~Multipress();
+
   static bool ok(std::string &);
   static std::vector<std::string> &list_layouts();
   static bool parse_file(std::string &, std::map<std::string, std::vector<std::string> > &);

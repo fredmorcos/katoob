@@ -51,6 +51,7 @@ Multipress::Multipress()
     std::map<std::string, std::vector<std::string>> map;
     std::string file = Glib::build_filename(MULTIPRESS_DIR, *start);
     std::cout << "Found multipress file: " << file << std::endl;
+
     if (parse_file(file, map)) {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
       try {
@@ -81,11 +82,6 @@ Multipress::Multipress()
   if (!_ok) {
     std::cout << "Multipress will not work" << std::endl;
   }
-}
-
-Multipress::~Multipress()
-{
-  delete window;
 }
 
 std::vector<std::string> &Multipress::list_layouts()
