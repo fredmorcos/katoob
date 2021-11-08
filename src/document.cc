@@ -51,16 +51,16 @@
 // syntax highlighting mode -> spell checker should check comments
 // and strings only!
 
-void _on_move_cursor(GtkTextView *textview,
-                     GtkMovementStep arg1,
-                     gint arg2,
-                     gboolean arg3,
+void _on_move_cursor(GtkTextView * /* textview */,
+                     GtkMovementStep /* arg1 */,
+                     gint /* arg2 */,
+                     gboolean /* arg3 */,
                      gpointer user_data)
 {
   static_cast<Document *>(user_data)->on_move_cursor();
 }
 
-void _on_toggle_overwrite(GtkTextView *textview, gpointer user_data)
+void _on_toggle_overwrite(GtkTextView * /* textview */, gpointer user_data)
 {
   static_cast<Document *>(user_data)->on_toggle_overwrite();
 }
@@ -522,7 +522,7 @@ void Document::on_erase(const Gtk::TextBuffer::iterator &start,
   signal_modified_set.emit(true);
 }
 
-void Document::on_mark_set_cb(const Gtk::TextBuffer::iterator &iter,
+void Document::on_mark_set_cb(const Gtk::TextBuffer::iterator & /* iter */,
                               const Glib::RefPtr<Gtk::TextBuffer::Mark> &mark)
 {
   if ((mark) && (mark == _text_view.get_buffer()->get_insert())) {
@@ -1097,7 +1097,7 @@ bool Document::expose_event_cb(GdkEventExpose *event)
   return false;
 }
 
-void Document::paint_line_numbers(Glib::RefPtr<Gdk::Window> &win, GdkEventExpose *event)
+void Document::paint_line_numbers(Glib::RefPtr<Gdk::Window> &win, GdkEventExpose * /* event */)
 {
   // Let's get the current line number.
   int current_line =
@@ -1386,7 +1386,7 @@ bool Document::spell_checker_has_lines()
   return false;
 }
 
-void Document::spell_checker_on_insert(const Gtk::TextIter &iter, int len)
+void Document::spell_checker_on_insert(const Gtk::TextIter &iter, int /* len */)
 {
   int pos = Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())->get_mark_insert_line();
   int end = iter.get_line();
@@ -1404,7 +1404,7 @@ void Document::spell_checker_on_insert(const Gtk::TextIter &iter, int len)
   }
 }
 
-void Document::spell_checker_on_erase(const Gtk::TextIter &start, const Gtk::TextIter &end)
+void Document::spell_checker_on_erase(const Gtk::TextIter & /* start */, const Gtk::TextIter &end)
 {
   unsigned s = end.get_line();
   unsigned e = Glib::RefPtr<TextBuffer>::cast_dynamic(_text_view.get_buffer())->get_erase_line();

@@ -192,7 +192,8 @@ void MDI::add_document(Document *doc, bool signals)
   // is appended after connect_signals()
   // We will connect to the label directly bypassing the Document object.
   dynamic_cast<Label *>(get_tab_label(*children[get_current_page()]))
-      ->signal_close_clicked.connect(
+      ->signal_close_clicked_event()
+      .connect(
           sigc::bind<Document *>(sigc::mem_fun(this, &MDI::signal_document_label_close_clicked_cb),
                                  doc));
 }

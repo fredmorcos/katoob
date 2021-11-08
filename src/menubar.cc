@@ -48,22 +48,22 @@ MenuBar::MenuBar(Conf &config,
                  ):
  _conf(config)
 {
-  file(config);
-  edit(config);
-  search(config);
-  view(config, encodings);
-  tools(config
+  file();
+  edit();
+  search();
+  view(encodings);
+  tools(
 #ifdef ENABLE_EMULATOR
-        ,
-        em
+
+      em
 #endif
 #ifdef ENABLE_MULTIPRESS
-        ,
-        mp
+      ,
+      mp
 #endif
   );
-  documents(config);
-  help(config);
+  documents();
+  help();
 #ifdef ENABLE_HIGHLIGHT
   create_highlighters();
 #endif
@@ -142,7 +142,7 @@ void MenuBar::separator(Gtk::Menu *menu)
   menu->items().push_back(Gtk::Menu_Helpers::SeparatorElem());
 }
 
-void MenuBar::file(Conf &config)
+void MenuBar::file()
 {
   file_menu = menu(_("_File"));
 
@@ -265,7 +265,7 @@ void MenuBar::create_recent()
   }
 }
 
-void MenuBar::edit(Conf &config)
+void MenuBar::edit()
 {
   edit_menu = menu(_("_Edit"));
   _undo = item(edit_menu, Gtk::Stock::UNDO, GDK_z, Gdk::ModifierType(GDK_CONTROL_MASK));
@@ -308,7 +308,7 @@ void MenuBar::edit(Conf &config)
       sigc::mem_fun(signal_preferences_activate, &sigc::signal<void>::emit));
 }
 
-void MenuBar::search(Conf &config)
+void MenuBar::search()
 {
   search_menu = menu(_("_Search"));
 
@@ -329,7 +329,7 @@ void MenuBar::search(Conf &config)
       sigc::mem_fun(signal_goto_line_activate, &sigc::signal<void>::emit));
 }
 
-void MenuBar::view(Conf &config, Encodings &encodings)
+void MenuBar::view(Encodings &encodings)
 {
   Gtk::RadioButtonGroup toolbars, encoding;
   view_menu = menu(_("_View"));
@@ -387,14 +387,13 @@ void MenuBar::view(Conf &config, Encodings &encodings)
   }
 }
 
-void MenuBar::tools(Conf &config
+void MenuBar::tools(
 #ifdef ENABLE_EMULATOR
-                    ,
-                    std::vector<std::string> &em
+    std::vector<std::string> &em
 #endif
 #ifdef ENABLE_MULTIPRESS
-                    ,
-                    std::vector<std::string> &mp
+    ,
+    std::vector<std::string> &mp
 #endif
 )
 {
@@ -450,7 +449,7 @@ void MenuBar::build_submenu(Gtk::Menu *menu,
 }
 #endif
 
-void MenuBar::documents(Conf &config)
+void MenuBar::documents()
 {
   documents_menu = menu(_("_Documents"));
   _save_all = item(documents_menu, _("Save _All"));
@@ -471,7 +470,7 @@ void MenuBar::documents(Conf &config)
   documents_menu->show_all();
 }
 
-void MenuBar::help(Conf &config)
+void MenuBar::help()
 {
   help_menu = menu(_("_Help"));
   _about = item(help_menu, Gtk::Stock::ABOUT, GDK_t, Gdk::ModifierType(GDK_CONTROL_MASK));

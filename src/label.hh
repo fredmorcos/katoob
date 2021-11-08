@@ -28,19 +28,21 @@
 class Label: public Gtk::HBox {
  public:
   Label(Conf &);
-  ~Label();
+
   void set_text(int);
   void set_text(const std::string &);
-  std::string get_text();
+  auto get_text() -> std::string;
   void set_readonly(bool, bool = false);
   void set_modified(bool, bool = false);
   void set_normal();
 
   void reset_gui();
 
-  sigc::signal<void> signal_close_clicked;
+  auto signal_close_clicked_event() -> sigc::signal<void>;
 
  private:
+  sigc::signal<void> signal_close_clicked;
+
   Gtk::Label label;
   Conf &_conf;
   Gtk::Button close;

@@ -47,10 +47,6 @@ Label::Label(Conf &conf): _conf(conf), _readonly(false), _modified(false)
   set_normal();
 }
 
-Label::~Label()
-{
-}
-
 void Label::set_text(int num)
 {
   label.set_text(Utils::substitute(_("Untitled New %d"), num));
@@ -68,6 +64,11 @@ void Label::reset_gui()
   } else {
     close.hide();
   }
+}
+
+auto Label::signal_close_clicked_event() -> sigc::signal<void>
+{
+  return signal_close_clicked;
 }
 
 void Label::set_readonly(bool ro, bool force)
@@ -117,7 +118,7 @@ void Label::set_normal()
   katoob_set_color(_conf, label, Utils::KATOOB_COLOR_NORMAL);
 }
 
-std::string Label::get_text()
+auto Label::get_text() -> std::string
 {
   return label.get_text();
 }

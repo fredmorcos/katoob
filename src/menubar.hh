@@ -178,22 +178,22 @@ class MenuBar: public Gtk::MenuBar {
   Gtk::Menu get_menu();
 
  private:
-  void file(Conf &);
-  void edit(Conf &);
-  void search(Conf &);
-  void view(Conf &, Encodings &);
-  void tools(Conf &
+  void file();
+  void edit();
+  void search();
+  void view(Encodings &);
+  void tools(
 #ifdef ENABLE_EMULATOR
-             ,
-             std::vector<std::string> &
+
+      std::vector<std::string> &
 #endif
 #ifdef ENABLE_MULTIPRESS
-             ,
-             std::vector<std::string> &
+      ,
+      std::vector<std::string> &
 #endif
   );
-  void documents(Conf &);
-  void help(Conf &);
+  void documents();
+  void help();
   void recent(Conf &);
   void encodings(Conf &);
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
