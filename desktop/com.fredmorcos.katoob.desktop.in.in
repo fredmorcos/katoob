@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
-_Name=@PROJECT_RAW@
-_GenericName=@PROJECT_RAW@ Text Editor
+Name=@PROJECT_RAW@
+GenericName=@PROJECT_RAW@ Text Editor
+Comment=@PROJECT_COMMENT_RAW@
 Version=@VERSION_RAW@
-_Comment=@PROJECT_COMMENT_RAW@
 MimeType=text/english;text/plain;
 TryExec=@BINDIR_RAW@/@PACKAGE_RAW@
 Exec=@BINDIR_RAW@/@PACKAGE_RAW@ %F
