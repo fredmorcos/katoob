@@ -75,11 +75,11 @@ Window::Window(Conf &conf, Encodings &encodings, std::vector<std::string> &files
   // Now let's create the children.
   // If MDI has an active Document then we managed to recover something.
   // And in that case, we won't create a new document.
-  if ((files.size() == 0) && (!mdi.get_active())) {
+  if ((files.empty()) && (mdi.get_active() == nullptr)) {
     mdi.create_document();
   } else {
-    for (unsigned int x = 0; x < files.size(); x++) {
-      mdi.create_document(files[x]);
+    for (auto &file: files) {
+      mdi.create_document(file);
     }
 
     files.clear();
@@ -87,7 +87,7 @@ Window::Window(Conf &conf, Encodings &encodings, std::vector<std::string> &files
     // It's possible that we might fail to detect the encoding of all the files
     // passed as arguments. In this case, we will create a blank document.
     // We can't the number of the documents because MDI has no size method.
-    if (!mdi.get_active()) {
+    if (mdi.get_active() == nullptr) {
       mdi.create_document();
     }
   }
@@ -129,7 +129,8 @@ Window::Window(Conf &conf, Encodings &encodings, std::vector<std::string> &files
   show();
 
   Document *doc = mdi.get_active();
-  if (doc) {
+
+  if (doc != nullptr) {
     doc->grab_focus();
   }
 
@@ -160,7 +161,7 @@ Window::Window(Conf &conf, Encodings &encodings, std::vector<std::string> &files
 #endif
 
   std::string ver = conf.get_version();
-  if ((ver.size() == 0) && conf.ok()) {
+  if ((ver.empty()) && conf.ok()) {
     katoob_info(_("A lot of the configuration options have been changed in this version.\nPlease "
                   "adjust the configuration first."));
     signal_preferences_activate_cb();
@@ -168,18 +169,17 @@ Window::Window(Conf &conf, Encodings &encodings, std::vector<std::string> &files
 
   // DnD
   std::list<Gtk::TargetEntry> targets;
-  targets.push_back(Gtk::TargetEntry("text/uri-list"));
-  drag_dest_set(targets,
-                Gtk::DEST_DEFAULT_ALL,
-                Gdk::ACTION_DEFAULT | Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK |
-                    Gdk::ACTION_PRIVATE | Gdk::ACTION_ASK);
+  targets.emplace_back("text/uri-list");
+  auto actions = Gdk::ACTION_DEFAULT | Gdk::ACTION_COPY | Gdk::ACTION_MOVE | Gdk::ACTION_LINK |
+                 Gdk::ACTION_PRIVATE | Gdk::ACTION_ASK;
+  drag_dest_set(targets, Gtk::DEST_DEFAULT_ALL, actions);
 
   signal_drag_data_received().connect(sigc::mem_fun(*this, &Window::signal_drag_data_received_cb));
 
   // Multipress.
 #ifdef ENABLE_MULTIPRESS
-  _multipress.signal_invalid_key.connect(sigc::mem_fun(*this, &Window::signal_invalid_key_cb));
-  _multipress.signal_insert_key.connect(sigc::mem_fun(*this, &Window::signal_insert_key_cb));
+  Multipress::signal_invalid_key.connect(sigc::mem_fun(*this, &Window::signal_invalid_key_cb));
+  Multipress::signal_insert_key.connect(sigc::mem_fun(*this, &Window::signal_insert_key_cb));
 #endif
 
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
@@ -353,12 +353,12 @@ void Window::connect_mdi_signals()
       sigc::mem_fun(menubar, &MenuBar::signal_closed_document_added));
 }
 
-void Window::signal_drag_data_received_cb(const Glib::RefPtr<Gdk::DragContext> &context,
-                                          int x,
-                                          int y,
+void Window::signal_drag_data_received_cb(const Glib::RefPtr<Gdk::DragContext> & /* context */,
+                                          int /* x */,
+                                          int /* y */,
                                           const Gtk::SelectionData &selection,
-                                          guint info,
-                                          guint time)
+                                          guint /* info */,
+                                          guint /* time */)
 {
   std::vector<std::string> files = selection.get_uris();
   std::string filename;
@@ -366,10 +366,10 @@ void Window::signal_drag_data_received_cb(const Glib::RefPtr<Gdk::DragContext> &
   std::auto_ptr<Glib::Error> error;
 #endif
 
-  for (unsigned x = 0; x < files.size(); x++) {
+  for (auto &file: files) {
 #ifdef GLIBMM_EXCEPTIONS_ENABLED
     try {
-      filename = Glib::filename_from_uri(files[x]);
+      filename = Glib::filename_from_uri(file);
       mdi.create_document(filename);
     } catch (Glib::ConvertError &e) {
       katoob_error(e.what());
@@ -387,7 +387,7 @@ void Window::signal_drag_data_received_cb(const Glib::RefPtr<Gdk::DragContext> &
 void Window::set_title(const char *str)
 {
   std::stringstream title;
-  if (str) {
+  if (str != nullptr) {
     title << str << " - ";
   }
   title << PROJECT;
@@ -414,14 +414,14 @@ void Window::on_document_spell_enabled_cb(bool s)
 }
 #endif
 
-bool Window::signal_delete_event_cb(GdkEventAny *event)
+auto Window::signal_delete_event_cb(GdkEventAny * /* event */) -> bool
 {
   if (mdi.close_all()) {
     signal_quit.emit();
     return false;
-  } else {
-    return true;
   }
+
+  return true;
 }
 
 void Window::signal_quit_activate_cb()
@@ -438,9 +438,9 @@ void Window::signal_layout_activate_cb(int which, int x)
   assert(which < 2);
 #ifdef ENABLE_EMULATOR
   if (which == 0) {
-    _emulator.activate(x);
+    Emulator::activate(x);
 #ifdef ENABLE_MULTIPRESS
-    _multipress.activate(-1);
+    Multipress::activate(-1);
     statusbar.activate_input(true);
     if (input_window.is_visible()) {
       signal_input_toggled_cb(true);
@@ -451,9 +451,9 @@ void Window::signal_layout_activate_cb(int which, int x)
 #ifdef ENABLE_MULTIPRESS
       if (which == 1) {
 
-    _multipress.activate(x);
+    Multipress::activate(x);
 #ifdef ENABLE_EMULATOR
-    _emulator.activate(-1);
+    Emulator::activate(-1);
 #endif
     statusbar.activate_input(true);
     if (input_window.is_visible()) {
@@ -464,10 +464,10 @@ void Window::signal_layout_activate_cb(int which, int x)
   {
     // x is -1 here but I'll set it manually just in case.
 #ifdef ENABLE_EMULATOR
-    _emulator.activate(-1);
+    Emulator::activate(-1);
 #endif
 #ifdef ENABLE_MULTIPRESS
-    _multipress.activate(-1);
+    Multipress::activate(-1);
     statusbar.activate_input(false);
     statusbar.set_input_status(false);
 #endif
@@ -477,7 +477,7 @@ void Window::signal_layout_activate_cb(int which, int x)
 
 void Window::signal_encoding_activate_cb(int e)
 {
-  int x;
+  int x = 0;
   if (!mdi.set_encoding(e, x)) {
     menubar.set_encoding(x);
   }
@@ -491,7 +491,7 @@ void Window::signal_document_readonly_cb(int x, bool r)
 
 void Window::on_reset_gui(int x)
 {
-  bool enable = (x == -1) ? false : true;
+  bool enable = x != -1;
 
   toolbar.reset_gui(enable);
   menubar.reset_gui(enable);
@@ -518,7 +518,7 @@ void Window::signal_document_modified_cb(int x, bool m)
   menubar.document_set_modified(x, m);
 }
 
-void Window::signal_document_file_changed_cb(std::string f)
+void Window::signal_document_file_changed_cb(const std::string & /* f */)
 {
   // TODO: Do we need this ??
   //  set_title(const_cast<char *>(f.c_str()));
@@ -598,12 +598,14 @@ void Window::signal_dictionary_changed_cb(std::string d)
 #ifdef ENABLE_DBUS
 void Window::open_files(std::vector<std::string> &f)
 {
-  for (unsigned int x = 0; x < f.size(); x++) {
-    mdi.create_document(f[x]);
+  for (auto &x: f) {
+    mdi.create_document(x);
   }
-  if (f.size() == 0) {
+
+  if (f.empty()) {
     mdi.create_document();
   }
+
   present();
 }
 #endif
@@ -622,8 +624,8 @@ void Window::signal_line_numbers_activate_cb(bool s)
 void Window::signal_insert_key_cb(std::string &str)
 {
   Document *doc = mdi.get_active();
-  assert(doc != NULL);
-  if ((!doc) || (doc->is_readonly())) {
+  assert(doc != nullptr);
+  if ((doc == nullptr) || (doc->is_readonly())) {
     return;
   }
   doc->insert(str);
@@ -660,13 +662,13 @@ void Window::signal_input_toggled_cb(bool active)
   }
 
 #ifdef ENABLE_EMULATOR
-  if (_emulator.get_active()) {
-    input_window.set_layout(_emulator.get_layout());
+  if (Emulator::get_active()) {
+    input_window.set_layout(Emulator::get_layout());
   } else
 #endif
 #ifdef ENABLE_MULTIPRESS
-      if (_multipress.get_active()) {
-    input_window.set_layout(_multipress.get_layout());
+      if (Multipress::get_active()) {
+    input_window.set_layout(Multipress::get_layout());
   }
 #endif
   input_window.show();
@@ -681,4 +683,9 @@ void Window::signal_input_window_dialog_closed_cb()
 void Window::autosave()
 {
   mdi.autosave();
+}
+
+auto Window::signal_quit_event() -> sigc::signal<void>
+{
+  return signal_quit;
 }

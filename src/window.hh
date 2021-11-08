@@ -48,9 +48,6 @@ class Window: public Gtk::Window {
   Window(Conf &, Encodings &, std::vector<std::string> &);
   ~Window();
 
-  // Our signals.
-  sigc::signal<void> signal_quit;
-
   // Our methods.
 #ifdef ENABLE_DBUS
   void open_files(std::vector<std::string> &);
@@ -62,7 +59,12 @@ class Window: public Gtk::Window {
 
   void autosave();
 
+  auto signal_quit_event() -> sigc::signal<void>;
+
  private:
+  // Our signals.
+  sigc::signal<void> signal_quit;
+
   // Our menubar and tolbar callbacks
   void signal_wrap_text_activate_cb(bool);
   void signal_line_numbers_activate_cb(bool);
@@ -83,7 +85,7 @@ class Window: public Gtk::Window {
                                     const Gtk::SelectionData &,
                                     guint,
                                     guint);
-  bool signal_delete_event_cb(GdkEventAny *);
+  auto signal_delete_event_cb(GdkEventAny *) -> bool;
 
   // Signal callbacks for our Multipress.
   void signal_insert_key_cb(std::string &);
@@ -93,7 +95,7 @@ class Window: public Gtk::Window {
   void connect_toolbar_signals();
   void connect_menubar_signals();
   void connect_mdi_signals();
-  void set_title(const char * = NULL);
+  void set_title(const char * = nullptr);
   void reset_gui();
 
   // Signals for the Document class.
@@ -106,7 +108,7 @@ class Window: public Gtk::Window {
   {
     statusbar.set_position(c, l);
   }
-  void signal_document_file_changed_cb(std::string);
+  void signal_document_file_changed_cb(const std::string &file);
   void signal_document_readonly_cb(int, bool);
   void signal_document_can_redo_cb(bool);
   void signal_document_can_undo_cb(bool);

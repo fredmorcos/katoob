@@ -164,7 +164,7 @@ void Katoob::window()
 {
   // TODO: Use open_files() instead of passing them to the constructor ??
   Window *win = new Window(conf, encodings, files);
-  win->signal_quit.connect(sigc::mem_fun(*this, &Katoob::quit_cb));
+  win->signal_quit_event().connect(sigc::mem_fun(*this, &Katoob::quit_cb));
   children.push_back(win);
 #ifdef ENABLE_DBUS
   dbus.signal_open_files.connect(sigc::mem_fun(win, &Window::open_files));
