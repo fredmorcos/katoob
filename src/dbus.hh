@@ -33,22 +33,26 @@ class DBus {
  public:
   DBus();
   ~DBus();
-  bool ping();
+
+  static auto ping() -> bool;
   void start();
 
-  bool open_files(std::vector<std::string> &);
+  static auto open_files(std::vector<std::string> &) -> bool;
 
-  friend DBusHandlerResult katoob_dbus_message_handler(DBusConnection *, DBusMessage *, void *);
+  friend auto katoob_dbus_message_handler(DBusConnection *, DBusMessage *, void *)
+      -> DBusHandlerResult;
 
-  sigc::signal<void, std::vector<std::string> &> signal_open_files;
+  auto signal_open_files_event() -> sigc::signal<void, std::vector<std::string> &>;
 
  protected:
-  DBusHandlerResult got_message(DBusConnection *, DBusMessage *);
+  auto got_message(DBusConnection *, DBusMessage *) -> DBusHandlerResult;
 
  private:
-  DBusHandlerResult open_files(DBusConnection *, DBusMessage *);
-  DBusHandlerResult pong(DBusConnection *, DBusMessage *);
-  bool connect(DBusConnection **);
+  auto open_files(DBusConnection *, DBusMessage *) -> DBusHandlerResult;
+  static auto pong(DBusConnection *, DBusMessage *) -> DBusHandlerResult;
+  static auto connect(DBusConnection **) -> bool;
   DBusConnection *server;
   bool _ok;
+
+  sigc::signal<void, std::vector<std::string> &> signal_open_files;
 };

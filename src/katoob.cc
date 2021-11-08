@@ -46,8 +46,8 @@ Katoob::Katoob(int argc, char *argv[]): Gtk::Main(argc, argv), conf(encodings)
   parse(argc, argv);
 
 #ifdef ENABLE_DBUS
-  if (dbus.ping()) {
-    if (dbus.open_files(files)) {
+  if (DBus::ping()) {
+    if (DBus::open_files(files)) {
       exit(0);
     } else {
       dbus.start();
@@ -167,7 +167,7 @@ void Katoob::window()
   win->signal_quit_event().connect(sigc::mem_fun(*this, &Katoob::quit_cb));
   children.push_back(win);
 #ifdef ENABLE_DBUS
-  dbus.signal_open_files.connect(sigc::mem_fun(win, &Window::open_files));
+  dbus.signal_open_files_event().connect(sigc::mem_fun(win, &Window::open_files));
 #endif
 }
 
