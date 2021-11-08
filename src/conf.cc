@@ -25,8 +25,7 @@
 #include "utils.hh"
 #include <fstream>
 #include <glib/gstdio.h>
-#include <glibmm/fileutils.h>
-#include <glibmm/miscutils.h>
+#include <glibmm.h>
 #include <iostream>
 #include <sstream>
 
