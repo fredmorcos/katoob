@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include <gtk/gtktextview.h>
+#include <gtk/gtk.h>
 #include <gtkmm.h>
 
 class TextView: public Gtk::TextView {

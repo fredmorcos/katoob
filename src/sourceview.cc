@@ -22,9 +22,9 @@
 #include <config.h>
 
 #include "sourceview.hh"
-#include <gtksourceview/gtksourcelanguagemanager.h>
+#include <gtksourceview/gtksourceview.h>
 
-void _drag_data_received_cb(GtkWidget *self,
+void _drag_data_received_cb(GtkWidget * /* self */,
                             GdkDragContext *context,
                             gint x,
                             gint y,
@@ -51,7 +51,7 @@ SourceView::SourceView(): TextView(GTK_TEXT_VIEW(gtk_source_view_new())), __drag
 
 SourceView::~SourceView()
 {
-  if (__drag_data_received) {
+  if (__drag_data_received != 0) {
     g_signal_handler_disconnect(G_OBJECT(gobj()), __drag_data_received);
   }
 }

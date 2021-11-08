@@ -30,6 +30,7 @@ class SourceView: public TextView {
  public:
   SourceView();
   virtual ~SourceView();
+
   void show_line_numbers(bool);
 
  private:
