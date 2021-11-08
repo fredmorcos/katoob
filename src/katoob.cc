@@ -106,14 +106,14 @@ Katoob::~Katoob()
 void Katoob::signal_cb(int signum)
 {
   static volatile int s = 0;
-  if (s) {
+  if (s != 0) {
     return;
   }
   ++s;
 
   std::cerr << "We received a signal (" << signum << "): " << strsignal(signum) << std::endl;
-  for (unsigned x = 0; x < children.size(); x++) {
-    children[x]->autosave();
+  for (auto &x: children) {
+    x->autosave();
   }
   //  katoob_error(Utils::substitute(_("Katoob crashed (%s). Katoob tried to save all the open
   //  documents. They will be recovered the next time you run Katoob."), strsignal(signum)));
