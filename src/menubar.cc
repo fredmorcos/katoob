@@ -407,6 +407,7 @@ void MenuBar::tools(
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS) || defined(ENABLE_SPELL)
   separator(tools_menu);
 #endif
+
 #ifdef ENABLE_SPELL
   _spell = item(tools_menu, Gtk::Stock::SPELL_CHECK, GDK_F7, Gdk::ModifierType(GDK_CONTROL_MASK));
   _spell->signal_activate().connect(
@@ -420,15 +421,17 @@ void MenuBar::tools(
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
   Gtk::RadioButtonGroup input_group;
   _input_menu = menu(_("Input"), tools_menu);
-  Gtk::MenuItem *__item = radio_item(_input_menu, input_group, _("Default"));
-  dynamic_cast<Gtk::RadioMenuItem *>(__item)->set_active(true);
-  __item->signal_activate().connect(
+  Gtk::MenuItem *item = radio_item(_input_menu, input_group, _("Default"));
+  dynamic_cast<Gtk::RadioMenuItem *>(item)->set_active(true);
+  item->signal_activate().connect(
       sigc::bind<int, int>(sigc::mem_fun(*this, &MenuBar::signal_layout_activate_cb), -1, -1));
 #endif
+
 #ifdef ENABLE_EMULATOR
   _emulator_menu = menu(_("Keyboard emulator"), _input_menu);
   build_submenu(_emulator_menu, em, input_group, 0);
 #endif
+
 #ifdef ENABLE_MULTIPRESS
   _multipress_menu = menu(_("Multipress"), _input_menu);
   build_submenu(_multipress_menu, mp, input_group, 1);
@@ -441,10 +444,11 @@ void MenuBar::build_submenu(Gtk::Menu *menu,
                             Gtk::RadioButtonGroup &group,
                             int num)
 {
-  for (unsigned x = 0; x < items.size(); x++) {
+  for (std::size_t x = 0; x < items.size(); x++) {
     Gtk::MenuItem *_item = radio_item(menu, group, items[x]);
-    _item->signal_activate().connect(
-        sigc::bind<int, int>(sigc::mem_fun(*this, &MenuBar::signal_layout_activate_cb), num, x));
+    auto callback = sigc::mem_fun(*this, &MenuBar::signal_layout_activate_cb);
+    auto binding = sigc::bind<int, std::size_t>(callback, num, x);
+    _item->signal_activate().connect(binding);
   }
 }
 #endif
@@ -478,7 +482,7 @@ void MenuBar::help()
 }
 
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
-void MenuBar::signal_layout_activate_cb(int x, int y)
+void MenuBar::signal_layout_activate_cb(int x, std::size_t y)
 {
   signal_layout_activate.emit(x, y);
 }

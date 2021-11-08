@@ -138,6 +138,7 @@ class MenuBar: public Gtk::MenuBar {
   sigc::signal<void> signal_beside_activate;
 
   sigc::signal<void> signal_execute_activate;
+
 #ifdef ENABLE_SPELL
   sigc::signal<void> signal_spell_activate;
   sigc::signal<void, bool> signal_auto_spell_activate;
@@ -157,12 +158,15 @@ class MenuBar: public Gtk::MenuBar {
   sigc::signal<void, int> signal_encoding_activate;
   sigc::signal<void, int> signal_document_activate;
   sigc::signal<void, int> signal_closed_document_activate;
+
 #ifdef ENABLE_HIGHLIGHT
   sigc::signal<void, std::string> signal_highlighter_activate;
 #endif
+
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
-  sigc::signal<void, int, int> signal_layout_activate;
+  sigc::signal<void, int, std::size_t> signal_layout_activate;
 #endif
+
   void document_add(std::string &, bool, bool);
   void document_remove(std::size_t);
   void document_set_active(std::size_t);
@@ -213,9 +217,11 @@ class MenuBar: public Gtk::MenuBar {
   void signal_both_activate_cb();
 
   void signal_recent_activate_cb(std::string &);
+
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
-  void signal_layout_activate_cb(int, int);
+  void signal_layout_activate_cb(int, std::size_t);
 #endif
+
   void signal_encoding_activate_cb(unsigned);
   void signal_document_activate_cb(int);
   void signal_closed_document_activate_cb(int);
