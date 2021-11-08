@@ -116,8 +116,8 @@ bool Emulator::parse_file(std::string &file, std::map<std::string, std::string> 
 
 bool Emulator::get(const std::string &key, std::string &value)
 {
-  assert(layout < layouts.size());
   assert(layout >= 0);
+  assert((std::size_t) layout < layouts.size());
 
   std::map<std::string, std::string>::iterator iter = layouts[layout].find(key);
   if (iter == layouts[layout].end()) {
@@ -129,7 +129,7 @@ bool Emulator::get(const std::string &key, std::string &value)
 
 void Emulator::activate(int x)
 {
-  assert((x == -1) || (x < layouts.size()));
+  assert((x == -1) || ((std::size_t) x < layouts.size()));
   layout = x;
 }
 

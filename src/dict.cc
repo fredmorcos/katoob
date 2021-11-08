@@ -25,30 +25,32 @@
 #include "macros.h"
 #include "utils.hh"
 
-std::string Dict::construct_uri(Conf &conf, const std::string &word)
+auto Dict::construct_uri(Conf &conf, const std::string &word) -> std::string
 {
   std::string host = conf.get("dict_host", "dict.arabeyes.org");
   std::string book = conf.get("dict_db", "arabic");
-  int port = conf.get("dict_port", 2628);
+
+  const int defaultPort = 2628;
+  int port = conf.get("dict_port", defaultPort);
 
   return Utils::substitute("dict://%s:%i/d:%s:%s", host, port, word, book);
 }
 
-std::string Dict::construct_lsdb_uri(Conf &conf, const std::string &host, int port)
+auto Dict::construct_lsdb_uri(const std::string &host, int port) -> std::string
 {
   return Utils::substitute("dict://%s:%i/show db", host, port);
 }
 
-bool Dict::parse_defs(const std::string &str, std::vector<std::string> &res)
+auto Dict::parse_defs(const std::string &str, std::vector<std::string> &res) -> bool
 {
-  int num = 0;
+  std::size_t num = 0;
 
-  if (str.size() == 0) {
+  if (str.empty()) {
     return false;
   }
 
   std::vector<std::string> parts = Utils::split(str, '\n');
-  if (parts.size() == 0) {
+  if (parts.empty()) {
     return false;
   }
 
@@ -57,18 +59,22 @@ bool Dict::parse_defs(const std::string &str, std::vector<std::string> &res)
       std::string code = parts[x].substr(0, 3);
 
       if (code == "550") {
-        res.push_back(_("Invalid daatabase. Please reconfigure the dictionary in use."));
+        res.emplace_back(_("Invalid daatabase. Please reconfigure the dictionary in use."));
         return false;
-      } else if (code == "552") {
-        res.push_back(_("No matches were found"));
+      }
+
+      if (code == "552") {
+        res.emplace_back(_("No matches were found"));
         return false;
-      } else if (code == "150") {
-        std::string::size_type idx = parts[x].find(" ", 0);
+      }
+
+      if (code == "150") {
+        std::string::size_type idx = parts[x].find(' ', 0);
         if (idx == std::string::npos) {
           return false;
         }
 
-        std::string::size_type idx2 = parts[x].find(" ", idx + 1);
+        std::string::size_type idx2 = parts[x].find(' ', idx + 1);
         if (idx2 == std::string::npos) {
           return false;
         }
@@ -96,20 +102,17 @@ bool Dict::parse_defs(const std::string &str, std::vector<std::string> &res)
     }
   }
 
-  if (res.size() != num) {
-    return false;
-  }
-  return true;
+  return res.size() == num;
 }
 
-bool Dict::parse_dbs(const std::string &str, std::map<std::string, std::string> &res)
+auto Dict::parse_dbs(const std::string &str, std::map<std::string, std::string> &res) -> bool
 {
-  if (str.size() == 0) {
+  if (str.empty()) {
     return false;
   }
 
   std::vector<std::string> parts = Utils::split(str, '\n');
-  if (parts.size() == 0) {
+  if (parts.empty()) {
     return false;
   }
 
@@ -121,12 +124,12 @@ bool Dict::parse_dbs(const std::string &str, std::map<std::string, std::string> 
       }
 
       if (parts[x].substr(0, 3) == "110") {
-        std::string::size_type idx = parts[x].find(" ", 0);
+        std::string::size_type idx = parts[x].find(' ', 0);
         if (idx == std::string::npos) {
           return false;
         }
 
-        std::string::size_type idx2 = parts[x].find(" ", idx + 1);
+        std::string::size_type idx2 = parts[x].find(' ', idx + 1);
         if (idx2 == std::string::npos) {
           return false;
         }
@@ -138,16 +141,16 @@ bool Dict::parse_dbs(const std::string &str, std::map<std::string, std::string> 
         }
         while (num != 0) {
           std::string line = parts[++x];
-          std::string::size_type sp = line.find(" ", 0);
+          std::string::size_type sp = line.find(' ', 0);
           std::string db = line.substr(0, sp);
           std::string desc = line.substr(++sp, std::string::npos);
 
-          sp = desc.find_first_of("\"");
+          sp = desc.find_first_of('\"');
           if (sp != std::string::npos) {
             desc = desc.substr(++sp);
           }
 
-          sp = desc.find_last_of("\"");
+          sp = desc.find_last_of('\"');
           if (sp != std::string::npos) {
             desc = desc.substr(0, sp);
           }

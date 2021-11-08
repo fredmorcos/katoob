@@ -541,7 +541,7 @@ void MenuBar::document_add(std::string &label, bool ro, bool m)
   _ignore_document_clicked_signal_hack = false;
 }
 
-void MenuBar::document_set_active(int x)
+void MenuBar::document_set_active(std::size_t x)
 {
   _active = x;
   if (_active >= opened_menu->items().size()) {
@@ -560,11 +560,11 @@ void MenuBar::document_set_active(int x)
   _ignore_document_clicked_signal_hack = false;
 }
 
-void MenuBar::document_remove(int x)
+void MenuBar::document_remove(std::size_t x)
 {
   documents_menu_clear();
 
-  std::vector<DocItem>::iterator iter = _documents.begin() + x;
+  auto iter = _documents.begin() + x;
   _documents.erase(iter);
 
   documents_menu_build();
@@ -576,25 +576,27 @@ void MenuBar::document_set_label(int x, std::string &str)
   dynamic_cast<Gtk::Label *>(opened_menu->items()[x].get_child())->set_text(str);
 }
 
-void MenuBar::document_set_modified(int x, bool m)
+void MenuBar::document_set_modified(std::size_t x, bool m)
 {
   assert(x < _documents.size());
 
   // A read only document can't be modified.
-  if (_documents[x].get_readonly())
+  if (_documents[x].get_readonly()) {
     return;
+  }
 
   _documents[x].set_modified(m);
   document_set_modified(opened_menu->items()[x], m);
 }
 
-void MenuBar::document_set_readonly(int x, bool ro)
+void MenuBar::document_set_readonly(std::size_t x, bool ro)
 {
   assert(x < _documents.size());
 
   // A modified document can't be read only.
-  if (_documents[x].get_modified())
+  if (_documents[x].get_modified()) {
     return;
+  }
 
   _documents[x].set_readonly(ro);
 
@@ -603,12 +605,13 @@ void MenuBar::document_set_readonly(int x, bool ro)
 
 void MenuBar::document_set_readonly(Gtk::MenuItem &item, bool ro)
 {
-  if (ro)
+  if (ro) {
     katoob_set_color(_conf,
                      dynamic_cast<Gtk::Label *>(item.get_child()),
                      Utils::KATOOB_COLOR_READONLY);
-  else
+  } else {
     document_set_normal(item);
+  }
 }
 
 void MenuBar::document_set_modified(Gtk::MenuItem &item, bool m)

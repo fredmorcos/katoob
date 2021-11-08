@@ -40,8 +40,8 @@ class Print: public Gtk::PrintOperation {
   Print(Conf &, Document *, Glib::RefPtr<PageSetup> &, Glib::RefPtr<PrintSettings> &);
 
   // Printing part.
-  void on_begin_print(const Glib::RefPtr<Gtk::PrintContext> &);
-  void on_draw_page(const Glib::RefPtr<Gtk::PrintContext> &, int);
+  void on_begin_print(const Glib::RefPtr<Gtk::PrintContext> &context);
+  void on_draw_page(const Glib::RefPtr<Gtk::PrintContext> &, std::size_t nr);
 
   // Custom widget.
   Gtk::Widget *on_create_custom_widget();

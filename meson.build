@@ -5,8 +5,7 @@ project(
   meson_version: '>= 0.58',
   default_options: [
     'buildtype=debugoptimized',
-    # TODO: Re-enable that.
-    # 'warning_level=3',
+    'warning_level=3',
     'c_std=c17',
     'cpp_std=c++17'
   ]

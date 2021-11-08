@@ -266,7 +266,7 @@ Network::~Network()
 
 void Network::del_transfer(void *handle)
 {
-  std::map<CURL *, sigc::slot<void, bool, const std::string &> >::iterator iter = cons.find(handle);
+  std::map<CURL *, sigc::slot<void, bool, const std::string &>>::iterator iter = cons.find(handle);
   std::map<CURL *, std::string>::iterator d_iter = data.find(handle);
   clean_handle(handle);
   cons.erase(iter);
@@ -315,7 +315,7 @@ bool Network::network_perform()
     conn.block();
   }
 
-  if (running_handles < cons.size()) {
+  if ((decltype(cons)::size_type) running_handles < cons.size()) {
     while (true) {
       msg = curl_multi_info_read(m_handle, &msgs_in_queue);
       if (msg == NULL) {
@@ -325,7 +325,7 @@ bool Network::network_perform()
           // done.
           bool good = msg->data.result == CURLE_OK;
 
-          std::map<CURL *, sigc::slot<void, bool, const std::string &> >::iterator iter =
+          std::map<CURL *, sigc::slot<void, bool, const std::string &>>::iterator iter =
               cons.find(msg->easy_handle);
           std::map<CURL *, std::string>::iterator d_iter = data.find(msg->easy_handle);
           std::string er = curl_easy_strerror(msg->data.result);
@@ -363,7 +363,7 @@ void Network::destroy()
 }
 
 /* Our static members */
-std::map<CURL *, sigc::slot<void, bool, const std::string &> > Network::cons;
+std::map<CURL *, sigc::slot<void, bool, const std::string &>> Network::cons;
 std::map<CURL *, std::string> Network::data;
 // std::map<CURL *, sigc::signal<void, bool, const std::string&> > *Network::cons = NULL;
 // std::map<CURL *, std::string> *Network::data = NULL;

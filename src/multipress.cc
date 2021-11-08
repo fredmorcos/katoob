@@ -48,7 +48,7 @@ Multipress::Multipress()
 #endif
 
   while (start != end) {
-    std::map<std::string, std::vector<std::string> > map;
+    std::map<std::string, std::vector<std::string>> map;
     std::string file = Glib::build_filename(MULTIPRESS_DIR, *start);
     std::cout << "Found multipress file: " << file << std::endl;
     if (parse_file(file, map)) {
@@ -99,8 +99,7 @@ bool Multipress::ok(std::string &e)
   return _ok;
 }
 
-bool Multipress::parse_file(std::string &file,
-                            std::map<std::string, std::vector<std::string> > &map)
+bool Multipress::parse_file(std::string &file, std::map<std::string, std::vector<std::string>> &map)
 {
   std::ifstream ifs;
   ifs.open(file.c_str());
@@ -121,8 +120,8 @@ bool Multipress::parse_file(std::string &file,
 
 bool Multipress::get(const std::string &key, int timeout)
 {
-  assert(layout < layouts.size());
   assert(layout >= 0);
+  assert((std::size_t) layout < layouts.size());
 
   std::vector<std::string> values;
 
@@ -155,7 +154,7 @@ bool Multipress::get_values(const std::string &key, std::vector<std::string> &va
 
 void Multipress::activate(int x)
 {
-  assert((x == -1) || (x < layouts.size()));
+  assert((x == -1) || ((std::size_t) x < layouts.size()));
   layout = x;
 }
 
@@ -185,7 +184,7 @@ bool Multipress::signal_change_key_cb(const std::string &nkey)
   return true;
 }
 
-std::map<std::string, std::vector<std::string> > &Multipress::get_layout()
+std::map<std::string, std::vector<std::string>> &Multipress::get_layout()
 {
   assert(layout != -1);
   return layouts[layout];
@@ -195,7 +194,7 @@ sigc::signal<void, std::string &> Multipress::signal_insert_key;
 sigc::signal<void, GdkEventKey *> Multipress::signal_invalid_key;
 MultipressWindow *Multipress::window;
 std::vector<std::string> Multipress::names;
-std::vector<std::map<std::string, std::vector<std::string> > > Multipress::layouts;
+std::vector<std::map<std::string, std::vector<std::string>>> Multipress::layouts;
 bool Multipress::_ok = false;
 int Multipress::layout = -1;
 std::string Multipress::_err;

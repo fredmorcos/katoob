@@ -898,7 +898,7 @@ void DictionaryApplet::list_dicts_clicked_cb()
   sigc::slot<void, bool, const std::string &> slot =
       sigc::mem_fun(this, &DictionaryApplet::signal_dict_transfer_complete_cb);
 
-  std::string uri = Dict::construct_lsdb_uri(_conf, host, port);
+  std::string uri = Dict::construct_lsdb_uri(host, port);
 
   std::string error;
   if (!Network::add_transfer(uri, error, slot, handle)) {

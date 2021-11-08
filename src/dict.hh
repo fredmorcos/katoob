@@ -31,8 +31,8 @@
 // TODO: Make the errors in DICTClient translatable.
 
 namespace Dict {
-  std::string construct_uri(Conf &, const std::string &);
-  std::string construct_lsdb_uri(Conf &, const std::string &, int);
-  bool parse_defs(const std::string &, std::vector<std::string> &);
-  bool parse_dbs(const std::string &, std::map<std::string, std::string> &);
+  auto construct_uri(Conf &, const std::string &) -> std::string;
+  auto construct_lsdb_uri(const std::string &, int) -> std::string;
+  auto parse_defs(const std::string &, std::vector<std::string> &) -> bool;
+  auto parse_dbs(const std::string &, std::map<std::string, std::string> &) -> bool;
 };

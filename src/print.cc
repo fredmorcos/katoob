@@ -151,7 +151,7 @@ void Print::on_begin_print(const Glib::RefPtr<Gtk::PrintContext> &context)
   set_n_pages(pages.size());
 }
 
-void Print::on_draw_page(const Glib::RefPtr<Gtk::PrintContext> &context, int nr)
+void Print::on_draw_page(const Glib::RefPtr<Gtk::PrintContext> &context, std::size_t nr)
 {
   // You must handle this signal, which provides a PrintContext and a page number.
   // The PrintContext should be used to create a Cairo::Context into which the provided
@@ -169,7 +169,7 @@ void Print::on_draw_page(const Glib::RefPtr<Gtk::PrintContext> &context, int nr)
 
   std::vector<int> &lines = pages[nr];
   // TODO: Is this correct ??
-  if (lines.size() == 0) {
+  if (lines.empty()) {
     return;
   }
 
