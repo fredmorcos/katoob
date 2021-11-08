@@ -6,6 +6,7 @@ extra_gettext_args = [
 ]
 
 i18n.gettext(
-  meson.project_name(),
+  app_name,
+  preset: 'glib',
   args: extra_gettext_args,
 )

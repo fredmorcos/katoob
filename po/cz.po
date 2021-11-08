@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-07 22:29+0100\n"
+"POT-Creation-Date: 2021-11-08 13:30+0100\n"
 "PO-Revision-Date: 2004-11-29 14:28+0100\n"
 "Last-Translator: Jan Grmela <mail@grmela.com>\n"
 "Language-Team: Jan Grmela <mail@grmela.com>\n"
@@ -139,6 +139,7 @@ msgstr "Zobrazit panel nástrojů jako"
 msgid "Text only"
 msgstr "Pouze text"
 
+#. TODO: Disable these when the main toolbar is not shown.
 #: src/applets.cc:169 src/applets.cc:223 src/menubar.cc:362
 msgid "Icons only"
 msgstr "Pouze ikony"
@@ -259,6 +260,7 @@ msgstr "Zálohovat příponu."
 msgid "_Autocheck Spelling"
 msgstr "_Automatická kontrola pravopisu"
 
+#. misspelled_label.set_text(_("Misspelled words color"));
 #: src/applets.cc:651
 msgid "Choose the default dictionary"
 msgstr "Vybrat výchozí slovník"
@@ -375,7 +377,7 @@ msgstr ""
 msgid "Proxy type:"
 msgstr ""
 
-#: src/applets.cc:1064 src/menubar.cc:895
+#: src/applets.cc:1064 src/menubar.cc:898
 msgid "None"
 msgstr "Žádné"
 
@@ -428,16 +430,16 @@ msgstr "Řádek"
 msgid "Please wait..."
 msgstr ""
 
-#: src/dict.cc:60
+#: src/dict.cc:62
 msgid "Invalid daatabase. Please reconfigure the dictionary in use."
 msgstr ""
 
-#: src/dict.cc:63
+#: src/dict.cc:67
 #, fuzzy
 msgid "No matches were found"
 msgstr "Žádná shoda !"
 
-#: src/dict.cc:119 src/dict.cc:136
+#: src/dict.cc:122 src/dict.cc:139
 #, fuzzy
 msgid "No databases were found."
 msgstr "Žádná shoda !"
@@ -475,6 +477,7 @@ msgstr "Návrhy automatických oprav"
 msgid "Add <b>%s</b> to dictionary"
 msgstr "Přidat \"%s\" do slovníku"
 
+#. TODO: Use italics markup.
 #: src/document.cc:1317
 msgid "no suggestions"
 msgstr "žádné návrhy"
@@ -539,6 +542,7 @@ msgstr ""
 msgid "Couldn't compress the text."
 msgstr "Nemohu vytisknout soubor"
 
+#. _ch is allocated via g_new();
 #: src/export.cc:196 src/import.cc:237
 #, fuzzy
 msgid "Couldn't apply the bidi algorithm."
@@ -561,6 +565,7 @@ msgstr ""
 msgid "Can't open file."
 msgstr "Nemohu otevřít dočasný soubor"
 
+#. Error.
 #: src/import.cc:135 src/import.cc:155 src/import.cc:185
 msgid "Error reading file."
 msgstr ""
@@ -674,6 +679,7 @@ msgstr "_Soubor"
 msgid "Open _Location..."
 msgstr "_Umístění"
 
+#. Recent
 #: src/menubar.cc:161
 msgid "Recent"
 msgstr "Otevřít nedávný"
@@ -802,7 +808,7 @@ msgstr "_Dokumenty"
 msgid "_Help"
 msgstr "Ná_pověda"
 
-#: src/menubar.cc:893
+#: src/menubar.cc:896
 msgid "_Highlight"
 msgstr "_Zvýrazňování"
 
@@ -847,6 +853,7 @@ msgstr ""
 msgid "I can't execute %s. I can't find it in your path"
 msgstr ""
 
+#. TODO: Possible some commands might not return 0
 #: src/pipe.cc:96
 #, fuzzy
 msgid "Couldn't get the required content."
@@ -941,6 +948,7 @@ msgstr ""
 msgid "Match case"
 msgstr "Respektovat _malá a velká písmena"
 
+#. regex(_("Regular expression")),
 #: src/replacedialog.cc:34 src/searchdialog.cc:34
 msgid "Wrap search"
 msgstr ""
@@ -963,6 +971,7 @@ msgstr "Hledat od _začátku dokumentu"
 msgid "_Replace"
 msgstr "_Nahradit"
 
+#. find_replace(Gtk::Stock::FIND_AND_REPLACE),
 #: src/replacedialog.cc:41
 #, fuzzy
 msgid "Replace _All"

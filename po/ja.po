@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-07 22:29+0100\n"
+"POT-Creation-Date: 2021-11-08 13:30+0100\n"
 "PO-Revision-Date: 2006-10-12 23:38+0900\n"
 "Last-Translator: UTUMI Hirosi <utuhiro78@yahoo.co.jp>\n"
 "Language-Team: Japanese <ja@li.org>\n"
@@ -135,6 +135,7 @@ msgstr "ツールバーの表示"
 msgid "Text only"
 msgstr "文字のみ"
 
+#. TODO: Disable these when the main toolbar is not shown.
 #: src/applets.cc:169 src/applets.cc:223 src/menubar.cc:362
 msgid "Icons only"
 msgstr "アイコンのみ"
@@ -249,6 +250,7 @@ msgstr "バックアップの拡張子"
 msgid "_Autocheck Spelling"
 msgstr "スペルを自動確認(_A)"
 
+#. misspelled_label.set_text(_("Misspelled words color"));
 #: src/applets.cc:651
 msgid "Choose the default dictionary"
 msgstr "デフォルトのディレクトリを選択"
@@ -361,7 +363,7 @@ msgstr ""
 msgid "Proxy type:"
 msgstr ""
 
-#: src/applets.cc:1064 src/menubar.cc:895
+#: src/applets.cc:1064 src/menubar.cc:898
 msgid "None"
 msgstr ""
 
@@ -414,16 +416,16 @@ msgstr "行:"
 msgid "Please wait..."
 msgstr ""
 
-#: src/dict.cc:60
+#: src/dict.cc:62
 msgid "Invalid daatabase. Please reconfigure the dictionary in use."
 msgstr ""
 
-#: src/dict.cc:63
+#: src/dict.cc:67
 #, fuzzy
 msgid "No matches were found"
 msgstr "合致する結果はありません"
 
-#: src/dict.cc:119 src/dict.cc:136
+#: src/dict.cc:122 src/dict.cc:139
 #, fuzzy
 msgid "No databases were found."
 msgstr "合致する結果はありません"
@@ -459,6 +461,7 @@ msgstr "スペルを提案"
 msgid "Add <b>%s</b> to dictionary"
 msgstr "\"%s\" を辞書に追加"
 
+#. TODO: Use italics markup.
 #: src/document.cc:1317
 msgid "no suggestions"
 msgstr "提案なし"
@@ -521,6 +524,7 @@ msgstr "圧縮用にメモリを割り当てることができません"
 msgid "Couldn't compress the text."
 msgstr "テキストを圧縮できません"
 
+#. _ch is allocated via g_new();
 #: src/export.cc:196 src/import.cc:237
 msgid "Couldn't apply the bidi algorithm."
 msgstr "bidi アルゴリズムを適用できません"
@@ -541,6 +545,7 @@ msgstr "HTML キャラクタレファレンス(_H)"
 msgid "Can't open file."
 msgstr "ファイルを開けません"
 
+#. Error.
 #: src/import.cc:135 src/import.cc:155 src/import.cc:185
 msgid "Error reading file."
 msgstr "ファイルの読み込みエラー"
@@ -649,6 +654,7 @@ msgstr "ファイル(_F)"
 msgid "Open _Location..."
 msgstr "場所を開く(_L)"
 
+#. Recent
 #: src/menubar.cc:161
 msgid "Recent"
 msgstr "履歴"
@@ -774,7 +780,7 @@ msgstr "文書を閉じる(_C)"
 msgid "_Help"
 msgstr "ヘルプ(_H)"
 
-#: src/menubar.cc:893
+#: src/menubar.cc:896
 #, fuzzy
 msgid "_Highlight"
 msgstr "高さ"
@@ -818,6 +824,7 @@ msgstr "開く場所を入力してください"
 msgid "I can't execute %s. I can't find it in your path"
 msgstr ""
 
+#. TODO: Possible some commands might not return 0
 #: src/pipe.cc:96
 msgid "Couldn't get the required content."
 msgstr "要求したコンテンツを取得できません"
@@ -908,6 +915,7 @@ msgstr "完全に一致する語のみ"
 msgid "Match case"
 msgstr "大文字小文字を区別"
 
+#. regex(_("Regular expression")),
 #: src/replacedialog.cc:34 src/searchdialog.cc:34
 msgid "Wrap search"
 msgstr "循環して検索"
@@ -928,6 +936,7 @@ msgstr "文書の最初から検索"
 msgid "_Replace"
 msgstr "置換(_R)"
 
+#. find_replace(Gtk::Stock::FIND_AND_REPLACE),
 #: src/replacedialog.cc:41
 msgid "Replace _All"
 msgstr "全て置換(_A)"

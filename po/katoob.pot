@@ -129,6 +129,7 @@ msgstr ""
 msgid "Text only"
 msgstr ""
 
+#. TODO: Disable these when the main toolbar is not shown.
 #: src/applets.cc:169 src/applets.cc:223 src/menubar.cc:362
 msgid "Icons only"
 msgstr ""
@@ -243,6 +244,7 @@ msgstr ""
 msgid "_Autocheck Spelling"
 msgstr ""
 
+#. misspelled_label.set_text(_("Misspelled words color"));
 #: src/applets.cc:651
 msgid "Choose the default dictionary"
 msgstr ""
@@ -353,7 +355,7 @@ msgstr ""
 msgid "Proxy type:"
 msgstr ""
 
-#: src/applets.cc:1064 src/menubar.cc:895
+#: src/applets.cc:1064 src/menubar.cc:898
 msgid "None"
 msgstr ""
 
@@ -405,15 +407,15 @@ msgstr ""
 msgid "Please wait..."
 msgstr ""
 
-#: src/dict.cc:60
+#: src/dict.cc:62
 msgid "Invalid daatabase. Please reconfigure the dictionary in use."
 msgstr ""
 
-#: src/dict.cc:63
+#: src/dict.cc:67
 msgid "No matches were found"
 msgstr ""
 
-#: src/dict.cc:119 src/dict.cc:136
+#: src/dict.cc:122 src/dict.cc:139
 msgid "No databases were found."
 msgstr ""
 
@@ -448,6 +450,7 @@ msgstr ""
 msgid "Add <b>%s</b> to dictionary"
 msgstr ""
 
+#. TODO: Use italics markup.
 #: src/document.cc:1317
 msgid "no suggestions"
 msgstr ""
@@ -507,6 +510,7 @@ msgstr ""
 msgid "Couldn't compress the text."
 msgstr ""
 
+#. _ch is allocated via g_new();
 #: src/export.cc:196 src/import.cc:237
 msgid "Couldn't apply the bidi algorithm."
 msgstr ""
@@ -527,6 +531,7 @@ msgstr ""
 msgid "Can't open file."
 msgstr ""
 
+#. Error.
 #: src/import.cc:135 src/import.cc:155 src/import.cc:185
 msgid "Error reading file."
 msgstr ""
@@ -633,6 +638,7 @@ msgstr ""
 msgid "Open _Location..."
 msgstr ""
 
+#. Recent
 #: src/menubar.cc:161
 msgid "Recent"
 msgstr ""
@@ -757,7 +763,7 @@ msgstr ""
 msgid "_Help"
 msgstr ""
 
-#: src/menubar.cc:893
+#: src/menubar.cc:896
 msgid "_Highlight"
 msgstr ""
 
@@ -798,6 +804,7 @@ msgstr ""
 msgid "I can't execute %s. I can't find it in your path"
 msgstr ""
 
+#. TODO: Possible some commands might not return 0
 #: src/pipe.cc:96
 msgid "Couldn't get the required content."
 msgstr ""
@@ -887,6 +894,7 @@ msgstr ""
 msgid "Match case"
 msgstr ""
 
+#. regex(_("Regular expression")),
 #: src/replacedialog.cc:34 src/searchdialog.cc:34
 msgid "Wrap search"
 msgstr ""
@@ -907,6 +915,7 @@ msgstr ""
 msgid "_Replace"
 msgstr ""
 
+#. find_replace(Gtk::Stock::FIND_AND_REPLACE),
 #: src/replacedialog.cc:41
 msgid "Replace _All"
 msgstr ""

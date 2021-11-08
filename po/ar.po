@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ar\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-11-07 22:29+0100\n"
+"POT-Creation-Date: 2021-11-08 13:30+0100\n"
 "PO-Revision-Date: 2007-12-18 12:09+0200\n"
 "Last-Translator: Khaled Hosny <khaledhosny@eglug.org>\n"
 "Language-Team: Arabic <doc@arabeyes.org>\n"
@@ -152,6 +152,7 @@ msgstr "اعرض شريط الأدوات"
 msgid "Text only"
 msgstr "نص فقط"
 
+#. TODO: Disable these when the main toolbar is not shown.
 #: src/applets.cc:169 src/applets.cc:223 src/menubar.cc:362
 msgid "Icons only"
 msgstr "أيقونات فقط"
@@ -266,6 +267,7 @@ msgstr "امتداد النسخ الاحتياطية"
 msgid "_Autocheck Spelling"
 msgstr "تدقيق إملائي آ_لي"
 
+#. misspelled_label.set_text(_("Misspelled words color"));
 #: src/applets.cc:651
 msgid "Choose the default dictionary"
 msgstr "اختر القاموس الافتراضي"
@@ -378,7 +380,7 @@ msgstr "منفذ الوكيل:"
 msgid "Proxy type:"
 msgstr "نوع الوكيل:"
 
-#: src/applets.cc:1064 src/menubar.cc:895
+#: src/applets.cc:1064 src/menubar.cc:898
 msgid "None"
 msgstr "بدون"
 
@@ -430,15 +432,15 @@ msgstr "سطر:"
 msgid "Please wait..."
 msgstr "فضلًا انتظر..."
 
-#: src/dict.cc:60
+#: src/dict.cc:62
 msgid "Invalid daatabase. Please reconfigure the dictionary in use."
 msgstr "قاعدة بيانات غير صحيحة. فضلًا أعد إعداد القاموس المستخدم."
 
-#: src/dict.cc:63
+#: src/dict.cc:67
 msgid "No matches were found"
 msgstr "لم يُعثر على نتائج"
 
-#: src/dict.cc:119 src/dict.cc:136
+#: src/dict.cc:122 src/dict.cc:139
 msgid "No databases were found."
 msgstr "لم يُعثر على قاعدة البيانات."
 
@@ -473,6 +475,7 @@ msgstr "اقتراحات المدقق الإملائي"
 msgid "Add <b>%s</b> to dictionary"
 msgstr "أضف \"%s\" للقاموس"
 
+#. TODO: Use italics markup.
 #: src/document.cc:1317
 msgid "no suggestions"
 msgstr "لا توجد اقتراحات"
@@ -534,6 +537,7 @@ msgstr "لا يمكن تخصيص مساحة كافية من الذاكرة لل�
 msgid "Couldn't compress the text."
 msgstr "لم أتمكن من ضغط الملف."
 
+#. _ch is allocated via g_new();
 #: src/export.cc:196 src/import.cc:237
 msgid "Couldn't apply the bidi algorithm."
 msgstr "لا يمكن تطبيق خوارزمية ثنائية الاتجاه."
@@ -554,6 +558,7 @@ msgstr "بطريقة _HTML..."
 msgid "Can't open file."
 msgstr "لا يمكن فتح الملف."
 
+#. Error.
 #: src/import.cc:135 src/import.cc:155 src/import.cc:185
 msgid "Error reading file."
 msgstr "خطأ في قراءة الملف."
@@ -667,6 +672,7 @@ msgstr "_ملف"
 msgid "Open _Location..."
 msgstr "ا_فتح موقع..."
 
+#. Recent
 #: src/menubar.cc:161
 msgid "Recent"
 msgstr "الملفات الحديثة"
@@ -791,7 +797,7 @@ msgstr "المستندات الم_غلقة"
 msgid "_Help"
 msgstr "_مساعده"
 
-#: src/menubar.cc:893
+#: src/menubar.cc:896
 msgid "_Highlight"
 msgstr "_توضيح التركيب"
 
@@ -832,6 +838,7 @@ msgstr "يجب إدخال موقع لفتحه."
 msgid "I can't execute %s. I can't find it in your path"
 msgstr "لا يمكن تنفيذ %s. لا يمكن العثور عليه"
 
+#. TODO: Possible some commands might not return 0
 #: src/pipe.cc:96
 msgid "Couldn't get the required content."
 msgstr "لم أتمكن من الحصول على المحتوى المطلوب."
@@ -921,6 +928,7 @@ msgstr "طابِق كامل الكلمة فقط"
 msgid "Match case"
 msgstr "طابِق حالة الأحرف"
 
+#. regex(_("Regular expression")),
 #: src/replacedialog.cc:34 src/searchdialog.cc:34
 msgid "Wrap search"
 msgstr "لف حول"
@@ -941,6 +949,7 @@ msgstr "ابحث من بداية المستند"
 msgid "_Replace"
 msgstr "استب_دل"
 
+#. find_replace(Gtk::Stock::FIND_AND_REPLACE),
 #: src/replacedialog.cc:41
 msgid "Replace _All"
 msgstr "استبدل ال_كل"
