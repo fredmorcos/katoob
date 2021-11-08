@@ -1,0 +1,1 @@
+s/Copyright (C)/Copyright ©/g
