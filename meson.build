@@ -125,7 +125,7 @@ enable_bzip2 = get_option('bzip2')
 
 if enable_bzip2
   dependencies += dependency('bzip2')
-  conf.set('HAVE_BZIP2', enable_bzip2, description: 'Bzip2 support is enabled')
+  conf.set('ENABLE_BZIP2', enable_bzip2, description: 'Bzip2 support is enabled')
 endif
 
 enable_dbus = get_option('dbus')
@@ -161,14 +161,14 @@ enable_fribidi = get_option('fribidi')
 
 if enable_fribidi
   dependencies += dependency('fribidi')
-  conf.set('HAVE_FRIBIDI', enable_fribidi, description: 'Fribidi support is enabled')
+  conf.set('ENABLE_FRIBIDI', enable_fribidi, description: 'Fribidi support is enabled')
 endif
 
 enable_gzip = get_option('gzip')
 
 if enable_gzip
   dependencies += dependency('zlib')
-  conf.set('HAVE_GZIP', enable_gzip, description: 'GZip support is enabled')
+  conf.set('ENABLE_GZIP', enable_gzip, description: 'GZip support is enabled')
 endif
 
 enable_highlight = get_option('highlight')
