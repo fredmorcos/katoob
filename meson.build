@@ -1,31 +1,24 @@
 project(
-  'Katoob', ['c', 'cpp'],
-  version: '0.5.9.2',
+  'Katoob',
+  ['cpp'],
+  version: '0.7',
   license: 'GPL2+',
   meson_version: '>= 0.58',
   default_options: [
     'buildtype=debugoptimized',
-    # 'warning_level=3',
-    'c_std=c17',
+    'warning_level=3',
     'cpp_std=c++17'
   ]
 )
 
-# TODO: Enable those while porting.
-extra_flags  = [
-#  '-DGLIB_DISABLE_DEPRECATION_WARNINGS',
-#  '-DGTK_DISABLE_DEPRECATED',
-#  '-DGTK_DISABLE_SINGLE_INCLUDES',
-#  '-DGDK_DISABLE_DEPRECATED',
-#  '-DGSEAL_ENABLE',
-#  '-DGTKMM_DISABLE_DEPRECATED',
-#  '-DGDKMM_DISABLE_DEPRECATED',
-#  '-DGLIBMM_DISABLE_DEPRECATED',
-#  '-DGIOMM_DISABLE_DEPRECATED',
-]
+if meson.get_compiler('cpp').get_id() == 'clang'
+  extra_flags_clang = [
+    '-ferror-limit=0',
+    '-Db_lundef=false',
+  ]
 
-add_global_arguments(extra_flags, language: 'cpp')
-add_global_arguments(extra_flags, language: 'c')
+  add_global_arguments(extra_flags_clang, language: 'cpp')
+endif
 
 if target_machine.system() == 'windows'
   windows_flags = [
@@ -34,7 +27,6 @@ if target_machine.system() == 'windows'
   ]
 
   add_global_arguments(windows_flags, language: 'cpp')
-  add_global_arguments(windows_flags, language: 'c')
 
 
   windows_link_flags = [
@@ -42,20 +34,6 @@ if target_machine.system() == 'windows'
   ]
 
   add_global_link_arguments(windows_link_flags, language: 'cpp')
-  add_global_link_arguments(windows_link_flags, language: 'c')
-endif
-
-extra_flags_clang = [
-  '-ferror-limit=0',
-  '-Db_lundef=false',
-]
-
-if meson.get_compiler('c').get_id() == 'clang'
-    add_global_arguments(extra_flags_clang, language: 'c')
-endif
-
-if meson.get_compiler('cpp').get_id() == 'clang'
-    add_global_arguments(extra_flags_clang, language: 'cpp')
 endif
 
 # Provided by meson.
@@ -120,6 +98,19 @@ conf.set_quoted('LOCALEDIR', prefix / localedir, description: 'Dir for locale fi
 dependencies = [
   dependency('gtkmm-2.4'),
 ]
+
+gtk_flags  = [
+  '-DGTK_DISABLE_DEPRECATED',
+  '-DGTK_DISABLE_SINGLE_INCLUDES',
+  '-DGDK_DISABLE_DEPRECATED',
+  '-DGSEAL_ENABLE',
+  '-DGTKMM_DISABLE_DEPRECATED',
+  '-DGDKMM_DISABLE_DEPRECATED',
+  '-DGLIBMM_DISABLE_DEPRECATED',
+  '-DGIOMM_DISABLE_DEPRECATED',
+]
+
+add_global_arguments(gtk_flags, language: 'cpp')
 
 enable_bzip2 = get_option('bzip2')
 
