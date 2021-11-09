@@ -117,9 +117,6 @@ conf.set('BINDIR_RAW', prefix / bindir, description: 'Dir where binaries are goi
 conf.set_quoted('GETTEXT_PACKAGE', app_name, description: 'Gettext package name')
 conf.set_quoted('LOCALEDIR', prefix / localedir, description: 'Dir for locale files')
 
-add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format(app_name), language: 'cpp')
-add_global_arguments('-DGETTEXT_PACKAGE="@0@"'.format(app_name), language: 'c')
-
 dependencies = [
   dependency('gtkmm-2.4'),
 ]
