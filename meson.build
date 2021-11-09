@@ -218,7 +218,6 @@ endif
 enable_print = get_option('print')
 
 if enable_print
-  dependencies += dependency('gtk+-unix-print-2.0')
   conf.set('ENABLE_PRINT', enable_print, description: 'Support for printing is enabled')
 endif
 
