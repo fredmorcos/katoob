@@ -96,7 +96,7 @@ conf.set_quoted('GETTEXT_PACKAGE', app_name, description: 'Gettext package name'
 conf.set_quoted('LOCALEDIR', prefix / localedir, description: 'Dir for locale files')
 
 dependencies = [
-  dependency('gtkmm-2.4'),
+  dependency('gtkmm-4.0'),
 ]
 
 gtk_flags  = [
@@ -166,7 +166,8 @@ enable_highlight = get_option('highlight')
 
 if enable_highlight
   dependencies += dependency('shared-mime-info')
-  dependencies += dependency('gtksourceview-2.0')
+  # This completely breaks Gtkmm4 applications. Perhaps switch to gtksourceviewmm-4?
+  # dependencies += dependency('gtksourceview-4')
   conf.set('ENABLE_HIGHLIGHT', enable_highlight, description: 'Syntax highlighting is enabled')
 endif
 
