@@ -5,7 +5,7 @@ project(
   meson_version: '>= 0.58',
   default_options: [
     'buildtype=debugoptimized',
-    'warning_level=3',
+    # 'warning_level=3',
     'c_std=c17',
     'cpp_std=c++17'
   ]
@@ -13,6 +13,7 @@ project(
 
 # TODO: Enable those while porting.
 extra_flags  = [
+#  '-DGLIB_DISABLE_DEPRECATION_WARNINGS',
 #  '-DGTK_DISABLE_DEPRECATED',
 #  '-DGTK_DISABLE_SINGLE_INCLUDES',
 #  '-DGDK_DISABLE_DEPRECATED',
