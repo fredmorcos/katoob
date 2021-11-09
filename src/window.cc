@@ -436,9 +436,11 @@ void Window::signal_layout_activate_cb(int which, int x)
 {
   // TODO: Store the input_window state and restore it when we enable any.
   assert(which < 2);
+
 #ifdef ENABLE_EMULATOR
   if (which == 0) {
     Emulator::activate(x);
+
 #ifdef ENABLE_MULTIPRESS
     Multipress::activate(-1);
     statusbar.activate_input(true);
@@ -448,13 +450,16 @@ void Window::signal_layout_activate_cb(int which, int x)
 #endif
   } else
 #endif
+
 #ifdef ENABLE_MULTIPRESS
       if (which == 1) {
 
     Multipress::activate(x);
+
 #ifdef ENABLE_EMULATOR
     Emulator::activate(-1);
 #endif
+
     statusbar.activate_input(true);
     if (input_window.is_visible()) {
       signal_input_toggled_cb(true);
@@ -466,6 +471,7 @@ void Window::signal_layout_activate_cb(int which, int x)
 #ifdef ENABLE_EMULATOR
     Emulator::activate(-1);
 #endif
+
 #ifdef ENABLE_MULTIPRESS
     Multipress::activate(-1);
     statusbar.activate_input(false);

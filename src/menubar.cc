@@ -402,20 +402,22 @@ void MenuBar::tools(
                   _("_Execute Command On Buffer..."),
                   GDK_e,
                   Gdk::ModifierType(GDK_CONTROL_MASK));
-  _execute->signal_activate().connect(
-      sigc::mem_fun(signal_execute_activate, &sigc::signal<void>::emit));
+  auto execute_activate_cb = sigc::mem_fun(signal_execute_activate, &sigc::signal<void>::emit);
+  _execute->signal_activate().connect(execute_activate_cb);
+
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS) || defined(ENABLE_SPELL)
   separator(tools_menu);
 #endif
 
 #ifdef ENABLE_SPELL
   _spell = item(tools_menu, Gtk::Stock::SPELL_CHECK, GDK_F7, Gdk::ModifierType(GDK_CONTROL_MASK));
-  _spell->signal_activate().connect(
-      sigc::mem_fun(signal_spell_activate, &sigc::signal<void>::emit));
+  auto spell_activate_cb = sigc::mem_fun(signal_spell_activate, &sigc::signal<void>::emit);
+  _spell->signal_activate().connect(spell_activate_cb);
 
   _auto_spell = check_item(tools_menu, _("_Autocheck Spelling"));
-  _auto_spell->signal_activate().connect(
-      sigc::mem_fun(*this, &MenuBar::signal_auto_spell_activate_cb));
+
+  auto autospell_activate_cb = sigc::mem_fun(*this, &MenuBar::signal_auto_spell_activate_cb);
+  _auto_spell->signal_activate().connect(autospell_activate_cb);
 #endif
 
 #if defined(ENABLE_EMULATOR) || defined(ENABLE_MULTIPRESS)
@@ -423,8 +425,9 @@ void MenuBar::tools(
   _input_menu = menu(_("Input"), tools_menu);
   Gtk::MenuItem *item = radio_item(_input_menu, input_group, _("Default"));
   dynamic_cast<Gtk::RadioMenuItem *>(item)->set_active(true);
-  item->signal_activate().connect(
-      sigc::bind<int, int>(sigc::mem_fun(*this, &MenuBar::signal_layout_activate_cb), -1, -1));
+  auto layout_activate_cb = sigc::mem_fun(*this, &MenuBar::signal_layout_activate_cb);
+  auto layout_activate_binding = sigc::bind<int, int>(layout_activate_cb, -1, -1);
+  item->signal_activate().connect(layout_activate_binding);
 #endif
 
 #ifdef ENABLE_EMULATOR
