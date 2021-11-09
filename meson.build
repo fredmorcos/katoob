@@ -226,6 +226,7 @@ config_h_in = configure_file(output: 'config.h.in', configuration: conf)
 config_h = vcs_tag(
   input: config_h_in,
   output: 'config.h',
+  fallback: 'Release',
   command: ['git', 'rev-parse', '--short', 'HEAD']
 )
 
