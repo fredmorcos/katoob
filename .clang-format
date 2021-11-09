@@ -1,6 +1,6 @@
 ---
 BasedOnStyle: LLVM
-
+Language: Cpp
 Standard: Auto
 
 IndentWidth: 2
@@ -30,8 +30,11 @@ AllowShortLambdasOnASingleLine: Inline
 AllowShortLoopsOnASingleLine: false
 AllowShortEnumsOnASingleLine: false
 
-# PackConstructorInitializersStyle: Never
+# PackConstructorInitializers: Never
 BreakConstructorInitializers: AfterColon
+
+# SortIncludes: CaseSensitive
+SortUsingDeclarations: true
 
 BreakBeforeBraces: Custom
 BraceWrapping:
@@ -51,17 +54,28 @@ EmptyLineBeforeAccessModifier: LogicalBlock
 
 InsertTrailingCommas: Wrapped
 
-AlignOperands: Align
+AlignOperands: AlignAfterOperator
 BreakBeforeTernaryOperators: true
-BreakBeforeBinaryOperators: None
+BreakBeforeBinaryOperators: All
+
+AllowAllArgumentsOnNextLine: false
+AllowAllConstructorInitializersOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+
+BitFieldColonSpacing: After
+
+# EmptyLineAfterAccessModifier: Never
+
+# LambdaBodyIndentation: Signature
+
+PenaltyBreakAssignment: 10
+
+SpaceAroundPointerQualifiers: After
 
 AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
 AlignEscapedNewlines: Right
 AlignTrailingComments: true
-AllowAllArgumentsOnNextLine: false
-AllowAllConstructorInitializersOnNextLine: false
-AllowAllParametersOfDeclarationOnNextLine: false
 AlwaysBreakAfterDefinitionReturnType: None
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
@@ -80,7 +94,6 @@ IndentPPDirectives: None
 IndentWrappedFunctionNames: false
 KeepEmptyLinesAtTheStartOfBlocks: false
 NamespaceIndentation: All
-SortUsingDeclarations: true
 SpaceAfterCStyleCast: true
 SpaceAfterLogicalNot: false
 SpaceAfterTemplateKeyword: true
