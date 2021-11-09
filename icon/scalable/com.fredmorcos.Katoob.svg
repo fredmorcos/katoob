@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="64px"
    height="64px"
    id="svg2405"
    sodipodi:version="0.32"
-   inkscape:version="0.46"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20, custom)"
    sodipodi:docname="katoob.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    inkscape:export-filename="/personal/workspace/fredmorcos/projects/katoob/src/pixmaps/katoob-shadow.png"
    inkscape:export-xdpi="91.138512"
-   inkscape:export-ydpi="91.138512">
+   inkscape:export-ydpi="91.138512"
+   version="1.1"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
   <defs
      id="defs2407">
     <linearGradient
@@ -255,8 +257,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="6.1162791"
-     inkscape:cx="8.9464893"
-     inkscape:cy="32.650434"
+     inkscape:cx="9.0741444"
+     inkscape:cy="32.617871"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
@@ -264,7 +266,9 @@
      inkscape:window-width="1280"
      inkscape:window-height="745"
      inkscape:window-x="0"
-     inkscape:window-y="0" />
+     inkscape:window-y="32"
+     inkscape:pagecheckerboard="0"
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata2410">
     <rdf:RDF>
@@ -363,18 +367,15 @@
        id="g2615"
        transform="translate(13.080661,9.7830163)">
       <text
-         sodipodi:linespacing="125%"
          id="text2617"
-         style="font-size:49.19567871px;font-weight:bold;line-height:125%;stroke-width:1pt;font-family:ae_Rasheeq Bold"
+         style="font-weight:bold;font-size:49.1957px;line-height:0%;font-family:'ae_Rasheeq Bold';stroke-width:1pt"
          transform="matrix(0.8948311,-0.4911271,0.5325421,0.8252441,0,0)"
          y="24.584143"
-         x="-12.103271">
-        <tspan
-           style="font-size:28.82419205px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Tahoma"
+         x="-12.103271"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:28.8242px;line-height:125%;font-family:Tahoma;text-align:start;writing-mode:lr-tb;text-anchor:start"
            id="tspan2619"
            y="24.584143"
-           x="-12.103271">ض</tspan>
-      </text>
+           x="-12.103271">ض</tspan></text>
     </g>
   </g>
 </svg>

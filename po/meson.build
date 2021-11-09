@@ -6,7 +6,7 @@ extra_gettext_args = [
 ]
 
 i18n.gettext(
-  app_name,
+  executable,
   preset: 'glib',
   args: extra_gettext_args,
 )

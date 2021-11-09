@@ -45,21 +45,31 @@ localstatedir = get_option('localstatedir')
 sysconfdir = get_option('sysconfdir')
 
 # Project-specific.
-app_name = 'katoob'
-app_id = 'com.fredmorcos.Katoob'
-app_path = '/com/fredmorcos/Katoob'
+project = meson.project_name()
+executable = project.to_lower()
+
+project_org = 'fredmorcos'
+project_org_id = 'com.' + project_org
+project_org_path = '/com/' + project_org
 
 project_comment = 'A lightweight, multilingual and bidirectional-aware unicode text editor written in C++ using Gtkmm'
-project_url = 'https://github.com/fredmorcos/katoob'
-project_url_label = meson.project_name() + ' on Github'
-project_url_issues = 'https://github.com/fredmorcos/katoob/issues'
+project_url = 'https://github.com/' + project_org + '/' + executable
+project_url_label = project + ' on Github'
+project_url_issues = project_url + '/issues'
 
-app_datadir = datadir / app_name
-app_docdir = datadir / 'doc' / app_name
+app_id = project_org_id + '.' + project
+app_bus_path = project_org_path + '/' + project
+
+app_datadir = datadir / executable
+app_docdir = datadir / 'doc' / executable
+
 app_multipress_dir = app_datadir / 'multipress'
 app_emulator_dir = app_datadir / 'emulator'
+
 desktop_entries_dir = datadir / 'applications'
 
+message('App ID:', app_id)
+message('App (DBus) path:', app_bus_path)
 message('App datadir:', app_datadir)
 message('App docdir:', app_docdir)
 message('App multipress dir:', app_multipress_dir)
@@ -67,32 +77,43 @@ message('App emulator dir:', app_emulator_dir)
 message('Desktop entries dir:', desktop_entries_dir)
 
 conf = configuration_data()
-conf.set('PROJECT_RAW', meson.project_name(), description: 'Project name (unquoted)')
-conf.set_quoted('PROJECT', meson.project_name(), description: 'Project name')
-conf.set('PACKAGE_RAW', app_name, description: 'Application, binary or package name (unquoted)')
-conf.set_quoted('PACKAGE', app_name, description: 'Application, binary or package name')
-conf.set('VERSION_RAW', meson.project_version(), description: 'Project and package version (unquoted)')
+
+conf.set('PROJECT_RAW', project, description: 'Project name')
+conf.set_quoted('PROJECT', project, description: 'Project name')
+
+conf.set('EXECUTABLE_RAW', executable, description: 'Application, binary or package name')
+conf.set_quoted('EXECUTABLE', executable, description: 'Application, binary or package name')
+
+conf.set('VERSION_RAW', meson.project_version(), description: 'Project and package version')
 conf.set_quoted('VERSION', meson.project_version(), description: 'Project and package version')
-conf.set_quoted('TAG', '@VCS_TAG@', description: 'Git commit hash')
-conf.set_quoted('APP_ID', app_id, description: 'DBus application ID')
-conf.set_quoted('APP_PATH', app_path, description: 'DBus application path')
+
+conf.set_quoted('VCS_TAG', '@VCS_TAG@', description: 'Git commit hash')
+
+conf.set('APP_ID_RAW', app_id, description: 'Application ID')
+conf.set_quoted('APP_ID', app_id, description: 'Application ID')
+
+conf.set_quoted('APP_BUS_PATH', app_bus_path, description: 'DBus application path')
+
+conf.set('PROJECT_COMMENT_RAW', project_comment, description: 'Project comment')
+conf.set_quoted('PROJECT_COMMENT', project_comment, description: 'Project comment')
+
+conf.set('PROJECT_URL_RAW', project_url, description: 'Project website')
+conf.set_quoted('PROJECT_URL', project_url, description: 'Project website')
+
+conf.set_quoted('PROJECT_URL_LABEL', project_url_label, description: 'Project website title')
+
+conf.set('PROJECT_URL_ISSUES_RAW', project_url_issues, description: 'Project issues database')
+conf.set_quoted('PROJECT_URL_ISSUES', project_url_issues, description: 'Project issues database')
+
 conf.set_quoted('MULTIPRESS_DIR', prefix / app_multipress_dir, description: 'Multipress config file dir')
 conf.set_quoted('EMULATOR_DIR', prefix / app_emulator_dir, description: 'Emulator config file dir')
 
-conf.set('PROJECT_COMMENT_RAW', project_comment, description: 'Project comment (unquoted)')
-conf.set_quoted('PROJECT_COMMENT', project_comment, description: 'Project comment')
-conf.set('PROJECT_URL_RAW', project_url, description: 'Project website (unquoted)')
-conf.set_quoted('PROJECT_URL', project_url, description: 'Project website')
-conf.set_quoted('PROJECT_URL_LABEL', project_url_label, description: 'Project website title')
-conf.set('PROJECT_URL_ISSUES_RAW', project_url_issues, description: 'Project issues database (unquoted)')
-conf.set_quoted('PROJECT_URL_ISSUES', project_url_issues, description: 'Project issues database')
-
-conf.set('APP_DATADIR_RAW', prefix / app_datadir, description: 'Dir for application data files (unquoted)')
+conf.set('APP_DATADIR_RAW', prefix / app_datadir, description: 'Dir for application data files')
 conf.set_quoted('APP_DATADIR', prefix / app_datadir, description: 'Dir for application data files')
 
 conf.set('BINDIR_RAW', prefix / bindir, description: 'Dir where binaries are going to be installed')
 
-conf.set_quoted('GETTEXT_PACKAGE', app_name, description: 'Gettext package name')
+conf.set_quoted('GETTEXT_PACKAGE', executable, description: 'Gettext package name')
 conf.set_quoted('LOCALEDIR', prefix / localedir, description: 'Dir for locale files')
 
 dependencies = [

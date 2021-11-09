@@ -3,7 +3,7 @@
 .\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
 .\" other parameters are allowed: see man(7), man(1)
 
-.TH @PROJECT_RAW@ 1 "November 7, 2021" "@PROJECT_RAW@ Text Editor" @PACKAGE@
+.TH @PROJECT_RAW@ 1 "November 7, 2021" "@PROJECT_RAW@ Text Editor" @EXECUTABLE@
 
 .\" Please adjust this date whenever revising the manpage.
 .\"
@@ -29,19 +29,19 @@
 importing/exporting to HTML character reference.
 
 .SH SYNOPSIS
-.B @PACKAGE_RAW@
+.B @EXECUTABLE_RAW@
 .RI [ options ] " files" ...
 .br
 
 .SH DESCRIPTION
 This manual page documents briefly the
-.B @PACKAGE_RAW@
+.B @EXECUTABLE_RAW@
 commands.
 .PP
 .\" TeX users may be more comfortable with the \fB<whatever>\fP and
 .\" \fI<whatever>\fP escape sequences to invode bold face and italics,
 .\" respectively.
-\fB@PACKAGE_RAW@\fP is a light-weight, multi-lingual, BiDi aware text editor. It supports
+\fB@EXECUTABLE_RAW@\fP is a light-weight, multi-lingual, BiDi aware text editor. It supports
 opening and saving files in multiple encodings. Primary support used to be for Arabic but
 more languages are currently supported.
 
@@ -70,13 +70,13 @@ specified, @PROJECT_RAW@ will start with an empty document.
 .SH FILES
 .LP
 .TP
-%XDG_CONFIG_HOME%/@PACKAGE_RAW@/
+%XDG_CONFIG_HOME%/@EXECUTABLE_RAW@/
 Directory for user configuration files.
 .TP
-%XDG_CONFIG_HOME%/@PACKAGE_RAW@/config
+%XDG_CONFIG_HOME%/@EXECUTABLE_RAW@/config
 Main configuration file.
 .TP
-%XDG_CACHE_HOME%/@PACKAGE_RAW@/recent
+%XDG_CACHE_HOME%/@EXECUTABLE_RAW@/recent
 Recent files list.
 .TP
 @APP_DATADIR_RAW@
@@ -85,16 +85,16 @@ Global directory for program data (e.g license, readme and icons).
 .SH EXAMPLES
 .TP
 Open multiple files:
-@PACKAGE_RAW@ foo.txt bar.txt baz.txt
+@EXECUTABLE_RAW@ foo.txt bar.txt baz.txt
 .TP
 Open a file called foo.txt and the output of cat:
-cat bar | @PACKAGE_RAW@ foo.txt -
+cat bar | @EXECUTABLE_RAW@ foo.txt -
 .TP
 Read from a pipe:
-ls | @PACKAGE_RAW@ -
+ls | @EXECUTABLE_RAW@ -
 .TP
 Read from multiple pipes:
-@PACKAGE_RAW@ - -
+@EXECUTABLE_RAW@ - -
 .PP
 Here, @PROJECT_RAW@ will try to read twice from standard input.  To close the standard
 input you must press CTRL-D for each dash passed, @PROJECT_RAW@ will reopen standard input
@@ -102,7 +102,7 @@ and read from it.
 
 .SH BUGS
 Something like
-.B `cat foo | @PACKAGE_RAW@ - -`
+.B `cat foo | @EXECUTABLE_RAW@ - -`
 should read cat output, wait for user input and open each one in a separate document is
 not supported.
 .sp
@@ -119,6 +119,6 @@ was originally written and maintained by Mohammed Sameer from 2002 to 2007.
 .B @PROJECT_RAW@
 is free software released under the GPLv2 or later.
 .sp
-Copyright (c) 2008-2021 Fred Morcos <fm+@PROJECT_RAW@@fredmorcos.com>
+Copyright © 2008-2021 Fred Morcos <fm+@PROJECT_RAW@@fredmorcos.com>
 .sp
-Copyright (c) 2002-2007 Mohammed Sameer <msameer@foolab.org>
+Copyright © 2002-2007 Mohammed Sameer <msameer@foolab.org>

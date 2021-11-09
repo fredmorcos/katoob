@@ -80,7 +80,7 @@ endif
 # Comes from top-level meson build file.
 dependencies += declare_dependency(sources: [config_h])
 
-executable(app_name,
+executable(executable,
            sources,
            dependencies: dependencies,
            implicit_include_directories: true,
