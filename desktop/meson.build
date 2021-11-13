@@ -1,4 +1,5 @@
 i18n = import('i18n')
+gnome = import('gnome')
 
 desktop_in = configure_file(
   input: app_id + '.desktop.in.in',
@@ -13,3 +14,5 @@ i18n.merge_file(
   install: true,
   install_dir: prefix / desktop_entries_dir
 )
+
+gnome.post_install(update_desktop_database: true)
