@@ -3,7 +3,7 @@ project(
   ['cpp'],
   version: '0.7',
   license: 'GPL2+',
-  meson_version: '>= 0.58',
+  meson_version: '>= 0.59',
   default_options: [
     'buildtype=debugoptimized',
     'warning_level=3',
