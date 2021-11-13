@@ -58,7 +58,7 @@ project_url_label = project + ' on Github'
 project_url_issues = project_url + '/issues'
 
 app_id = project_org_id + '.' + project
-app_bus_path = project_org_path + '/' + project
+app_path = project_org_path + '/' + project
 
 app_datadir = datadir / executable
 app_docdir = datadir / 'doc' / executable
@@ -69,7 +69,7 @@ app_emulator_dir = app_datadir / 'emulator'
 desktop_entries_dir = datadir / 'applications'
 
 message('App ID:', app_id)
-message('App (DBus) path:', app_bus_path)
+message('App path:', app_path)
 message('App datadir:', app_datadir)
 message('App docdir:', app_docdir)
 message('App multipress dir:', app_multipress_dir)
@@ -92,7 +92,8 @@ conf.set_quoted('VCS_TAG', '@VCS_TAG@', description: 'Git commit hash')
 conf.set('APP_ID_RAW', app_id, description: 'Application ID')
 conf.set_quoted('APP_ID', app_id, description: 'Application ID')
 
-conf.set_quoted('APP_BUS_PATH', app_bus_path, description: 'DBus application path')
+conf.set('APP_PATH_RAW', app_path, description: 'DBus application path')
+conf.set_quoted('APP_PATH', app_path, description: 'DBus application path')
 
 conf.set('PROJECT_COMMENT_RAW', project_comment, description: 'Project comment')
 conf.set_quoted('PROJECT_COMMENT', project_comment, description: 'Project comment')
@@ -244,8 +245,8 @@ config_h = vcs_tag(
 
 install_data('LICENSE', 'README.md', install_dir: prefix / app_docdir)
 
-subdir('desktop')
 subdir('data')
+subdir('desktop')
 subdir('icon')
 subdir('man')
 subdir('po')
