@@ -119,6 +119,7 @@ conf.set_quoted('LOCALEDIR', prefix / localedir, description: 'Dir for locale fi
 
 dependencies = [
   dependency('gtkmm-4.0'),
+  dependency('Microsoft.GSL', modules: ['Microsoft.GSL::GSL']),
 ]
 
 gtk_flags  = [
@@ -250,4 +251,5 @@ subdir('desktop')
 subdir('icon')
 subdir('man')
 subdir('po')
+subdir('resources')
 subdir('src')

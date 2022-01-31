@@ -19,31 +19,22 @@
  * 02111-1307, USA.
  */
 
+#include "application.hh"
+#include <clocale>
 #include <config.h>
+#include <glib/gi18n.h>
+#include <gtkmm.h>
+#include <iostream>
 
-#include "katoob.hh"
-#include "macros.h"
-#include <glibmm/thread.h>
-//#include <csignal>
-
-/**
- * \brief Our entry point.
- *
- * Our entry point. Will setup gettext, initialize gthread,
- * construct a Katoob instance, ask Katoob to create a Window and ask Katoob
- * to run its main loop.
- */
-int main(int argc, char *argv[])
+auto main(int argc, char *argv[]) -> int
 {
 #ifdef ENABLE_NLS
-  bindtextdomain(PACKAGE, LOCALEDIR);
-  bind_textdomain_codeset(PACKAGE, "UTF-8");
-  textdomain(PACKAGE);
+  std::setlocale(LC_ALL, "");
+  bindtextdomain(GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset(GETTEXT_PACKAGE, "UTF-8");
+  textdomain(GETTEXT_PACKAGE);
 #endif
 
-  //  signal(SIGPIPE, SIG_IGN);
-
-  Katoob katoob(argc, argv);
-  katoob.window();
-  return katoob.run();
+  auto app = Application::create();
+  return app->run(argc, argv);
 }
