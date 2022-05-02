@@ -7,9 +7,12 @@ IndentWidth: 2
 UseTab: Never
 ColumnLimit: 100
 
+ObjCBlockIndentWidth: 2
+
 MaxEmptyLinesToKeep: 1
 ReflowComments: true
-SortIncludes: true
+SortIncludes: CaseInsensitive
+SortUsingDeclarations: true
 
 AccessModifierOffset: -1
 AlignAfterOpenBracket: Align
@@ -20,7 +23,7 @@ BinPackParameters: false
 
 DerivePointerAlignment: false
 PointerAlignment: Right
-# ReferenceAlignment: Left
+ReferenceAlignment: Left
 
 AllowShortBlocksOnASingleLine: false
 AllowShortCaseLabelsOnASingleLine: false
@@ -30,25 +33,25 @@ AllowShortLambdasOnASingleLine: Inline
 AllowShortLoopsOnASingleLine: false
 AllowShortEnumsOnASingleLine: false
 
-# PackConstructorInitializers: Never
 BreakConstructorInitializers: AfterColon
-
-# SortIncludes: CaseSensitive
-SortUsingDeclarations: true
 
 BreakBeforeBraces: Custom
 BraceWrapping:
-  AfterClass: false
+  AfterClass: true
   AfterControlStatement: false
-  AfterEnum: false
+  AfterEnum: true
+  AfterExternBlock: true
   AfterFunction: true
-  AfterNamespace: false
-  AfterObjCDeclaration: false
-  AfterStruct: false
-  AfterUnion: false
+  AfterNamespace: true
+  AfterObjCDeclaration: true
+  AfterStruct: true
+  AfterUnion: true
   BeforeCatch: false
   BeforeElse: false
+  BeforeWhile: false
+  BeforeLambdaBody: false
   IndentBraces: false
+  SplitEmptyFunction: false
 
 EmptyLineBeforeAccessModifier: LogicalBlock
 
@@ -64,9 +67,9 @@ AllowAllParametersOfDeclarationOnNextLine: false
 
 BitFieldColonSpacing: After
 
-# EmptyLineAfterAccessModifier: Never
+EmptyLineAfterAccessModifier: Never
 
-# LambdaBodyIndentation: Signature
+LambdaBodyIndentation: Signature
 
 PenaltyBreakAssignment: 10
 
@@ -104,6 +107,7 @@ SpaceBeforeInheritanceColon: false
 SpaceBeforeParens: ControlStatements
 SpaceBeforeRangeBasedForLoopColon: false
 SpaceInEmptyParentheses: false
+SpaceInEmptyBlock: false
 SpacesBeforeTrailingComments: '3'
 SpacesInAngles: false
 SpacesInCStyleCastParentheses: false
